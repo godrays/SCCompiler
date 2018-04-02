@@ -1,0 +1,10 @@
+# Mac OS X
+.DS_Store
+
+# XCode
+*.xcuserstate
+xcuserdata/
+
+#Generated Files
+build/
+
