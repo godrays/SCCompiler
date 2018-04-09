@@ -1,0 +1,501 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DEABFA602070953200F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFA5F2070953200F80986 /* main.cpp */; };
+		DEABFAAA2071C08F00F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAA92071C08F00F80986 /* main.cpp */; };
+		DEABFAB22071FA3C00F80986 /* LexerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAB02071FA3C00F80986 /* LexerTests.cpp */; };
+		DEABFB0E207B09B900F80986 /* SCCompilerBaseVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAFF207B09B700F80986 /* SCCompilerBaseVisitor.cpp */; };
+		DEABFB0F207B09B900F80986 /* SCCompilerBaseListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB00207B09B800F80986 /* SCCompilerBaseListener.cpp */; };
+		DEABFB10207B09B900F80986 /* SCCompilerParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB01207B09B800F80986 /* SCCompilerParser.cpp */; };
+		DEABFB11207B09B900F80986 /* SCCompilerVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB07207B09B800F80986 /* SCCompilerVisitor.cpp */; };
+		DEABFB12207B09B900F80986 /* SCCompilerListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB0A207B09B800F80986 /* SCCompilerListener.cpp */; };
+		DEABFB13207B09B900F80986 /* SCCompilerLexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB0C207B09B800F80986 /* SCCompilerLexer.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DEABFA5A2070953200F80986 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = usr/share/man/man1;
+			dstSubfolderSpec = 6;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		DEABFAA52071C08E00F80986 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		DEABFA5C2070953200F80986 /* SCCompilerApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCCompilerApp; sourceTree = BUILT_PRODUCTS_DIR; };
+		DEABFA5F2070953200F80986 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		DEABFA67207098AE00F80986 /* SCCompiler.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = SCCompiler.g4; sourceTree = "<group>"; };
+		DEABFAA72071C08E00F80986 /* SCCompilerTestApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCCompilerTestApp; sourceTree = BUILT_PRODUCTS_DIR; };
+		DEABFAA92071C08F00F80986 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		DEABFAB02071FA3C00F80986 /* LexerTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LexerTests.cpp; sourceTree = "<group>"; };
+		DEABFAB12071FA3C00F80986 /* LexerTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LexerTests.hpp; sourceTree = "<group>"; };
+		DEABFAB32071FD4E00F80986 /* SCCompilerTestCode.src */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SCCompilerTestCode.src; sourceTree = "<group>"; };
+		DEABFAFE207B09B700F80986 /* SCCompiler.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SCCompiler.tokens; sourceTree = "<group>"; };
+		DEABFAFF207B09B700F80986 /* SCCompilerBaseVisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCCompilerBaseVisitor.cpp; sourceTree = "<group>"; };
+		DEABFB00207B09B800F80986 /* SCCompilerBaseListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCCompilerBaseListener.cpp; sourceTree = "<group>"; };
+		DEABFB01207B09B800F80986 /* SCCompilerParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCCompilerParser.cpp; sourceTree = "<group>"; };
+		DEABFB02207B09B800F80986 /* SCCompilerParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCompilerParser.h; sourceTree = "<group>"; };
+		DEABFB03207B09B800F80986 /* SCCompilerLexer.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SCCompilerLexer.interp; sourceTree = "<group>"; };
+		DEABFB04207B09B800F80986 /* SCCompilerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCompilerListener.h; sourceTree = "<group>"; };
+		DEABFB05207B09B800F80986 /* SCCompiler.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SCCompiler.interp; sourceTree = "<group>"; };
+		DEABFB06207B09B800F80986 /* SCCompilerBaseListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCompilerBaseListener.h; sourceTree = "<group>"; };
+		DEABFB07207B09B800F80986 /* SCCompilerVisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCCompilerVisitor.cpp; sourceTree = "<group>"; };
+		DEABFB08207B09B800F80986 /* SCCompilerBaseVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCompilerBaseVisitor.h; sourceTree = "<group>"; };
+		DEABFB09207B09B800F80986 /* SCCompilerLexer.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SCCompilerLexer.tokens; sourceTree = "<group>"; };
+		DEABFB0A207B09B800F80986 /* SCCompilerListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCCompilerListener.cpp; sourceTree = "<group>"; };
+		DEABFB0B207B09B800F80986 /* SCCompilerLexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCompilerLexer.h; sourceTree = "<group>"; };
+		DEABFB0C207B09B800F80986 /* SCCompilerLexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCCompilerLexer.cpp; sourceTree = "<group>"; };
+		DEABFB0D207B09B900F80986 /* SCCompilerVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCompilerVisitor.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DEABFA592070953200F80986 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DEABFAA42071C08E00F80986 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DEABFA532070953200F80986 = {
+			isa = PBXGroup;
+			children = (
+				DEABFA662070958500F80986 /* Apps */,
+				DEABFAAE2071C6B100F80986 /* Common */,
+				DEABFA5D2070953200F80986 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DEABFA5D2070953200F80986 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DEABFA5C2070953200F80986 /* SCCompilerApp */,
+				DEABFAA72071C08E00F80986 /* SCCompilerTestApp */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DEABFA5E2070953200F80986 /* SCCompilerApp */ = {
+			isa = PBXGroup;
+			children = (
+				DEABFAB32071FD4E00F80986 /* SCCompilerTestCode.src */,
+				DEABFA5F2070953200F80986 /* main.cpp */,
+			);
+			path = SCCompilerApp;
+			sourceTree = "<group>";
+		};
+		DEABFA662070958500F80986 /* Apps */ = {
+			isa = PBXGroup;
+			children = (
+				DEABFA5E2070953200F80986 /* SCCompilerApp */,
+				DEABFAA82071C08F00F80986 /* SCCompilerTestApp */,
+			);
+			path = Apps;
+			sourceTree = "<group>";
+		};
+		DEABFA7E2070A3FA00F80986 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				DEABFA67207098AE00F80986 /* SCCompiler.g4 */,
+				DEABFB05207B09B800F80986 /* SCCompiler.interp */,
+				DEABFAFE207B09B700F80986 /* SCCompiler.tokens */,
+				DEABFB00207B09B800F80986 /* SCCompilerBaseListener.cpp */,
+				DEABFB06207B09B800F80986 /* SCCompilerBaseListener.h */,
+				DEABFAFF207B09B700F80986 /* SCCompilerBaseVisitor.cpp */,
+				DEABFB08207B09B800F80986 /* SCCompilerBaseVisitor.h */,
+				DEABFB0C207B09B800F80986 /* SCCompilerLexer.cpp */,
+				DEABFB0B207B09B800F80986 /* SCCompilerLexer.h */,
+				DEABFB03207B09B800F80986 /* SCCompilerLexer.interp */,
+				DEABFB09207B09B800F80986 /* SCCompilerLexer.tokens */,
+				DEABFB0A207B09B800F80986 /* SCCompilerListener.cpp */,
+				DEABFB04207B09B800F80986 /* SCCompilerListener.h */,
+				DEABFB01207B09B800F80986 /* SCCompilerParser.cpp */,
+				DEABFB02207B09B800F80986 /* SCCompilerParser.h */,
+				DEABFB07207B09B800F80986 /* SCCompilerVisitor.cpp */,
+				DEABFB0D207B09B900F80986 /* SCCompilerVisitor.h */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		DEABFAA82071C08F00F80986 /* SCCompilerTestApp */ = {
+			isa = PBXGroup;
+			children = (
+				DEABFAAF2071F9FB00F80986 /* UnitTests */,
+				DEABFAA92071C08F00F80986 /* main.cpp */,
+			);
+			path = SCCompilerTestApp;
+			sourceTree = "<group>";
+		};
+		DEABFAAE2071C6B100F80986 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				DEABFAFD207B06E300F80986 /* Compiler */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		DEABFAAF2071F9FB00F80986 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				DEABFAB02071FA3C00F80986 /* LexerTests.cpp */,
+				DEABFAB12071FA3C00F80986 /* LexerTests.hpp */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		DEABFAFD207B06E300F80986 /* Compiler */ = {
+			isa = PBXGroup;
+			children = (
+				DEABFA7E2070A3FA00F80986 /* Parser */,
+			);
+			path = Compiler;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DEABFA5B2070953200F80986 /* SCCompilerApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DEABFA632070953200F80986 /* Build configuration list for PBXNativeTarget "SCCompilerApp" */;
+			buildPhases = (
+				DEABFA582070953200F80986 /* Sources */,
+				DEABFA592070953200F80986 /* Frameworks */,
+				DEABFA5A2070953200F80986 /* CopyFiles */,
+				DEABFA972070B0E600F80986 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SCCompilerApp;
+			productName = DemoCompiler;
+			productReference = DEABFA5C2070953200F80986 /* SCCompilerApp */;
+			productType = "com.apple.product-type.tool";
+		};
+		DEABFAA62071C08E00F80986 /* SCCompilerTestApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DEABFAAB2071C08F00F80986 /* Build configuration list for PBXNativeTarget "SCCompilerTestApp" */;
+			buildPhases = (
+				DEABFAA32071C08E00F80986 /* Sources */,
+				DEABFAA42071C08E00F80986 /* Frameworks */,
+				DEABFAA52071C08E00F80986 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SCCompilerTestApp;
+			productName = DemoCompilerTestApp;
+			productReference = DEABFAA72071C08E00F80986 /* SCCompilerTestApp */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DEABFA542070953200F80986 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Arkin Terli";
+				TargetAttributes = {
+					DEABFA5B2070953200F80986 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					DEABFAA62071C08E00F80986 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = DEABFA572070953200F80986 /* Build configuration list for PBXProject "SCCompiler" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = DEABFA532070953200F80986;
+			productRefGroup = DEABFA5D2070953200F80986 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DEABFA5B2070953200F80986 /* SCCompilerApp */,
+				DEABFAA62071C08E00F80986 /* SCCompilerTestApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DEABFA972070B0E600F80986 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -rf $(SOURCE_ROOT)../Externals/ANTLR/4.7.1/Runtime/lib/libantlr4-runtime.dylib ${BUILT_PRODUCTS_DIR}\ncp -rf $(SOURCE_ROOT)Targets/SCCompilerApp/SCCompilerTestCode.src ${BUILT_PRODUCTS_DIR}";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DEABFA582070953200F80986 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DEABFB13207B09B900F80986 /* SCCompilerLexer.cpp in Sources */,
+				DEABFB0E207B09B900F80986 /* SCCompilerBaseVisitor.cpp in Sources */,
+				DEABFB11207B09B900F80986 /* SCCompilerVisitor.cpp in Sources */,
+				DEABFB0F207B09B900F80986 /* SCCompilerBaseListener.cpp in Sources */,
+				DEABFA602070953200F80986 /* main.cpp in Sources */,
+				DEABFB12207B09B900F80986 /* SCCompilerListener.cpp in Sources */,
+				DEABFB10207B09B900F80986 /* SCCompilerParser.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DEABFAA32071C08E00F80986 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DEABFAB22071FA3C00F80986 /* LexerTests.cpp in Sources */,
+				DEABFAAA2071C08F00F80986 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		DEABFA612070953200F80986 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		DEABFA622070953200F80986 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DEABFA642070953200F80986 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/../Externals/ANTLR/4.7.1/Runtime/antlr4-runtime/";
+				LIBRARY_SEARCH_PATHS = "$(SOURCE_ROOT)/../Externals/ANTLR/4.7.1/Runtime/lib";
+				OTHER_LDFLAGS = "-lantlr4-runtime";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DEABFA652070953200F80986 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/../Externals/ANTLR/4.7.1/Runtime/antlr4-runtime/";
+				LIBRARY_SEARCH_PATHS = "$(SOURCE_ROOT)/../Externals/ANTLR/4.7.1/Runtime/lib";
+				OTHER_LDFLAGS = "-lantlr4-runtime";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		DEABFAAC2071C08F00F80986 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/../Externals/CppUnit/build/xcode/include",
+					"${SOURCE_ROOT}/../Externals/DocOpt",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/../Externals/CppUnit/build/xcode/lib",
+					"${SOURCE_ROOT}/../Externals/DocOpt/build",
+				);
+				OTHER_LDFLAGS = (
+					"-lcppunit",
+					"-ldocopt_s",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DEABFAAD2071C08F00F80986 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/../Externals/CppUnit/build/xcode/include",
+					"${SOURCE_ROOT}/../Externals/DocOpt",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/../Externals/CppUnit/build/xcode/lib",
+					"${SOURCE_ROOT}/../Externals/DocOpt/build",
+				);
+				OTHER_LDFLAGS = (
+					"-lcppunit",
+					"-ldocopt_s",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DEABFA572070953200F80986 /* Build configuration list for PBXProject "SCCompiler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DEABFA612070953200F80986 /* Debug */,
+				DEABFA622070953200F80986 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DEABFA632070953200F80986 /* Build configuration list for PBXNativeTarget "SCCompilerApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DEABFA642070953200F80986 /* Debug */,
+				DEABFA652070953200F80986 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DEABFAAB2071C08F00F80986 /* Build configuration list for PBXNativeTarget "SCCompilerTestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DEABFAAC2071C08F00F80986 /* Debug */,
+				DEABFAAD2071C08F00F80986 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DEABFA542070953200F80986 /* Project object */;
+}

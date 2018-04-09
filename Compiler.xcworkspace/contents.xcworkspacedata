@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:DemoCompiler/DemoCompiler.xcodeproj">
+      location = "group:SCCompiler/SCCompiler.xcodeproj">
    </FileRef>
 </Workspace>
