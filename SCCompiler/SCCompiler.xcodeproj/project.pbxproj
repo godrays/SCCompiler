@@ -156,7 +156,7 @@
 		DEABFAAE2071C6B100F80986 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				DEABFAFD207B06E300F80986 /* Compiler */,
+				DEABFAFD207B06E300F80986 /* SCCompiler */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -170,12 +170,12 @@
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
-		DEABFAFD207B06E300F80986 /* Compiler */ = {
+		DEABFAFD207B06E300F80986 /* SCCompiler */ = {
 			isa = PBXGroup;
 			children = (
 				DEABFA7E2070A3FA00F80986 /* Parser */,
 			);
-			path = Compiler;
+			path = SCCompiler;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

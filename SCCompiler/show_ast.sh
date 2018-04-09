@@ -1,6 +1,6 @@
 PROJECT_PATH=`echo $PWD | sed 's/\(Compiler\).*/\1/g'`
 GRAMMAR_NAME=SCCompiler
-GRAMMAR_PATH=$PROJECT_PATH/SCCompiler/Common/Compiler/Parser
+GRAMMAR_PATH=$PROJECT_PATH/SCCompiler/Common/SCCompiler/Parser
 GRAMMAR_FILE=$GRAMMAR_NAME.g4
 INPUT_FILE=$1
 JAR_FILE=$PROJECT_PATH/Externals/ANTLR/4.7.1/Tool/antlr-4.7.1-complete.jar
