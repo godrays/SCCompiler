@@ -15,7 +15,8 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, ID = 22, INT = 23, WS = 24, BLOCKCOMMENT = 25, LINECOMMENT = 26
+    T__20 = 21, ID = 22, INT = 23, FLOAT = 24, WS = 25, LINECOMMENT = 26, 
+    BLOCKCOMMENT = 27
   };
 
   enum {
@@ -395,6 +396,7 @@ public:
   public:
     NumberContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *FLOAT();
     antlr4::tree::TerminalNode *INT();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;

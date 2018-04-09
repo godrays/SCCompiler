@@ -265,7 +265,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -rf $(SOURCE_ROOT)../Externals/ANTLR/4.7.1/Runtime/lib/libantlr4-runtime.dylib ${BUILT_PRODUCTS_DIR}\ncp -rf $(SOURCE_ROOT)Targets/SCCompilerApp/SCCompilerTestCode.src ${BUILT_PRODUCTS_DIR}";
+			shellScript = "cp -rf $(SOURCE_ROOT)../Externals/ANTLR/4.7.1/Runtime/lib/libantlr4-runtime.dylib ${BUILT_PRODUCTS_DIR}\ncp -rf $(SOURCE_ROOT)Apps/SCCompilerApp/SCCompilerTestCode.src ${BUILT_PRODUCTS_DIR}";
 		};
 /* End PBXShellScriptBuildPhase section */
 

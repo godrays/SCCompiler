@@ -71,7 +71,8 @@ expr
     ;
 
 number
-    :   INT
+    :   FLOAT
+    |   INT
     ;
 
 
@@ -79,19 +80,37 @@ number
 // Lexer Rules
 // ----------------------------------------------------------
 
-ID  :   LETTER (LETTER | [0-9])* ;
+ID
+    :   LETTER (LETTER | [0-9])*
+    ;
 
 fragment
-LETTER : [a-zA-Z] ;
+DIGIT
+    :   [0-9]
+    ;
 
-INT :   [0-9]+ ;
+fragment
+LETTER
+    :   [a-zA-Z]
+    ;
 
-WS  :   [ \t\n\r]+ -> skip ;
+INT
+    :   DIGIT+
+    ;
 
-BLOCKCOMMENT
-    :   '/*' .*? '*/' -> skip
+FLOAT
+    :   DIGIT+ '.' DIGIT+
+    |   '.' DIGIT+
+    ;
+
+WS
+    :   [ \t\n\r]+ -> skip
     ;
 
 LINECOMMENT
     :   '//' ~[\r\n]* -> skip
+    ;
+
+BLOCKCOMMENT
+    :   '/*' .*? '*/' -> skip
     ;
