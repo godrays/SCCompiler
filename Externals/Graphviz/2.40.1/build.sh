@@ -7,9 +7,14 @@ rm -rf $PWD/build
 make clean
 ./configure --prefix=$PWD/build --disable-shared --enable-static
 make -j 8
+
+pushd .
+
 cd cmd/dot
 make dot
 make install
+
+popd
 
 # Clean intermediate build files.
 make clean
