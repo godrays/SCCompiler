@@ -17,7 +17,6 @@
 		DEABFB11207B09B900F80986 /* SCCompilerVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB07207B09B800F80986 /* SCCompilerVisitor.cpp */; };
 		DEABFB12207B09B900F80986 /* SCCompilerListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB0A207B09B800F80986 /* SCCompilerListener.cpp */; };
 		DEABFB13207B09B900F80986 /* SCCompilerLexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB0C207B09B800F80986 /* SCCompilerLexer.cpp */; };
-		DEABFB16207B212600F80986 /* MyVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB14207B212600F80986 /* MyVisitor.cpp */; };
 		DEABFB1B207DAF4100F80986 /* Compiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB19207DAF4100F80986 /* Compiler.cpp */; };
 		DEABFB1E207DB29600F80986 /* AST.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB1C207DB29600F80986 /* AST.cpp */; };
 		DEABFB27207ED40A00F80986 /* ASTGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB25207ED40A00F80986 /* ASTGenerator.cpp */; };
@@ -71,8 +70,6 @@
 		DEABFB0B207B09B800F80986 /* SCCompilerLexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCompilerLexer.h; sourceTree = "<group>"; };
 		DEABFB0C207B09B800F80986 /* SCCompilerLexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCCompilerLexer.cpp; sourceTree = "<group>"; };
 		DEABFB0D207B09B900F80986 /* SCCompilerVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCompilerVisitor.h; sourceTree = "<group>"; };
-		DEABFB14207B212600F80986 /* MyVisitor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MyVisitor.cpp; sourceTree = "<group>"; };
-		DEABFB15207B212600F80986 /* MyVisitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MyVisitor.hpp; sourceTree = "<group>"; };
 		DEABFB19207DAF4100F80986 /* Compiler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Compiler.cpp; sourceTree = "<group>"; };
 		DEABFB1A207DAF4100F80986 /* Compiler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Compiler.hpp; sourceTree = "<group>"; };
 		DEABFB1C207DB29600F80986 /* AST.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AST.cpp; sourceTree = "<group>"; };
@@ -122,8 +119,6 @@
 			children = (
 				DEABFAB32071FD4E00F80986 /* SCCompilerTestCode.src */,
 				DEABFA5F2070953200F80986 /* main.cpp */,
-				DEABFB14207B212600F80986 /* MyVisitor.cpp */,
-				DEABFB15207B212600F80986 /* MyVisitor.hpp */,
 			);
 			path = SCCompilerApp;
 			sourceTree = "<group>";
@@ -304,7 +299,6 @@
 				DEABFB1B207DAF4100F80986 /* Compiler.cpp in Sources */,
 				DEABFB13207B09B900F80986 /* SCCompilerLexer.cpp in Sources */,
 				DEABFB0E207B09B900F80986 /* SCCompilerBaseVisitor.cpp in Sources */,
-				DEABFB16207B212600F80986 /* MyVisitor.cpp in Sources */,
 				DEABFB11207B09B900F80986 /* SCCompilerVisitor.cpp in Sources */,
 				DEABFB0F207B09B900F80986 /* SCCompilerBaseListener.cpp in Sources */,
 				DE4F6949208147B400039928 /* ASTVisualizer.cpp in Sources */,
