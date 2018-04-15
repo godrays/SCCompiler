@@ -27,7 +27,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFunctionDecl(SCCompilerParser::FunctionDeclContext *ctx) override {
+  virtual antlrcpp::Any visitFuncDeclaration(SCCompilerParser::FuncDeclarationContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -35,7 +35,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFormalParameter(SCCompilerParser::FormalParameterContext *ctx) override {
+  virtual antlrcpp::Any visitFuncArgDeclaration(SCCompilerParser::FuncArgDeclarationContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -48,10 +48,6 @@ public:
   }
 
   virtual antlrcpp::Any visitVarDeclStatement(SCCompilerParser::VarDeclStatementContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitIfStatement(SCCompilerParser::IfStatementContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -71,11 +67,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitArrayIndexExpr(SCCompilerParser::ArrayIndexExprContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitBoolNotExpr(SCCompilerParser::BoolNotExprContext *ctx) override {
+  virtual antlrcpp::Any visitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -83,15 +75,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitNumberExpr(SCCompilerParser::NumberExprContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitVarRefExpr(SCCompilerParser::VarRefExprContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitUnaryNegationExpr(SCCompilerParser::UnaryNegationExprContext *ctx) override {
+  virtual antlrcpp::Any visitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -99,19 +83,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCompExpr(SCCompilerParser::CompExprContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitParanthesisExpr(SCCompilerParser::ParanthesisExprContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitNumber(SCCompilerParser::NumberContext *ctx) override {
     return visitChildren(ctx);
   }
 

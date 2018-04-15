@@ -25,14 +25,14 @@ public:
   virtual void enterType(SCCompilerParser::TypeContext * /*ctx*/) override { }
   virtual void exitType(SCCompilerParser::TypeContext * /*ctx*/) override { }
 
-  virtual void enterFunctionDecl(SCCompilerParser::FunctionDeclContext * /*ctx*/) override { }
-  virtual void exitFunctionDecl(SCCompilerParser::FunctionDeclContext * /*ctx*/) override { }
+  virtual void enterFuncDeclaration(SCCompilerParser::FuncDeclarationContext * /*ctx*/) override { }
+  virtual void exitFuncDeclaration(SCCompilerParser::FuncDeclarationContext * /*ctx*/) override { }
 
   virtual void enterFormalParameters(SCCompilerParser::FormalParametersContext * /*ctx*/) override { }
   virtual void exitFormalParameters(SCCompilerParser::FormalParametersContext * /*ctx*/) override { }
 
-  virtual void enterFormalParameter(SCCompilerParser::FormalParameterContext * /*ctx*/) override { }
-  virtual void exitFormalParameter(SCCompilerParser::FormalParameterContext * /*ctx*/) override { }
+  virtual void enterFuncArgDeclaration(SCCompilerParser::FuncArgDeclarationContext * /*ctx*/) override { }
+  virtual void exitFuncArgDeclaration(SCCompilerParser::FuncArgDeclarationContext * /*ctx*/) override { }
 
   virtual void enterBlock(SCCompilerParser::BlockContext * /*ctx*/) override { }
   virtual void exitBlock(SCCompilerParser::BlockContext * /*ctx*/) override { }
@@ -42,9 +42,6 @@ public:
 
   virtual void enterVarDeclStatement(SCCompilerParser::VarDeclStatementContext * /*ctx*/) override { }
   virtual void exitVarDeclStatement(SCCompilerParser::VarDeclStatementContext * /*ctx*/) override { }
-
-  virtual void enterIfStatement(SCCompilerParser::IfStatementContext * /*ctx*/) override { }
-  virtual void exitIfStatement(SCCompilerParser::IfStatementContext * /*ctx*/) override { }
 
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
@@ -58,38 +55,20 @@ public:
   virtual void enterExprList(SCCompilerParser::ExprListContext * /*ctx*/) override { }
   virtual void exitExprList(SCCompilerParser::ExprListContext * /*ctx*/) override { }
 
-  virtual void enterArrayIndexExpr(SCCompilerParser::ArrayIndexExprContext * /*ctx*/) override { }
-  virtual void exitArrayIndexExpr(SCCompilerParser::ArrayIndexExprContext * /*ctx*/) override { }
-
-  virtual void enterBoolNotExpr(SCCompilerParser::BoolNotExprContext * /*ctx*/) override { }
-  virtual void exitBoolNotExpr(SCCompilerParser::BoolNotExprContext * /*ctx*/) override { }
+  virtual void enterParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
+  virtual void exitParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
 
   virtual void enterMulDivExpr(SCCompilerParser::MulDivExprContext * /*ctx*/) override { }
   virtual void exitMulDivExpr(SCCompilerParser::MulDivExprContext * /*ctx*/) override { }
 
-  virtual void enterNumberExpr(SCCompilerParser::NumberExprContext * /*ctx*/) override { }
-  virtual void exitNumberExpr(SCCompilerParser::NumberExprContext * /*ctx*/) override { }
-
-  virtual void enterVarRefExpr(SCCompilerParser::VarRefExprContext * /*ctx*/) override { }
-  virtual void exitVarRefExpr(SCCompilerParser::VarRefExprContext * /*ctx*/) override { }
-
-  virtual void enterUnaryNegationExpr(SCCompilerParser::UnaryNegationExprContext * /*ctx*/) override { }
-  virtual void exitUnaryNegationExpr(SCCompilerParser::UnaryNegationExprContext * /*ctx*/) override { }
+  virtual void enterLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
+  virtual void exitLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
 
   virtual void enterPlusMinusExpr(SCCompilerParser::PlusMinusExprContext * /*ctx*/) override { }
   virtual void exitPlusMinusExpr(SCCompilerParser::PlusMinusExprContext * /*ctx*/) override { }
 
-  virtual void enterCompExpr(SCCompilerParser::CompExprContext * /*ctx*/) override { }
-  virtual void exitCompExpr(SCCompilerParser::CompExprContext * /*ctx*/) override { }
-
-  virtual void enterParanthesisExpr(SCCompilerParser::ParanthesisExprContext * /*ctx*/) override { }
-  virtual void exitParanthesisExpr(SCCompilerParser::ParanthesisExprContext * /*ctx*/) override { }
-
   virtual void enterFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }
   virtual void exitFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }
-
-  virtual void enterNumber(SCCompilerParser::NumberContext * /*ctx*/) override { }
-  virtual void exitNumber(SCCompilerParser::NumberContext * /*ctx*/) override { }
 
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

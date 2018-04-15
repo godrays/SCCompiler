@@ -12,8 +12,7 @@ grammar SCCompiler;
 // Parser Rules
 // ----------------------------------------------------------
 
-// Parser grammer begin rule name should be "program".
-// It helps keeping other code chains working without change. For example, AST visualizer requires name 'program'.
+// Parser grammer begin rule name must be "program".
 
 program
     :   (varDecl | functionDecl)+
@@ -24,11 +23,11 @@ varDecl
     ;
 
 type
-    :   'float' | 'int' | 'void'
+    :   'float' | 'int' | 'void' | 'bool'
     ;
 
 functionDecl
-    :   type ID '(' formalParameters? ')' block
+    :   type ID '(' formalParameters? ')' block     #FuncDeclaration
     ;
 
 formalParameters
@@ -36,43 +35,42 @@ formalParameters
     ;
 
 formalParameter
-    :   type ID
+    :   type ID                                 #FuncArgDeclaration
     ;
 
 block
     :  '{' stat* '}'
     ;
 
-stat
-    :   block                                   #BlockStatement
-    |   varDecl                                 #VarDeclStatement
-    |   'if' '(' expr ')' stat ('else' stat)?   #IfStatement
-    |   'return' expr? ';'                      #ReturnStatement
-    |   expr '=' expr ';'                       #AssignmentStatement    // assignment
-    |   expr ';'                                #FuncCallStatement      // func call
-    ;
 
+// Anything that can make up a meaningful line or lines (If, While etc) are called statement.
+
+stat
+    :   block                                   #BlockStatement         // Ignore
+    |   varDecl                                 #VarDeclStatement       // Ignore
+//    |   'if' '(' expr ')' stat ('else' stat)?   #IfStatement
+    |   'return' expr? ';'                      #ReturnStatement
+    |   expr '=' expr ';'                       #AssignmentStatement
+    |   expr ';'                                #FuncCallStatement      // Ignore
+    ;
 
 exprList
-    :   expr (',' expr)*        // arg list
+    :   expr (',' expr)*        // Argument list
     ;
+
+
+// Expressions are part of statements. Anything that can be reduced to a value is called expression.
 
 expr
-    :   ID '(' exprList? ')'    #FuncCallExpr       // func call like f(), f(x), f(1,2)
-    |   ID '[' expr ']'         #ArrayIndexExpr     // array index like a[i], a[i][j]
-    |   '-' expr                #UnaryNegationExpr
-    |   '!' expr                #BoolNotExpr        // boolean not
+    :   ID '(' exprList? ')'    #FuncCallExpr       // Func call like f(), f(x), f(1,2)
+//    |   ID '[' expr ']'         #ArrayIndexExpr     // Array index like a[i]
+//    |   ('-' | '+') expr        #UnaryExpr
+//    |   '!' expr                #BoolNotExpr        // Boolean not
     |   expr ('*'|'/') expr     #MulDivExpr
     |   expr ('+'|'-') expr     #PlusMinusExpr
-    |   expr '==' expr          #CompExpr           // equality comparison (lowest priority op)
-    |   ID                      #VarRefExpr         // variable reference
-    |   number                  #NumberExpr
-    |   '(' expr ')'            #ParanthesisExpr
-    ;
-
-number
-    :   FLOAT
-    |   INT
+//    |   expr '==' expr          #CompExpr           // Equality comparison (lowest priority op)
+    |   (ID | FLOAT | INT | BOOL)    #LiteralExpr
+    |   '(' expr ')'            #ParenthesisExpr        //Ignore
     ;
 
 
@@ -80,8 +78,9 @@ number
 // Lexer Rules
 // ----------------------------------------------------------
 
-ID
-    :   LETTER (LETTER | [0-9])*
+// Reserved language words must be defined first in lexer.
+BOOL
+    :   ('true' | 'false')
     ;
 
 fragment
@@ -100,7 +99,11 @@ INT
 
 FLOAT
     :   DIGIT+ '.' DIGIT+
-    |   '.' DIGIT+
+    |   '.' DIGIT+ 'f'?
+    ;
+
+ID
+    :   LETTER (LETTER | [0-9])*
     ;
 
 WS
