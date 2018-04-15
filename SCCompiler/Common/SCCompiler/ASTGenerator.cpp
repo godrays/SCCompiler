@@ -12,6 +12,9 @@
 using namespace SCCompiler;
 
 
+#pragma mark - ASTVisualizer Implementations.
+
+
 AST::Type ASTGenerator::ToASTType(std::string type)
 {
     if (type == "float")     return AST::Type::tTypeFloat;

@@ -18,7 +18,8 @@
 using namespace antlr4;
 
 
-#pragma mark - Compiler Implementations
+#pragma mark - Compiler Implementations.
+
 
 bool SCCompiler::Compiler::Compile(std::string filename)
 {
@@ -47,7 +48,7 @@ bool SCCompiler::Compiler::Compile(std::string filename)
         astGenVisitor.visit(parseTree);
         auto ast = astGenVisitor.GetAST();
         
-        // Generate Graphviz DOT file to to visualize AST.
+        // Generate Graphviz DOT file to visualize AST.
         ASTVisualizer   astVisualizer;
         astVisualizer.GenerateDOTFile(ast, "/Users/arkin/Projects/Compiler/SCCompiler/ast.dot");
 

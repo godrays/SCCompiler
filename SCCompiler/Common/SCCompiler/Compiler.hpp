@@ -13,6 +13,8 @@
 namespace SCCompiler
 {
 
+    #pragma mark - Class Compiler.
+
     class Compiler
     {
     public:

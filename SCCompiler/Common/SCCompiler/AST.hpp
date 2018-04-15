@@ -53,6 +53,8 @@ namespace AST
     };
 
 
+    #pragma mark - Class FuncArg
+
     // Class for function argument.
     class FuncArg
     {

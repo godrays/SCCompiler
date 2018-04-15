@@ -13,6 +13,9 @@
 using namespace SCCompiler;
 
 
+#pragma mark - ASTVisualizer Implementations.
+
+
 void ASTVisualizer::GenerateDOTFile(AST::Node * node, std::string filename)
 {
     // Open dot file.
