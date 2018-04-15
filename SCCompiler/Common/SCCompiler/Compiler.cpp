@@ -11,8 +11,6 @@
 #include "SCCompilerLexer.h"
 #include "SCCompilerParser.h"
 
-#include "MyVisitor.hpp"
-
 #include "ASTVisualizer.hpp"
 #include "ASTGenerator.hpp"
 #include "Compiler.hpp"
@@ -36,37 +34,13 @@ bool SCCompiler::Compiler::Compile(std::string filename)
         SCCompilerLexer   lexer(&input);
         // Create a stream of tokens.
         CommonTokenStream   tokenStream(&lexer);
-        
-        // Print all identified tokens.
-        tokenStream.fill();
 
-        // Print all tokens
-        /*
-        for (auto token : tokenStream.getTokens())
-        {
-            std::cout << token->toString() << std::endl;
-        }
-        */
         // Parse token stream, which is syntax analysis.
-        // Parser makes sure tokens are in rigt order while generating a parser tree (AST).
+        // Parser makes sure tokens are in right order while generating a parser tree (AST).
         SCCompilerParser parser(&tokenStream);
         
         // Generate tree by calling the first parser rule in grammar.
         tree::ParseTree*  parseTree = parser.program();
-
-        // Print all tokens.
-        //std::cout << parseTree->toStringTree(&parser) << std::endl;
-        
-        // FIRST PASS - Generate symbol table by using listener to resolve symbol issues.
-        //MyListener listener;
-        //tree::ParseTreeWalker::DEFAULT.walk(&listener, parseTree);
-        
-        // SECOND PASS - Generate code by using visitor.
-        // In this phase, you can build your AST to mitigate complexity for your code generator or interpreter.
-        // A special AST may help building a better code generator or a language transformer (i.e. From Java to C#)
-        // If you use LLVM for code generation, default ANTLR's visitor implementation should be enough.
-        //MyVisitor visitor;
-        //visitor.visit(parseTree);
         
         // Generate AST from Parse Tree.
         ASTGenerator astGenVisitor;
