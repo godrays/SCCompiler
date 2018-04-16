@@ -10,6 +10,7 @@
 		DE4F6949208147B400039928 /* ASTVisualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F6947208147B400039928 /* ASTVisualizer.cpp */; };
 		DE4F694C2083F99100039928 /* Symbols.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F694A2083F99100039928 /* Symbols.cpp */; };
 		DE4F694F20842AB700039928 /* SymbolDefPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F694D20842AB700039928 /* SymbolDefPass.cpp */; };
+		DE4F6955208531E800039928 /* Exceptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F6953208531E800039928 /* Exceptions.cpp */; };
 		DEABFA602070953200F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFA5F2070953200F80986 /* main.cpp */; };
 		DEABFAAA2071C08F00F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAA92071C08F00F80986 /* main.cpp */; };
 		DEABFAB22071FA3C00F80986 /* LexerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAB02071FA3C00F80986 /* LexerTests.cpp */; };
@@ -52,6 +53,8 @@
 		DE4F694B2083F99100039928 /* Symbols.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Symbols.hpp; sourceTree = "<group>"; };
 		DE4F694D20842AB700039928 /* SymbolDefPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SymbolDefPass.cpp; sourceTree = "<group>"; };
 		DE4F694E20842AB700039928 /* SymbolDefPass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SymbolDefPass.hpp; sourceTree = "<group>"; };
+		DE4F6953208531E800039928 /* Exceptions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Exceptions.cpp; sourceTree = "<group>"; };
+		DE4F6954208531E800039928 /* Exceptions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exceptions.hpp; sourceTree = "<group>"; };
 		DEABFA5C2070953200F80986 /* SCCompilerApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCCompilerApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEABFA5F2070953200F80986 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DEABFA67207098AE00F80986 /* SCCompiler.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = SCCompiler.g4; sourceTree = "<group>"; };
@@ -204,6 +207,8 @@
 				DE4F694B2083F99100039928 /* Symbols.hpp */,
 				DE4F694D20842AB700039928 /* SymbolDefPass.cpp */,
 				DE4F694E20842AB700039928 /* SymbolDefPass.hpp */,
+				DE4F6953208531E800039928 /* Exceptions.cpp */,
+				DE4F6954208531E800039928 /* Exceptions.hpp */,
 			);
 			path = SCCompiler;
 			sourceTree = "<group>";
@@ -317,6 +322,7 @@
 				DEABFA602070953200F80986 /* main.cpp in Sources */,
 				DEABFB12207B09B900F80986 /* SCCompilerListener.cpp in Sources */,
 				DEABFB10207B09B900F80986 /* SCCompilerParser.cpp in Sources */,
+				DE4F6955208531E800039928 /* Exceptions.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

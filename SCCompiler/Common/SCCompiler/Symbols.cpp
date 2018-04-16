@@ -23,7 +23,7 @@ bool ScopeNode::IsDefined(std::string symbolName)
 
 void  ScopeNode::InsertSymbol(Symbol *  symbol)
 {
-    // No duplicate symbol is allowed.
+    // No duplicate symbol is allowed. Program should check before adding new symbol.
     assert(m_symbolTable.find(symbol->GetName()) == m_symbolTable.end());
 
     // Add symbol to the symbol table. We basically, define a new symbol in this scope.

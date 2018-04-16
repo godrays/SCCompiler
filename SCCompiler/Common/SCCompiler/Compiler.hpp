@@ -13,14 +13,31 @@
 namespace SCCompiler
 {
 
+    #pragma mark - Class CompilerErrorListenerBase.
+
+    enum CompileResult : uint32_t
+    {
+        rCompileResultOk,
+        rCompileResultSyntaxError,
+        rCompileResultSemanticError,
+        rCompileResultCompileError,
+    };
+
+
     #pragma mark - Class Compiler.
 
     class Compiler
     {
     public:
 
-        bool Compile(std::string filename);
-
+        // Compiles Simple C Source code from file.
+        CompileResult Compile(std::string filename);
+        
+        // Returns compile error message.
+        std::string GetErrorMessage()   { return m_errorMessage; }
+    
+    private:
+        std::string     m_errorMessage;
     };
 
 };

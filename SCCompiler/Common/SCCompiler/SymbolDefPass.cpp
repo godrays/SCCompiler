@@ -7,6 +7,7 @@
 
 #include "Symbols.hpp"
 #include "SymbolDefPass.hpp"
+#include "Exceptions.hpp"
 
 using namespace SCCompiler;
 
@@ -101,7 +102,7 @@ void SymbolDefPass::SymbolDefPass::VisitVariableDeclaration(AST::NodeVarDeclarat
     // Symbol redefinition is not allowed.
     if (m_currentScope->IsDefined(symbolName))
     {
-        assert(false && "Redefinition of a symbol.");
+        throw SemanticErrorException("Redefinition of a symbol: " + symbolName);
     }
     
     auto symbol = new VariableSymbol(symbolName, symbolType);
@@ -123,7 +124,7 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(AST::NodeFuncDeclara
     // Symbol redefinition is not allowed.
     if (m_currentScope->IsDefined(symbolName))
     {
-        assert(false && "Redefinition of a symbol.");
+        throw SemanticErrorException("Redefinition of a symbol: " + symbolName);
     }
     
     auto symbol = new FunctionSymbol(symbolName, symbolType);
@@ -145,7 +146,7 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(AST::NodeFuncDeclara
         // Symbol redefinition is not allowed.
         if (m_currentScope->IsDefined(argName))
         {
-            assert(false && "Redefinition of a symbol.");
+            throw SemanticErrorException("Redefinition of a symbol: " + argName);
         }
 
         auto symbol = new FuncArgSymbol(argName, argType);

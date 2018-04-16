@@ -6,6 +6,8 @@
 //  Copyright © 2018 Arkin Terli. All rights reserved.
 //
 
+#include <iostream>
+
 #include "Compiler.hpp"
 
 
@@ -13,7 +15,10 @@ int main(int , const char **)
 {
     SCCompiler::Compiler  compiler;
     
-    compiler.Compile("SCCompilerTestCode.src");
+    if (SCCompiler::rCompileResultOk != compiler.Compile("SCCompilerTestCode.src"))
+    {
+        std::cerr << compiler.GetErrorMessage() << std::endl;
+    }
     
     return 0;
 }
