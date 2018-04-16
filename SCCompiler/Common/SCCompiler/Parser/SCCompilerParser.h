@@ -113,8 +113,9 @@ public:
 
     TypeContext *type();
     antlr4::tree::TerminalNode *ID();
-    BlockContext *block();
     FormalParametersContext *formalParameters();
+    std::vector<StatContext *> stat();
+    StatContext* stat(size_t i);
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 

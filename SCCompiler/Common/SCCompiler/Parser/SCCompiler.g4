@@ -27,7 +27,7 @@ type
     ;
 
 functionDecl
-    :   type ID '(' formalParameters? ')' block     #FuncDeclaration
+    :   type ID '(' formalParameters? ')' '{' stat* '}'     #FuncDeclaration
     ;
 
 formalParameters

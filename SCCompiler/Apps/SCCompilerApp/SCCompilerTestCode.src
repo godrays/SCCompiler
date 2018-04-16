@@ -6,6 +6,9 @@ bool var = true;
 
 float fib(int i, float j, void z)
 {
+    {
+
+    }
     return 1.0;
 }
 
