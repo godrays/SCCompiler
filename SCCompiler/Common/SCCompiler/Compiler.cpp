@@ -13,6 +13,7 @@
 
 #include "ASTVisualizer.hpp"
 #include "ASTGenerator.hpp"
+#include "SymbolDefPass.hpp"
 #include "Compiler.hpp"
 
 using namespace antlr4;
@@ -51,6 +52,10 @@ bool SCCompiler::Compiler::Compile(std::string filename)
         // Generate Graphviz DOT file to visualize AST.
         ASTVisualizer   astVisualizer;
         astVisualizer.GenerateDOTFile(ast, "/Users/arkin/Projects/Compiler/SCCompiler/ast.dot");
+
+        // PASS: Create scope tree by visiting AST nodes and defining symbols.
+        SymbolDefPass  symDefPass;
+        symDefPass.CreateScopeTree(ast);
 
         testCodeFile.close();
     }

@@ -11,9 +11,10 @@
 #include <vector>
 #include <string>
 
-
 namespace SCCompiler
 {
+    // It's very important to forward declare classes in their namespace scopes.
+    class ScopeNode;
 
 namespace AST
 {
@@ -106,6 +107,12 @@ namespace AST
         // Returns node type.
         NodeType  GetNodeType()                 {  return m_nodeType; }
 
+        // Set scope.
+        void SetScope(ScopeNode * scope)        { m_scope = scope; }
+
+        // Get scope.
+        ScopeNode * GetScope()                  { return m_scope; }
+
     protected:
         Node(NodeType nodeType) : m_nodeType(nodeType) { }
 
@@ -117,6 +124,9 @@ namespace AST
 
         // Stores child nodes.
         std::vector<Node *>   m_childs;
+        
+        // Pointer to the scope. Each AST node should know which scope are they in.
+        ScopeNode *     m_scope;
     };
 
 

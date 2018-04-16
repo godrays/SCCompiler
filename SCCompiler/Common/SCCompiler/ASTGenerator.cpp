@@ -115,6 +115,12 @@ antlrcpp::Any ASTGenerator::visitFuncArgDeclaration(SCCompilerParser::FuncArgDec
 
 antlrcpp::Any ASTGenerator::visitBlock(SCCompilerParser::BlockContext *ctx)
 {
+    // Skip function body block.
+    if (m_currentNodeStack.top()->GetNodeType() == AST::NodeType::tNodeTypeFunctionDeclaration)
+    {
+        return visitChildren(ctx);
+    }
+
     // Create new AST Node.
     auto newNode = new AST::NodeBlock();
 

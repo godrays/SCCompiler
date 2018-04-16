@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DE4F6949208147B400039928 /* ASTVisualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F6947208147B400039928 /* ASTVisualizer.cpp */; };
+		DE4F694C2083F99100039928 /* Symbols.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F694A2083F99100039928 /* Symbols.cpp */; };
+		DE4F694F20842AB700039928 /* SymbolDefPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F694D20842AB700039928 /* SymbolDefPass.cpp */; };
 		DEABFA602070953200F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFA5F2070953200F80986 /* main.cpp */; };
 		DEABFAAA2071C08F00F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAA92071C08F00F80986 /* main.cpp */; };
 		DEABFAB22071FA3C00F80986 /* LexerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAB02071FA3C00F80986 /* LexerTests.cpp */; };
@@ -46,6 +48,10 @@
 /* Begin PBXFileReference section */
 		DE4F6947208147B400039928 /* ASTVisualizer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ASTVisualizer.cpp; sourceTree = "<group>"; };
 		DE4F6948208147B400039928 /* ASTVisualizer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ASTVisualizer.hpp; sourceTree = "<group>"; };
+		DE4F694A2083F99100039928 /* Symbols.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Symbols.cpp; sourceTree = "<group>"; };
+		DE4F694B2083F99100039928 /* Symbols.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Symbols.hpp; sourceTree = "<group>"; };
+		DE4F694D20842AB700039928 /* SymbolDefPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SymbolDefPass.cpp; sourceTree = "<group>"; };
+		DE4F694E20842AB700039928 /* SymbolDefPass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SymbolDefPass.hpp; sourceTree = "<group>"; };
 		DEABFA5C2070953200F80986 /* SCCompilerApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCCompilerApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEABFA5F2070953200F80986 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DEABFA67207098AE00F80986 /* SCCompiler.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = SCCompiler.g4; sourceTree = "<group>"; };
@@ -194,6 +200,10 @@
 				DEABFB26207ED40A00F80986 /* ASTGenerator.hpp */,
 				DE4F6947208147B400039928 /* ASTVisualizer.cpp */,
 				DE4F6948208147B400039928 /* ASTVisualizer.hpp */,
+				DE4F694A2083F99100039928 /* Symbols.cpp */,
+				DE4F694B2083F99100039928 /* Symbols.hpp */,
+				DE4F694D20842AB700039928 /* SymbolDefPass.cpp */,
+				DE4F694E20842AB700039928 /* SymbolDefPass.hpp */,
 			);
 			path = SCCompiler;
 			sourceTree = "<group>";
@@ -299,9 +309,11 @@
 				DEABFB1B207DAF4100F80986 /* Compiler.cpp in Sources */,
 				DEABFB13207B09B900F80986 /* SCCompilerLexer.cpp in Sources */,
 				DEABFB0E207B09B900F80986 /* SCCompilerBaseVisitor.cpp in Sources */,
+				DE4F694C2083F99100039928 /* Symbols.cpp in Sources */,
 				DEABFB11207B09B900F80986 /* SCCompilerVisitor.cpp in Sources */,
 				DEABFB0F207B09B900F80986 /* SCCompilerBaseListener.cpp in Sources */,
 				DE4F6949208147B400039928 /* ASTVisualizer.cpp in Sources */,
+				DE4F694F20842AB700039928 /* SymbolDefPass.cpp in Sources */,
 				DEABFA602070953200F80986 /* main.cpp in Sources */,
 				DEABFB12207B09B900F80986 /* SCCompilerListener.cpp in Sources */,
 				DEABFB10207B09B900F80986 /* SCCompilerParser.cpp in Sources */,
