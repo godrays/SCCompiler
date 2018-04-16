@@ -39,8 +39,11 @@ void SymbolDefPass::Visit(AST::Node * node)
             VisitFunctionDeclaration(static_cast<AST::NodeFuncDeclaration *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeProgram:
         case AST::NodeType::tNodeTypeBlock:
+            VisitBlock(static_cast<AST::NodeBlock *>(node));
+            break;
+
+        case AST::NodeType::tNodeTypeProgram:
         case AST::NodeType::tNodeTypeReturnStatement:
         case AST::NodeType::tNodeTypeFuncCall:
         case AST::NodeType::tNodeTypeAssignment:
@@ -139,5 +142,18 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(AST::NodeFuncDeclara
 
     // LEAVE SCOPE OF FUNCTION
     
+    m_currentScope = m_currentScope->GeEnclosingScope();
+}
+
+
+void SymbolDefPass::SymbolDefPass::VisitBlock(AST::NodeBlock * node)
+{
+    // CREATE NEW SCOPE FOR FUNCTION
+    m_currentScope = new ScopeNode("block", m_currentScope);
+
+    // Visit function childs
+    VisitChilds(node);
+
+    // LEAVE SCOPE OF FUNCTION
     m_currentScope = m_currentScope->GeEnclosingScope();
 }

@@ -34,8 +34,11 @@ namespace SCCompiler
 
         void VisitFunctionDeclaration(AST::NodeFuncDeclaration * node);
 
+        void VisitBlock(AST::NodeBlock * node);
+
     private:
+        // Stores current scope.
         ScopeNode *  m_currentScope;
     };
-    
+
 }
