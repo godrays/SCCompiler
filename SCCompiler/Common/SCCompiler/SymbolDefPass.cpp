@@ -19,6 +19,23 @@ ScopeNode * SymbolDefPass::CreateScopeTree(AST::Node * node)
     ScopeNode *  scopeTreeHead = new ScopeNode("global", nullptr);
     m_currentScope = scopeTreeHead;
 
+    // Add Built-In Types. They have no type definition.
+    auto typeSymbol = new BuiltInTypeSymbol("float");
+    typeSymbol->SetScope(m_currentScope);
+    m_currentScope->InsertSymbol(typeSymbol);
+    
+    typeSymbol = new BuiltInTypeSymbol("int");
+    typeSymbol->SetScope(m_currentScope);
+    m_currentScope->InsertSymbol(typeSymbol);
+
+    typeSymbol = new BuiltInTypeSymbol("bool");
+    typeSymbol->SetScope(m_currentScope);
+    m_currentScope->InsertSymbol(typeSymbol);
+
+    typeSymbol = new BuiltInTypeSymbol("void");
+    typeSymbol->SetScope(m_currentScope);
+    m_currentScope->InsertSymbol(typeSymbol);
+
     // Visit nodes to defined symbols.
     Visit(node);
     

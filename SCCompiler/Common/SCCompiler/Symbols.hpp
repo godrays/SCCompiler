@@ -58,6 +58,16 @@ namespace SCCompiler
     };
 
 
+    #pragma mark - Class BuiltInTypeSymbol
+    
+    class BuiltInTypeSymbol : public Symbol
+    {
+    public:
+        // Constructor.
+        BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCategory::tSymbolCategoryBuiltInType, AST::Type::tTypeUnknown) { }
+    };
+
+
     #pragma mark - Class VariableSymbol
     
     class VariableSymbol : public Symbol
