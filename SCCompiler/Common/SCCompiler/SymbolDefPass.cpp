@@ -46,7 +46,6 @@ ScopeNode * SymbolDefPass::CreateScopeTree(AST::Node * node)
 
 void SymbolDefPass::Visit(AST::Node * node)
 {
-    // Output node specific data to dot file.
     switch(node->GetNodeType())
     {
         case AST::NodeType::tNodeTypeVariableDeclaration:
