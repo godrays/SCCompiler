@@ -15,7 +15,7 @@ int main(int , const char **)
 {
     SCCompiler::Compiler  compiler;
     
-    if (SCCompiler::rCompileResultOk != compiler.Compile("SCCompilerTestCode.src"))
+    if (SCCompiler::rCompileResultOk != compiler.CompileFromFile("SCCompilerTestCode.src"))
     {
         std::cerr << compiler.GetErrorMessage() << std::endl;
     }

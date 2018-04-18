@@ -15,7 +15,7 @@ grammar SCCompiler;
 // Parser grammer begin rule name must be "program".
 
 program
-    :   (varDecl | functionDecl)+
+    :   (varDecl | functionDecl)+ EOF
     ;
 
 varDecl

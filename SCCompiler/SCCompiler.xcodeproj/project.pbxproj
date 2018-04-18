@@ -11,9 +11,22 @@
 		DE4F694C2083F99100039928 /* Symbols.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F694A2083F99100039928 /* Symbols.cpp */; };
 		DE4F694F20842AB700039928 /* SymbolDefPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F694D20842AB700039928 /* SymbolDefPass.cpp */; };
 		DE4F6955208531E800039928 /* Exceptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F6953208531E800039928 /* Exceptions.cpp */; };
+		DE4F6963208689D100039928 /* SyntaxTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F6960208688F200039928 /* SyntaxTests.cpp */; };
+		DE4F69672086A39D00039928 /* Compiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB19207DAF4100F80986 /* Compiler.cpp */; };
+		DE4F69682086A3AA00039928 /* AST.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB1C207DB29600F80986 /* AST.cpp */; };
+		DE4F69692086A3AA00039928 /* ASTGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB25207ED40A00F80986 /* ASTGenerator.cpp */; };
+		DE4F696A2086A3AA00039928 /* ASTVisualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F6947208147B400039928 /* ASTVisualizer.cpp */; };
+		DE4F696B2086A3AA00039928 /* Symbols.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F694A2083F99100039928 /* Symbols.cpp */; };
+		DE4F696C2086A3AA00039928 /* SymbolDefPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F694D20842AB700039928 /* SymbolDefPass.cpp */; };
+		DE4F696E2086A3AA00039928 /* Exceptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F6953208531E800039928 /* Exceptions.cpp */; };
+		DE4F696F2086A3BE00039928 /* SCCompilerBaseListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB00207B09B800F80986 /* SCCompilerBaseListener.cpp */; };
+		DE4F69702086A3BE00039928 /* SCCompilerBaseVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAFF207B09B700F80986 /* SCCompilerBaseVisitor.cpp */; };
+		DE4F69712086A3BE00039928 /* SCCompilerLexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB0C207B09B800F80986 /* SCCompilerLexer.cpp */; };
+		DE4F69722086A3BE00039928 /* SCCompilerListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB0A207B09B800F80986 /* SCCompilerListener.cpp */; };
+		DE4F69732086A3BE00039928 /* SCCompilerParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB01207B09B800F80986 /* SCCompilerParser.cpp */; };
+		DE4F69742086A3BE00039928 /* SCCompilerVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB07207B09B800F80986 /* SCCompilerVisitor.cpp */; };
 		DEABFA602070953200F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFA5F2070953200F80986 /* main.cpp */; };
 		DEABFAAA2071C08F00F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAA92071C08F00F80986 /* main.cpp */; };
-		DEABFAB22071FA3C00F80986 /* LexerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAB02071FA3C00F80986 /* LexerTests.cpp */; };
 		DEABFB0E207B09B900F80986 /* SCCompilerBaseVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAFF207B09B700F80986 /* SCCompilerBaseVisitor.cpp */; };
 		DEABFB0F207B09B900F80986 /* SCCompilerBaseListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB00207B09B800F80986 /* SCCompilerBaseListener.cpp */; };
 		DEABFB10207B09B900F80986 /* SCCompilerParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB01207B09B800F80986 /* SCCompilerParser.cpp */; };
@@ -55,13 +68,13 @@
 		DE4F694E20842AB700039928 /* SymbolDefPass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SymbolDefPass.hpp; sourceTree = "<group>"; };
 		DE4F6953208531E800039928 /* Exceptions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Exceptions.cpp; sourceTree = "<group>"; };
 		DE4F6954208531E800039928 /* Exceptions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exceptions.hpp; sourceTree = "<group>"; };
+		DE4F6960208688F200039928 /* SyntaxTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SyntaxTests.cpp; sourceTree = "<group>"; };
+		DE4F6961208688F200039928 /* SyntaxTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SyntaxTests.hpp; sourceTree = "<group>"; };
 		DEABFA5C2070953200F80986 /* SCCompilerApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCCompilerApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEABFA5F2070953200F80986 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DEABFA67207098AE00F80986 /* SCCompiler.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = SCCompiler.g4; sourceTree = "<group>"; };
 		DEABFAA72071C08E00F80986 /* SCCompilerTestApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCCompilerTestApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEABFAA92071C08F00F80986 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		DEABFAB02071FA3C00F80986 /* LexerTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LexerTests.cpp; sourceTree = "<group>"; };
-		DEABFAB12071FA3C00F80986 /* LexerTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LexerTests.hpp; sourceTree = "<group>"; };
 		DEABFAB32071FD4E00F80986 /* SCCompilerTestCode.src */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SCCompilerTestCode.src; sourceTree = "<group>"; };
 		DEABFAFE207B09B700F80986 /* SCCompiler.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SCCompiler.tokens; sourceTree = "<group>"; };
 		DEABFAFF207B09B700F80986 /* SCCompilerBaseVisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCCompilerBaseVisitor.cpp; sourceTree = "<group>"; };
@@ -185,8 +198,8 @@
 		DEABFAAF2071F9FB00F80986 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				DEABFAB02071FA3C00F80986 /* LexerTests.cpp */,
-				DEABFAB12071FA3C00F80986 /* LexerTests.hpp */,
+				DE4F6960208688F200039928 /* SyntaxTests.cpp */,
+				DE4F6961208688F200039928 /* SyntaxTests.hpp */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -241,6 +254,7 @@
 				DEABFAA32071C08E00F80986 /* Sources */,
 				DEABFAA42071C08E00F80986 /* Frameworks */,
 				DEABFAA52071C08E00F80986 /* CopyFiles */,
+				DE4F69752086A3F800039928 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -289,6 +303,19 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		DE4F69752086A3F800039928 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -rf $(SOURCE_ROOT)../Externals/ANTLR/4.7.1/Runtime/lib/libantlr4-runtime.dylib ${BUILT_PRODUCTS_DIR}\n";
+		};
 		DEABFA972070B0E600F80986 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -330,7 +357,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DEABFAB22071FA3C00F80986 /* LexerTests.cpp in Sources */,
+				DE4F69682086A3AA00039928 /* AST.cpp in Sources */,
+				DE4F6963208689D100039928 /* SyntaxTests.cpp in Sources */,
+				DE4F696E2086A3AA00039928 /* Exceptions.cpp in Sources */,
+				DE4F696B2086A3AA00039928 /* Symbols.cpp in Sources */,
+				DE4F696A2086A3AA00039928 /* ASTVisualizer.cpp in Sources */,
+				DE4F69712086A3BE00039928 /* SCCompilerLexer.cpp in Sources */,
+				DE4F69742086A3BE00039928 /* SCCompilerVisitor.cpp in Sources */,
+				DE4F69702086A3BE00039928 /* SCCompilerBaseVisitor.cpp in Sources */,
+				DE4F69672086A39D00039928 /* Compiler.cpp in Sources */,
+				DE4F696F2086A3BE00039928 /* SCCompilerBaseListener.cpp in Sources */,
+				DE4F69722086A3BE00039928 /* SCCompilerListener.cpp in Sources */,
+				DE4F69692086A3AA00039928 /* ASTGenerator.cpp in Sources */,
+				DE4F696C2086A3AA00039928 /* SymbolDefPass.cpp in Sources */,
+				DE4F69732086A3BE00039928 /* SCCompilerParser.cpp in Sources */,
 				DEABFAAA2071C08F00F80986 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -473,14 +513,17 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SOURCE_ROOT)/../Externals/CppUnit/build/xcode/include",
 					"${SOURCE_ROOT}/../Externals/DocOpt",
+					"$(SOURCE_ROOT)/../Externals/ANTLR/4.7.1/Runtime/antlr4-runtime/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SOURCE_ROOT)/../Externals/CppUnit/build/xcode/lib",
 					"${SOURCE_ROOT}/../Externals/DocOpt/build",
+					"$(SOURCE_ROOT)/../Externals/ANTLR/4.7.1/Runtime/lib",
 				);
 				OTHER_LDFLAGS = (
 					"-lcppunit",
 					"-ldocopt_s",
+					"-lantlr4-runtime",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -494,14 +537,17 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SOURCE_ROOT)/../Externals/CppUnit/build/xcode/include",
 					"${SOURCE_ROOT}/../Externals/DocOpt",
+					"$(SOURCE_ROOT)/../Externals/ANTLR/4.7.1/Runtime/antlr4-runtime/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SOURCE_ROOT)/../Externals/CppUnit/build/xcode/lib",
 					"${SOURCE_ROOT}/../Externals/DocOpt/build",
+					"$(SOURCE_ROOT)/../Externals/ANTLR/4.7.1/Runtime/lib",
 				);
 				OTHER_LDFLAGS = (
 					"-lcppunit",
 					"-ldocopt_s",
+					"-lantlr4-runtime",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

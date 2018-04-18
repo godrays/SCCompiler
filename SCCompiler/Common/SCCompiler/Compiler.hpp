@@ -31,11 +31,18 @@ namespace SCCompiler
     public:
 
         // Compiles Simple C Source code from file.
-        CompileResult Compile(std::string filename);
-        
+        CompileResult CompileFromFile(std::string filename);
+
+        // Compiles Simple C Source code from memory.
+        CompileResult CompileFromMemory(std::string sourceCode);
+
         // Returns compile error message.
         std::string GetErrorMessage()   { return m_errorMessage; }
-    
+
+    protected:
+        // Compiles Simple C Source code.
+        CompileResult Compile(std::istream & sourceStream);
+
     private:
         std::string     m_errorMessage;
     };

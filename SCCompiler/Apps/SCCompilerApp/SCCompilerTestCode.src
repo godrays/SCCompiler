@@ -45,13 +45,13 @@ int main()
 
     if (w == f) { w = .5; }
 
-    /*
-    if (w == f) { w = 5; } else w = 5;
 
-    if (w == f) { w = 5; } else { w = 5; }
+    //if (w == f) { w = 5; } else w = 5;
 
-    if (w == f) w = 5; else { w = 5; }
-    */
+    //if (w == f) { w = 5; } else { w = 5; }
+
+    //if (w == f) w = 5; else { w = 5; }
+
     return x;
 }
 */
