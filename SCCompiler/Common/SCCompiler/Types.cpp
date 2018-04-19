@@ -12,6 +12,9 @@
 using namespace SCCompiler;
 
 
+#pragma mark - Type Checker Implementations.
+
+
 Type TypeChecker::m_typePromotionTable[tTypeMax][tTypeMax] =
 {
                            // tTypeUnknown, tTypeFloat,   tTypeInt,     tTypeBool,    tTypeVoid
