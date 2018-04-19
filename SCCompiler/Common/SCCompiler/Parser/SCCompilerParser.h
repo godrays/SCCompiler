@@ -295,18 +295,6 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  MulDivExprContext : public ExprContext {
-  public:
-    MulDivExprContext(ExprContext *ctx);
-
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
   class  LiteralExprContext : public ExprContext {
   public:
     LiteralExprContext(ExprContext *ctx);
@@ -321,9 +309,9 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  PlusMinusExprContext : public ExprContext {
+  class  AOPExprContext : public ExprContext {
   public:
-    PlusMinusExprContext(ExprContext *ctx);
+    AOPExprContext(ExprContext *ctx);
 
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);

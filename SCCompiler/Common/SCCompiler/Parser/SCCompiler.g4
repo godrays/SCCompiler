@@ -66,8 +66,8 @@ expr
 //    |   ID '[' expr ']'         #ArrayIndexExpr     // Array index like a[i]
 //    |   ('-' | '+') expr        #UnaryExpr
 //    |   '!' expr                #BoolNotExpr        // Boolean not
-    |   expr ('*'|'/') expr     #MulDivExpr
-    |   expr ('+'|'-') expr     #PlusMinusExpr
+    |   expr ('*'|'/') expr     #AOPExpr
+    |   expr ('+'|'-') expr     #AOPExpr
 //    |   expr '==' expr          #CompExpr           // Equality comparison (lowest priority op)
     |   (ID | FLOAT | INT | BOOL)    #LiteralExpr
     |   '(' expr ')'            #ParenthesisExpr        //Ignore

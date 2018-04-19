@@ -975,35 +975,6 @@ antlrcpp::Any SCCompilerParser::ParenthesisExprContext::accept(tree::ParseTreeVi
   else
     return visitor->visitChildren(this);
 }
-//----------------- MulDivExprContext ------------------------------------------------------------------
-
-std::vector<SCCompilerParser::ExprContext *> SCCompilerParser::MulDivExprContext::expr() {
-  return getRuleContexts<SCCompilerParser::ExprContext>();
-}
-
-SCCompilerParser::ExprContext* SCCompilerParser::MulDivExprContext::expr(size_t i) {
-  return getRuleContext<SCCompilerParser::ExprContext>(i);
-}
-
-SCCompilerParser::MulDivExprContext::MulDivExprContext(ExprContext *ctx) { copyFrom(ctx); }
-
-void SCCompilerParser::MulDivExprContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SCCompilerListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterMulDivExpr(this);
-}
-void SCCompilerParser::MulDivExprContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SCCompilerListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitMulDivExpr(this);
-}
-
-antlrcpp::Any SCCompilerParser::MulDivExprContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
-    return parserVisitor->visitMulDivExpr(this);
-  else
-    return visitor->visitChildren(this);
-}
 //----------------- LiteralExprContext ------------------------------------------------------------------
 
 tree::TerminalNode* SCCompilerParser::LiteralExprContext::ID() {
@@ -1041,32 +1012,32 @@ antlrcpp::Any SCCompilerParser::LiteralExprContext::accept(tree::ParseTreeVisito
   else
     return visitor->visitChildren(this);
 }
-//----------------- PlusMinusExprContext ------------------------------------------------------------------
+//----------------- AOPExprContext ------------------------------------------------------------------
 
-std::vector<SCCompilerParser::ExprContext *> SCCompilerParser::PlusMinusExprContext::expr() {
+std::vector<SCCompilerParser::ExprContext *> SCCompilerParser::AOPExprContext::expr() {
   return getRuleContexts<SCCompilerParser::ExprContext>();
 }
 
-SCCompilerParser::ExprContext* SCCompilerParser::PlusMinusExprContext::expr(size_t i) {
+SCCompilerParser::ExprContext* SCCompilerParser::AOPExprContext::expr(size_t i) {
   return getRuleContext<SCCompilerParser::ExprContext>(i);
 }
 
-SCCompilerParser::PlusMinusExprContext::PlusMinusExprContext(ExprContext *ctx) { copyFrom(ctx); }
+SCCompilerParser::AOPExprContext::AOPExprContext(ExprContext *ctx) { copyFrom(ctx); }
 
-void SCCompilerParser::PlusMinusExprContext::enterRule(tree::ParseTreeListener *listener) {
+void SCCompilerParser::AOPExprContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<SCCompilerListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterPlusMinusExpr(this);
+    parserListener->enterAOPExpr(this);
 }
-void SCCompilerParser::PlusMinusExprContext::exitRule(tree::ParseTreeListener *listener) {
+void SCCompilerParser::AOPExprContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<SCCompilerListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitPlusMinusExpr(this);
+    parserListener->exitAOPExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::PlusMinusExprContext::accept(tree::ParseTreeVisitor *visitor) {
+antlrcpp::Any SCCompilerParser::AOPExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
-    return parserVisitor->visitPlusMinusExpr(this);
+    return parserVisitor->visitAOPExpr(this);
   else
     return visitor->visitChildren(this);
 }
@@ -1197,7 +1168,7 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
         _errHandler->sync(this);
         switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 12, _ctx)) {
         case 1: {
-          auto newContext = _tracker.createInstance<MulDivExprContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
+          auto newContext = _tracker.createInstance<AOPExprContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpr);
           setState(113);
@@ -1220,7 +1191,7 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
         }
 
         case 2: {
-          auto newContext = _tracker.createInstance<PlusMinusExprContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
+          auto newContext = _tracker.createInstance<AOPExprContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpr);
           setState(116);

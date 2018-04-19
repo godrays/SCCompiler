@@ -71,15 +71,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitMulDivExpr(SCCompilerParser::MulDivExprContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPlusMinusExpr(SCCompilerParser::PlusMinusExprContext *ctx) override {
+  virtual antlrcpp::Any visitAOPExpr(SCCompilerParser::AOPExprContext *ctx) override {
     return visitChildren(ctx);
   }
 

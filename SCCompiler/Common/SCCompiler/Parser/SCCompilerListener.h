@@ -56,14 +56,11 @@ public:
   virtual void enterParenthesisExpr(SCCompilerParser::ParenthesisExprContext *ctx) = 0;
   virtual void exitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *ctx) = 0;
 
-  virtual void enterMulDivExpr(SCCompilerParser::MulDivExprContext *ctx) = 0;
-  virtual void exitMulDivExpr(SCCompilerParser::MulDivExprContext *ctx) = 0;
-
   virtual void enterLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) = 0;
   virtual void exitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) = 0;
 
-  virtual void enterPlusMinusExpr(SCCompilerParser::PlusMinusExprContext *ctx) = 0;
-  virtual void exitPlusMinusExpr(SCCompilerParser::PlusMinusExprContext *ctx) = 0;
+  virtual void enterAOPExpr(SCCompilerParser::AOPExprContext *ctx) = 0;
+  virtual void exitAOPExpr(SCCompilerParser::AOPExprContext *ctx) = 0;
 
   virtual void enterFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) = 0;
   virtual void exitFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) = 0;

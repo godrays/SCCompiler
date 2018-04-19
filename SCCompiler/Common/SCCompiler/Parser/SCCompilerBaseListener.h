@@ -58,14 +58,11 @@ public:
   virtual void enterParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
   virtual void exitParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
 
-  virtual void enterMulDivExpr(SCCompilerParser::MulDivExprContext * /*ctx*/) override { }
-  virtual void exitMulDivExpr(SCCompilerParser::MulDivExprContext * /*ctx*/) override { }
-
   virtual void enterLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
   virtual void exitLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
 
-  virtual void enterPlusMinusExpr(SCCompilerParser::PlusMinusExprContext * /*ctx*/) override { }
-  virtual void exitPlusMinusExpr(SCCompilerParser::PlusMinusExprContext * /*ctx*/) override { }
+  virtual void enterAOPExpr(SCCompilerParser::AOPExprContext * /*ctx*/) override { }
+  virtual void exitAOPExpr(SCCompilerParser::AOPExprContext * /*ctx*/) override { }
 
   virtual void enterFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }
   virtual void exitFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }

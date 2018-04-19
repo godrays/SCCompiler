@@ -115,8 +115,8 @@ SCCompiler::CompileResult SCCompiler::Compiler::Compile(std::istream & sourceStr
 
         // DEBUG ONLY -----------------
         // Generate Graphviz DOT file to visualize AST.
-        //ASTVisualizer   astVisualizer;
-        //astVisualizer.GenerateDOTFile(ast, "/Users/arkin/Projects/Compiler/SCCompiler/ast.dot");
+        ASTVisualizer   astVisualizer;
+        astVisualizer.GenerateDOTFile(ast, "/Users/arkin/Projects/Compiler/SCCompiler/ast.dot");
         // DEBUG ONLY -----------------
 
         // PASS: Create scope tree and define symbols by visiting AST nodes.

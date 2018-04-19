@@ -233,7 +233,7 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
 }
 
 
-antlrcpp::Any ASTGenerator::visitMulDivExpr(SCCompilerParser::MulDivExprContext *ctx)
+antlrcpp::Any ASTGenerator::visitAOPExpr(SCCompilerParser::AOPExprContext *ctx)
 {
     AST::NodeType nodeType = AST::NodeType::tNodeTypeUnknown;
     assert(ctx->children.size() == 3);
@@ -241,38 +241,7 @@ antlrcpp::Any ASTGenerator::visitMulDivExpr(SCCompilerParser::MulDivExprContext 
 
     if (aop == "*") nodeType = AST::NodeType::tNodeTypeAOPMul;
     else if (aop == "/") nodeType = AST::NodeType::tNodeTypeAOPDiv;
-    else assert(false && "Unknown arithmetic perator.");
-
-    // Create new AST Node.
-    auto newNode = new AST::NodeAOP(nodeType);
-    newNode->SetSourceCodeLine(ctx->getStart()->getLine());
-
-    // Set parent node. Parent node is the top element in the currentNode Stack.
-    newNode->SetParent(m_currentNodeStack.top());
-
-    // Add yourself as child to parent node.
-    m_currentNodeStack.top()->AddChild(newNode);
-
-    // Push new parent node into stack. It becomes new parent node for child visits.
-    m_currentNodeStack.push(newNode);
-
-    // Visit parser tree childrens.
-    auto visitResult = visitChildren(ctx);
-
-    // Pop current parent node since we are leaving the method.
-    m_currentNodeStack.pop();
-
-    return visitResult;
-}
-
-
-antlrcpp::Any ASTGenerator::visitPlusMinusExpr(SCCompilerParser::PlusMinusExprContext *ctx)
-{
-    AST::NodeType nodeType = AST::NodeType::tNodeTypeUnknown;
-    assert(ctx->children.size() == 3);
-    std::string  aop = ctx->children[1]->getText(); // Second child is arithmetic operator in the expression.
-    
-    if (aop == "+") nodeType = AST::NodeType::tNodeTypeAOPAdd;
+    else if (aop == "+") nodeType = AST::NodeType::tNodeTypeAOPAdd;
     else if (aop == "-") nodeType = AST::NodeType::tNodeTypeAOPSub;
     else assert(false && "Unknown arithmetic perator.");
 

@@ -47,11 +47,9 @@ public:
 
     virtual antlrcpp::Any visitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitMulDivExpr(SCCompilerParser::MulDivExprContext *context) = 0;
-
     virtual antlrcpp::Any visitLiteralExpr(SCCompilerParser::LiteralExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitPlusMinusExpr(SCCompilerParser::PlusMinusExprContext *context) = 0;
+    virtual antlrcpp::Any visitAOPExpr(SCCompilerParser::AOPExprContext *context) = 0;
 
     virtual antlrcpp::Any visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *context) = 0;
 

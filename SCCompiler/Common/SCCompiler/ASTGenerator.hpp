@@ -47,9 +47,7 @@ namespace SCCompiler
 
         antlrcpp::Any  visitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) final;
 
-        antlrcpp::Any  visitMulDivExpr(SCCompilerParser::MulDivExprContext *ctx) final;
-
-        antlrcpp::Any  visitPlusMinusExpr(SCCompilerParser::PlusMinusExprContext *ctx) final;
+        antlrcpp::Any  visitAOPExpr(SCCompilerParser::AOPExprContext *ctx) final;
 
         antlrcpp::Any  visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) final;
 
