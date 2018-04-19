@@ -61,3 +61,18 @@ void SemanticTests::SemanticUndeclaredIdentifierTest()
     void func() { b=true; }     \n\
     ", CompileResult::rCompileResultSemanticError, true);
 }
+
+
+void SemanticTests::SemanticTypeMismatchTest()
+{
+    // Compiler must fails for mismathed type use.
+
+    TestCode("\
+    int i = 5 * false;    \n\
+    ", CompileResult::rCompileResultSemanticError, true);
+
+    TestCode("\
+    float f = 5.0 * true;    \n\
+    ", CompileResult::rCompileResultSemanticError, true);
+    
+};
