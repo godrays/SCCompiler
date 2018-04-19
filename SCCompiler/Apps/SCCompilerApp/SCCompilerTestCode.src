@@ -28,8 +28,8 @@ bool fib2()
 
     fib(fib2(1, 2.0), 5.0);
 
-    return (1+2)*(3+4+x);
     return false;
+    return (1+2)*(3+4.5);
 }
 
 /*

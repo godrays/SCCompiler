@@ -11,6 +11,7 @@
 
 #include "SCCompilerBaseVisitor.h"
 #include "AST.hpp"
+#include "Types.hpp"
 
 
 namespace SCCompiler
@@ -28,7 +29,7 @@ namespace SCCompiler
         // Return AST Node.
         AST::Node *   GetAST()    { return m_rootNode; }
 
-        AST::Type     ToASTType(std::string);
+        Type  ToASTType(std::string);
 
         antlrcpp::Any  visitProgram(SCCompilerParser::ProgramContext *ctx) final;
 

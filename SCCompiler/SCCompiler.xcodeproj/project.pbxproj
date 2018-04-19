@@ -25,6 +25,11 @@
 		DE4F69722086A3BE00039928 /* SCCompilerListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB0A207B09B800F80986 /* SCCompilerListener.cpp */; };
 		DE4F69732086A3BE00039928 /* SCCompilerParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB01207B09B800F80986 /* SCCompilerParser.cpp */; };
 		DE4F69742086A3BE00039928 /* SCCompilerVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFB07207B09B800F80986 /* SCCompilerVisitor.cpp */; };
+		DE4F697C2087E57A00039928 /* Types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F697A2087E57A00039928 /* Types.cpp */; };
+		DE4F697D2087E57A00039928 /* Types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F697A2087E57A00039928 /* Types.cpp */; };
+		DE4F69802087F1A200039928 /* SemanticPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F697F2087F1A200039928 /* SemanticPass.cpp */; };
+		DE4F69812087F1A200039928 /* SemanticPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F697F2087F1A200039928 /* SemanticPass.cpp */; };
+		DE4F69852087FAA500039928 /* SemanticTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE4F69822087FAA500039928 /* SemanticTests.cpp */; };
 		DEABFA602070953200F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFA5F2070953200F80986 /* main.cpp */; };
 		DEABFAAA2071C08F00F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAA92071C08F00F80986 /* main.cpp */; };
 		DEABFB0E207B09B900F80986 /* SCCompilerBaseVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAFF207B09B700F80986 /* SCCompilerBaseVisitor.cpp */; };
@@ -70,6 +75,12 @@
 		DE4F6954208531E800039928 /* Exceptions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exceptions.hpp; sourceTree = "<group>"; };
 		DE4F6960208688F200039928 /* SyntaxTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SyntaxTests.cpp; sourceTree = "<group>"; };
 		DE4F6961208688F200039928 /* SyntaxTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SyntaxTests.hpp; sourceTree = "<group>"; };
+		DE4F697A2087E57A00039928 /* Types.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Types.cpp; sourceTree = "<group>"; };
+		DE4F697B2087E57A00039928 /* Types.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Types.hpp; sourceTree = "<group>"; };
+		DE4F697E2087F1A200039928 /* SemanticPass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SemanticPass.hpp; sourceTree = "<group>"; };
+		DE4F697F2087F1A200039928 /* SemanticPass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SemanticPass.cpp; sourceTree = "<group>"; };
+		DE4F69822087FAA500039928 /* SemanticTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SemanticTests.cpp; sourceTree = "<group>"; };
+		DE4F69832087FAA500039928 /* SemanticTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SemanticTests.hpp; sourceTree = "<group>"; };
 		DEABFA5C2070953200F80986 /* SCCompilerApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCCompilerApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEABFA5F2070953200F80986 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DEABFA67207098AE00F80986 /* SCCompiler.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = SCCompiler.g4; sourceTree = "<group>"; };
@@ -200,6 +211,8 @@
 			children = (
 				DE4F6960208688F200039928 /* SyntaxTests.cpp */,
 				DE4F6961208688F200039928 /* SyntaxTests.hpp */,
+				DE4F69822087FAA500039928 /* SemanticTests.cpp */,
+				DE4F69832087FAA500039928 /* SemanticTests.hpp */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -216,10 +229,14 @@
 				DEABFB26207ED40A00F80986 /* ASTGenerator.hpp */,
 				DE4F6947208147B400039928 /* ASTVisualizer.cpp */,
 				DE4F6948208147B400039928 /* ASTVisualizer.hpp */,
+				DE4F697A2087E57A00039928 /* Types.cpp */,
+				DE4F697B2087E57A00039928 /* Types.hpp */,
 				DE4F694A2083F99100039928 /* Symbols.cpp */,
 				DE4F694B2083F99100039928 /* Symbols.hpp */,
 				DE4F694D20842AB700039928 /* SymbolDefPass.cpp */,
 				DE4F694E20842AB700039928 /* SymbolDefPass.hpp */,
+				DE4F697F2087F1A200039928 /* SemanticPass.cpp */,
+				DE4F697E2087F1A200039928 /* SemanticPass.hpp */,
 				DE4F6953208531E800039928 /* Exceptions.cpp */,
 				DE4F6954208531E800039928 /* Exceptions.hpp */,
 			);
@@ -342,11 +359,13 @@
 				DEABFB13207B09B900F80986 /* SCCompilerLexer.cpp in Sources */,
 				DEABFB0E207B09B900F80986 /* SCCompilerBaseVisitor.cpp in Sources */,
 				DE4F694C2083F99100039928 /* Symbols.cpp in Sources */,
+				DE4F697C2087E57A00039928 /* Types.cpp in Sources */,
 				DEABFB11207B09B900F80986 /* SCCompilerVisitor.cpp in Sources */,
 				DEABFB0F207B09B900F80986 /* SCCompilerBaseListener.cpp in Sources */,
 				DE4F6949208147B400039928 /* ASTVisualizer.cpp in Sources */,
 				DE4F694F20842AB700039928 /* SymbolDefPass.cpp in Sources */,
 				DEABFA602070953200F80986 /* main.cpp in Sources */,
+				DE4F69802087F1A200039928 /* SemanticPass.cpp in Sources */,
 				DEABFB12207B09B900F80986 /* SCCompilerListener.cpp in Sources */,
 				DEABFB10207B09B900F80986 /* SCCompilerParser.cpp in Sources */,
 				DE4F6955208531E800039928 /* Exceptions.cpp in Sources */,
@@ -362,16 +381,19 @@
 				DE4F696E2086A3AA00039928 /* Exceptions.cpp in Sources */,
 				DE4F696B2086A3AA00039928 /* Symbols.cpp in Sources */,
 				DE4F696A2086A3AA00039928 /* ASTVisualizer.cpp in Sources */,
+				DE4F69852087FAA500039928 /* SemanticTests.cpp in Sources */,
 				DE4F69712086A3BE00039928 /* SCCompilerLexer.cpp in Sources */,
 				DE4F69742086A3BE00039928 /* SCCompilerVisitor.cpp in Sources */,
 				DE4F69702086A3BE00039928 /* SCCompilerBaseVisitor.cpp in Sources */,
 				DE4F69672086A39D00039928 /* Compiler.cpp in Sources */,
 				DE4F696F2086A3BE00039928 /* SCCompilerBaseListener.cpp in Sources */,
+				DE4F69812087F1A200039928 /* SemanticPass.cpp in Sources */,
 				DE4F69722086A3BE00039928 /* SCCompilerListener.cpp in Sources */,
 				DE4F69692086A3AA00039928 /* ASTGenerator.cpp in Sources */,
 				DE4F696C2086A3AA00039928 /* SymbolDefPass.cpp in Sources */,
 				DE4F69732086A3BE00039928 /* SCCompilerParser.cpp in Sources */,
 				DEABFAAA2071C08F00F80986 /* main.cpp in Sources */,
+				DE4F697D2087E57A00039928 /* Types.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,7 @@
 #include <string>
 #include <unordered_map>
 #include "AST.hpp"
+#include "Types.hpp"
 
 
 namespace SCCompiler
@@ -22,7 +23,7 @@ namespace SCCompiler
     enum SymbolCategory : uint32_t
     {
         tSymbolCategoryUnknown,
-        tSymbolCategoryBuiltInType,
+        tSymbolCategoryType,
         tSymbolCategoryVariable,
         tSymbolCategoryFunction,
         tSymbolCategoryFunctionArgument,
@@ -35,10 +36,13 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        Symbol(std::string name, SymbolCategory category, AST::Type type) : m_name(name), m_category(category), m_type(type), m_scopeNode(nullptr) { }
+        Symbol(std::string name, SymbolCategory category, Type type) : m_name(name), m_category(category), m_type(type), m_scopeNode(nullptr) { }
 
         // Returns symbol name.
         std::string GetName() const     { return m_name; }
+
+        // Returns symbol type.
+        Type GetType() const     { return m_type; }
 
         // Returns symbol name.
         void SetScope(ScopeNode * scopeNode)     { m_scopeNode = scopeNode; }
@@ -51,7 +55,7 @@ namespace SCCompiler
         SymbolCategory  m_category;
 
         // Symbol type.
-        AST::Type   m_type;
+        Type   m_type;
         
         // Scope node.
         ScopeNode *  m_scopeNode;
@@ -64,7 +68,7 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCategory::tSymbolCategoryBuiltInType, AST::Type::tTypeUnknown) { }
+        BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCategory::tSymbolCategoryType, Type::tTypeUnknown) { }
     };
 
 
@@ -74,7 +78,7 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        VariableSymbol(std::string name, AST::Type type) : Symbol(name, SymbolCategory::tSymbolCategoryVariable, type) { }
+        VariableSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryVariable, type) { }
     };
 
 
@@ -84,7 +88,7 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        FunctionSymbol(std::string name, AST::Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunction, type) { }
+        FunctionSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunction, type) { }
     };
 
 
@@ -94,7 +98,7 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        FuncArgSymbol(std::string name, AST::Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunctionArgument, type) { }
+        FuncArgSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunctionArgument, type) { }
     };
 
 

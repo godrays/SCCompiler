@@ -10,12 +10,13 @@
 #include <cassert>
 #include <vector>
 #include <string>
+#include "Types.hpp"
 
 namespace SCCompiler
 {
     // It's very important to forward declare classes in their namespace scopes.
     class ScopeNode;
-
+    
 namespace AST
 {
 
@@ -39,18 +40,6 @@ namespace AST
         tNodeTypeLiteralInt32,
         tNodeTypeLiteralBool,
         tNodeTypeLiteralID,
-    };
-
-
-    // Language types.
-    enum Type : uint32_t
-    {
-        tTypeUnknown,
-        tTypeFloat,
-        tTypeInt,
-        tTypeBool,
-        tTypeVoid,
-        tTypeUserDefined,
     };
 
 
@@ -113,6 +102,12 @@ namespace AST
         // Get scope.
         ScopeNode * GetScope()                  { return m_scope; }
 
+        // Set source code line.
+        void  SetSourceCodeLine(size_t lineNumber)    { m_lineNumber = lineNumber; }
+
+        // get source code line.
+        size_t  GetSourceCodeLine()                   { return m_lineNumber; }
+
     protected:
         Node(NodeType nodeType) : m_nodeType(nodeType) { }
 
@@ -127,6 +122,9 @@ namespace AST
         
         // Pointer to the scope. Each AST node should know which scope are they in.
         ScopeNode *     m_scope;
+        
+        // Source code line of the node.
+        size_t  m_lineNumber;
     };
 
 

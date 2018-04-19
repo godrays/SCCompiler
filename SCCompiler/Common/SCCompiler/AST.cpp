@@ -70,10 +70,6 @@ std::string AST::TypeToString(Type type)
             return "void";
         break;
 
-        case tTypeUserDefined:
-            return "user defined";
-        break;
-
         default:
             assert(false && "Unknown type in TypeToString()");
         break;
