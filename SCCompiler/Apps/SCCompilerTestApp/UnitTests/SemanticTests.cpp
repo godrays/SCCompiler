@@ -79,4 +79,9 @@ void SemanticTests::SemanticTypeMismatchTest()
     float f = 5.0 * true;    \n\
     ", CompileResult::rCompileResultSemanticError, true);
     
+    // Parameter type does not match.
+    TestCode("\
+    void func(int i) { }    \n\
+    void func2() { func(1.1); }    \n\
+    ", CompileResult::rCompileResultSemanticError, true);
 };
