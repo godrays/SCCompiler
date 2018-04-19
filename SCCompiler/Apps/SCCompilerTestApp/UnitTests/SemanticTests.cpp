@@ -60,6 +60,10 @@ void SemanticTests::SemanticUndeclaredIdentifierTest()
     TestCode("\
     void func() { b=true; }     \n\
     ", CompileResult::rCompileResultSemanticError, true);
+
+    TestCode("\
+    void func() { func2(); }     \n\
+    ", CompileResult::rCompileResultSemanticError, true);
 }
 
 

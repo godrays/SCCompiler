@@ -68,11 +68,11 @@ Type SemanticPass::Visit(AST::Node * node)
             break;
 
         case AST::NodeType::tNodeTypeFuncCall:
-            VisitFunctionCall(dynamic_cast<AST::NodeFuncCall *>(node));
+            return VisitFunctionCall(dynamic_cast<AST::NodeFuncCall *>(node));
             break;
 
         case AST::NodeType::tNodeTypeAssignment:
-            VisitAssignment(dynamic_cast<AST::NodeAssignment *>(node));
+            return VisitAssignment(dynamic_cast<AST::NodeAssignment *>(node));
             break;
 
         case AST::NodeType::tNodeTypeAOPMul:
@@ -133,27 +133,77 @@ void SemanticPass::VisitReturnStatement(AST::NodeReturnStatement * node)
 }
 
 
-void SemanticPass::VisitFunctionCall(AST::NodeFuncCall * node)
+Type SemanticPass::VisitFunctionCall(AST::NodeFuncCall * node)
 {
-    // Visit childs
-    VisitChilds(node);
+    // Rule: Function name must resolve (must defined).
+    auto scope = node->GetScope();
+    auto symbol = static_cast<FunctionSymbol *>(scope->ResolveSymbol(node->GetFuncName()));
+    if (!symbol)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Use of undeclared identifier: " << node->GetFuncName() << std::endl;
+        throw SemanticErrorException(message.str());
+    }
+    auto funcReturnType = symbol->GetType();
+
+    // Each node child is one parameter of function call.
+    // Rule: Number of parameters declared and number of parameters used must match.
+    if (node->ChildCount() != symbol->ArgumentCount())
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - No matching function to call: " << node->GetFuncName() << std::endl;
+        throw SemanticErrorException(message.str());
+    }
+
+    // Rule: Function argument type must match with the expression (parameter) type.
+    //       All parameters passed to a function are expressions.
+    for (size_t index=0; index < node->ChildCount(); ++index)
+    {
+        // Parameter passed to function.
+        auto paramExprType = Visit(node->GetChild(index));
+        // Function argument is declared when func is declaration.
+        auto argumentType = symbol->GetArgumentSymbol(index)->GetType();
+
+        if (paramExprType != argumentType)
+        {
+            std::stringstream   message;
+            message << "Line: " << node->GetSourceCodeLine() << " - No matching function to call: " << node->GetFuncName() << std::endl;
+            throw SemanticErrorException( message.str());
+        }
+    }
+
+    return funcReturnType;
 }
 
 
-void SemanticPass::VisitAssignment(AST::NodeAssignment * node)
+Type SemanticPass::VisitAssignment(AST::NodeAssignment * node)
 {
-    // Visit childs
-    VisitChilds(node);
+    // Rule: Assignment operation requires two operands.
+    // Node must have two child nodes.
+    assert(node->ChildCount() == 2);
+
+    // Rule: Left and right expression type must match.
+    auto leftOperandType = Visit(node->GetChild(0));
+    auto rightOperandType = Visit(node->GetChild(1));
+    
+    if (leftOperandType != rightOperandType)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Assignment type mismatch." << std::endl;
+        throw SemanticErrorException( message.str());
+    }
+
+    return leftOperandType;
 }
 
 
 Type SemanticPass::VisitAOP(AST::NodeAOP * node)
 {
-    // Arithmetic operation requires at least two operand.
+    // Rule: Arithmetic operation requires two operands.
     // Node must have two child nodes.
     assert(node->ChildCount() == 2);
 
-    // Type Check
+    // Rule: Left and right expression type must match.
     auto leftOperandType = Visit(node->GetChild(0));
     auto rightOperandType = Visit(node->GetChild(1));
     auto promotedType = TypeChecker::Promote(leftOperandType, rightOperandType);
@@ -161,7 +211,7 @@ Type SemanticPass::VisitAOP(AST::NodeAOP * node)
     if (leftOperandType != rightOperandType && promotedType == Type::tTypeUnknown)
     {
         std::stringstream   message;
-        message << "Arithmetic operation type mismatch at line: " << node->GetSourceCodeLine() << std::endl;
+        message << "Line: " << node->GetSourceCodeLine() << " - Arithmetic operation type mismatch." << std::endl;
         throw SemanticErrorException( message.str());
     }
 
@@ -189,12 +239,14 @@ Type SemanticPass::VisitLiteral(AST::NodeLiteral * node)
         
         case AST::NodeType::tNodeTypeLiteralID:
         {
-            // Resolve variable name. It has to be defined before it's used.
+            // Rule: Resolve variable name. It has to be defined before it's used.
             auto scope = node->GetScope();
             auto symbol = scope->ResolveSymbol(node->GetValue());
             if (!symbol)
             {
-                throw SemanticErrorException("Use of undeclared identifier: " + node->GetValue());
+                std::stringstream   message;
+                message << "Line: " << node->GetSourceCodeLine() << " - Use of undeclared identifier: " << node->GetValue() << std::endl;
+                throw SemanticErrorException(message.str());
             }
             literalType = symbol->GetType();
         }

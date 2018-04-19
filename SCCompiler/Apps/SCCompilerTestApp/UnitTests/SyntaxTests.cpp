@@ -77,10 +77,10 @@ void SyntaxTests::SyntaxAcceptanceTest()
     int   func15() { return i; return i1; }  \n\
     float func16() { return f; return f1; }  \n\
     bool  func17() { return k; return k1; }  \n\
-    /* Call function in function */     \n\
-    void  func18() { func14(); }        \n\
-    void  func19() { { func14(); } }    \n\
-    int   func20() { return func9(); }  \n\
+    /* Call function in function */      \n\
+    void  func18() { func14(false); }    \n\
+    void  func19() { { func14(true); } } \n\
+    int   func20() { return func9(); }   \n\
     float func21() { { return func10(); } }             \n\
     int   func22() { int i=func9(); return i; }          \n\
     float func23() { float f=func10(); return f; }      \n\

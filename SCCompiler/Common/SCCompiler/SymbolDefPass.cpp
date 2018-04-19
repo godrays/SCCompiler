@@ -117,19 +117,19 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(AST::NodeFuncDeclara
 {
     // ADD FUNCTION SYMBOL TO CURRENT SCOPE
     
-    auto symbolName = node->GetFuncName();
-    auto symbolType = node->GetReturnType();
+    auto funcSymbolName = node->GetFuncName();
+    auto funcSymbolType = node->GetReturnType();
 
     // Symbol redefinition is not allowed.
-    if (m_currentScope->IsDefined(symbolName))
+    if (m_currentScope->IsDefined(funcSymbolName))
     {
-        throw SemanticErrorException("Redefinition of a symbol: " + symbolName);
+        throw SemanticErrorException("Redefinition of a symbol: " + funcSymbolName);
     }
     
-    auto symbol = new FunctionSymbol(symbolName, symbolType);
-    symbol->SetScope(m_currentScope);
+    auto funcSymbol = new FunctionSymbol(funcSymbolName, funcSymbolType);
+    funcSymbol->SetScope(m_currentScope);
     // Define function symbol.
-    m_currentScope->InsertSymbol(symbol);
+    m_currentScope->InsertSymbol(funcSymbol);
 
     // CREATE NEW SCOPE FOR FUNCTION
     
@@ -148,10 +148,13 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(AST::NodeFuncDeclara
             throw SemanticErrorException("Redefinition of a symbol: " + argName);
         }
 
-        auto symbol = new FuncArgSymbol(argName, argType);
-        symbol->SetScope(m_currentScope);
+        auto argSymbol = new FuncArgSymbol(argName, argType);
+        argSymbol->SetScope(m_currentScope);
         // Define new symbol.
-        m_currentScope->InsertSymbol(symbol);
+        m_currentScope->InsertSymbol(argSymbol);
+
+        // Add argument symbol to function symbol to track arguments.
+        funcSymbol->AddArgumentSymbol(argSymbol);
     }
 
     // Visit function childs

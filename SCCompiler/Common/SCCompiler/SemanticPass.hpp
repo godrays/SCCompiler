@@ -41,9 +41,9 @@ namespace SCCompiler
 
         void VisitReturnStatement(AST::NodeReturnStatement * node);
 
-        void VisitFunctionCall(AST::NodeFuncCall * node);
+        Type VisitFunctionCall(AST::NodeFuncCall * node);
         
-        void VisitAssignment(AST::NodeAssignment * node);
+        Type VisitAssignment(AST::NodeAssignment * node);
 
         Type VisitAOP(AST::NodeAOP * node);
 

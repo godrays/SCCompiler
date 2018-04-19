@@ -82,16 +82,6 @@ namespace SCCompiler
     };
 
 
-    #pragma mark - Class FunctionSymbol
-    
-    class FunctionSymbol : public Symbol
-    {
-    public:
-        // Constructor.
-        FunctionSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunction, type) { }
-    };
-
-
     #pragma mark - Class FuncArgSymbol
     
     class FuncArgSymbol : public Symbol
@@ -99,6 +89,28 @@ namespace SCCompiler
     public:
         // Constructor.
         FuncArgSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunctionArgument, type) { }
+    };
+
+
+    #pragma mark - Class FunctionSymbol
+    
+    class FunctionSymbol : public Symbol
+    {
+    public:
+        // Constructor.
+        FunctionSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunction, type) { }
+
+        // Add function argument symbol.
+        void AddArgumentSymbol(FuncArgSymbol * argSymbol)   { m_argumentSymbols.emplace_back(argSymbol); }
+
+        // Return argument count.
+        size_t ArgumentCount()                              { return m_argumentSymbols.size(); }
+
+        // Return function argument symbol at index.
+        FuncArgSymbol * GetArgumentSymbol(size_t index)     { return m_argumentSymbols[index]; }
+
+    private:
+        std::vector<FuncArgSymbol *>  m_argumentSymbols;
     };
 
 
