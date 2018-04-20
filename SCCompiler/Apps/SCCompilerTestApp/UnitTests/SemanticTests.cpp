@@ -87,8 +87,11 @@ void SemanticTests::SemanticTypeMismatchTest()
 
     // Function return type should match with return value type.
     TestCode("\
-    float func() { return 1.0; }    \n\
-    void  func1() { return; }       \n\
+    float func() { return 1.0; }            \n\
+    float func1() { { return 1.0; } }       \n\
+    float func2() { { { return 1.0; } } }   \n\
+    void  func3() { return; }               \n\
+    void  func4() { { return; } }           \n\
     ", CompileResult::rCompileResultOk, true);
 
     TestCode("\
