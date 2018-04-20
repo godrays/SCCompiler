@@ -114,6 +114,25 @@ void SemanticPass::VisitVariableDeclaration(AST::NodeVarDeclaration * node)
 
 void SemanticPass::VisitFunctionDeclaration(AST::NodeFuncDeclaration * node)
 {
+    auto funcReturnType = node->GetReturnType();
+
+    // Function return type can't be unknown.
+    assert(funcReturnType != Type::tTypeUnknown);
+
+    // Rule: Function must have at least one return statement if it returns a value.
+    if (funcReturnType != Type::tTypeVoid)
+    {
+        // This search could be done faster by marking function declaration nodes when
+        // visiting return statement nodes. Must keep AST nodes as simple as possible.
+        if (node->FindClosestChildNode(AST::NodeType::tNodeTypeReturnStatement) == nullptr)
+        {
+            std::stringstream   message;
+            message << "Line: " << node->GetSourceCodeLine() << " - " << node->GetFuncName()
+                    << " must have at least one return statement." << std::endl;
+            throw SemanticErrorException(message.str());
+        }
+    }
+
     // Visit childs
     VisitChilds(node);
 }

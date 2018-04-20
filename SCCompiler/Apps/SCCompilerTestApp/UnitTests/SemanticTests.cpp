@@ -93,6 +93,16 @@ void SemanticTests::SemanticTypeMismatchTest()
 
     TestCode("\
     void  func()  { return 1.0; }    \n\
-    float func1() { return; }       \n\
+    float func1() { return; }        \n\
     ", CompileResult::rCompileResultSemanticError, true);
 };
+
+
+void SemanticTests::SemanticNonSpecificTest()
+{
+    // Function with return type must have at least one return statement.
+
+    TestCode("\
+    float  func()  {  }    \n\
+    ", CompileResult::rCompileResultSemanticError, true);
+}

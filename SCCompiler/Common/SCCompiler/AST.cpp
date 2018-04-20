@@ -123,6 +123,27 @@ AST::Node * AST::Node::FindClosestParentNode(AST::NodeType nodeType)
 }
 
 
+AST::Node * AST::Node::FindClosestChildNode(AST::NodeType nodeType)
+{
+    if (m_nodeType == nodeType)
+    {
+        return this;
+    }
+
+    for (size_t index=0; index < m_childs.size(); ++index)
+    {
+        auto foundNode = m_childs[index]->FindClosestChildNode(nodeType);
+
+        if (foundNode)
+        {
+            return foundNode;
+        }
+    }
+
+    return nullptr;
+};
+
+
 #pragma mark - NodeAOP Implementation
 
 AST::NodeAOP::NodeAOP(AST::NodeType nodeType) : AST::Node(nodeType)

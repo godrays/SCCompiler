@@ -19,6 +19,7 @@ class SemanticTests : public CppUnit::TestFixture
     
     CPPUNIT_TEST( SemanticUndeclaredIdentifierTest );
     CPPUNIT_TEST( SemanticTypeMismatchTest );
+    CPPUNIT_TEST( SemanticNonSpecificTest );
 
     CPPUNIT_TEST_SUITE_END();
     
@@ -38,6 +39,8 @@ public:
     void SemanticUndeclaredIdentifierTest();
 
     void SemanticTypeMismatchTest();
+
+    void SemanticNonSpecificTest();
 
 };
 
