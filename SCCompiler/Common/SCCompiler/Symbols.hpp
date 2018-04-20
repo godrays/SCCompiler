@@ -47,6 +47,9 @@ namespace SCCompiler
         // Returns symbol name.
         void SetScope(ScopeNode * scopeNode)     { m_scopeNode = scopeNode; }
 
+        // Returns symbol category.
+        SymbolCategory GetCategory()             { return m_category; }
+
     protected:
         // Symbol name.
         std::string  m_name;

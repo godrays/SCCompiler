@@ -111,6 +111,9 @@ namespace AST
         // Get source code line.
         size_t  GetSourceCodeLine()                   { return m_lineNumber; }
 
+        // Finds the closest node with given type in path from current node to tree root node.
+        Node * FindClosestParentNode(NodeType nodeType);
+
     protected:
         Node(NodeType nodeType) : m_nodeType(nodeType) { }
 

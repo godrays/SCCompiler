@@ -107,6 +107,22 @@ std::string AST::Node::GetNodeTypeInString(AST::NodeType nodeType)
 }
 
 
+AST::Node * AST::Node::FindClosestParentNode(AST::NodeType nodeType)
+{
+    if (m_nodeType == nodeType)
+    {
+        return this;
+    }
+
+    if ( m_parent != nullptr )
+    {
+        return m_parent->FindClosestParentNode(nodeType);
+    }
+
+    return nullptr;
+}
+
+
 #pragma mark - NodeAOP Implementation
 
 AST::NodeAOP::NodeAOP(AST::NodeType nodeType) : AST::Node(nodeType)

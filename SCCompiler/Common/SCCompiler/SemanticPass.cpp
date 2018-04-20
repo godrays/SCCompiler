@@ -128,8 +128,32 @@ void SemanticPass::VisitBlock(AST::NodeBlock * node)
 
 void SemanticPass::VisitReturnStatement(AST::NodeReturnStatement * node)
 {
-    // Visit childs
-    VisitChilds(node);
+    assert(node->ChildCount() < 2);
+
+    // Find belonging function declaration parent node.
+    auto funcDeclNode = dynamic_cast<AST::NodeFuncDeclaration *>(node->FindClosestParentNode(AST::NodeType::tNodeTypeFunctionDeclaration));
+    assert(funcDeclNode != nullptr);
+
+    auto scope = funcDeclNode->GetScope();
+    auto funcSymbol = scope->ResolveSymbol(funcDeclNode->GetFuncName());
+    
+    // Rule: Void function should not return a value.
+    if (funcSymbol->GetType() == Type::tTypeVoid && node->ChildCount() == 1)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Void function "
+                << funcSymbol->GetName() << " shoud not return a value." << std::endl;
+        throw SemanticErrorException(message.str());
+    }
+    else
+    // Rule: Non-Void function should return a value.
+    if (funcSymbol->GetType() != Type::tTypeVoid && node->ChildCount() == 0)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Non-void function "
+                << funcSymbol->GetName() << " shoud return a value." << std::endl;
+        throw SemanticErrorException(message.str());
+    }
 }
 
 

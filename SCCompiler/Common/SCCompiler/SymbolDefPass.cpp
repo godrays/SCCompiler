@@ -46,14 +46,17 @@ ScopeNode * SymbolDefPass::CreateScopeTree(AST::Node * node)
 
 void SymbolDefPass::Visit(AST::Node * node)
 {
+    // Set current scope for the node before visiting.
+    node->SetScope(m_currentScope);
+
     switch(node->GetNodeType())
     {
         case AST::NodeType::tNodeTypeVariableDeclaration:
-            VisitVariableDeclaration(static_cast<AST::NodeVarDeclaration *>(node));
+            VisitVariableDeclaration(dynamic_cast<AST::NodeVarDeclaration *>(node));
             break;
 
         case AST::NodeType::tNodeTypeFunctionDeclaration:
-            VisitFunctionDeclaration(static_cast<AST::NodeFuncDeclaration *>(node));
+            VisitFunctionDeclaration(dynamic_cast<AST::NodeFuncDeclaration *>(node));
             break;
 
         case AST::NodeType::tNodeTypeBlock:
@@ -72,7 +75,6 @@ void SymbolDefPass::Visit(AST::Node * node)
         case AST::NodeType::tNodeTypeLiteralInt32:
         case AST::NodeType::tNodeTypeLiteralBool:
         case AST::NodeType::tNodeTypeLiteralID:
-            node->SetScope(m_currentScope);
             VisitChilds(node);
             break;
 
