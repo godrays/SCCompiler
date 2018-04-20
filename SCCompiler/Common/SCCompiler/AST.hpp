@@ -79,7 +79,7 @@ namespace AST
         virtual ~Node();
 
         // Adds child node.
-        void    AddChild(Node * childNode)      { m_childs.emplace_back(childNode); m_parent = this; }
+        void    AddChild(Node * childNode)      { m_childs.emplace_back(childNode); }
 
         // Returns childs' count.
         size_t  ChildCount()                    { return m_childs.size(); }
@@ -96,6 +96,9 @@ namespace AST
         // Returns node type.
         NodeType  GetNodeType()                 {  return m_nodeType; }
 
+        // Return node type in string.
+        std::string GetNodeTypeInString(AST::NodeType nodeType);
+
         // Set scope.
         void SetScope(ScopeNode * scope)        { m_scope = scope; }
 
@@ -105,7 +108,7 @@ namespace AST
         // Set source code line.
         void  SetSourceCodeLine(size_t lineNumber)    { m_lineNumber = lineNumber; }
 
-        // get source code line.
+        // Get source code line.
         size_t  GetSourceCodeLine()                   { return m_lineNumber; }
 
     protected:

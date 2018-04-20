@@ -228,8 +228,16 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
     // Add yourself as child to parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Visit parser tree childrens. There must be no children of this node though.
-    return visitChildren(ctx);
+    // Push new parent node into stack. It becomes new parent node for child visits.
+    m_currentNodeStack.push(newNode);
+
+    // Visit parser tree childrens.
+    auto visitResult = visitChildren(ctx);
+
+    // Pop current parent node since we are leaving the method.
+    m_currentNodeStack.pop();
+
+    return visitResult;
 }
 
 

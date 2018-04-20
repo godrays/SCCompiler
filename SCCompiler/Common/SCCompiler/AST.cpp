@@ -24,6 +24,89 @@ AST::Node::~Node()
 }
 
 
+std::string AST::Node::GetNodeTypeInString(AST::NodeType nodeType)
+{
+    std::string typeInString;
+
+    switch (nodeType)
+    {
+        case AST::NodeType::tNodeTypeProgram:
+        typeInString = "tNodeTypeProgram";
+        break;
+
+        case AST::NodeType::tNodeTypeAOPAdd:
+        typeInString = "tNodeTypeAOPAdd";
+        break;
+
+        case AST::NodeType::tNodeTypeAOPDiv:
+        typeInString = "tNodeTypeAOPDiv";
+        break;
+
+        case AST::NodeType::tNodeTypeAOPMul:
+        typeInString = "tNodeTypeAOPMul";
+        break;
+
+        case AST::NodeType::tNodeTypeAOPSub:
+        typeInString = "tNodeTypeAOPSub";
+        break;
+
+        case AST::NodeType::tNodeTypeAssignment:
+        typeInString = "tNodeTypeAssignment";
+        break;
+
+        case AST::NodeType::tNodeTypeBlock:
+        typeInString = "tNodeTypeBlock";
+        break;
+
+        case AST::NodeType::tNodeTypeFuncCall:
+        typeInString = "tNodeTypeFuncCall";
+        break;
+
+        case AST::NodeType::tNodeTypeFunctionDeclaration:
+        typeInString = "tNodeTypeFunctionDeclaration";
+        break;
+
+        case AST::NodeType::tNodeTypeIfStatement:
+        typeInString = "tNodeTypeIfStatement";
+        break;
+
+        case AST::NodeType::tNodeTypeLiteralBool:
+        typeInString = "tNodeTypeLiteralBool";
+        break;
+
+        case AST::NodeType::tNodeTypeLiteralFloat:
+        typeInString = "tNodeTypeLiteralFloat";
+        break;
+
+        case AST::NodeType::tNodeTypeLiteralID:
+        typeInString = "tNodeTypeLiteralID";
+        break;
+
+        case AST::NodeType::tNodeTypeLiteralInt32:
+        typeInString = "tNodeTypeLiteralInt32";
+        break;
+
+        case AST::NodeType::tNodeTypeReturnStatement:
+        typeInString = "tNodeTypeReturnStatement";
+        break;
+
+        case AST::NodeType::tNodeTypeUnknown:
+        typeInString = "tNodeTypeReturnStatement";
+        break;
+
+        case AST::NodeType::tNodeTypeVariableDeclaration:
+        typeInString = "tNodeTypeVariableDeclaration";
+        break;
+    
+        default:
+        assert(false && "Unknown node type in Node::GetNodeTypeInString()");
+        break;
+    }
+
+    return typeInString;
+}
+
+
 #pragma mark - NodeAOP Implementation
 
 AST::NodeAOP::NodeAOP(AST::NodeType nodeType) : AST::Node(nodeType)
