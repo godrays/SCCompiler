@@ -84,4 +84,15 @@ void SemanticTests::SemanticTypeMismatchTest()
     void func(int i) { }    \n\
     void func2() { func(1.1); }    \n\
     ", CompileResult::rCompileResultSemanticError, true);
+
+    // Function return type should match with return value type.
+    TestCode("\
+    float func() { return 1.0; }    \n\
+    void  func1() { return; }       \n\
+    ", CompileResult::rCompileResultOk, true);
+
+    TestCode("\
+    void  func()  { return 1.0; }    \n\
+    float func1() { return; }       \n\
+    ", CompileResult::rCompileResultSemanticError, true);
 };

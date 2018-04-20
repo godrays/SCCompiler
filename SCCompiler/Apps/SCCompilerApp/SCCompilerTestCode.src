@@ -12,6 +12,7 @@ float fib(int i, float j, float z)
     return 1.0;
 }
 
+
 void TestFunc()
 {
     return;
@@ -28,9 +29,10 @@ float fib2()
 
     fib(1, fib2(), 5.0);
 
-    return false;
+    return 1.0;
     return (1+2)*(3+4.5);
 }
+
 
 /*
 int main()

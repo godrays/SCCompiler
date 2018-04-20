@@ -154,6 +154,21 @@ void SemanticPass::VisitReturnStatement(AST::NodeReturnStatement * node)
                 << funcSymbol->GetName() << " shoud return a value." << std::endl;
         throw SemanticErrorException(message.str());
     }
+    
+    // Rule: Return value type should match function return type.
+    if (node->ChildCount() == 1)
+    {
+        auto returnExpr = node->GetChild(0);
+        auto returnExprType = Visit(returnExpr);
+
+        if (funcSymbol->GetType() != returnExprType)
+        {
+            std::stringstream   message;
+            message << "Line: " << returnExpr->GetSourceCodeLine() << " - Return value type does not match "
+                    << funcSymbol->GetName() << " return type." << std::endl;
+            throw SemanticErrorException(message.str());
+        }
+    }
 }
 
 
