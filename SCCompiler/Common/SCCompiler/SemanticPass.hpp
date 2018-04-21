@@ -13,9 +13,7 @@
 
 namespace SCCompiler
 {
-    
-    class ScopeNode;
-    
+
     #pragma mark - Class SemanticPass
 
     class  SemanticPass
