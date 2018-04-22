@@ -72,13 +72,17 @@ void SemanticTests::SemanticTypeMismatchTest()
     // Compiler must fails for mismathed type use.
 
     TestCode("\
-    int i = 5 * false;    \n\
+    int i = 5 * false;        \n\
     ", CompileResult::rCompileResultSemanticError, true);
 
     TestCode("\
-    float f = 5.0 * true;    \n\
+    float f = 5.0 * true;     \n\
     ", CompileResult::rCompileResultSemanticError, true);
-    
+
+    TestCode("\
+    int i = 5.0;              \n\
+    ", CompileResult::rCompileResultSemanticError, true);
+
     // Parameter type does not match.
     TestCode("\
     void func(int i) { }    \n\
