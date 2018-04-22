@@ -8,11 +8,22 @@
 
 #pragma once
 
-#include "AST.hpp"
-
-
 namespace SCCompiler
 {
+    // Forward declaration.
+    namespace AST
+    {
+        class Node;
+        class NodeProgram;
+        class NodeVarDeclaration;
+        class NodeFuncDeclaration;
+        class NodeBlock;
+        class NodeReturnStatement;
+        class NodeFuncCall;
+        class NodeAssignment;
+        class NodeAOP;
+        class NodeLiteral;
+    }
 
     #pragma mark - Class SemanticPass
 

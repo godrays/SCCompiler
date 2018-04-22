@@ -9,13 +9,17 @@
 
 #include <stack>
 
-#include "SCCompilerBaseVisitor.h"
-#include "AST.hpp"
 #include "Types.hpp"
+#include "SCCompilerBaseVisitor.h"
 
 
 namespace SCCompiler
 {
+    // Fordward declaration
+    namespace AST
+    {
+        class Node;
+    }
 
     class  ASTGenerator : public SCCompilerBaseVisitor
     {

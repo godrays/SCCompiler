@@ -9,6 +9,7 @@
 #include <sstream>
 
 #include "Symbols.hpp"
+#include "AST.hpp"
 #include "SemanticPass.hpp"
 #include "Exceptions.hpp"
 

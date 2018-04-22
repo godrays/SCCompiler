@@ -9,13 +9,16 @@
 
 #include <fstream>
 
-#include "AST.hpp"
-
 
 namespace SCCompiler
 {
-    
-    #pragma mark - Class ASTVisualizer
+     // Forward declaration.
+    namespace AST
+    {
+        class Node;
+    }
+
+   #pragma mark - Class ASTVisualizer
 
     class  ASTVisualizer
     {

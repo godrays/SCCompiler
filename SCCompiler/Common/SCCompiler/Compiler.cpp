@@ -14,13 +14,15 @@
 #include "SCCompilerLexer.h"
 #include "SCCompilerParser.h"
 
+#include "Symbols.hpp"
+#include "AST.hpp"
 #include "ASTVisualizer.hpp"
 #include "ASTGenerator.hpp"
 #include "SymbolDefPass.hpp"
 #include "SemanticPass.hpp"
 #include "Exceptions.hpp"
-
 #include "Compiler.hpp"
+
 
 using namespace antlr4;
 

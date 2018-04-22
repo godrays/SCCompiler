@@ -7,6 +7,7 @@
 
 #include <cassert>
 
+#include "AST.hpp"
 #include "ASTGenerator.hpp"
 
 using namespace SCCompiler;

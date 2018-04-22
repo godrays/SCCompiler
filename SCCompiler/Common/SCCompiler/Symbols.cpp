@@ -11,6 +11,88 @@
 using namespace SCCompiler;
 
 
+#pragma mark - Symbol Implementations.
+
+
+Symbol::Symbol(std::string name, SymbolCategory category, Type type) : m_name(name), m_category(category), m_type(type), m_scopeNode(nullptr)
+{
+
+}
+
+
+std::string Symbol::GetName() const
+{
+    return m_name;
+}
+
+
+Type Symbol::GetType() const
+{
+    return m_type;
+}
+
+
+void Symbol::SetScope(ScopeNode * scopeNode)
+{
+    m_scopeNode = scopeNode;
+}
+
+
+SymbolCategory Symbol::GetCategory()
+{
+    return m_category;
+}
+
+
+#pragma mark - Class BuiltInTypeSymbol
+
+BuiltInTypeSymbol::BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCategory::tSymbolCategoryType, Type::tTypeUnknown)
+{
+
+}
+
+
+#pragma mark - Class VariableSymbol
+
+VariableSymbol::VariableSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryVariable, type)
+{
+
+}
+
+
+#pragma mark - Class FuncArgSymbol
+
+FuncArgSymbol::FuncArgSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunctionArgument, type)
+{
+
+}
+
+
+#pragma mark - Class FunctionSymbol
+
+FunctionSymbol::FunctionSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunction, type)
+{
+
+}
+
+void FunctionSymbol::AddArgumentSymbol(FuncArgSymbol * argSymbol)
+{
+    m_argumentSymbols.emplace_back(argSymbol);
+}
+
+
+size_t FunctionSymbol::ArgumentCount()
+{
+    return m_argumentSymbols.size();
+}
+
+
+FuncArgSymbol * FunctionSymbol::GetArgumentSymbol(size_t index)
+{
+    return m_argumentSymbols[index];
+}
+
+
 #pragma mark - ScopeNode Implementations.
 
 
@@ -89,4 +171,16 @@ Symbol *  ScopeNode::ResolveSymbol(std::string symbolName)
 
     // Not found.
     return nullptr;
+}
+
+
+void ScopeNode::AddChild(ScopeNode * childNode)
+{
+    m_childs.emplace_back(childNode);
+}
+
+
+ScopeNode *  ScopeNode::GeEnclosingScope()
+{
+    return m_enclosingScope;
 }

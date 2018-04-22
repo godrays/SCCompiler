@@ -7,14 +7,21 @@
 
 #pragma once
 
-#include "AST.hpp"
-
 
 namespace SCCompiler
 {
-    
+    // Fordward declaration.
     class ScopeNode;
-    
+
+    // Fordward declaration.
+    namespace AST
+    {
+        class Node;
+        class NodeVarDeclaration;
+        class NodeFuncDeclaration;
+        class NodeBlock;
+    }
+
     #pragma mark - Class SymbolDefPass
 
     class  SymbolDefPass

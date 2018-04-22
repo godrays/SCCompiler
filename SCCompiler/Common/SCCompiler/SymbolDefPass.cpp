@@ -5,6 +5,7 @@
 //  Copyright © 2018 Arkin Terli. All rights reserved.
 //
 
+#include "AST.hpp"
 #include "Symbols.hpp"
 #include "SymbolDefPass.hpp"
 #include "Exceptions.hpp"

@@ -8,6 +8,7 @@
 #include <cassert>
 #include <sstream>
 
+#include "AST.hpp"
 #include "ASTVisualizer.hpp"
 
 using namespace SCCompiler;

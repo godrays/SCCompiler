@@ -10,11 +10,13 @@
 #include <cassert>
 #include <vector>
 #include <string>
+
 #include "Types.hpp"
+
 
 namespace SCCompiler
 {
-    // It's very important to forward declare classes in their namespace scopes.
+    // Forward declaration.
     class ScopeNode;
     
 namespace AST
@@ -50,13 +52,13 @@ namespace AST
     {
     public:
         // Constructor.
-        FuncArg(Type type, std::string name) : m_type(type), m_name(name) { }
+        FuncArg(Type type, std::string name);
 
         // Returns argument type.
-        Type GetType()   { return m_type; }
+        Type GetType();
 
         // Returns argument name.
-        std::string GetName()   { return m_name; }
+        std::string GetName();
 
     protected:
         // Stores argument type.
@@ -73,43 +75,43 @@ namespace AST
     {
     public:
         // Constructor
-        Node() { }
+        Node();
 
         // Destructor
-        virtual ~Node()                         { DeleteChilds(); }
+        virtual ~Node();
 
         // Adds child node.
-        void    AddChild(Node * childNode)      { m_childs.emplace_back(childNode); }
+        void    AddChild(Node * childNode);
 
         // Returns childs' count.
-        size_t  ChildCount()                    { return m_childs.size(); }
+        size_t  ChildCount();
 
         // Returns child at given index.
-        Node *  GetChild(size_t index)          { return m_childs[index]; }
+        Node *  GetChild(size_t index);
 
         // Sets parent node.
-        void    SetParent(Node * parentNode)    {  m_parent = parentNode; }
+        void    SetParent(Node * parentNode);
 
         // Returns parent node.
-        Node *  GetParent()                     {  return m_parent; }
+        Node *  GetParent();
 
         // Returns node type.
-        NodeType  GetNodeType()                 {  return m_nodeType; }
+        NodeType  GetNodeType();
 
         // Return node type in string.
         std::string GetNodeTypeInString(AST::NodeType nodeType);
 
         // Set scope.
-        void SetScope(ScopeNode * scope)        { m_scope = scope; }
+        void SetScope(ScopeNode * scope);
 
         // Get scope.
-        ScopeNode * GetScope()                  { return m_scope; }
+        ScopeNode * GetScope();
 
         // Set source code line.
-        void  SetSourceCodeLine(size_t lineNumber)    { m_lineNumber = lineNumber; }
+        void  SetSourceCodeLine(size_t lineNumber);
 
         // Get source code line.
-        size_t  GetSourceCodeLine()                   { return m_lineNumber; }
+        size_t  GetSourceCodeLine();
 
         // Finds the closest parent node with given type in path from current node to tree root node.
         Node * FindClosestParentNode(NodeType nodeType);
@@ -118,7 +120,7 @@ namespace AST
         Node * FindClosestChildNode(NodeType nodeType);
 
     protected:
-        Node(NodeType nodeType) : m_nodeType(nodeType) { }
+        Node(NodeType nodeType);
 
         // Delete all child nodes.
         void DeleteChilds();
@@ -146,10 +148,10 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeProgram()           { m_nodeType = tNodeTypeProgram; }
+        NodeProgram();
 
         // Destructor.
-        virtual ~NodeProgram()  { DeleteChilds(); }
+        virtual ~NodeProgram();
     };
 
 
@@ -159,16 +161,16 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeVarDeclaration(Type type, std::string varName) : Node(tNodeTypeVariableDeclaration) { m_varType = type; m_varName = varName; }
+        NodeVarDeclaration(Type type, std::string varName);
 
         // Destructor.
-        virtual ~NodeVarDeclaration()  { DeleteChilds(); }
+        virtual ~NodeVarDeclaration();
 
         // Get var type.
-        Type GetVarType()      { return m_varType; }
+        Type GetVarType();
 
         // Get var name.
-        std::string GetVarName()      { return m_varName; }
+        std::string GetVarName();
 
     protected:
         Type         m_varType = Type::tTypeUnknown;
@@ -182,22 +184,22 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeFuncDeclaration(Type returnType, std::string funcName) : Node(tNodeTypeFunctionDeclaration) { m_returnType = returnType; m_funcName = funcName; }
+        NodeFuncDeclaration(Type returnType, std::string funcName);
 
         // Destructor.
-        virtual ~NodeFuncDeclaration()  { DeleteChilds(); }
+        virtual ~NodeFuncDeclaration();
 
         // Get func name.
-        std::string GetFuncName()      { return m_funcName; }
+        std::string GetFuncName();
 
         // Get return type.
-        Type GetReturnType()    { return m_returnType; }
+        Type GetReturnType();
 
         // Add argument.
-        void AddArgument(FuncArg argument)  { m_argumentList.emplace_back(argument); }
+        void AddArgument(FuncArg argument);
 
         // Return argument list.
-        std::vector<FuncArg> GetArguments()  { return m_argumentList; }
+        std::vector<FuncArg> GetArguments();
 
     protected:
         Type   m_returnType = Type::tTypeUnknown;
@@ -212,10 +214,10 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeIfStatement() : Node(tNodeTypeIfStatement) { }
+        NodeIfStatement();
 
         // Destructor.
-        virtual ~NodeIfStatement()  { DeleteChilds(); }
+        virtual ~NodeIfStatement();
     };
 
 
@@ -225,10 +227,10 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeReturnStatement() : Node(tNodeTypeReturnStatement) { }
+        NodeReturnStatement();
 
         // Destructor.
-        virtual ~NodeReturnStatement()  { DeleteChilds(); }
+        virtual ~NodeReturnStatement();
     };
 
 
@@ -238,13 +240,13 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeFuncCall(std::string funcName)  : Node(tNodeTypeFuncCall) { m_funcName = funcName; }
+        NodeFuncCall(std::string funcName);
 
         // Destructor.
-        virtual ~NodeFuncCall()  { DeleteChilds(); }
+        virtual ~NodeFuncCall();
 
         // Returns function name.
-        std::string GetFuncName()       { return m_funcName; }
+        std::string GetFuncName();
 
     protected:
         std::string m_funcName;
@@ -257,10 +259,10 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeBlock()   { m_nodeType = tNodeTypeBlock; }
+        NodeBlock();
 
         // Destructor.
-        virtual ~NodeBlock()  { DeleteChilds(); }
+        virtual ~NodeBlock();
     };
 
 
@@ -270,10 +272,10 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeAssignment() : Node(tNodeTypeAssignment) { }
+        NodeAssignment();
 
         // Destructor.
-        virtual ~NodeAssignment()  { DeleteChilds(); }
+        virtual ~NodeAssignment();
     };
 
 
@@ -286,7 +288,7 @@ namespace AST
         explicit NodeAOP(NodeType nodeType);
 
         // Destructor.
-        virtual ~NodeAOP()  { DeleteChilds(); }
+        virtual ~NodeAOP();
     };
 
 
@@ -299,10 +301,10 @@ namespace AST
         NodeLiteral(AST::NodeType nodeType, std::string value);
 
         // Destructor.
-        virtual ~NodeLiteral()  { DeleteChilds(); }
+        virtual ~NodeLiteral();
         
         // Get literal value.
-        std::string GetValue()      { return m_value; }
+        std::string GetValue();
         
     protected:
         // Literal value.

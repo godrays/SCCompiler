@@ -8,15 +8,19 @@
 #pragma once
 
 #include <string>
+#include <cassert>
+#include <vector>
 #include <unordered_map>
-#include "AST.hpp"
+
 #include "Types.hpp"
 
 
 namespace SCCompiler
 {
+    // Forward declaration.
     class ScopeNode;
-
+    class FuncArgSymbol;
+    
     #pragma mark - Enum SymbolType
 
     // Symbol category.
@@ -36,19 +40,19 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        Symbol(std::string name, SymbolCategory category, Type type) : m_name(name), m_category(category), m_type(type), m_scopeNode(nullptr) { }
+        Symbol(std::string name, SymbolCategory category, Type type);
 
         // Returns symbol name.
-        std::string GetName() const     { return m_name; }
+        std::string GetName() const;
 
         // Returns symbol type.
-        Type GetType() const     { return m_type; }
+        Type GetType() const;
 
         // Returns symbol name.
-        void SetScope(ScopeNode * scopeNode)     { m_scopeNode = scopeNode; }
+        void SetScope(ScopeNode * scopeNode);
 
         // Returns symbol category.
-        SymbolCategory GetCategory()             { return m_category; }
+        SymbolCategory GetCategory();
 
     protected:
         // Symbol name.
@@ -71,7 +75,7 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCategory::tSymbolCategoryType, Type::tTypeUnknown) { }
+        BuiltInTypeSymbol(std::string name);
     };
 
 
@@ -81,7 +85,7 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        VariableSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryVariable, type) { }
+        VariableSymbol(std::string name, Type type);
     };
 
 
@@ -91,7 +95,7 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        FuncArgSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunctionArgument, type) { }
+        FuncArgSymbol(std::string name, Type type);
     };
 
 
@@ -101,16 +105,16 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        FunctionSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunction, type) { }
+        FunctionSymbol(std::string name, Type type);
 
         // Add function argument symbol.
-        void AddArgumentSymbol(FuncArgSymbol * argSymbol)   { m_argumentSymbols.emplace_back(argSymbol); }
+        void AddArgumentSymbol(FuncArgSymbol * argSymbol);
 
         // Return argument count.
-        size_t ArgumentCount()                              { return m_argumentSymbols.size(); }
+        size_t ArgumentCount();
 
         // Return function argument symbol at index.
-        FuncArgSymbol * GetArgumentSymbol(size_t index)     { return m_argumentSymbols[index]; }
+        FuncArgSymbol * GetArgumentSymbol(size_t index);
 
     private:
         std::vector<FuncArgSymbol *>  m_argumentSymbols;
@@ -131,10 +135,10 @@ namespace SCCompiler
         ~ScopeNode();
 
         // Add child scope node.
-        void AddChild(ScopeNode * childNode)    { m_childs.emplace_back(childNode); }
+        void AddChild(ScopeNode * childNode);
 
         // Returns enclosing scope (child node of this node).
-        ScopeNode *  GeEnclosingScope()     { return m_enclosingScope; }
+        ScopeNode *  GeEnclosingScope();
 
         // Returns true if symbol is defined in this scope. Otherwise, false.
         bool  IsDefined(std::string symbolName);
