@@ -80,6 +80,7 @@ size_t AST::Node::ChildCount()
 
 AST::Node * AST::Node::GetChild(size_t index)
 {
+    assert(index < m_childs.size());
     return m_childs[index];
 }
 

@@ -108,7 +108,27 @@ void SemanticPass::VisitProgram(AST::NodeProgram * node)
 
 void SemanticPass::VisitVariableDeclaration(AST::NodeVarDeclaration * node)
 {
-    // Visit childs
+    auto childCount = node->ChildCount();
+
+    assert(childCount < 2);
+
+    // Rule: If variable is initialized then variable type and right expression type must match.
+    if (childCount == 1)
+    {
+        // Rule: right expression (initializer) type must match.
+        auto rightExprType = Visit(node->GetChild(0));
+        
+        if (node->GetVarType() != rightExprType)
+        {
+            std::stringstream   message;
+            message << "Line: " << node->GetChild(0)->GetSourceCodeLine() << " - Assignment type mismatch." << std::endl;
+            throw SemanticErrorException(message.str());
+        }
+
+        return;
+    }
+
+    // Otherwise, just visit childs.
     VisitChilds(node);
 }
 
