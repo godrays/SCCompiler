@@ -125,10 +125,13 @@ namespace SCCompiler
     {
     public:
         // Constructor.
-        ScopeNode(std::string name, ScopeNode * enclosingScope) : m_name(name), m_enclosingScope(enclosingScope) { }
+        ScopeNode(std::string name, ScopeNode * enclosingScope);
 
         // Destructor
-        ~ScopeNode() { }
+        ~ScopeNode();
+
+        // Add child scope node.
+        void AddChild(ScopeNode * childNode)    { m_childs.emplace_back(childNode); }
 
         // Returns enclosing scope (child node of this node).
         ScopeNode *  GeEnclosingScope()     { return m_enclosingScope; }
@@ -151,6 +154,9 @@ namespace SCCompiler
 
         // Enclosing scope that covers this scope.
         ScopeNode *   m_enclosingScope;
+
+        // Stores child scope nodes. We only needs this for deleting scope node tree.
+        std::vector<ScopeNode *>    m_childs;
     };
 
 }

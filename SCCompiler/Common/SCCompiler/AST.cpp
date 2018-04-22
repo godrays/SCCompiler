@@ -14,13 +14,16 @@ using namespace SCCompiler;
 
 #pragma mark - Node Implementation
 
-AST::Node::~Node()
+
+void AST::Node::DeleteChilds()
 {
     // Delete all childs.
     for (auto child : m_childs)
     {
         delete child;
     }
+
+    m_childs.clear();
 }
 
 

@@ -76,7 +76,7 @@ namespace AST
         Node() { }
 
         // Destructor
-        virtual ~Node();
+        virtual ~Node()                         { DeleteChilds(); }
 
         // Adds child node.
         void    AddChild(Node * childNode)      { m_childs.emplace_back(childNode); }
@@ -120,6 +120,9 @@ namespace AST
     protected:
         Node(NodeType nodeType) : m_nodeType(nodeType) { }
 
+        // Delete all child nodes.
+        void DeleteChilds();
+
         // Node Type
         NodeType    m_nodeType = tNodeTypeUnknown;
 
@@ -143,10 +146,10 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeProgram()   { m_nodeType = tNodeTypeProgram; }
+        NodeProgram()           { m_nodeType = tNodeTypeProgram; }
 
         // Destructor.
-        virtual ~NodeProgram() { }
+        virtual ~NodeProgram()  { DeleteChilds(); }
     };
 
 
@@ -159,7 +162,7 @@ namespace AST
         NodeVarDeclaration(Type type, std::string varName) : Node(tNodeTypeVariableDeclaration) { m_varType = type; m_varName = varName; }
 
         // Destructor.
-        virtual ~NodeVarDeclaration() { }
+        virtual ~NodeVarDeclaration()  { DeleteChilds(); }
 
         // Get var type.
         Type GetVarType()      { return m_varType; }
@@ -182,7 +185,7 @@ namespace AST
         NodeFuncDeclaration(Type returnType, std::string funcName) : Node(tNodeTypeFunctionDeclaration) { m_returnType = returnType; m_funcName = funcName; }
 
         // Destructor.
-        virtual ~NodeFuncDeclaration() { }
+        virtual ~NodeFuncDeclaration()  { DeleteChilds(); }
 
         // Get func name.
         std::string GetFuncName()      { return m_funcName; }
@@ -212,7 +215,7 @@ namespace AST
         NodeIfStatement() : Node(tNodeTypeIfStatement) { }
 
         // Destructor.
-        ~NodeIfStatement() { }
+        virtual ~NodeIfStatement()  { DeleteChilds(); }
     };
 
 
@@ -225,7 +228,7 @@ namespace AST
         NodeReturnStatement() : Node(tNodeTypeReturnStatement) { }
 
         // Destructor.
-        virtual ~NodeReturnStatement() { }
+        virtual ~NodeReturnStatement()  { DeleteChilds(); }
     };
 
 
@@ -238,7 +241,7 @@ namespace AST
         NodeFuncCall(std::string funcName)  : Node(tNodeTypeFuncCall) { m_funcName = funcName; }
 
         // Destructor.
-        virtual ~NodeFuncCall() { }
+        virtual ~NodeFuncCall()  { DeleteChilds(); }
 
         // Returns function name.
         std::string GetFuncName()       { return m_funcName; }
@@ -257,7 +260,7 @@ namespace AST
         NodeBlock()   { m_nodeType = tNodeTypeBlock; }
 
         // Destructor.
-        virtual ~NodeBlock() { }
+        virtual ~NodeBlock()  { DeleteChilds(); }
     };
 
 
@@ -270,7 +273,7 @@ namespace AST
         NodeAssignment() : Node(tNodeTypeAssignment) { }
 
         // Destructor.
-        virtual ~NodeAssignment() { }
+        virtual ~NodeAssignment()  { DeleteChilds(); }
     };
 
 
@@ -283,7 +286,7 @@ namespace AST
         explicit NodeAOP(NodeType nodeType);
 
         // Destructor.
-        virtual ~NodeAOP() { }
+        virtual ~NodeAOP()  { DeleteChilds(); }
     };
 
 
@@ -296,7 +299,7 @@ namespace AST
         NodeLiteral(AST::NodeType nodeType, std::string value);
 
         // Destructor.
-        virtual ~NodeLiteral() { }
+        virtual ~NodeLiteral()  { DeleteChilds(); }
         
         // Get literal value.
         std::string GetValue()      { return m_value; }

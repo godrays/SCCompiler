@@ -129,8 +129,8 @@ SCCompiler::CompileResult SCCompiler::Compiler::Compile(std::istream & sourceStr
         SemanticPass  semanticAnalysisPass;
         semanticAnalysisPass.SemanticCheck(ast);
 
-        // TODO: delete scopeTree;
-        // TODO: delete ast;
+        delete scopeTree;
+        delete ast;
     }
     catch (SemanticErrorException & e)
     {

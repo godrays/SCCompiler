@@ -14,6 +14,42 @@ using namespace SCCompiler;
 #pragma mark - ScopeNode Implementations.
 
 
+ScopeNode::ScopeNode(std::string name, ScopeNode * enclosingScope) : m_name(name), m_enclosingScope(enclosingScope)
+{
+    // In scope tree, child is always connect itself to parent.
+    // Because of that, child should add itself to parents childs list.
+    // In fact, parent never needs to know it's childs since childs points to parent due to nature of the scope tree.
+    // But we want parent node knows it's child since we need to delete child nodes when we delete scope node root node.
+
+    if (enclosingScope != nullptr)
+    {
+        enclosingScope->AddChild(this);
+    }
+}
+
+
+ScopeNode::~ScopeNode()
+{
+    // Delete all childs.
+    for (auto child : m_childs)
+    {
+        // Delete all symbol objects.
+        for (auto pair : m_symbolTable)
+        {
+            // Has table pair.first = key, pair.second = symbol
+            delete pair.second;
+        }
+        
+        // Clear symbol table.
+        m_symbolTable.clear();
+        
+        delete child;
+    }
+
+    m_childs.clear();
+}
+
+
 bool ScopeNode::IsDefined(std::string symbolName)
 {
     // Return true if the symbol is exist. Othersie, false.
