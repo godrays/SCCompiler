@@ -42,6 +42,9 @@ namespace SCCompiler
         // Constructor.
         Symbol(std::string name, SymbolCategory category, Type type);
 
+        // Destructor.
+        virtual ~Symbol();
+
         // Returns symbol name.
         std::string GetName() const;
 

@@ -20,6 +20,12 @@ Symbol::Symbol(std::string name, SymbolCategory category, Type type) : m_name(na
 }
 
 
+Symbol::~Symbol()
+{
+
+}
+
+
 std::string Symbol::GetName() const
 {
     return m_name;
@@ -112,19 +118,19 @@ ScopeNode::ScopeNode(std::string name, ScopeNode * enclosingScope) : m_name(name
 
 ScopeNode::~ScopeNode()
 {
+    // Delete all symbol objects.
+    for (auto pair : m_symbolTable)
+    {
+        // Has table pair.first = key, pair.second = symbol
+        delete pair.second;
+    }
+
+    // Clear symbol table.
+    m_symbolTable.clear();
+
     // Delete all childs.
     for (auto child : m_childs)
     {
-        // Delete all symbol objects.
-        for (auto pair : m_symbolTable)
-        {
-            // Has table pair.first = key, pair.second = symbol
-            delete pair.second;
-        }
-        
-        // Clear symbol table.
-        m_symbolTable.clear();
-        
         delete child;
     }
 
