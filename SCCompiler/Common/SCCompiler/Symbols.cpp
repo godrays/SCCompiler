@@ -11,10 +11,23 @@
 using namespace SCCompiler;
 
 
+#pragma mark - SymbolPropertyBase Implementations.
+
+SymbolPropertyBase::~SymbolPropertyBase()
+{
+
+}
+
+
 #pragma mark - Symbol Implementations.
 
 
-Symbol::Symbol(std::string name, SymbolCategory category, Type type) : m_name(name), m_category(category), m_type(type), m_scopeNode(nullptr)
+Symbol::Symbol(std::string name, SymbolCategory category, Type type) :
+    m_name(name),
+    m_category(category),
+    m_type(type),
+    m_scopeNode(nullptr),
+    m_property(nullptr)
 {
 
 }
@@ -47,6 +60,18 @@ void Symbol::SetScope(ScopeNode * scopeNode)
 SymbolCategory Symbol::GetCategory()
 {
     return m_category;
+}
+
+
+SymbolPropertyBase * Symbol::GetProperty()
+{
+    return m_property;
+}
+
+
+void Symbol::SetProperty(SymbolPropertyBase * property)
+{
+    m_property = property;
 }
 
 
@@ -102,7 +127,7 @@ FuncArgSymbol * FunctionSymbol::GetArgumentSymbol(size_t index)
 #pragma mark - ScopeNode Implementations.
 
 
-ScopeNode::ScopeNode(std::string name, ScopeNode * enclosingScope) : m_name(name), m_enclosingScope(enclosingScope)
+ScopeNode::ScopeNode(ScopeCategory category, ScopeNode * enclosingScope) : m_category(category), m_enclosingScope(enclosingScope)
 {
     // In scope tree, child is always connect itself to parent.
     // Because of that, child should add itself to parents childs list.
@@ -135,6 +160,12 @@ ScopeNode::~ScopeNode()
     }
 
     m_childs.clear();
+}
+
+
+ScopeCategory ScopeNode::GetCategory()
+{
+    return m_category;
 }
 
 

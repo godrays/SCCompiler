@@ -20,7 +20,8 @@ namespace SCCompiler
     // Forward declaration.
     class ScopeNode;
     class FuncArgSymbol;
-    
+
+
     #pragma mark - Enum SymbolType
 
     // Symbol category.
@@ -31,6 +32,16 @@ namespace SCCompiler
         tSymbolCategoryVariable,
         tSymbolCategoryFunction,
         tSymbolCategoryFunctionArgument,
+    };
+
+
+    #pragma mark - Class BaseSymbolProperty
+
+    class SymbolPropertyBase
+    {
+    public:
+        // Destructor
+        virtual ~SymbolPropertyBase() = 0;
     };
 
 
@@ -57,6 +68,12 @@ namespace SCCompiler
         // Returns symbol category.
         SymbolCategory GetCategory();
 
+        // Get Property.
+        SymbolPropertyBase * GetProperty();
+
+        // Set Property.
+        void SetProperty(SymbolPropertyBase * property);
+
     protected:
         // Symbol name.
         std::string  m_name;
@@ -69,6 +86,9 @@ namespace SCCompiler
         
         // Scope node.
         ScopeNode *  m_scopeNode;
+        
+        // Scope Property.
+        SymbolPropertyBase *  m_property;
     };
 
 
@@ -125,17 +145,30 @@ namespace SCCompiler
 
 
     #pragma mark - Class ScopeNode
-    
+
+    // Scope category.
+    enum ScopeCategory : uint32_t
+    {
+        cScopeCategoryUnknown,
+        cScopeCategoryGlobal,
+        cScopeCategoryFunction,
+        cScopeCategoryBlock,
+    };
+
+
     // Scoped symbol table node to build tree of symbol tables.
     // Every node in the tree is considered a scope and has a symbol table.
     class ScopeNode
     {
     public:
         // Constructor.
-        ScopeNode(std::string name, ScopeNode * enclosingScope);
+        ScopeNode(ScopeCategory category, ScopeNode * enclosingScope);
 
         // Destructor
         ~ScopeNode();
+
+        // Get scope category.
+        ScopeCategory GetCategory();
 
         // Add child scope node.
         void AddChild(ScopeNode * childNode);
@@ -153,8 +186,8 @@ namespace SCCompiler
         Symbol *  ResolveSymbol(std::string symbolName);
 
     protected:
-        // Scope name.
-        std::string   m_name;
+        // Scope category.
+        ScopeCategory   m_category;
 
         // Hash table for symbols.
         std::unordered_map<std::string, Symbol *>   m_symbolTable;
