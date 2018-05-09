@@ -18,7 +18,7 @@ using namespace SCCompiler;
 
 ScopeNode * SymbolDefPass::CreateScopeTree(AST::Node * node)
 {
-    ScopeNode *  scopeTreeHead = new ScopeNode("global", nullptr);
+    ScopeNode *  scopeTreeHead = new ScopeNode(ScopeCategory::cScopeCategoryGlobal, nullptr);
     m_currentScope = scopeTreeHead;
 
     // Add Built-In Types. They have no type definition.
@@ -136,7 +136,7 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(AST::NodeFuncDeclara
 
     // CREATE NEW SCOPE FOR FUNCTION
     
-    m_currentScope = new ScopeNode("function", m_currentScope);
+    m_currentScope = new ScopeNode(ScopeCategory::cScopeCategoryFunction, m_currentScope);
 
     // Add function arguments to function scope.
     auto arguments = node->GetArguments();
@@ -172,7 +172,7 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(AST::NodeFuncDeclara
 void SymbolDefPass::SymbolDefPass::VisitBlock(AST::NodeBlock * node)
 {
     // CREATE NEW SCOPE FOR FUNCTION
-    m_currentScope = new ScopeNode("block", m_currentScope);
+    m_currentScope = new ScopeNode(ScopeCategory::cScopeCategoryBlock, m_currentScope);
 
     // Visit function childs
     VisitChilds(node);
