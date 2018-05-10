@@ -19,8 +19,10 @@ endif()
 
 # Suppression of "unknown pragma" warning on GCC
 if(CMAKE_COMPILER_IS_GNUCXX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas")	# Code uses #pragma mark
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas -fvisibility=hidden")	# Code uses #pragma mark
 endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden")
 
 ########################################################################
 # docopt

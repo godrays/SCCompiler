@@ -20,6 +20,7 @@
 #include "ASTGenerator.hpp"
 #include "SymbolDefPass.hpp"
 #include "SemanticPass.hpp"
+#include "CodeGenPass.hpp"
 #include "Exceptions.hpp"
 #include "Compiler.hpp"
 
@@ -122,14 +123,18 @@ SCCompiler::CompileResult SCCompiler::Compiler::Compile(std::istream & sourceStr
         // DEBUG ONLY -----------------
 
         // PASS: Create scope tree and define symbols by visiting AST nodes.
-        //       After this pass, each ast node and symbos will have access to their related scope node (symbol table).
+        //       After this pass, each ast node and symbols will have access to their related scope node (symbol table).
         SymbolDefPass  symDefPass;
         auto scopeTree = symDefPass.CreateScopeTree(ast);
 
-        // PASS: Perform semantic anaylsis by visiting AST nodes.
+        // PASS: Perform semantic analysis by visiting AST nodes.
         //       Semantic anaylsis: Resolving Symbols, Typecheking, Type Promotion, Semantic Validation.
         SemanticPass  semanticAnalysisPass;
         semanticAnalysisPass.SemanticCheck(ast);
+
+        // PASS: Perform code generation by visiting AST nodes.
+        CodeGenPass  codeGenerationPass;
+        codeGenerationPass.GenerateCode(ast);
 
         delete scopeTree;
         delete ast;

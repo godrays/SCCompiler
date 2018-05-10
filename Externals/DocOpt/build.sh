@@ -1,22 +1,11 @@
 #!/bin/bash
 
 rm -rf ./build
-rm -rf ./CMakeFiles
 
-rm CMakeCache.txt
-rm CPackConfig.cmake
-rm CPackSourceConfig.cmake
-rm Makefile
-rm cmake_install.cmake
-
-cmake CMakeLists.txt
-make
-rm -rf ./CMakeFiles
 mkdir build
-mv libdocopt*.* build
+cd build
+cmake ..
+cmake --build .
+cmake -DCMAKE_INSTALL_PREFIX=../installed -P cmake_install.cmake
+cd ..
 
-rm CMakeCache.txt
-rm CPackConfig.cmake
-rm CPackSourceConfig.cmake
-rm Makefile
-rm cmake_install.cmake

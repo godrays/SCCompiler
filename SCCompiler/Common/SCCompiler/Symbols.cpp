@@ -71,6 +71,8 @@ SymbolPropertyBase * Symbol::GetProperty()
 
 void Symbol::SetProperty(SymbolPropertyBase * property)
 {
+    // Can't assign new property without deleting the previous one.
+    assert(m_property == nullptr);
     m_property = property;
 }
 

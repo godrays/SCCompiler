@@ -11,7 +11,7 @@
 #include <exception>
 #include <memory>
 #include <map>
-#include <docopt.h>
+#include <docopt/docopt.h>
 
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/TextOutputter.h>

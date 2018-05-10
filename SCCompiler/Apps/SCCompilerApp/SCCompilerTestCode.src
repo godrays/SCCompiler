@@ -1,6 +1,17 @@
 
-//int a = (5*4+1)+2;
-int a = 4;
+int integer1 = 1;
+float float1 = 0.0;
+
+int fib(int i, float j)
+{
+    i = 5 + integer1;
+    int var = i*2;
+    int temp = (5*3)/var + integer1 * var / i;
+    return temp;
+}
+
+
+/*
 float z;
 bool var = true;
 
@@ -12,11 +23,11 @@ float fib(int i, float j, float z)
     return 1.0;
 }
 
-
 void TestFunc()
 {
     return;
 }
+
 
 float fib2()
 {
@@ -34,7 +45,9 @@ float fib2()
 }
 
 
-/*
+float f = fib2();
+
+
 int main()
 {
     int x = 5;
