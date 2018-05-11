@@ -31,11 +31,11 @@ void SemanticTests::tearDown()
 }
 
 
-SCModule * SemanticTests::TestCode(std::string sourceCode, CompileResult expectedCompileResult, bool acceptExpectedCompileResult)
+SCModule * SemanticTests::TestCode(std::string sourceCode, SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult)
 {
     Compiler compiler;
     
-    CompileResult compileResult;
+    SCCompileResult compileResult;
     
     auto scModule = compiler.CompileFromMemory(sourceCode, compileResult);
     
@@ -57,19 +57,19 @@ void SemanticTests::SemanticUndeclaredIdentifierTest()
 
     TestCode("\
     void func() { i=5; }     \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 
     TestCode("\
     void func() { f=5.0; }     \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 
     TestCode("\
     void func() { b=true; }     \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 
     TestCode("\
     void func() { func2(); }     \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 }
 
 
@@ -79,21 +79,21 @@ void SemanticTests::SemanticTypeMismatchTest()
 
     TestCode("\
     int i = 5 * false;        \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 
     TestCode("\
     float f = 5.0 * true;     \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 
     TestCode("\
     int i = 5.0;              \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 
     // Parameter type does not match.
     TestCode("\
     void func(int i) { }    \n\
     void func2() { func(1.1); }    \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 
     // Function return type should match with return value type.
     TestCode("\
@@ -102,12 +102,12 @@ void SemanticTests::SemanticTypeMismatchTest()
     float func2() { { { return 1.0; } } }   \n\
     void  func3() { return; }               \n\
     void  func4() { { return; } }           \n\
-    ", CompileResult::rCompileResultOk, true);
+    ", SCCompileResult::rSCCompileResultOk, true);
 
     TestCode("\
     void  func()  { return 1.0; }    \n\
     float func1() { return; }        \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 };
 
 
@@ -117,5 +117,5 @@ void SemanticTests::SemanticNonSpecificTest()
 
     TestCode("\
     float  func()  {  }    \n\
-    ", CompileResult::rCompileResultSemanticError, true);
+    ", SCCompileResult::rSCCompileResultSemanticError, true);
 }

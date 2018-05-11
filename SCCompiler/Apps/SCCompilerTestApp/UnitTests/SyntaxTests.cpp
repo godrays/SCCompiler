@@ -30,11 +30,11 @@ void SyntaxTests::tearDown()
 }
 
 
-SCModule * SyntaxTests::TestCode(std::string sourceCode, CompileResult expectedCompileResult, bool acceptExpectedCompileResult)
+SCModule * SyntaxTests::TestCode(std::string sourceCode, SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult)
 {
     Compiler compiler;
     
-    CompileResult compileResult;
+    SCCompileResult compileResult;
     
     auto scModule = compiler.CompileFromMemory(sourceCode, compileResult);
     
@@ -93,6 +93,6 @@ void SyntaxTests::SyntaxAcceptanceTest()
     bool  func24() { bool b=func13(true); return b; }   \n\
     float func25() { return func4((4*5)+2/(2-3)*5, (4.2*5.1)+2.99/(2.10-3)*5, false); }  \n\
     int   func26() { return (4*5)+2/(2-3)*5; }  \n\
-    ", CompileResult::rCompileResultOk, true);
+    ", SCCompileResult::rSCCompileResultOk, true);
 
 }

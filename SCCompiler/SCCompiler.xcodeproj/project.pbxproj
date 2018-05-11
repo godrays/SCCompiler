@@ -238,8 +238,8 @@
 			isa = PBXGroup;
 			children = (
 				DEABFA7E2070A3FA00F80986 /* Parser */,
-				DEABFB19207DAF4100F80986 /* Compiler.cpp */,
-				DEABFB1A207DAF4100F80986 /* Compiler.hpp */,
+                DEABFB19207DAF4100F80986 /* Compiler.cpp */,
+                DEABFB1A207DAF4100F80986 /* Compiler.hpp */,
 				DE5FCD1820A64D6A00299A6E /* SCModule.cpp */,
 				DE5FCD1520A631EE00299A6E /* SCModule.hpp */,
 				DE4F697A2087E57A00039928 /* Types.cpp */,

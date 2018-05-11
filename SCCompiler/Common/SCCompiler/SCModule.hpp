@@ -5,11 +5,9 @@
 //  Copyright © 2018 Arkin Terli. All rights reserved.
 //
 
-
 #pragma once
 
 #include <string>
-
 
 namespace SCC
 {

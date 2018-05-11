@@ -28,7 +28,7 @@ public:
     
     // Tests given source code.
     SCC::SCModule * TestCode(std::string sourceCode,
-                                    SCC::CompileResult expectedCompileResult,
+                                    SCC::SCCompileResult expectedCompileResult,
                                     bool acceptExpectedCompileResult);
     
     // Syntax Acceptance Test

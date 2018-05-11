@@ -30,11 +30,11 @@ void CodeGenerationTests::tearDown()
 }
 
 
-SCModule * CodeGenerationTests::TestCode(std::string sourceCode, CompileResult expectedCompileResult, bool acceptExpectedCompileResult)
+SCModule * CodeGenerationTests::TestCode(std::string sourceCode, SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult)
 {
     Compiler compiler;
     
-    CompileResult compileResult;
+    SCCompileResult compileResult;
     
     auto scModule = compiler.CompileFromMemory(sourceCode, compileResult);
     

@@ -10,40 +10,29 @@
 #include <string>
 
 #include "SCModule.hpp"
+#include "SCCompiler.hpp"
 
 
 namespace SCC
 {
-
-    #pragma mark - Class CompilerErrorListenerBase.
-
-    enum CompileResult : uint32_t
-    {
-        rCompileResultOk,
-        rCompileResultSyntaxError,
-        rCompileResultSemanticError,
-        rCompileResultCompileError,
-    };
-
-
     #pragma mark - Class Compiler.
 
-    class Compiler
+    class Compiler : public SCCompiler
     {
     public:
 
         // Compiles Simple C Source code from file.
-        SCModule * CompileFromFile(std::string filename, CompileResult & compileResult);
+        SCModule * CompileFromFile(std::string filename, SCCompileResult & compileResult) override final;
 
         // Compiles Simple C Source code from memory.
-        SCModule * CompileFromMemory(std::string sourceCode, CompileResult & compileResult);
+        SCModule * CompileFromMemory(std::string sourceCode, SCCompileResult & compileResult) override final;
 
         // Returns compile error message.
-        std::string GetErrorMessage()   { return m_errorMessage; }
+        std::string GetErrorMessage() override final  { return m_errorMessage; }
 
     protected:
         // Compiles Simple C Source code.
-        SCModule * Compile(std::istream & sourceStream, CompileResult & compileResult);
+        SCModule * Compile(std::istream & sourceStream, SCCompileResult & compileResult);
 
     private:
         std::string     m_errorMessage;
