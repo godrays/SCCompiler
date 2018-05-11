@@ -24,7 +24,7 @@ int main(int , const char **)
         return -1;
     }
 
-    // We no longer need to compiler. We just need SCModule, compiled module.
+    // We no longer need compiler. We just need SCModule, compiled module.
     delete compiler;
 
     typedef int (* FuncFib)(int);
