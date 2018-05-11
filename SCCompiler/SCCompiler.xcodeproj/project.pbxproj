@@ -37,6 +37,8 @@
 		DE5FCD1920A64D6A00299A6E /* SCModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE5FCD1820A64D6A00299A6E /* SCModule.cpp */; };
 		DE5FCD1A20A64D6A00299A6E /* SCModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE5FCD1820A64D6A00299A6E /* SCModule.cpp */; };
 		DE5FCD1B20A653C900299A6E /* JITEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE5FCD1120A5130600299A6E /* JITEngine.cpp */; };
+		DE5FCD1E20A65BAF00299A6E /* SCCompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE5FCD1C20A65BAF00299A6E /* SCCompiler.cpp */; };
+		DE5FCD1F20A65BAF00299A6E /* SCCompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE5FCD1C20A65BAF00299A6E /* SCCompiler.cpp */; };
 		DEABFA602070953200F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFA5F2070953200F80986 /* main.cpp */; };
 		DEABFAAA2071C08F00F80986 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAA92071C08F00F80986 /* main.cpp */; };
 		DEABFB0E207B09B900F80986 /* SCCompilerBaseVisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEABFAFF207B09B700F80986 /* SCCompilerBaseVisitor.cpp */; };
@@ -96,6 +98,8 @@
 		DE5FCD1220A5130600299A6E /* JITEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JITEngine.hpp; sourceTree = "<group>"; };
 		DE5FCD1520A631EE00299A6E /* SCModule.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SCModule.hpp; sourceTree = "<group>"; };
 		DE5FCD1820A64D6A00299A6E /* SCModule.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SCModule.cpp; sourceTree = "<group>"; };
+		DE5FCD1C20A65BAF00299A6E /* SCCompiler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SCCompiler.cpp; sourceTree = "<group>"; };
+		DE5FCD1D20A65BAF00299A6E /* SCCompiler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SCCompiler.hpp; sourceTree = "<group>"; };
 		DEABFA5C2070953200F80986 /* SCCompilerApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SCCompilerApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEABFA5F2070953200F80986 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DEABFA67207098AE00F80986 /* SCCompiler.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = SCCompiler.g4; sourceTree = "<group>"; };
@@ -238,10 +242,12 @@
 			isa = PBXGroup;
 			children = (
 				DEABFA7E2070A3FA00F80986 /* Parser */,
-                DEABFB19207DAF4100F80986 /* Compiler.cpp */,
-                DEABFB1A207DAF4100F80986 /* Compiler.hpp */,
+				DE5FCD1C20A65BAF00299A6E /* SCCompiler.cpp */,
+				DE5FCD1D20A65BAF00299A6E /* SCCompiler.hpp */,
 				DE5FCD1820A64D6A00299A6E /* SCModule.cpp */,
 				DE5FCD1520A631EE00299A6E /* SCModule.hpp */,
+				DEABFB19207DAF4100F80986 /* Compiler.cpp */,
+				DEABFB1A207DAF4100F80986 /* Compiler.hpp */,
 				DE4F697A2087E57A00039928 /* Types.cpp */,
 				DE4F697B2087E57A00039928 /* Types.hpp */,
 				DE4F694A2083F99100039928 /* Symbols.cpp */,
@@ -388,6 +394,7 @@
 				DE5FCD1920A64D6A00299A6E /* SCModule.cpp in Sources */,
 				DEABFB0F207B09B900F80986 /* SCCompilerBaseListener.cpp in Sources */,
 				DE4F6988208D40DE00039928 /* CodeGenPass.cpp in Sources */,
+				DE5FCD1E20A65BAF00299A6E /* SCCompiler.cpp in Sources */,
 				DE4F6949208147B400039928 /* ASTVisualizer.cpp in Sources */,
 				DE4F694F20842AB700039928 /* SymbolDefPass.cpp in Sources */,
 				DEABFA602070953200F80986 /* main.cpp in Sources */,
@@ -404,6 +411,7 @@
 			files = (
 				DE4F69682086A3AA00039928 /* AST.cpp in Sources */,
 				DE4F6963208689D100039928 /* SyntaxTests.cpp in Sources */,
+				DE5FCD1F20A65BAF00299A6E /* SCCompiler.cpp in Sources */,
 				DE4F696E2086A3AA00039928 /* Exceptions.cpp in Sources */,
 				DE5FCD1A20A64D6A00299A6E /* SCModule.cpp in Sources */,
 				DE4F696B2086A3AA00039928 /* Symbols.cpp in Sources */,
