@@ -22,6 +22,7 @@
 #include "SemanticPass.hpp"
 #include "CodeGenPass.hpp"
 #include "Exceptions.hpp"
+#include "JITEngine.hpp"
 #include "Compiler.hpp"
 
 
@@ -51,36 +52,38 @@ private:
 #pragma mark - Compiler Implementations.
 
 
-SCCompiler::CompileResult SCCompiler::Compiler::CompileFromFile(std::string filename)
+SCCompiler::SCModule * SCCompiler::Compiler::CompileFromFile(std::string filename, CompileResult & compileResult)
 {
     // Open test code source file.
     std::ifstream sourceCodeFile(filename);
 
     if (sourceCodeFile.is_open())
     {
-        auto compileResult = Compile(sourceCodeFile);
+        auto scModule = Compile(sourceCodeFile, compileResult);
         sourceCodeFile.close();
-        return compileResult;
+        return scModule;
     }
 
     m_errorMessage = "Source code file not found.";
-    return SCCompiler::CompileResult::rCompileResultCompileError;
+    compileResult = SCCompiler::CompileResult::rCompileResultCompileError;
+    return nullptr;
 }
 
 
-SCCompiler::CompileResult SCCompiler::Compiler::CompileFromMemory(std::string sourceCode)
+SCCompiler::SCModule * SCCompiler::Compiler::CompileFromMemory(std::string sourceCode, CompileResult & compileResult)
 {
     std::istringstream sourceStream(sourceCode);
     
-    return Compile(sourceStream);
+    return Compile(sourceStream, compileResult);
 }
 
 
-SCCompiler::CompileResult SCCompiler::Compiler::Compile(std::istream & sourceStream)
+SCCompiler::SCModule * SCCompiler::Compiler::Compile(std::istream & sourceStream, CompileResult & compileResult)
 {
     // Error listener for parser.
     ParserErrorListener  parserErrorListener;
-
+    SCModule * scModule = nullptr;
+    
     try
     {
         ANTLRInputStream    input(sourceStream);
@@ -108,7 +111,8 @@ SCCompiler::CompileResult SCCompiler::Compiler::Compile(std::istream & sourceStr
         if (lexer.getNumberOfSyntaxErrors() > 0 || parser.getNumberOfSyntaxErrors() > 0)
         {
             m_errorMessage = parserErrorListener.GetErrorMessage();
-            return SCCompiler::CompileResult::rCompileResultSyntaxError;
+            compileResult = SCCompiler::CompileResult::rCompileResultSyntaxError;
+            return nullptr;
         }
 
         // Generate AST from Parse Tree.
@@ -132,9 +136,9 @@ SCCompiler::CompileResult SCCompiler::Compiler::Compile(std::istream & sourceStr
         SemanticPass  semanticAnalysisPass;
         semanticAnalysisPass.SemanticCheck(ast);
 
-        // PASS: Perform code generation by visiting AST nodes.
-        CodeGenPass  codeGenerationPass;
-        codeGenerationPass.GenerateCode(ast);
+        // PASS: Perform code generation by visiting AST nodes and create program execution module: SCModule.
+        CodeGenPass codeGenerationPass;
+        scModule = codeGenerationPass.GenerateCode(ast);
 
         delete scopeTree;
         delete ast;
@@ -142,19 +146,23 @@ SCCompiler::CompileResult SCCompiler::Compiler::Compile(std::istream & sourceStr
     catch (SemanticErrorException & e)
     {
         m_errorMessage = e.what();
-        return SCCompiler::CompileResult::rCompileResultSemanticError;
+        compileResult = SCCompiler::CompileResult::rCompileResultSemanticError;
+        return nullptr;
     }
     catch (CompileErrorException & e)
     {
         m_errorMessage = e.what();
-        return SCCompiler::CompileResult::rCompileResultCompileError;
+        compileResult = SCCompiler::CompileResult::rCompileResultCompileError;
+        return nullptr;
     }
     catch (std::exception & e)
     {
         m_errorMessage = e.what();
-        return SCCompiler::CompileResult::rCompileResultCompileError;
+        compileResult = SCCompiler::CompileResult::rCompileResultCompileError;
+        return nullptr;
     }
 
-    return SCCompiler::CompileResult::rCompileResultOk;
+    compileResult = SCCompiler::CompileResult::rCompileResultOk;
+    return scModule;
 }
 

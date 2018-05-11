@@ -9,6 +9,8 @@
 
 #include <string>
 
+#include "SCModule.hpp"
+
 
 namespace SCCompiler
 {
@@ -31,17 +33,17 @@ namespace SCCompiler
     public:
 
         // Compiles Simple C Source code from file.
-        CompileResult CompileFromFile(std::string filename);
+        SCModule * CompileFromFile(std::string filename, CompileResult & compileResult);
 
         // Compiles Simple C Source code from memory.
-        CompileResult CompileFromMemory(std::string sourceCode);
+        SCModule * CompileFromMemory(std::string sourceCode, CompileResult & compileResult);
 
         // Returns compile error message.
         std::string GetErrorMessage()   { return m_errorMessage; }
 
     protected:
         // Compiles Simple C Source code.
-        CompileResult Compile(std::istream & sourceStream);
+        SCModule * Compile(std::istream & sourceStream, CompileResult & compileResult);
 
     private:
         std::string     m_errorMessage;

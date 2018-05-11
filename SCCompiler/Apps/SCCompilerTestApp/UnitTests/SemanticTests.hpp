@@ -11,6 +11,7 @@
 #include <string>
 #include <stdexcept>
 #include <cppunit/extensions/HelperMacros.h>
+
 #include "Compiler.hpp"
 
 class SemanticTests : public CppUnit::TestFixture
@@ -30,10 +31,10 @@ public:
     void tearDown();
     
     // Tests given source code.
-    void TestCode(std::string sourceCode,
-                  SCCompiler::CompileResult expectedCompilerResult,
-                  bool acceptExpectedCompilerResult);
-    
+    SCCompiler::SCModule * TestCode(std::string sourceCode,
+                                    SCCompiler::CompileResult expectedCompileResult,
+                                    bool acceptExpectedCompileResult);
+
     // Semantic Tests
     
     void SemanticUndeclaredIdentifierTest();

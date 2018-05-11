@@ -11,6 +11,7 @@
 
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
+#include "llvm/ExecutionEngine/MCJIT.h"
 #include "llvm/ExecutionEngine/GenericValue.h"
 #include "llvm/IR/Argument.h"
 #include "llvm/IR/BasicBlock.h"
@@ -46,6 +47,7 @@ namespace SCCompiler
         class NodeLiteral;
     }
 
+    class JITEngine;
 
     #pragma mark - Class SymbolProperty
 
@@ -77,7 +79,7 @@ namespace SCCompiler
         virtual ~CodeGenPass();
         
         // Perform semantic analysis on nodes AST.
-        void GenerateCode(AST::Node * node);
+        JITEngine * GenerateCode(AST::Node * node);
 
     private:
         // Visits all node childs.
@@ -131,10 +133,10 @@ namespace SCCompiler
 
     protected:
         // Stores entire code.
-        llvm::Module *   m_module;
+        std::unique_ptr<llvm::Module>  m_module;
 
         // LLVM context. NOTE: We need LLVMContext per-thread context.
-        llvm::LLVMContext   m_context;
+        llvm::LLVMContext * m_context;
         
         // Pointer to current LLVM Function.
         llvm::Function *  m_currentFunction;

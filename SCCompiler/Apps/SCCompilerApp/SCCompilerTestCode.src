@@ -1,12 +1,13 @@
 
-int integer1 = 1;
-float float1 = 0.0;
+int gVar1 = 0;
+float gVar2 = 0.0;
 
-int fib(int i, float j)
+int fib(int i)
 {
-    i = 5 + integer1;
+    gVar1 = 1;
+    i = 5 + gVar1;
     int var = i*2;
-    int temp = (5*3)/var + integer1 * var / i;
+    int temp = (5*4)/var + gVar1 * var / i;
     return temp;
 }
 
@@ -14,6 +15,15 @@ int fib(int i, float j)
 /*
 float z;
 bool var = true;
+
+int fib(int i)
+{
+    i = 5 + integer1;
+    int var = i*2;
+    int temp = (5*4);
+    return temp;
+}
+
 
 float fib(int i, float j, float z)
 {

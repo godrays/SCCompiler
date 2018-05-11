@@ -30,17 +30,23 @@ void SyntaxTests::tearDown()
 }
 
 
-void SyntaxTests::TestCode(std::string sourceCode, CompileResult expectedCompilerResult, bool acceptExpectedCompilerResult)
+SCModule * SyntaxTests::TestCode(std::string sourceCode, CompileResult expectedCompileResult, bool acceptExpectedCompileResult)
 {
     Compiler compiler;
     
+    CompileResult compileResult;
+    
+    auto scModule = compiler.CompileFromMemory(sourceCode, compileResult);
+    
     // Assert if compiler result is not expected.
-    if ((acceptExpectedCompilerResult && (compiler.CompileFromMemory(sourceCode) != expectedCompilerResult)) ||
-       (!acceptExpectedCompilerResult && (compiler.CompileFromMemory(sourceCode) == expectedCompilerResult)))
+    if ((acceptExpectedCompileResult && (compileResult != expectedCompileResult)) ||
+       (!acceptExpectedCompileResult && (compileResult == expectedCompileResult)))
     {
         std::cerr << compiler.GetErrorMessage() << std::endl;
         CPPUNIT_ASSERT(false);
     }
+    
+    return scModule;
 }
 
 

@@ -14,6 +14,7 @@
 #include "Symbols.hpp"
 #include "AST.hpp"
 #include "Exceptions.hpp"
+#include "JITEngine.hpp"
 #include "CodeGenPass.hpp"
 
 using namespace SCCompiler;
@@ -39,30 +40,34 @@ llvm::Value * SymbolProperty::GetValue()
 
 CodeGenPass::CodeGenPass() :
     m_module(nullptr),
+    m_context(nullptr),
     m_currentFunction(nullptr),
     m_irBuilder(nullptr)
 {
-    // Setup the host target and ensure that the target libraries are linked.
-    llvm::InitializeNativeTarget();
+
 }
 
 
 CodeGenPass::~CodeGenPass()
 {
-    llvm::llvm_shutdown();
+    delete m_irBuilder;
 }
 
 
-void CodeGenPass::GenerateCode(AST::Node * node)
+JITEngine * CodeGenPass::GenerateCode(AST::Node * node)
 {
-    m_module = new llvm::Module("Program", m_context);
+    m_context = new llvm::LLVMContext();
+    m_module = std::make_unique<llvm::Module>("Program", *m_context);
 
     // Create new IRBuilder for global scope.
-    m_irBuilder = new llvm::IRBuilder<>(m_context);
+    m_irBuilder = new llvm::IRBuilder<>(*m_context);
 
     Visit(node);
     
     DumpIRCode();
+
+    // Create JITEngine. Transfer ownership of m_module and m_context to JITEngine.
+    return new JITEngine(std::move(m_module));
 }
 
 
@@ -259,7 +264,7 @@ void CodeGenPass::VisitReturnStatement(AST::NodeReturnStatement * node)
     }
 
     // return <expression>
-    auto exprValue = Visit(node->GetChild(0));
+    auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
     m_irBuilder->CreateRet(exprValue);
 }
 
@@ -420,11 +425,11 @@ llvm::Constant * CodeGenPass::CreateConstant(SCCompiler::Type type, const std::s
     switch(type)
     {
         case SCCompiler::Type::tTypeInt:
-            return llvm::ConstantInt::get(m_context, llvm::APInt(32, uint32_t(atoi(value.c_str())), true));
+            return llvm::ConstantInt::get(*m_context, llvm::APInt(32, uint32_t(atoi(value.c_str())), true));
             break;
 
         case SCCompiler::Type::tTypeFloat:
-            return llvm::ConstantFP::get(m_context, llvm::APFloat(float(atof(value.c_str()))));
+            return llvm::ConstantFP::get(*m_context, llvm::APFloat(float(atof(value.c_str()))));
             break;
 
         default:
@@ -459,7 +464,7 @@ llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
                                          std::vector<llvm::Type *> & argTypes)
 {
     llvm::FunctionType * funcType = llvm::FunctionType::get(CreateBaseType(returnType), argTypes, false);
-    llvm::Function * func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name, m_module);
+    llvm::Function * func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name, m_module.get());
 
     return func;
 }
@@ -467,7 +472,7 @@ llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
 
 llvm::BasicBlock * CodeGenPass::CreateBasicBlock(llvm::Function * func, std::string name)
 {
-    return llvm::BasicBlock::Create(m_context, name, func);
+    return llvm::BasicBlock::Create(*m_context, name, func);
 }
 
 
