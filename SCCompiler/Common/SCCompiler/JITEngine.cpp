@@ -11,7 +11,7 @@
 #include "Exceptions.hpp"
 #include "JITEngine.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 #pragma mark - JITEngine Implementations

@@ -10,7 +10,7 @@
 #include "AST.hpp"
 #include "ASTGenerator.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 #pragma mark - ASTVisualizer Implementations.

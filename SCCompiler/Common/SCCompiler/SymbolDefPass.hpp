@@ -8,7 +8,7 @@
 #pragma once
 
 
-namespace SCCompiler
+namespace SCC
 {
     // Fordward declaration.
     class ScopeNode;

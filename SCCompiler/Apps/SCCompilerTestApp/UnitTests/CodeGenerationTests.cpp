@@ -8,7 +8,7 @@
 #include "Compiler.hpp"
 #include "CodeGenerationTests.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 // Registers the fixture into the 'registry'

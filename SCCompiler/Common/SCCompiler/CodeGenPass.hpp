@@ -30,7 +30,7 @@
 #include "llvm/Support/raw_ostream.h"
 
 
-namespace SCCompiler
+namespace SCC
 {
     // Forward declaration.
     namespace AST
@@ -108,16 +108,16 @@ namespace SCCompiler
         
     private:
         // Creates LLVM base type. (float, int, bool etc..)
-        llvm::Type * CreateBaseType(SCCompiler::Type type);
+        llvm::Type * CreateBaseType(SCC::Type type);
 
         // Creates LLVM constant value.
-        llvm::Constant * CreateConstant(SCCompiler::Type type, const std::string & value);
+        llvm::Constant * CreateConstant(SCC::Type type, const std::string & value);
 
         // Creates new global variable.
-        llvm::GlobalVariable * CreateGlobalVariable(std::string name, SCCompiler::Type, const std::string & value);
+        llvm::GlobalVariable * CreateGlobalVariable(std::string name, SCC::Type, const std::string & value);
 
         // Create function.
-        llvm::Function * CreateFunc(llvm::IRBuilder <> &Builder, SCCompiler::Type returnType, std:: string Name, std::vector<llvm::Type *> & argTypes);
+        llvm::Function * CreateFunc(llvm::IRBuilder <> &Builder, SCC::Type returnType, std:: string Name, std::vector<llvm::Type *> & argTypes);
 
         // Create basic block.
         llvm::BasicBlock * CreateBasicBlock(llvm::Function * func, std:: string name);

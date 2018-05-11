@@ -8,7 +8,7 @@
 #include "Symbols.hpp"
 
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 #pragma mark - SymbolPropertyBase Implementations.

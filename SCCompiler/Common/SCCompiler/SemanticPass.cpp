@@ -13,7 +13,7 @@
 #include "SemanticPass.hpp"
 #include "Exceptions.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 #pragma mark - SemanticPass Implementations.

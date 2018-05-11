@@ -15,7 +15,7 @@
 #include "Types.hpp"
 
 
-namespace SCCompiler
+namespace SCC
 {
     // Forward declaration.
     class ScopeNode;

@@ -1,6 +1,6 @@
 //
 //  SemanticTests.hpp
-//  SCCompiler
+//  SCC
 //
 //  Created by Arkin Terli on 4/18/18.
 //  Copyright © 2018 Arkin Terli. All rights reserved.
@@ -31,8 +31,8 @@ public:
     void tearDown();
     
     // Tests given source code.
-    SCCompiler::SCModule * TestCode(std::string sourceCode,
-                                    SCCompiler::CompileResult expectedCompileResult,
+    SCC::SCModule * TestCode(std::string sourceCode,
+                                    SCC::CompileResult expectedCompileResult,
                                     bool acceptExpectedCompileResult);
 
     // Semantic Tests

@@ -9,7 +9,7 @@
 
 #include "AST.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 #pragma mark - FuncArg Implementation

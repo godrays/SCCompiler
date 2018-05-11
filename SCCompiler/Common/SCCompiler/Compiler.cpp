@@ -1,5 +1,5 @@
 //
-//  SCCompiler.cpp
+//  SCC.cpp
 //
 //  Created by Arkin Terli on 4/10/18.
 //  Copyright © 2018 Arkin Terli. All rights reserved.
@@ -52,7 +52,7 @@ private:
 #pragma mark - Compiler Implementations.
 
 
-SCCompiler::SCModule * SCCompiler::Compiler::CompileFromFile(std::string filename, CompileResult & compileResult)
+SCC::SCModule * SCC::Compiler::CompileFromFile(std::string filename, CompileResult & compileResult)
 {
     // Open test code source file.
     std::ifstream sourceCodeFile(filename);
@@ -65,12 +65,12 @@ SCCompiler::SCModule * SCCompiler::Compiler::CompileFromFile(std::string filenam
     }
 
     m_errorMessage = "Source code file not found.";
-    compileResult = SCCompiler::CompileResult::rCompileResultCompileError;
+    compileResult = SCC::CompileResult::rCompileResultCompileError;
     return nullptr;
 }
 
 
-SCCompiler::SCModule * SCCompiler::Compiler::CompileFromMemory(std::string sourceCode, CompileResult & compileResult)
+SCC::SCModule * SCC::Compiler::CompileFromMemory(std::string sourceCode, CompileResult & compileResult)
 {
     std::istringstream sourceStream(sourceCode);
     
@@ -78,7 +78,7 @@ SCCompiler::SCModule * SCCompiler::Compiler::CompileFromMemory(std::string sourc
 }
 
 
-SCCompiler::SCModule * SCCompiler::Compiler::Compile(std::istream & sourceStream, CompileResult & compileResult)
+SCC::SCModule * SCC::Compiler::Compile(std::istream & sourceStream, CompileResult & compileResult)
 {
     // Error listener for parser.
     ParserErrorListener  parserErrorListener;
@@ -111,7 +111,7 @@ SCCompiler::SCModule * SCCompiler::Compiler::Compile(std::istream & sourceStream
         if (lexer.getNumberOfSyntaxErrors() > 0 || parser.getNumberOfSyntaxErrors() > 0)
         {
             m_errorMessage = parserErrorListener.GetErrorMessage();
-            compileResult = SCCompiler::CompileResult::rCompileResultSyntaxError;
+            compileResult = SCC::CompileResult::rCompileResultSyntaxError;
             return nullptr;
         }
 
@@ -123,7 +123,7 @@ SCCompiler::SCModule * SCCompiler::Compiler::Compile(std::istream & sourceStream
         // DEBUG ONLY -----------------
         // Generate Graphviz DOT file to visualize AST.
         ASTVisualizer   astVisualizer;
-        astVisualizer.GenerateDOTFile(ast, "/Users/arkin/Projects/Compiler/SCCompiler/ast.dot");
+        astVisualizer.GenerateDOTFile(ast, "/Users/arkin/Projects/Compiler/SCC/ast.dot");
         // DEBUG ONLY -----------------
 
         // PASS: Create scope tree and define symbols by visiting AST nodes.
@@ -146,23 +146,23 @@ SCCompiler::SCModule * SCCompiler::Compiler::Compile(std::istream & sourceStream
     catch (SemanticErrorException & e)
     {
         m_errorMessage = e.what();
-        compileResult = SCCompiler::CompileResult::rCompileResultSemanticError;
+        compileResult = SCC::CompileResult::rCompileResultSemanticError;
         return nullptr;
     }
     catch (CompileErrorException & e)
     {
         m_errorMessage = e.what();
-        compileResult = SCCompiler::CompileResult::rCompileResultCompileError;
+        compileResult = SCC::CompileResult::rCompileResultCompileError;
         return nullptr;
     }
     catch (std::exception & e)
     {
         m_errorMessage = e.what();
-        compileResult = SCCompiler::CompileResult::rCompileResultCompileError;
+        compileResult = SCC::CompileResult::rCompileResultCompileError;
         return nullptr;
     }
 
-    compileResult = SCCompiler::CompileResult::rCompileResultOk;
+    compileResult = SCC::CompileResult::rCompileResultOk;
     return scModule;
 }
 

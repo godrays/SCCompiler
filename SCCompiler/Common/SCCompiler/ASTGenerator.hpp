@@ -13,7 +13,7 @@
 #include "SCCompilerBaseVisitor.h"
 
 
-namespace SCCompiler
+namespace SCC
 {
     // Fordward declaration
     namespace AST

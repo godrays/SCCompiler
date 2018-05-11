@@ -11,7 +11,7 @@
 #include "AST.hpp"
 #include "ASTVisualizer.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 #pragma mark - ASTVisualizer Implementations.

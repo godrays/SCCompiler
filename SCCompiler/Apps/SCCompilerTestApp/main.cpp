@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  SCCompilerTestApp
+//  SCCTestApp
 //
 //  Created by Arkin Terli on 4/1/18.
 //  Copyright © 2018 Arkin Terli. All rights reserved.
@@ -101,12 +101,12 @@ int main(int argc, char * const argv[])
 {
     // NOTE: USAGE text context and indentations is very sensitive.
     static const char USAGE[] =
-    R"(SCCompiler Test Application.
+    R"(SCC Test Application.
 
     Usage:
-      SCCompilerTestApp  [--output-style=<style>] [--progress=<progress>] [--test=<test>] [--repeat=<count>]
-      SCCompilerTestApp  --list-all
-      SCCompilerTestApp  (-h | --help)
+      SCCTestApp  [--output-style=<style>] [--progress=<progress>] [--test=<test>] [--repeat=<count>]
+      SCCTestApp  --list-all
+      SCCTestApp  (-h | --help)
 
     Options:
 
@@ -127,7 +127,7 @@ int main(int argc, char * const argv[])
         args = docopt::docopt(USAGE,
                               { argv + 1, argv + argc },
                               true,                                     // Show help if requested
-                              "SCCompiler Test Application 1.0");     // Version string
+                              "SCC Test Application 1.0");     // Version string
     }
     catch (...)
     {

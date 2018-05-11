@@ -10,7 +10,7 @@
 #include "SymbolDefPass.hpp"
 #include "Exceptions.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 #pragma mark - SymbolefPass Implementations.

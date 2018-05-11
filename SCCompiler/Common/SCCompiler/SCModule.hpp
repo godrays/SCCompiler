@@ -11,7 +11,7 @@
 #include <string>
 
 
-namespace SCCompiler
+namespace SCC
 {
 
     #pragma mark - Class SCModule.

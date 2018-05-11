@@ -17,7 +17,7 @@
 #include "JITEngine.hpp"
 #include "CodeGenPass.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 #pragma mark - SymbolProperty Implementations.
@@ -352,9 +352,9 @@ llvm::Value * CodeGenPass::VisitLiteral(AST::NodeLiteral * node)
         case AST::NodeType::tNodeTypeLiteralFloat:
         {
             // We create temp local variable and assign constant value.
-            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(SCCompiler::Type::tTypeFloat), nullptr, "_ci");
+            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(SCC::Type::tTypeFloat), nullptr, "_ci");
             // Since we store constant, we don't need to load value from an address.
-            m_irBuilder->CreateStore(CreateConstant(SCCompiler::Type::tTypeFloat, node->GetValue()), localVar);
+            m_irBuilder->CreateStore(CreateConstant(SCC::Type::tTypeFloat, node->GetValue()), localVar);
             // Returns pointer to local variable.
             literalValue = localVar;
         }
@@ -363,9 +363,9 @@ llvm::Value * CodeGenPass::VisitLiteral(AST::NodeLiteral * node)
         case AST::NodeType::tNodeTypeLiteralInt32:
         {
             // We create temp local variable and assign constant value.
-            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(SCCompiler::Type::tTypeInt), nullptr, "_cf");
+            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(SCC::Type::tTypeInt), nullptr, "_cf");
             // Since we store constant, we don't need to load value from an address.
-            m_irBuilder->CreateStore(CreateConstant(SCCompiler::Type::tTypeInt, node->GetValue()), localVar);
+            m_irBuilder->CreateStore(CreateConstant(SCC::Type::tTypeInt, node->GetValue()), localVar);
             // Returns pointer to local variable.
             literalValue = localVar;
         }
@@ -393,19 +393,19 @@ llvm::Value * CodeGenPass::VisitLiteral(AST::NodeLiteral * node)
 }
 
 
-llvm::Type * CodeGenPass::CreateBaseType(SCCompiler::Type type)
+llvm::Type * CodeGenPass::CreateBaseType(SCC::Type type)
 {
     switch(type)
     {
-        case SCCompiler::Type::tTypeInt:
+        case SCC::Type::tTypeInt:
             return m_irBuilder->getInt32Ty();
         break;
 
-        case SCCompiler::Type::tTypeFloat:
+        case SCC::Type::tTypeFloat:
             return m_irBuilder->getFloatTy();
         break;
 
-        case SCCompiler::Type::tTypeVoid:
+        case SCC::Type::tTypeVoid:
             return m_irBuilder->getVoidTy();
         break;
 
@@ -418,17 +418,17 @@ llvm::Type * CodeGenPass::CreateBaseType(SCCompiler::Type type)
 }
 
 
-llvm::Constant * CodeGenPass::CreateConstant(SCCompiler::Type type, const std::string & value)
+llvm::Constant * CodeGenPass::CreateConstant(SCC::Type type, const std::string & value)
 {
     assert(value.size() > 0);
 
     switch(type)
     {
-        case SCCompiler::Type::tTypeInt:
+        case SCC::Type::tTypeInt:
             return llvm::ConstantInt::get(*m_context, llvm::APInt(32, uint32_t(atoi(value.c_str())), true));
             break;
 
-        case SCCompiler::Type::tTypeFloat:
+        case SCC::Type::tTypeFloat:
             return llvm::ConstantFP::get(*m_context, llvm::APFloat(float(atof(value.c_str()))));
             break;
 
@@ -442,7 +442,7 @@ llvm::Constant * CodeGenPass::CreateConstant(SCCompiler::Type type, const std::s
 
 
 llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name,
-                                                         SCCompiler::Type type,
+                                                         SCC::Type type,
                                                          const std::string & value)
 {
     m_module->getOrInsertGlobal(name, CreateBaseType(type));
@@ -459,7 +459,7 @@ llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name,
 
 
 llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
-                                         SCCompiler::Type returnType,
+                                         SCC::Type returnType,
                                          std:: string name,
                                          std::vector<llvm::Type *> & argTypes)
 {

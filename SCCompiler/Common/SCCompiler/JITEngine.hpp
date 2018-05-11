@@ -35,7 +35,7 @@
 #include "SCModule.hpp"
 
 
-namespace SCCompiler
+namespace SCC
 {
     #pragma mark - Class JITEngine
 

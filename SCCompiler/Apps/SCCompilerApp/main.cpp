@@ -13,12 +13,12 @@
 
 int main(int , const char **)
 {
-    SCCompiler::Compiler  * compiler = new SCCompiler::Compiler();
-    SCCompiler::CompileResult  compileResult;
+    SCC::Compiler  * compiler = new SCC::Compiler();
+    SCC::CompileResult  compileResult;
     
     auto scModule = compiler->CompileFromFile("SCCompilerTestCode.src", compileResult);
 
-    if (SCCompiler::rCompileResultOk != compileResult)
+    if (SCC::rCompileResultOk != compileResult)
     {
         std::cerr << compiler->GetErrorMessage() << std::endl;
         return -1;

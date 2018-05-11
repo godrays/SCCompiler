@@ -25,8 +25,8 @@ public:
     void tearDown();
     
     // Tests given source code.
-    SCCompiler::SCModule * TestCode(std::string sourceCode,
-                                    SCCompiler::CompileResult expectedCompileResult,
+    SCC::SCModule * TestCode(std::string sourceCode,
+                                    SCC::CompileResult expectedCompileResult,
                                     bool acceptExpectedCompileResult);
 
     // Code Generation Tests

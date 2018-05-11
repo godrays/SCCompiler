@@ -7,7 +7,7 @@
 
 #include "SCModule.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 #pragma mark - SCModule Implementations.
 

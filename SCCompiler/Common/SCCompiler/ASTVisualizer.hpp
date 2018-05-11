@@ -10,7 +10,7 @@
 #include <fstream>
 
 
-namespace SCCompiler
+namespace SCC
 {
      // Forward declaration.
     namespace AST

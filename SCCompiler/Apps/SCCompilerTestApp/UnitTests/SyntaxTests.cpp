@@ -8,7 +8,7 @@
 #include "Compiler.hpp"
 #include "SyntaxTests.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 // Registers the fixture into the 'registry'

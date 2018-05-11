@@ -1,6 +1,6 @@
 //
 //  Types.cpp
-//  SCCompiler
+//  SCC
 //
 //  Created by Arkin Terli on 4/18/18.
 //  Copyright © 2018 Arkin Terli. All rights reserved.
@@ -9,7 +9,7 @@
 #include <cassert>
 #include "Types.hpp"
 
-using namespace SCCompiler;
+using namespace SCC;
 
 
 #pragma mark - Type Checker Implementations.
