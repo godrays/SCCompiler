@@ -12,7 +12,7 @@
 namespace SCC
 {
 
-    #pragma mark - Class CompilerErrorListenerBase.
+    #pragma mark - Enum SCCompileResult.
 
     enum SCCompileResult : uint32_t
     {
@@ -23,7 +23,7 @@ namespace SCC
     };
 
 
-    #pragma mark - Class Compiler.
+    #pragma mark - Class SCCompiler.
 
     class SCCompiler
     {
