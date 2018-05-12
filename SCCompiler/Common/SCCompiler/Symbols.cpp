@@ -8,7 +8,7 @@
 #include "Symbols.hpp"
 
 
-using namespace SCC;
+using namespace scc;
 
 
 #pragma mark - SymbolPropertyBase Implementations.
@@ -20,7 +20,6 @@ SymbolPropertyBase::~SymbolPropertyBase()
 
 
 #pragma mark - Symbol Implementations.
-
 
 Symbol::Symbol(std::string name, SymbolCategory category, Type type) :
     m_name(name),
@@ -127,7 +126,6 @@ FuncArgSymbol * FunctionSymbol::GetArgumentSymbol(size_t index)
 
 
 #pragma mark - ScopeNode Implementations.
-
 
 ScopeNode::ScopeNode(ScopeCategory category, ScopeNode * enclosingScope) : m_category(category), m_enclosingScope(enclosingScope)
 {

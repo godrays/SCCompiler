@@ -14,6 +14,9 @@
 
 #include "Compiler.hpp"
 
+
+#pragma mark - Class SemanticTests
+
 class SemanticTests : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE( SemanticTests );
@@ -31,8 +34,8 @@ public:
     void tearDown();
     
     // Tests given source code.
-    SCC::SCModule * TestCode(std::string sourceCode,
-                                    SCC::SCCompileResult expectedCompileResult,
+    scc::SCModule * TestCode(std::string sourceCode,
+                                    scc::SCCompileResult expectedCompileResult,
                                     bool acceptExpectedCompileResult);
 
     // Semantic Tests

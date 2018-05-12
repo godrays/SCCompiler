@@ -10,7 +10,11 @@
 #include <string>
 #include <stdexcept>
 #include <cppunit/extensions/HelperMacros.h>
+
 #include "Compiler.hpp"
+
+
+#pragma mark - Class SyntaxTests
 
 class SyntaxTests : public CppUnit::TestFixture
 {
@@ -27,8 +31,8 @@ public:
     void tearDown();
     
     // Tests given source code.
-    SCC::SCModule * TestCode(std::string sourceCode,
-                                    SCC::SCCompileResult expectedCompileResult,
+    scc::SCModule * TestCode(std::string sourceCode,
+                                    scc::SCCompileResult expectedCompileResult,
                                     bool acceptExpectedCompileResult);
     
     // Syntax Acceptance Test

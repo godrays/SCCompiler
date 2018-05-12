@@ -8,7 +8,7 @@
 #include "Compiler.hpp"
 #include "SCCompiler.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 #pragma mark - SCCompiler Implementations.
 

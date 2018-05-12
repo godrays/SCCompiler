@@ -9,15 +9,14 @@
 #include "Compiler.hpp"
 #include "SemanticTests.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 // Registers the fixture into the 'registry'
 CPPUNIT_TEST_SUITE_REGISTRATION( SemanticTests );
 
 
-#pragma mark - Semantic Tests
-
+#pragma mark - SemanticTests Implementations
 
 void SemanticTests::setUp()
 {

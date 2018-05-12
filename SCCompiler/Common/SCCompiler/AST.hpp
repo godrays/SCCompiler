@@ -14,13 +14,16 @@
 #include "Types.hpp"
 
 
-namespace SCC
+namespace scc
 {
+
     // Forward declaration.
     class ScopeNode;
     
-namespace AST
+namespace ast
 {
+
+    #pragma mark - Enum NodeType
 
     // Node types for AST tree.
     enum NodeType : uint32_t
@@ -99,7 +102,7 @@ namespace AST
         NodeType  GetNodeType();
 
         // Return node type in string.
-        std::string GetNodeTypeInString(AST::NodeType nodeType);
+        std::string GetNodeTypeInString(ast::NodeType nodeType);
 
         // Set scope.
         void SetScope(ScopeNode * scope);
@@ -298,7 +301,7 @@ namespace AST
     {
     public:
         // Constructor.
-        NodeLiteral(AST::NodeType nodeType, std::string value);
+        NodeLiteral(ast::NodeType nodeType, std::string value);
 
         // Destructor.
         virtual ~NodeLiteral();

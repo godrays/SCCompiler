@@ -8,13 +8,14 @@
 #pragma once
 
 
-namespace SCC
+namespace scc
 {
+
     // Fordward declaration.
     class ScopeNode;
 
     // Fordward declaration.
-    namespace AST
+    namespace ast
     {
         class Node;
         class NodeVarDeclaration;
@@ -22,26 +23,27 @@ namespace SCC
         class NodeBlock;
     }
 
+
     #pragma mark - Class SymbolDefPass
 
     class  SymbolDefPass
     {
     public:
         // Creates a scope tree and defines symbols based on the AST nodes.
-        ScopeNode * CreateScopeTree(AST::Node * node);
+        ScopeNode * CreateScopeTree(ast::Node * node);
 
     private:
         // Visits nodes to create scopes and define symbols.
-        void Visit(AST::Node * node);
+        void Visit(ast::Node * node);
 
         // Visits node childs.
-        void VisitChilds(AST::Node * node);
+        void VisitChilds(ast::Node * node);
         
-        void VisitVariableDeclaration(AST::NodeVarDeclaration * node);
+        void VisitVariableDeclaration(ast::NodeVarDeclaration * node);
 
-        void VisitFunctionDeclaration(AST::NodeFuncDeclaration * node);
+        void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
 
-        void VisitBlock(AST::NodeBlock * node);
+        void VisitBlock(ast::NodeBlock * node);
 
     private:
         // Stores current scope.

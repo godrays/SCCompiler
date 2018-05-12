@@ -8,15 +8,14 @@
 #include "Compiler.hpp"
 #include "SyntaxTests.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 // Registers the fixture into the 'registry'
 CPPUNIT_TEST_SUITE_REGISTRATION( SyntaxTests );
 
 
-#pragma mark - Syntax Tests
-
+#pragma mark - SyntaxTests Implementations
 
 void SyntaxTests::setUp()
 {

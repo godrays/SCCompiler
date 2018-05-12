@@ -10,13 +10,15 @@
 #include <fstream>
 
 
-namespace SCC
+namespace scc
 {
+
      // Forward declaration.
-    namespace AST
+    namespace ast
     {
         class Node;
     }
+
 
    #pragma mark - Class ASTVisualizer
 
@@ -30,20 +32,20 @@ namespace SCC
         virtual ~ASTVisualizer() { }
 
         // Genearates DOT file from AST tree and outputs to a file.
-        void GenerateDOTFile(AST::Node * node, std::string filename);
+        void GenerateDOTFile(ast::Node * node, std::string filename);
 
     protected:
         // Visits node to genearte Graphviz DOT file for visualization.
-        void Visit(AST::Node * node);
+        void Visit(ast::Node * node);
     
         // Output string for a node
-        void OutputConfig(AST::Node * node, const std::string & nodeConfig);
+        void OutputConfig(ast::Node * node, const std::string & nodeConfig);
 
         // Output variable declaration node string.
-        void OutputConfigVariableDecl(AST::Node * node);
+        void OutputConfigVariableDecl(ast::Node * node);
 
         // Output function declaration node string.
-        void OutputConfigFuncDecl(AST::Node * node);
+        void OutputConfigFuncDecl(ast::Node * node);
 
     private:
         // Output file.

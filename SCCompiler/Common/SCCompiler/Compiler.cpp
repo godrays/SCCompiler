@@ -25,7 +25,6 @@
 #include "JITEngine.hpp"
 #include "Compiler.hpp"
 
-
 using namespace antlr4;
 
 
@@ -51,8 +50,7 @@ private:
 
 #pragma mark - Compiler Implementations.
 
-
-SCC::SCModule * SCC::Compiler::CompileFromFile(std::string filename, SCC::SCCompileResult & compileResult)
+scc::SCModule * scc::Compiler::CompileFromFile(std::string filename, scc::SCCompileResult & compileResult)
 {
     // Open test code source file.
     std::ifstream sourceCodeFile(filename);
@@ -65,12 +63,12 @@ SCC::SCModule * SCC::Compiler::CompileFromFile(std::string filename, SCC::SCComp
     }
 
     m_errorMessage = "Source code file not found.";
-    compileResult = SCC::SCCompileResult::rSCCompileResultCompileError;
+    compileResult = scc::SCCompileResult::rSCCompileResultCompileError;
     return nullptr;
 }
 
 
-SCC::SCModule * SCC::Compiler::CompileFromMemory(std::string sourceCode, SCC::SCCompileResult & compileResult)
+scc::SCModule * scc::Compiler::CompileFromMemory(std::string sourceCode, scc::SCCompileResult & compileResult)
 {
     std::istringstream sourceStream(sourceCode);
     
@@ -78,7 +76,7 @@ SCC::SCModule * SCC::Compiler::CompileFromMemory(std::string sourceCode, SCC::SC
 }
 
 
-SCC::SCModule * SCC::Compiler::Compile(std::istream & sourceStream, SCC::SCCompileResult & compileResult)
+scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompileResult & compileResult)
 {
     // Error listener for parser.
     ParserErrorListener  parserErrorListener;
@@ -111,7 +109,7 @@ SCC::SCModule * SCC::Compiler::Compile(std::istream & sourceStream, SCC::SCCompi
         if (lexer.getNumberOfSyntaxErrors() > 0 || parser.getNumberOfSyntaxErrors() > 0)
         {
             m_errorMessage = parserErrorListener.GetErrorMessage();
-            compileResult = SCC::SCCompileResult::rSCCompileResultSyntaxError;
+            compileResult = scc::SCCompileResult::rSCCompileResultSyntaxError;
             return nullptr;
         }
 
@@ -146,23 +144,23 @@ SCC::SCModule * SCC::Compiler::Compile(std::istream & sourceStream, SCC::SCCompi
     catch (SemanticErrorException & e)
     {
         m_errorMessage = e.what();
-        compileResult = SCC::SCCompileResult::rSCCompileResultSemanticError;
+        compileResult = scc::SCCompileResult::rSCCompileResultSemanticError;
         return nullptr;
     }
     catch (CompileErrorException & e)
     {
         m_errorMessage = e.what();
-        compileResult = SCC::SCCompileResult::rSCCompileResultCompileError;
+        compileResult = scc::SCCompileResult::rSCCompileResultCompileError;
         return nullptr;
     }
     catch (std::exception & e)
     {
         m_errorMessage = e.what();
-        compileResult = SCC::SCCompileResult::rSCCompileResultCompileError;
+        compileResult = scc::SCCompileResult::rSCCompileResultCompileError;
         return nullptr;
     }
 
-    compileResult = SCC::SCCompileResult::rSCCompileResultOk;
+    compileResult = scc::SCCompileResult::rSCCompileResultOk;
     return scModule;
 }
 

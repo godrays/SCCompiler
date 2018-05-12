@@ -11,7 +11,7 @@
 #include <exception>
 
 
-namespace SCC
+namespace scc
 {
 
     #pragma mark - Class CompileErrorException.

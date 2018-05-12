@@ -9,11 +9,10 @@
 #include <cassert>
 #include "Types.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 #pragma mark - Type Checker Implementations.
-
 
 Type TypeChecker::m_typePromotionTable[tTypeMax][tTypeMax] =
 {

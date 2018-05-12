@@ -8,15 +8,14 @@
 #include "Compiler.hpp"
 #include "CodeGenerationTests.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 // Registers the fixture into the 'registry'
 CPPUNIT_TEST_SUITE_REGISTRATION( CodeGenerationTests );
 
 
-#pragma mark - CodeGenerationTests Tests
-
+#pragma mark - CodeGenerationTests Implementations
 
 void CodeGenerationTests::setUp()
 {

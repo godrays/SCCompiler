@@ -10,11 +10,10 @@
 #include "AST.hpp"
 #include "ASTGenerator.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 #pragma mark - ASTVisualizer Implementations.
-
 
 Type ASTGenerator::ToASTType(std::string type)
 {
@@ -30,7 +29,7 @@ Type ASTGenerator::ToASTType(std::string type)
 
 antlrcpp::Any ASTGenerator::visitProgram(SCCompilerParser::ProgramContext *ctx)
 {
-    m_rootNode = new AST::NodeProgram();
+    m_rootNode = new ast::NodeProgram();
 
     // Push new parent node into stack. It becomes new parent node for child visits.
     m_currentNodeStack.push(m_rootNode);
@@ -51,7 +50,7 @@ antlrcpp::Any ASTGenerator::visitVarDecl(SCCompilerParser::VarDeclContext *ctx)
     std::string varName = ctx->ID()->getText();
 
     // Create new AST Node.
-    auto newNode = new AST::NodeVarDeclaration(type, varName);
+    auto newNode = new ast::NodeVarDeclaration(type, varName);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
     // Set parent node. Parent node is the top element in the currentNode Stack.
@@ -79,7 +78,7 @@ antlrcpp::Any ASTGenerator::visitFuncDeclaration(SCCompilerParser::FuncDeclarati
     std::string funcName = ctx->ID()->getText();
 
     // Create new AST Node.
-    auto newNode = new AST::NodeFuncDeclaration(funcReturnType, funcName);
+    auto newNode = new ast::NodeFuncDeclaration(funcReturnType, funcName);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
     // Set parent node. Parent node is the top element in the currentNode Stack.
@@ -107,7 +106,7 @@ antlrcpp::Any ASTGenerator::visitFuncArgDeclaration(SCCompilerParser::FuncArgDec
     std::string argName = ctx->ID()->getText();
 
     // Parent node has to be function declaration node. Top of Node stack is definitely FuncDeclaratinNode.
-    auto parentNode = dynamic_cast<AST::NodeFuncDeclaration*>(m_currentNodeStack.top());
+    auto parentNode = dynamic_cast<ast::NodeFuncDeclaration*>(m_currentNodeStack.top());
     assert(parentNode != nullptr);
 
     parentNode->AddArgument({argType, argName});
@@ -119,7 +118,7 @@ antlrcpp::Any ASTGenerator::visitFuncArgDeclaration(SCCompilerParser::FuncArgDec
 antlrcpp::Any ASTGenerator::visitBlock(SCCompilerParser::BlockContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new AST::NodeBlock();
+    auto newNode = new ast::NodeBlock();
 
     // Set parent node. Parent node is the top element in the currentNode Stack.
     newNode->SetParent(m_currentNodeStack.top());
@@ -143,7 +142,7 @@ antlrcpp::Any ASTGenerator::visitBlock(SCCompilerParser::BlockContext *ctx)
 antlrcpp::Any ASTGenerator::visitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new AST::NodeReturnStatement();
+    auto newNode = new ast::NodeReturnStatement();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
     // Set parent node. Parent node is the top element in the currentNode Stack.
@@ -168,7 +167,7 @@ antlrcpp::Any ASTGenerator::visitReturnStatement(SCCompilerParser::ReturnStateme
 antlrcpp::Any ASTGenerator::visitAssignmentStatement(SCCompilerParser::AssignmentStatementContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new AST::NodeAssignment();
+    auto newNode = new ast::NodeAssignment();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
     // Set parent node. Parent node is the top element in the currentNode Stack.
@@ -192,26 +191,26 @@ antlrcpp::Any ASTGenerator::visitAssignmentStatement(SCCompilerParser::Assignmen
 
 antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx)
 {
-    AST::NodeType nodeType =AST::NodeType::tNodeTypeUnknown;
+    ast::NodeType nodeType =ast::NodeType::tNodeTypeUnknown;
     std::string  value = ctx->getText();
 
     // Get type of the literal.
     switch (ctx->getStart()->getType())
     {
         case SCCompilerParser::ID:
-        nodeType = AST::NodeType::tNodeTypeLiteralID;
+        nodeType = ast::NodeType::tNodeTypeLiteralID;
         break;
 
         case SCCompilerParser::FLOAT:
-        nodeType =AST::NodeType::tNodeTypeLiteralFloat;
+        nodeType =ast::NodeType::tNodeTypeLiteralFloat;
         break;
 
         case SCCompilerParser::INT:
-        nodeType =AST::NodeType::tNodeTypeLiteralInt32;
+        nodeType =ast::NodeType::tNodeTypeLiteralInt32;
         break;
 
         case SCCompilerParser::BOOL:
-        nodeType =AST::NodeType::tNodeTypeLiteralBool;
+        nodeType =ast::NodeType::tNodeTypeLiteralBool;
         break;
 
         default:
@@ -220,7 +219,7 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
     }
 
     // Create new AST Node.
-    auto newNode = new AST::NodeLiteral(nodeType, value);
+    auto newNode = new ast::NodeLiteral(nodeType, value);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
     // Set parent node. Parent node is the top element in the currentNode Stack.
@@ -244,18 +243,18 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
 
 antlrcpp::Any ASTGenerator::visitAOPExpr(SCCompilerParser::AOPExprContext *ctx)
 {
-    AST::NodeType nodeType = AST::NodeType::tNodeTypeUnknown;
+    ast::NodeType nodeType = ast::NodeType::tNodeTypeUnknown;
     assert(ctx->children.size() == 3);
     std::string  aop = ctx->children[1]->getText(); // Second child is arithmetic operator in the expression.
 
-    if (aop == "*") nodeType = AST::NodeType::tNodeTypeAOPMul;
-    else if (aop == "/") nodeType = AST::NodeType::tNodeTypeAOPDiv;
-    else if (aop == "+") nodeType = AST::NodeType::tNodeTypeAOPAdd;
-    else if (aop == "-") nodeType = AST::NodeType::tNodeTypeAOPSub;
+    if (aop == "*") nodeType = ast::NodeType::tNodeTypeAOPMul;
+    else if (aop == "/") nodeType = ast::NodeType::tNodeTypeAOPDiv;
+    else if (aop == "+") nodeType = ast::NodeType::tNodeTypeAOPAdd;
+    else if (aop == "-") nodeType = ast::NodeType::tNodeTypeAOPSub;
     else assert(false && "Unknown arithmetic perator.");
 
     // Create new AST Node.
-    auto newNode = new AST::NodeAOP(nodeType);
+    auto newNode = new ast::NodeAOP(nodeType);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
     // Set parent node. Parent node is the top element in the currentNode Stack.
@@ -282,7 +281,7 @@ antlrcpp::Any ASTGenerator::visitFuncCallExpr(SCCompilerParser::FuncCallExprCont
     std::string funcName = ctx->ID()->getText();
 
     // Create new AST Node.
-    auto newNode = new AST::NodeFuncCall(funcName);
+    auto newNode = new ast::NodeFuncCall(funcName);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
     // Set parent node. Parent node is the top element in the currentNode Stack.

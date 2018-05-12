@@ -12,6 +12,8 @@
 #include "Compiler.hpp"
 
 
+#pragma mark - Class CodeGenerationTests
+
 class CodeGenerationTests : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE( CodeGenerationTests );
@@ -25,8 +27,8 @@ public:
     void tearDown();
     
     // Tests given source code.
-    SCC::SCModule * TestCode(std::string sourceCode,
-                                    SCC::SCCompileResult expectedCompileResult,
+    scc::SCModule * TestCode(std::string sourceCode,
+                                    scc::SCCompileResult expectedCompileResult,
                                     bool acceptExpectedCompileResult);
 
     // Code Generation Tests

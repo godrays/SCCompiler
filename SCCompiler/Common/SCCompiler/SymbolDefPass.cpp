@@ -10,13 +10,12 @@
 #include "SymbolDefPass.hpp"
 #include "Exceptions.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 #pragma mark - SymbolefPass Implementations.
 
-
-ScopeNode * SymbolDefPass::CreateScopeTree(AST::Node * node)
+ScopeNode * SymbolDefPass::CreateScopeTree(ast::Node * node)
 {
     ScopeNode *  scopeTreeHead = new ScopeNode(ScopeCategory::cScopeCategoryGlobal, nullptr);
     m_currentScope = scopeTreeHead;
@@ -45,37 +44,37 @@ ScopeNode * SymbolDefPass::CreateScopeTree(AST::Node * node)
 }
 
 
-void SymbolDefPass::Visit(AST::Node * node)
+void SymbolDefPass::Visit(ast::Node * node)
 {
     // Set current scope for the node before visiting.
     node->SetScope(m_currentScope);
 
     switch(node->GetNodeType())
     {
-        case AST::NodeType::tNodeTypeVariableDeclaration:
-            VisitVariableDeclaration(dynamic_cast<AST::NodeVarDeclaration *>(node));
+        case ast::NodeType::tNodeTypeVariableDeclaration:
+            VisitVariableDeclaration(dynamic_cast<ast::NodeVarDeclaration *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeFunctionDeclaration:
-            VisitFunctionDeclaration(dynamic_cast<AST::NodeFuncDeclaration *>(node));
+        case ast::NodeType::tNodeTypeFunctionDeclaration:
+            VisitFunctionDeclaration(dynamic_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeBlock:
-            VisitBlock(static_cast<AST::NodeBlock *>(node));
+        case ast::NodeType::tNodeTypeBlock:
+            VisitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeProgram:
-        case AST::NodeType::tNodeTypeReturnStatement:
-        case AST::NodeType::tNodeTypeFuncCall:
-        case AST::NodeType::tNodeTypeAssignment:
-        case AST::NodeType::tNodeTypeAOPMul:
-        case AST::NodeType::tNodeTypeAOPDiv:
-        case AST::NodeType::tNodeTypeAOPAdd:
-        case AST::NodeType::tNodeTypeAOPSub:
-        case AST::NodeType::tNodeTypeLiteralFloat:
-        case AST::NodeType::tNodeTypeLiteralInt32:
-        case AST::NodeType::tNodeTypeLiteralBool:
-        case AST::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::tNodeTypeProgram:
+        case ast::NodeType::tNodeTypeReturnStatement:
+        case ast::NodeType::tNodeTypeFuncCall:
+        case ast::NodeType::tNodeTypeAssignment:
+        case ast::NodeType::tNodeTypeAOPMul:
+        case ast::NodeType::tNodeTypeAOPDiv:
+        case ast::NodeType::tNodeTypeAOPAdd:
+        case ast::NodeType::tNodeTypeAOPSub:
+        case ast::NodeType::tNodeTypeLiteralFloat:
+        case ast::NodeType::tNodeTypeLiteralInt32:
+        case ast::NodeType::tNodeTypeLiteralBool:
+        case ast::NodeType::tNodeTypeLiteralID:
             VisitChilds(node);
             break;
 
@@ -86,7 +85,7 @@ void SymbolDefPass::Visit(AST::Node * node)
 }
 
 
-void SymbolDefPass::VisitChilds(AST::Node * node)
+void SymbolDefPass::VisitChilds(ast::Node * node)
 {
     // Visit node children.
     for (size_t index=0; index<node->ChildCount(); ++index)
@@ -96,7 +95,7 @@ void SymbolDefPass::VisitChilds(AST::Node * node)
 }
 
 
-void SymbolDefPass::SymbolDefPass::VisitVariableDeclaration(AST::NodeVarDeclaration * node)
+void SymbolDefPass::SymbolDefPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
 {
     auto symbolName = node->GetVarName();
     auto symbolType = node->GetVarType();
@@ -116,7 +115,7 @@ void SymbolDefPass::SymbolDefPass::VisitVariableDeclaration(AST::NodeVarDeclarat
 }
 
 
-void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(AST::NodeFuncDeclaration * node)
+void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 {
     // ADD FUNCTION SYMBOL TO CURRENT SCOPE
     
@@ -169,7 +168,7 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(AST::NodeFuncDeclara
 }
 
 
-void SymbolDefPass::SymbolDefPass::VisitBlock(AST::NodeBlock * node)
+void SymbolDefPass::SymbolDefPass::VisitBlock(ast::NodeBlock * node)
 {
     // CREATE NEW SCOPE FOR FUNCTION
     m_currentScope = new ScopeNode(ScopeCategory::cScopeCategoryBlock, m_currentScope);

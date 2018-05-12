@@ -13,13 +13,12 @@
 #include "SemanticPass.hpp"
 #include "Exceptions.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 #pragma mark - SemanticPass Implementations.
 
-
-void SemanticPass::SemanticCheck(AST::Node * node)
+void SemanticPass::SemanticCheck(ast::Node * node)
 {
     // Do symbol resolution, type checking, type promotion and validation.
     // Anything about the code which may not makes sense should be caught in this pass.
@@ -34,7 +33,7 @@ void SemanticPass::SemanticCheck(AST::Node * node)
 }
 
 
-void SemanticPass::VisitChilds(AST::Node * node)
+void SemanticPass::VisitChilds(ast::Node * node)
 {
     // Visit node children.
     for (size_t index=0; index<node->ChildCount(); ++index)
@@ -44,50 +43,50 @@ void SemanticPass::VisitChilds(AST::Node * node)
 }
 
 
-Type SemanticPass::Visit(AST::Node * node)
+Type SemanticPass::Visit(ast::Node * node)
 {
     switch(node->GetNodeType())
     {
-        case AST::NodeType::tNodeTypeProgram:
-            VisitProgram(dynamic_cast<AST::NodeProgram *>(node));
+        case ast::NodeType::tNodeTypeProgram:
+            VisitProgram(dynamic_cast<ast::NodeProgram *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeVariableDeclaration:
-            VisitVariableDeclaration(dynamic_cast<AST::NodeVarDeclaration *>(node));
+        case ast::NodeType::tNodeTypeVariableDeclaration:
+            VisitVariableDeclaration(dynamic_cast<ast::NodeVarDeclaration *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeFunctionDeclaration:
-            VisitFunctionDeclaration(dynamic_cast<AST::NodeFuncDeclaration *>(node));
+        case ast::NodeType::tNodeTypeFunctionDeclaration:
+            VisitFunctionDeclaration(dynamic_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeBlock:
-            VisitBlock(dynamic_cast<AST::NodeBlock *>(node));
+        case ast::NodeType::tNodeTypeBlock:
+            VisitBlock(dynamic_cast<ast::NodeBlock *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeReturnStatement:
-            VisitReturnStatement(dynamic_cast<AST::NodeReturnStatement *>(node));
+        case ast::NodeType::tNodeTypeReturnStatement:
+            VisitReturnStatement(dynamic_cast<ast::NodeReturnStatement *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeFuncCall:
-            return VisitFunctionCall(dynamic_cast<AST::NodeFuncCall *>(node));
+        case ast::NodeType::tNodeTypeFuncCall:
+            return VisitFunctionCall(dynamic_cast<ast::NodeFuncCall *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeAssignment:
-            return VisitAssignment(dynamic_cast<AST::NodeAssignment *>(node));
+        case ast::NodeType::tNodeTypeAssignment:
+            return VisitAssignment(dynamic_cast<ast::NodeAssignment *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeAOPMul:
-        case AST::NodeType::tNodeTypeAOPDiv:
-        case AST::NodeType::tNodeTypeAOPAdd:
-        case AST::NodeType::tNodeTypeAOPSub:
-            return VisitAOP(dynamic_cast<AST::NodeAOP *>(node));
+        case ast::NodeType::tNodeTypeAOPMul:
+        case ast::NodeType::tNodeTypeAOPDiv:
+        case ast::NodeType::tNodeTypeAOPAdd:
+        case ast::NodeType::tNodeTypeAOPSub:
+            return VisitAOP(dynamic_cast<ast::NodeAOP *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeLiteralFloat:
-        case AST::NodeType::tNodeTypeLiteralInt32:
-        case AST::NodeType::tNodeTypeLiteralBool:
-        case AST::NodeType::tNodeTypeLiteralID:
-            return VisitLiteral(dynamic_cast<AST::NodeLiteral *>(node));
+        case ast::NodeType::tNodeTypeLiteralFloat:
+        case ast::NodeType::tNodeTypeLiteralInt32:
+        case ast::NodeType::tNodeTypeLiteralBool:
+        case ast::NodeType::tNodeTypeLiteralID:
+            return VisitLiteral(dynamic_cast<ast::NodeLiteral *>(node));
             break;
 
         default:
@@ -99,14 +98,14 @@ Type SemanticPass::Visit(AST::Node * node)
 }
 
 
-void SemanticPass::VisitProgram(AST::NodeProgram * node)
+void SemanticPass::VisitProgram(ast::NodeProgram * node)
 {
     // Visit childs
     VisitChilds(node);
 }
 
 
-void SemanticPass::VisitVariableDeclaration(AST::NodeVarDeclaration * node)
+void SemanticPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
 {
     auto childCount = node->ChildCount();
 
@@ -133,7 +132,7 @@ void SemanticPass::VisitVariableDeclaration(AST::NodeVarDeclaration * node)
 }
 
 
-void SemanticPass::VisitFunctionDeclaration(AST::NodeFuncDeclaration * node)
+void SemanticPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 {
     auto funcReturnType = node->GetReturnType();
 
@@ -145,7 +144,7 @@ void SemanticPass::VisitFunctionDeclaration(AST::NodeFuncDeclaration * node)
     {
         // This search could be done faster by marking function declaration nodes when
         // visiting return statement nodes. Must keep AST nodes as simple as possible.
-        if (node->FindClosestChildNode(AST::NodeType::tNodeTypeReturnStatement) == nullptr)
+        if (node->FindClosestChildNode(ast::NodeType::tNodeTypeReturnStatement) == nullptr)
         {
             std::stringstream   message;
             message << "Line: " << node->GetSourceCodeLine() << " - " << node->GetFuncName()
@@ -159,19 +158,19 @@ void SemanticPass::VisitFunctionDeclaration(AST::NodeFuncDeclaration * node)
 }
 
 
-void SemanticPass::VisitBlock(AST::NodeBlock * node)
+void SemanticPass::VisitBlock(ast::NodeBlock * node)
 {
     // Visit childs
     VisitChilds(node);
 }
 
 
-void SemanticPass::VisitReturnStatement(AST::NodeReturnStatement * node)
+void SemanticPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 {
     assert(node->ChildCount() < 2);
 
     // Find belonging function declaration parent node.
-    auto funcDeclNode = dynamic_cast<AST::NodeFuncDeclaration *>(node->FindClosestParentNode(AST::NodeType::tNodeTypeFunctionDeclaration));
+    auto funcDeclNode = dynamic_cast<ast::NodeFuncDeclaration *>(node->FindClosestParentNode(ast::NodeType::tNodeTypeFunctionDeclaration));
     assert(funcDeclNode != nullptr);
 
     auto scope = funcDeclNode->GetScope();
@@ -212,7 +211,7 @@ void SemanticPass::VisitReturnStatement(AST::NodeReturnStatement * node)
 }
 
 
-Type SemanticPass::VisitFunctionCall(AST::NodeFuncCall * node)
+Type SemanticPass::VisitFunctionCall(ast::NodeFuncCall * node)
 {
     // Rule: Function name must resolve (must defined).
     auto scope = node->GetScope();
@@ -255,7 +254,7 @@ Type SemanticPass::VisitFunctionCall(AST::NodeFuncCall * node)
 }
 
 
-Type SemanticPass::VisitAssignment(AST::NodeAssignment * node)
+Type SemanticPass::VisitAssignment(ast::NodeAssignment * node)
 {
     // Rule: Assignment operation requires two operands.
     // Node must have two child nodes.
@@ -276,7 +275,7 @@ Type SemanticPass::VisitAssignment(AST::NodeAssignment * node)
 }
 
 
-Type SemanticPass::VisitAOP(AST::NodeAOP * node)
+Type SemanticPass::VisitAOP(ast::NodeAOP * node)
 {
     // Rule: Arithmetic operation requires two operands.
     // Node must have two child nodes.
@@ -298,25 +297,25 @@ Type SemanticPass::VisitAOP(AST::NodeAOP * node)
 }
 
 
-Type SemanticPass::VisitLiteral(AST::NodeLiteral * node)
+Type SemanticPass::VisitLiteral(ast::NodeLiteral * node)
 {
     Type literalType = Type::tTypeUnknown;
     
     switch (node->GetNodeType())
     {
-        case AST::NodeType::tNodeTypeLiteralFloat:
+        case ast::NodeType::tNodeTypeLiteralFloat:
         literalType = Type::tTypeFloat;
         break;
         
-        case AST::NodeType::tNodeTypeLiteralInt32:
+        case ast::NodeType::tNodeTypeLiteralInt32:
         literalType = Type::tTypeInt;
         break;
         
-        case AST::NodeType::tNodeTypeLiteralBool:
+        case ast::NodeType::tNodeTypeLiteralBool:
         literalType = Type::tTypeBool;
         break;
         
-        case AST::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::tNodeTypeLiteralID:
         {
             // Rule: Resolve variable name. It has to be defined before it's used.
             auto scope = node->GetScope();

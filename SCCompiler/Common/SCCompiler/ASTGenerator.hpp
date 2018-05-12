@@ -13,10 +13,11 @@
 #include "SCCompilerBaseVisitor.h"
 
 
-namespace SCC
+namespace scc
 {
+
     // Fordward declaration
-    namespace AST
+    namespace ast
     {
         class Node;
     }
@@ -31,7 +32,7 @@ namespace SCC
         virtual ~ASTGenerator() { }
 
         // Return AST Node.
-        AST::Node *   GetAST()    { return m_rootNode; }
+        ast::Node *   GetAST()    { return m_rootNode; }
 
         Type  ToASTType(std::string);
 
@@ -56,8 +57,8 @@ namespace SCC
         antlrcpp::Any  visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) final;
 
     protected:
-        AST::Node *   m_rootNode = nullptr;
-        std::stack<AST::Node *>  m_currentNodeStack;
+        ast::Node *   m_rootNode = nullptr;
+        std::stack<ast::Node *>  m_currentNodeStack;
     };
 
 }

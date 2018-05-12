@@ -17,7 +17,7 @@
 #include "JITEngine.hpp"
 #include "CodeGenPass.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 #pragma mark - SymbolProperty Implementations.
@@ -37,7 +37,6 @@ llvm::Value * SymbolProperty::GetValue()
 
 #pragma mark - CodeGenPass Implementations.
 
-
 CodeGenPass::CodeGenPass() :
     m_module(nullptr),
     m_context(nullptr),
@@ -54,7 +53,7 @@ CodeGenPass::~CodeGenPass()
 }
 
 
-JITEngine * CodeGenPass::GenerateCode(AST::Node * node)
+JITEngine * CodeGenPass::GenerateCode(ast::Node * node)
 {
     m_context = new llvm::LLVMContext();
     m_module = std::make_unique<llvm::Module>("Program", *m_context);
@@ -71,7 +70,7 @@ JITEngine * CodeGenPass::GenerateCode(AST::Node * node)
 }
 
 
-void CodeGenPass::VisitChilds(AST::Node * node)
+void CodeGenPass::VisitChilds(ast::Node * node)
 {
     // Visit node children.
     for (size_t index=0; index<node->ChildCount(); ++index)
@@ -81,50 +80,50 @@ void CodeGenPass::VisitChilds(AST::Node * node)
 }
 
 
-llvm::Value * CodeGenPass::Visit(AST::Node * node)
+llvm::Value * CodeGenPass::Visit(ast::Node * node)
 {
     switch(node->GetNodeType())
     {
-        case AST::NodeType::tNodeTypeProgram:
-            VisitProgram(static_cast<AST::NodeProgram *>(node));
+        case ast::NodeType::tNodeTypeProgram:
+            VisitProgram(static_cast<ast::NodeProgram *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeVariableDeclaration:
-            VisitVariableDeclaration(static_cast<AST::NodeVarDeclaration *>(node));
+        case ast::NodeType::tNodeTypeVariableDeclaration:
+            VisitVariableDeclaration(static_cast<ast::NodeVarDeclaration *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeFunctionDeclaration:
-            VisitFunctionDeclaration(static_cast<AST::NodeFuncDeclaration *>(node));
+        case ast::NodeType::tNodeTypeFunctionDeclaration:
+            VisitFunctionDeclaration(static_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeBlock:
-            VisitBlock(static_cast<AST::NodeBlock *>(node));
+        case ast::NodeType::tNodeTypeBlock:
+            VisitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeReturnStatement:
-            VisitReturnStatement(static_cast<AST::NodeReturnStatement *>(node));
+        case ast::NodeType::tNodeTypeReturnStatement:
+            VisitReturnStatement(static_cast<ast::NodeReturnStatement *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeFuncCall:
-            VisitFunctionCall(static_cast<AST::NodeFuncCall *>(node));
+        case ast::NodeType::tNodeTypeFuncCall:
+            VisitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeAssignment:
-            VisitAssignment(static_cast<AST::NodeAssignment *>(node));
+        case ast::NodeType::tNodeTypeAssignment:
+            VisitAssignment(static_cast<ast::NodeAssignment *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeAOPMul:
-        case AST::NodeType::tNodeTypeAOPDiv:
-        case AST::NodeType::tNodeTypeAOPAdd:
-        case AST::NodeType::tNodeTypeAOPSub:
-            return VisitAOP(static_cast<AST::NodeAOP *>(node));
+        case ast::NodeType::tNodeTypeAOPMul:
+        case ast::NodeType::tNodeTypeAOPDiv:
+        case ast::NodeType::tNodeTypeAOPAdd:
+        case ast::NodeType::tNodeTypeAOPSub:
+            return VisitAOP(static_cast<ast::NodeAOP *>(node));
             break;
 
-        case AST::NodeType::tNodeTypeLiteralFloat:
-        case AST::NodeType::tNodeTypeLiteralInt32:
-        case AST::NodeType::tNodeTypeLiteralBool:
-        case AST::NodeType::tNodeTypeLiteralID:
-            return VisitLiteral(static_cast<AST::NodeLiteral *>(node));
+        case ast::NodeType::tNodeTypeLiteralFloat:
+        case ast::NodeType::tNodeTypeLiteralInt32:
+        case ast::NodeType::tNodeTypeLiteralBool:
+        case ast::NodeType::tNodeTypeLiteralID:
+            return VisitLiteral(static_cast<ast::NodeLiteral *>(node));
             break;
 
         default:
@@ -136,14 +135,14 @@ llvm::Value * CodeGenPass::Visit(AST::Node * node)
 }
 
 
-void CodeGenPass::VisitProgram(AST::NodeProgram * node)
+void CodeGenPass::VisitProgram(ast::NodeProgram * node)
 {
     // Visit childs
     VisitChilds(node);
 }
 
 
-void CodeGenPass::VisitVariableDeclaration(AST::NodeVarDeclaration * node)
+void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
 {
     auto childCount = node->ChildCount();
     auto varName = node->GetVarName();
@@ -163,12 +162,12 @@ void CodeGenPass::VisitVariableDeclaration(AST::NodeVarDeclaration * node)
             auto rightExprNode = node->GetChild(0);
             auto nodeType = rightExprNode->GetNodeType();
             // If expression is constant value.
-            if (nodeType == AST::NodeType::tNodeTypeLiteralInt32 ||
-                nodeType == AST::NodeType::tNodeTypeLiteralFloat ||
-                nodeType == AST::NodeType::tNodeTypeLiteralBool  ||
-                nodeType == AST::NodeType::tNodeTypeLiteralID)
+            if (nodeType == ast::NodeType::tNodeTypeLiteralInt32 ||
+                nodeType == ast::NodeType::tNodeTypeLiteralFloat ||
+                nodeType == ast::NodeType::tNodeTypeLiteralBool  ||
+                nodeType == ast::NodeType::tNodeTypeLiteralID)
             {
-                auto literalNode = dynamic_cast<AST::NodeLiteral *>(rightExprNode);
+                auto literalNode = dynamic_cast<ast::NodeLiteral *>(rightExprNode);
                 auto globalVar = CreateGlobalVariable(varName, node->GetVarType(), literalNode->GetValue());
                 node->GetScope()->ResolveSymbol(varName)->SetProperty(new SymbolProperty(globalVar));
             }
@@ -200,7 +199,7 @@ void CodeGenPass::VisitVariableDeclaration(AST::NodeVarDeclaration * node)
 }
 
 
-void CodeGenPass::VisitFunctionDeclaration(AST::NodeFuncDeclaration * node)
+void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 {
     // Save current block.
     llvm::BasicBlock *  prevBlock = m_irBuilder->GetInsertBlock();
@@ -247,14 +246,14 @@ void CodeGenPass::VisitFunctionDeclaration(AST::NodeFuncDeclaration * node)
 }
 
 
-void CodeGenPass::VisitBlock(AST::NodeBlock * node)
+void CodeGenPass::VisitBlock(ast::NodeBlock * node)
 {
     // Visit childs
     VisitChilds(node);
 }
 
 
-void CodeGenPass::VisitReturnStatement(AST::NodeReturnStatement * node)
+void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 {
     // If there is no child then return void. Function return type is void.
     if (node->ChildCount() == 0)
@@ -269,14 +268,14 @@ void CodeGenPass::VisitReturnStatement(AST::NodeReturnStatement * node)
 }
 
 
-void CodeGenPass::VisitFunctionCall(AST::NodeFuncCall * node)
+void CodeGenPass::VisitFunctionCall(ast::NodeFuncCall * node)
 {
     // Visit childs
     VisitChilds(node);
 }
 
 
-void CodeGenPass::VisitAssignment(AST::NodeAssignment * node)
+void CodeGenPass::VisitAssignment(ast::NodeAssignment * node)
 {
     // Get variable llvm value
     auto variable = Visit(node->GetChild(0));
@@ -293,7 +292,7 @@ void CodeGenPass::VisitAssignment(AST::NodeAssignment * node)
 }
 
 
-llvm::Value * CodeGenPass::VisitAOP(AST::NodeAOP * node)
+llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 {
     llvm::Value * resultValue = nullptr;
 
@@ -316,19 +315,19 @@ llvm::Value * CodeGenPass::VisitAOP(AST::NodeAOP * node)
 
     switch (node->GetNodeType())
     {
-        case AST::NodeType::tNodeTypeAOPMul:
+        case ast::NodeType::tNodeTypeAOPMul:
         resultValue = m_irBuilder->CreateMul(leftOperandValue, rightOperandValue, "multmp");
         break;
 
-        case AST::NodeType::tNodeTypeAOPDiv:
+        case ast::NodeType::tNodeTypeAOPDiv:
         resultValue = m_irBuilder->CreateSDiv(leftOperandValue, rightOperandValue, "sdivtmp");
         break;
 
-        case AST::NodeType::tNodeTypeAOPAdd:
+        case ast::NodeType::tNodeTypeAOPAdd:
         resultValue = m_irBuilder->CreateAdd(leftOperandValue, rightOperandValue, "addtmp");
         break;
 
-        case AST::NodeType::tNodeTypeAOPSub:
+        case ast::NodeType::tNodeTypeAOPSub:
         resultValue = m_irBuilder->CreateSub(leftOperandValue, rightOperandValue, "subtmp");
         break;
 
@@ -343,39 +342,39 @@ llvm::Value * CodeGenPass::VisitAOP(AST::NodeAOP * node)
 }
 
 
-llvm::Value * CodeGenPass::VisitLiteral(AST::NodeLiteral * node)
+llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
 {
     llvm::Value * literalValue = nullptr;
     
     switch (node->GetNodeType())
     {
-        case AST::NodeType::tNodeTypeLiteralFloat:
+        case ast::NodeType::tNodeTypeLiteralFloat:
         {
             // We create temp local variable and assign constant value.
-            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(SCC::Type::tTypeFloat), nullptr, "_ci");
+            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::tTypeFloat), nullptr, "_ci");
             // Since we store constant, we don't need to load value from an address.
-            m_irBuilder->CreateStore(CreateConstant(SCC::Type::tTypeFloat, node->GetValue()), localVar);
+            m_irBuilder->CreateStore(CreateConstant(scc::Type::tTypeFloat, node->GetValue()), localVar);
             // Returns pointer to local variable.
             literalValue = localVar;
         }
         break;
         
-        case AST::NodeType::tNodeTypeLiteralInt32:
+        case ast::NodeType::tNodeTypeLiteralInt32:
         {
             // We create temp local variable and assign constant value.
-            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(SCC::Type::tTypeInt), nullptr, "_cf");
+            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::tTypeInt), nullptr, "_cf");
             // Since we store constant, we don't need to load value from an address.
-            m_irBuilder->CreateStore(CreateConstant(SCC::Type::tTypeInt, node->GetValue()), localVar);
+            m_irBuilder->CreateStore(CreateConstant(scc::Type::tTypeInt, node->GetValue()), localVar);
             // Returns pointer to local variable.
             literalValue = localVar;
         }
         break;
         
-        case AST::NodeType::tNodeTypeLiteralBool:
+        case ast::NodeType::tNodeTypeLiteralBool:
         assert("Not Implemented");
         break;
         
-        case AST::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::tNodeTypeLiteralID:
         {
             // Return llvm value object of the variable, which is stored as symbol property in symbol object.
             // llvm object is referring to variable pointer. Needs to be loaded to access to value of the variable.
@@ -393,19 +392,19 @@ llvm::Value * CodeGenPass::VisitLiteral(AST::NodeLiteral * node)
 }
 
 
-llvm::Type * CodeGenPass::CreateBaseType(SCC::Type type)
+llvm::Type * CodeGenPass::CreateBaseType(scc::Type type)
 {
     switch(type)
     {
-        case SCC::Type::tTypeInt:
+        case scc::Type::tTypeInt:
             return m_irBuilder->getInt32Ty();
         break;
 
-        case SCC::Type::tTypeFloat:
+        case scc::Type::tTypeFloat:
             return m_irBuilder->getFloatTy();
         break;
 
-        case SCC::Type::tTypeVoid:
+        case scc::Type::tTypeVoid:
             return m_irBuilder->getVoidTy();
         break;
 
@@ -418,17 +417,17 @@ llvm::Type * CodeGenPass::CreateBaseType(SCC::Type type)
 }
 
 
-llvm::Constant * CodeGenPass::CreateConstant(SCC::Type type, const std::string & value)
+llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string & value)
 {
     assert(value.size() > 0);
 
     switch(type)
     {
-        case SCC::Type::tTypeInt:
+        case scc::Type::tTypeInt:
             return llvm::ConstantInt::get(*m_context, llvm::APInt(32, uint32_t(atoi(value.c_str())), true));
             break;
 
-        case SCC::Type::tTypeFloat:
+        case scc::Type::tTypeFloat:
             return llvm::ConstantFP::get(*m_context, llvm::APFloat(float(atof(value.c_str()))));
             break;
 
@@ -442,7 +441,7 @@ llvm::Constant * CodeGenPass::CreateConstant(SCC::Type type, const std::string &
 
 
 llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name,
-                                                         SCC::Type type,
+                                                         scc::Type type,
                                                          const std::string & value)
 {
     m_module->getOrInsertGlobal(name, CreateBaseType(type));
@@ -459,7 +458,7 @@ llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name,
 
 
 llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
-                                         SCC::Type returnType,
+                                         scc::Type returnType,
                                          std:: string name,
                                          std::vector<llvm::Type *> & argTypes)
 {

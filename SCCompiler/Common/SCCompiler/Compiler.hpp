@@ -13,8 +13,9 @@
 #include "SCCompiler.hpp"
 
 
-namespace SCC
+namespace scc
 {
+
     #pragma mark - Class Compiler.
 
     class Compiler : public SCCompiler

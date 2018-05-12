@@ -11,11 +11,10 @@
 #include "Exceptions.hpp"
 #include "JITEngine.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 #pragma mark - JITEngine Implementations
-
 
 JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
 {

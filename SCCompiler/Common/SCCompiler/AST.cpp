@@ -9,25 +9,24 @@
 
 #include "AST.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 #pragma mark - FuncArg Implementation
 
-
-AST::FuncArg::FuncArg(Type type, std::string name) : m_type(type), m_name(name)
+ast::FuncArg::FuncArg(Type type, std::string name) : m_type(type), m_name(name)
 {
 
 }
 
 
-Type AST::FuncArg::GetType()
+Type ast::FuncArg::GetType()
 {
     return m_type;
 }
 
 
-std::string AST::FuncArg::GetName()
+std::string ast::FuncArg::GetName()
 {
     return m_name;
 }
@@ -35,26 +34,25 @@ std::string AST::FuncArg::GetName()
 
 #pragma mark - Node Implementation
 
-
-AST::Node::Node()
+ast::Node::Node()
 {
 
 }
 
 
-AST::Node::Node(NodeType nodeType) : m_nodeType(nodeType)
+ast::Node::Node(NodeType nodeType) : m_nodeType(nodeType)
 {
 
 }
 
 
-AST::Node::~Node()
+ast::Node::~Node()
 {
     DeleteChilds();
 }
 
 
-void AST::Node::DeleteChilds()
+void ast::Node::DeleteChilds()
 {
     // Delete all childs.
     for (auto child : m_childs)
@@ -66,123 +64,123 @@ void AST::Node::DeleteChilds()
 }
 
 
-void AST::Node::AddChild(AST::Node * childNode)
+void ast::Node::AddChild(ast::Node * childNode)
 {
     m_childs.emplace_back(childNode);
 }
 
 
-size_t AST::Node::ChildCount()
+size_t ast::Node::ChildCount()
 {
     return m_childs.size();
 }
 
 
-AST::Node * AST::Node::GetChild(size_t index)
+ast::Node * ast::Node::GetChild(size_t index)
 {
     assert(index < m_childs.size());
     return m_childs[index];
 }
 
 
-void AST::Node::SetParent(AST::Node * parentNode)
+void ast::Node::SetParent(ast::Node * parentNode)
 {
     m_parent = parentNode;
 }
 
 
-AST::Node * AST::Node::GetParent()
+ast::Node * ast::Node::GetParent()
 {
     return m_parent;
 }
 
-AST::NodeType  AST::Node::GetNodeType()
+ast::NodeType  ast::Node::GetNodeType()
 {
     return m_nodeType;
 }
 
-void AST::Node::SetSourceCodeLine(size_t lineNumber)
+void ast::Node::SetSourceCodeLine(size_t lineNumber)
 {
     m_lineNumber = lineNumber;
 }
 
-size_t AST::Node::GetSourceCodeLine()
+size_t ast::Node::GetSourceCodeLine()
 {
     return m_lineNumber;
 }
 
 
-std::string AST::Node::GetNodeTypeInString(AST::NodeType nodeType)
+std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
 {
     std::string typeInString;
 
     switch (nodeType)
     {
-        case AST::NodeType::tNodeTypeProgram:
+        case ast::NodeType::tNodeTypeProgram:
         typeInString = "tNodeTypeProgram";
         break;
 
-        case AST::NodeType::tNodeTypeAOPAdd:
+        case ast::NodeType::tNodeTypeAOPAdd:
         typeInString = "tNodeTypeAOPAdd";
         break;
 
-        case AST::NodeType::tNodeTypeAOPDiv:
+        case ast::NodeType::tNodeTypeAOPDiv:
         typeInString = "tNodeTypeAOPDiv";
         break;
 
-        case AST::NodeType::tNodeTypeAOPMul:
+        case ast::NodeType::tNodeTypeAOPMul:
         typeInString = "tNodeTypeAOPMul";
         break;
 
-        case AST::NodeType::tNodeTypeAOPSub:
+        case ast::NodeType::tNodeTypeAOPSub:
         typeInString = "tNodeTypeAOPSub";
         break;
 
-        case AST::NodeType::tNodeTypeAssignment:
+        case ast::NodeType::tNodeTypeAssignment:
         typeInString = "tNodeTypeAssignment";
         break;
 
-        case AST::NodeType::tNodeTypeBlock:
+        case ast::NodeType::tNodeTypeBlock:
         typeInString = "tNodeTypeBlock";
         break;
 
-        case AST::NodeType::tNodeTypeFuncCall:
+        case ast::NodeType::tNodeTypeFuncCall:
         typeInString = "tNodeTypeFuncCall";
         break;
 
-        case AST::NodeType::tNodeTypeFunctionDeclaration:
+        case ast::NodeType::tNodeTypeFunctionDeclaration:
         typeInString = "tNodeTypeFunctionDeclaration";
         break;
 
-        case AST::NodeType::tNodeTypeIfStatement:
+        case ast::NodeType::tNodeTypeIfStatement:
         typeInString = "tNodeTypeIfStatement";
         break;
 
-        case AST::NodeType::tNodeTypeLiteralBool:
+        case ast::NodeType::tNodeTypeLiteralBool:
         typeInString = "tNodeTypeLiteralBool";
         break;
 
-        case AST::NodeType::tNodeTypeLiteralFloat:
+        case ast::NodeType::tNodeTypeLiteralFloat:
         typeInString = "tNodeTypeLiteralFloat";
         break;
 
-        case AST::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::tNodeTypeLiteralID:
         typeInString = "tNodeTypeLiteralID";
         break;
 
-        case AST::NodeType::tNodeTypeLiteralInt32:
+        case ast::NodeType::tNodeTypeLiteralInt32:
         typeInString = "tNodeTypeLiteralInt32";
         break;
 
-        case AST::NodeType::tNodeTypeReturnStatement:
+        case ast::NodeType::tNodeTypeReturnStatement:
         typeInString = "tNodeTypeReturnStatement";
         break;
 
-        case AST::NodeType::tNodeTypeUnknown:
+        case ast::NodeType::tNodeTypeUnknown:
         typeInString = "tNodeTypeReturnStatement";
         break;
 
-        case AST::NodeType::tNodeTypeVariableDeclaration:
+        case ast::NodeType::tNodeTypeVariableDeclaration:
         typeInString = "tNodeTypeVariableDeclaration";
         break;
     
@@ -195,7 +193,7 @@ std::string AST::Node::GetNodeTypeInString(AST::NodeType nodeType)
 }
 
 
-AST::Node * AST::Node::FindClosestParentNode(AST::NodeType nodeType)
+ast::Node * ast::Node::FindClosestParentNode(ast::NodeType nodeType)
 {
     if (m_nodeType == nodeType)
     {
@@ -211,7 +209,7 @@ AST::Node * AST::Node::FindClosestParentNode(AST::NodeType nodeType)
 }
 
 
-AST::Node * AST::Node::FindClosestChildNode(AST::NodeType nodeType)
+ast::Node * ast::Node::FindClosestChildNode(ast::NodeType nodeType)
 {
     if (m_nodeType == nodeType)
     {
@@ -232,13 +230,13 @@ AST::Node * AST::Node::FindClosestChildNode(AST::NodeType nodeType)
 }
 
 
-void AST::Node::SetScope(ScopeNode * scope)
+void ast::Node::SetScope(ScopeNode * scope)
 {
     m_scope = scope;
 }
 
 
-ScopeNode * AST::Node::GetScope()
+ScopeNode * ast::Node::GetScope()
 {
     return m_scope;
 }
@@ -246,14 +244,13 @@ ScopeNode * AST::Node::GetScope()
 
 #pragma mark - NodeProgram Implementation
 
-
-AST::NodeProgram::NodeProgram()
+ast::NodeProgram::NodeProgram()
 {
     m_nodeType = tNodeTypeProgram;
 }
 
 
-AST::NodeProgram::~NodeProgram()
+ast::NodeProgram::~NodeProgram()
 {
     DeleteChilds();
 }
@@ -261,27 +258,26 @@ AST::NodeProgram::~NodeProgram()
 
 #pragma mark - NodeVarDeclaration Implementation
 
-
-AST::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) : AST::Node(tNodeTypeVariableDeclaration)
+ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) : ast::Node(tNodeTypeVariableDeclaration)
 {
     m_varType = type;
     m_varName = varName;
 }
 
 
-AST::NodeVarDeclaration::~NodeVarDeclaration()
+ast::NodeVarDeclaration::~NodeVarDeclaration()
 {
     DeleteChilds();
 }
 
 
-Type AST::NodeVarDeclaration::GetVarType()
+Type ast::NodeVarDeclaration::GetVarType()
 {
     return m_varType;
 }
 
 
-std::string AST::NodeVarDeclaration::GetVarName()
+std::string ast::NodeVarDeclaration::GetVarName()
 {
     return m_varName;
 }
@@ -289,39 +285,38 @@ std::string AST::NodeVarDeclaration::GetVarName()
 
 #pragma mark - NodeFuncDeclaration Implementation
 
-
-AST::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) : AST::Node(tNodeTypeFunctionDeclaration)
+ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) : ast::Node(tNodeTypeFunctionDeclaration)
 {
     m_returnType = returnType;
     m_funcName = funcName;
 }
 
 
-AST::NodeFuncDeclaration::~NodeFuncDeclaration()
+ast::NodeFuncDeclaration::~NodeFuncDeclaration()
 {
     DeleteChilds();
 }
 
 
-std::string AST::NodeFuncDeclaration::GetFuncName()
+std::string ast::NodeFuncDeclaration::GetFuncName()
 {
     return m_funcName;
 }
 
 
-Type AST::NodeFuncDeclaration::GetReturnType()
+Type ast::NodeFuncDeclaration::GetReturnType()
 {
     return m_returnType;
 }
 
 
-void AST::NodeFuncDeclaration::AddArgument(AST::FuncArg argument)
+void ast::NodeFuncDeclaration::AddArgument(ast::FuncArg argument)
 {
     m_argumentList.emplace_back(argument);
 }
 
 
-std::vector<AST::FuncArg> AST::NodeFuncDeclaration::GetArguments()
+std::vector<ast::FuncArg> ast::NodeFuncDeclaration::GetArguments()
 {
     return m_argumentList;
 }
@@ -329,12 +324,12 @@ std::vector<AST::FuncArg> AST::NodeFuncDeclaration::GetArguments()
 
 #pragma mark - NodeIfStatement Implementation
 
-AST::NodeIfStatement::NodeIfStatement() : AST::Node(tNodeTypeIfStatement)
+ast::NodeIfStatement::NodeIfStatement() : ast::Node(tNodeTypeIfStatement)
 {
 
 }
 
-AST::NodeIfStatement::~NodeIfStatement()
+ast::NodeIfStatement::~NodeIfStatement()
 {
     DeleteChilds();
 }
@@ -342,13 +337,13 @@ AST::NodeIfStatement::~NodeIfStatement()
 
 #pragma mark - NodeReturnStatement Implementation
 
-AST::NodeReturnStatement::NodeReturnStatement() : AST::Node(tNodeTypeReturnStatement)
+ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(tNodeTypeReturnStatement)
 {
 
 }
 
 // Destructor.
-AST::NodeReturnStatement::~NodeReturnStatement()
+ast::NodeReturnStatement::~NodeReturnStatement()
 {
     DeleteChilds();
 }
@@ -356,17 +351,17 @@ AST::NodeReturnStatement::~NodeReturnStatement()
 
 #pragma mark - NodeFuncCall Implementation
 
-AST::NodeFuncCall::NodeFuncCall(std::string funcName)  : AST::Node(tNodeTypeFuncCall)
+ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(tNodeTypeFuncCall)
 {
     m_funcName = funcName;
 }
 
-AST::NodeFuncCall::~NodeFuncCall()
+ast::NodeFuncCall::~NodeFuncCall()
 {
     DeleteChilds();
 }
 
-std::string AST::NodeFuncCall::GetFuncName()
+std::string ast::NodeFuncCall::GetFuncName()
 {
     return m_funcName;
 }
@@ -374,15 +369,14 @@ std::string AST::NodeFuncCall::GetFuncName()
 
 #pragma mark - NodeBlock Implementation
 
-
-AST::NodeBlock::NodeBlock()
+ast::NodeBlock::NodeBlock()
 {
     m_nodeType = tNodeTypeBlock;
 }
 
 
 // Destructor.
-AST::NodeBlock::~NodeBlock()
+ast::NodeBlock::~NodeBlock()
 {
     DeleteChilds();
 }
@@ -390,14 +384,13 @@ AST::NodeBlock::~NodeBlock()
 
 #pragma mark - NodeAssignment Implementation
 
-
-AST::NodeAssignment::NodeAssignment() : Node(tNodeTypeAssignment)
+ast::NodeAssignment::NodeAssignment() : Node(tNodeTypeAssignment)
 {
 
 }
 
 
-AST::NodeAssignment::~NodeAssignment()
+ast::NodeAssignment::~NodeAssignment()
 {
     DeleteChilds();
 }
@@ -406,17 +399,16 @@ AST::NodeAssignment::~NodeAssignment()
 
 #pragma mark - NodeAOP Implementation
 
-
-AST::NodeAOP::NodeAOP(AST::NodeType nodeType) : AST::Node(nodeType)
+ast::NodeAOP::NodeAOP(ast::NodeType nodeType) : ast::Node(nodeType)
 {
-    assert(nodeType == AST::NodeType::tNodeTypeAOPMul
-        || nodeType == AST::NodeType::tNodeTypeAOPDiv
-        || nodeType == AST::NodeType::tNodeTypeAOPAdd
-        || nodeType == AST::NodeType::tNodeTypeAOPSub);
+    assert(nodeType == ast::NodeType::tNodeTypeAOPMul
+        || nodeType == ast::NodeType::tNodeTypeAOPDiv
+        || nodeType == ast::NodeType::tNodeTypeAOPAdd
+        || nodeType == ast::NodeType::tNodeTypeAOPSub);
 }
 
 
-AST::NodeAOP::~NodeAOP()
+ast::NodeAOP::~NodeAOP()
 {
     DeleteChilds();
 }
@@ -424,25 +416,24 @@ AST::NodeAOP::~NodeAOP()
 
 #pragma mark - NodeLiteral Implementation
 
-
-AST::NodeLiteral::NodeLiteral(AST::NodeType nodeType, std::string value) :
-    AST::Node(nodeType),
+ast::NodeLiteral::NodeLiteral(ast::NodeType nodeType, std::string value) :
+    ast::Node(nodeType),
     m_value(value)
 {
-    assert(nodeType == AST::NodeType::tNodeTypeLiteralFloat
-        || nodeType == AST::NodeType::tNodeTypeLiteralInt32
-        || nodeType == AST::NodeType::tNodeTypeLiteralBool
-        || nodeType == AST::NodeType::tNodeTypeLiteralID);
+    assert(nodeType == ast::NodeType::tNodeTypeLiteralFloat
+        || nodeType == ast::NodeType::tNodeTypeLiteralInt32
+        || nodeType == ast::NodeType::tNodeTypeLiteralBool
+        || nodeType == ast::NodeType::tNodeTypeLiteralID);
 }
 
 
-AST::NodeLiteral::~NodeLiteral()
+ast::NodeLiteral::~NodeLiteral()
 {
     DeleteChilds();
 }
 
 
-std::string AST::NodeLiteral::GetValue()
+std::string ast::NodeLiteral::GetValue()
 {
     return m_value;
 }
@@ -450,7 +441,7 @@ std::string AST::NodeLiteral::GetValue()
 
 #pragma mark - TypeToString Implementation
 
-std::string AST::TypeToString(Type type)
+std::string ast::TypeToString(Type type)
 {
     switch (type)
     {

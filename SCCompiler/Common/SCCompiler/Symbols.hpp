@@ -15,8 +15,9 @@
 #include "Types.hpp"
 
 
-namespace SCC
+namespace scc
 {
+
     // Forward declaration.
     class ScopeNode;
     class FuncArgSymbol;
@@ -144,7 +145,7 @@ namespace SCC
     };
 
 
-    #pragma mark - Class ScopeNode
+    #pragma mark - Enum ScopeCategory
 
     // Scope category.
     enum ScopeCategory : uint32_t
@@ -155,6 +156,8 @@ namespace SCC
         cScopeCategoryBlock,
     };
 
+
+    #pragma mark - Enum ScopeNode
 
     // Scoped symbol table node to build tree of symbol tables.
     // Every node in the tree is considered a scope and has a symbol table.

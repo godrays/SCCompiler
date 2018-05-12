@@ -11,8 +11,10 @@
 #include <iostream>
 
 
-namespace SCC
+namespace scc
 {
+
+    #pragma mark - Enum Type.
 
     // Types.
     // Note: Changes to this enum requires change in promotion table.

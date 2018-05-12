@@ -30,10 +30,11 @@
 #include "llvm/Support/raw_ostream.h"
 
 
-namespace SCC
+namespace scc
 {
+
     // Forward declaration.
-    namespace AST
+    namespace ast
     {
         class Node;
         class NodeProgram;
@@ -48,6 +49,7 @@ namespace SCC
     }
 
     class JITEngine;
+
 
     #pragma mark - Class SymbolProperty
 
@@ -79,45 +81,45 @@ namespace SCC
         virtual ~CodeGenPass();
         
         // Perform semantic analysis on nodes AST.
-        JITEngine * GenerateCode(AST::Node * node);
+        JITEngine * GenerateCode(ast::Node * node);
 
     private:
         // Visits all node childs.
-        void VisitChilds(AST::Node * node);
+        void VisitChilds(ast::Node * node);
 
         // Visits nodes to create scopes and define symbols.
-        llvm::Value * Visit(AST::Node * node);
+        llvm::Value * Visit(ast::Node * node);
 
-        void VisitProgram(AST::NodeProgram * node);
+        void VisitProgram(ast::NodeProgram * node);
 
-        void VisitVariableDeclaration(AST::NodeVarDeclaration * node);
+        void VisitVariableDeclaration(ast::NodeVarDeclaration * node);
 
-        void VisitFunctionDeclaration(AST::NodeFuncDeclaration * node);
+        void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
 
-        void VisitBlock(AST::NodeBlock * node);
+        void VisitBlock(ast::NodeBlock * node);
 
-        void VisitReturnStatement(AST::NodeReturnStatement * node);
+        void VisitReturnStatement(ast::NodeReturnStatement * node);
 
-        void VisitFunctionCall(AST::NodeFuncCall * node);
+        void VisitFunctionCall(ast::NodeFuncCall * node);
         
-        void VisitAssignment(AST::NodeAssignment * node);
+        void VisitAssignment(ast::NodeAssignment * node);
 
-        llvm::Value * VisitAOP(AST::NodeAOP * node);
+        llvm::Value * VisitAOP(ast::NodeAOP * node);
 
-        llvm::Value * VisitLiteral(AST::NodeLiteral * node);
+        llvm::Value * VisitLiteral(ast::NodeLiteral * node);
         
     private:
         // Creates LLVM base type. (float, int, bool etc..)
-        llvm::Type * CreateBaseType(SCC::Type type);
+        llvm::Type * CreateBaseType(scc::Type type);
 
         // Creates LLVM constant value.
-        llvm::Constant * CreateConstant(SCC::Type type, const std::string & value);
+        llvm::Constant * CreateConstant(scc::Type type, const std::string & value);
 
         // Creates new global variable.
-        llvm::GlobalVariable * CreateGlobalVariable(std::string name, SCC::Type, const std::string & value);
+        llvm::GlobalVariable * CreateGlobalVariable(std::string name, scc::Type, const std::string & value);
 
         // Create function.
-        llvm::Function * CreateFunc(llvm::IRBuilder <> &Builder, SCC::Type returnType, std:: string Name, std::vector<llvm::Type *> & argTypes);
+        llvm::Function * CreateFunc(llvm::IRBuilder <> &Builder, scc::Type returnType, std:: string Name, std::vector<llvm::Type *> & argTypes);
 
         // Create basic block.
         llvm::BasicBlock * CreateBasicBlock(llvm::Function * func, std:: string name);

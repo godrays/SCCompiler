@@ -8,10 +8,11 @@
 
 #pragma once
 
-namespace SCC
+namespace scc
 {
+
     // Forward declaration.
-    namespace AST
+    namespace ast
     {
         class Node;
         class NodeProgram;
@@ -25,38 +26,39 @@ namespace SCC
         class NodeLiteral;
     }
 
+
     #pragma mark - Class SemanticPass
 
     class  SemanticPass
     {
     public:
         // Perform semantic analysis on nodes AST.
-        void SemanticCheck(AST::Node * node);
+        void SemanticCheck(ast::Node * node);
 
     private:
         // Visits all node childs.
-        void VisitChilds(AST::Node * node);
+        void VisitChilds(ast::Node * node);
 
         // Visits nodes to create scopes and define symbols.
-        Type Visit(AST::Node * node);
+        Type Visit(ast::Node * node);
 
-        void VisitProgram(AST::NodeProgram * node);
+        void VisitProgram(ast::NodeProgram * node);
 
-        void VisitVariableDeclaration(AST::NodeVarDeclaration * node);
+        void VisitVariableDeclaration(ast::NodeVarDeclaration * node);
 
-        void VisitFunctionDeclaration(AST::NodeFuncDeclaration * node);
+        void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
 
-        void VisitBlock(AST::NodeBlock * node);
+        void VisitBlock(ast::NodeBlock * node);
 
-        void VisitReturnStatement(AST::NodeReturnStatement * node);
+        void VisitReturnStatement(ast::NodeReturnStatement * node);
 
-        Type VisitFunctionCall(AST::NodeFuncCall * node);
+        Type VisitFunctionCall(ast::NodeFuncCall * node);
         
-        Type VisitAssignment(AST::NodeAssignment * node);
+        Type VisitAssignment(ast::NodeAssignment * node);
 
-        Type VisitAOP(AST::NodeAOP * node);
+        Type VisitAOP(ast::NodeAOP * node);
 
-        Type VisitLiteral(AST::NodeLiteral * node);
+        Type VisitLiteral(ast::NodeLiteral * node);
    };
 
 }

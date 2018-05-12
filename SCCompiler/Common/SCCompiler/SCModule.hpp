@@ -9,7 +9,7 @@
 
 #include <string>
 
-namespace SCC
+namespace scc
 {
 
     #pragma mark - Class SCModule.

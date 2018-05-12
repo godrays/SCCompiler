@@ -35,8 +35,9 @@
 #include "SCModule.hpp"
 
 
-namespace SCC
+namespace scc
 {
+
     #pragma mark - Class JITEngine
 
     // Machine code execution engine.

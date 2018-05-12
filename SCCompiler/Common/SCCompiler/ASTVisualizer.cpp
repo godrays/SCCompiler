@@ -11,13 +11,12 @@
 #include "AST.hpp"
 #include "ASTVisualizer.hpp"
 
-using namespace SCC;
+using namespace scc;
 
 
 #pragma mark - ASTVisualizer Implementations.
 
-
-void ASTVisualizer::GenerateDOTFile(AST::Node * node, std::string filename)
+void ASTVisualizer::GenerateDOTFile(ast::Node * node, std::string filename)
 {
     // Open dot file.
     m_outputFile.open(filename);
@@ -39,69 +38,69 @@ void ASTVisualizer::GenerateDOTFile(AST::Node * node, std::string filename)
 }
 
 
-void ASTVisualizer::Visit(AST::Node * node)
+void ASTVisualizer::Visit(ast::Node * node)
 {
     // Output node specific data to dot file.
     switch(node->GetNodeType())
     {
-        case AST::NodeType::tNodeTypeProgram:
+        case ast::NodeType::tNodeTypeProgram:
             OutputConfig(node, "[label = \"Program\"];");
             break;
     
-        case AST::NodeType::tNodeTypeVariableDeclaration:
+        case ast::NodeType::tNodeTypeVariableDeclaration:
             OutputConfigVariableDecl(node);
             break;
 
-        case AST::NodeType::tNodeTypeFunctionDeclaration:
+        case ast::NodeType::tNodeTypeFunctionDeclaration:
             OutputConfigFuncDecl(node);
             break;
 
-        case AST::NodeType::tNodeTypeBlock:
+        case ast::NodeType::tNodeTypeBlock:
             OutputConfig(node, "[label = \"Block\"];");
             break;
 
-        case AST::NodeType::tNodeTypeReturnStatement:
+        case ast::NodeType::tNodeTypeReturnStatement:
             OutputConfig(node, "[label = \"Func Return\"];");
             break;
 
-        case AST::NodeType::tNodeTypeFuncCall:
-            OutputConfig(node, "[label = \"Func Call: " + dynamic_cast<AST::NodeFuncCall*>(node)->GetFuncName() + "\"];");
+        case ast::NodeType::tNodeTypeFuncCall:
+            OutputConfig(node, "[label = \"Func Call: " + dynamic_cast<ast::NodeFuncCall*>(node)->GetFuncName() + "\"];");
             break;
 
-        case AST::NodeType::tNodeTypeAssignment:
+        case ast::NodeType::tNodeTypeAssignment:
             OutputConfig(node, "[label = \"=\"];");
             break;
 
-        case AST::NodeType::tNodeTypeAOPMul:
+        case ast::NodeType::tNodeTypeAOPMul:
             OutputConfig(node, "[label = \"*\"];");
             break;
 
-        case AST::NodeType::tNodeTypeAOPDiv:
+        case ast::NodeType::tNodeTypeAOPDiv:
             OutputConfig(node, "[label = \"/\"];");
             break;
 
-        case AST::NodeType::tNodeTypeAOPAdd:
+        case ast::NodeType::tNodeTypeAOPAdd:
              OutputConfig(node, "[label = \"+\"];");
             break;
 
-        case AST::NodeType::tNodeTypeAOPSub:
+        case ast::NodeType::tNodeTypeAOPSub:
             OutputConfig(node, "[label = \"-\"];");
             break;
 
-        case AST::NodeType::tNodeTypeLiteralFloat:
-            OutputConfig(node, "[label = \"Float: " + dynamic_cast<AST::NodeLiteral*>(node)->GetValue() + "\"];");
+        case ast::NodeType::tNodeTypeLiteralFloat:
+            OutputConfig(node, "[label = \"Float: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
-        case AST::NodeType::tNodeTypeLiteralInt32:
-            OutputConfig(node, "[label = \"Int: " + dynamic_cast<AST::NodeLiteral*>(node)->GetValue() + "\"];");
+        case ast::NodeType::tNodeTypeLiteralInt32:
+            OutputConfig(node, "[label = \"Int: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
-        case AST::NodeType::tNodeTypeLiteralBool:
-            OutputConfig(node, "[label = \"Bool: " + dynamic_cast<AST::NodeLiteral*>(node)->GetValue() + "\"];");
+        case ast::NodeType::tNodeTypeLiteralBool:
+            OutputConfig(node, "[label = \"Bool: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
-        case AST::NodeType::tNodeTypeLiteralID:
-            OutputConfig(node, "[label = \"Variable: " + dynamic_cast<AST::NodeLiteral*>(node)->GetValue() + "\"];");
+        case ast::NodeType::tNodeTypeLiteralID:
+            OutputConfig(node, "[label = \"Variable: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
         default:
@@ -117,7 +116,7 @@ void ASTVisualizer::Visit(AST::Node * node)
 }
 
 
-void ASTVisualizer::OutputConfig(AST::Node * node, const std::string & nodeConfig)
+void ASTVisualizer::OutputConfig(ast::Node * node, const std::string & nodeConfig)
 {
     // Write node's address configuration.
     m_outputFile << "\tnode_" << std::hex << node << " " << nodeConfig << std::endl;
@@ -131,34 +130,34 @@ void ASTVisualizer::OutputConfig(AST::Node * node, const std::string & nodeConfi
 }
 
 
-void ASTVisualizer::OutputConfigVariableDecl(AST::Node *  node)
+void ASTVisualizer::OutputConfigVariableDecl(ast::Node *  node)
 {
-    auto varDecNode = dynamic_cast<AST::NodeVarDeclaration *>(node);
+    auto varDecNode = dynamic_cast<ast::NodeVarDeclaration *>(node);
     assert(varDecNode != nullptr);
     
     // Generate config string.
     std::ostringstream  strStream;
-    strStream   << "[label = \"{Variable Decl |" << AST::TypeToString(varDecNode->GetVarType())
+    strStream   << "[label = \"{Variable Decl |" << ast::TypeToString(varDecNode->GetVarType())
                 << " " << varDecNode->GetVarName() << "}\"];" << std::endl;
 
     OutputConfig(node, strStream.str());
 }
 
 
-void ASTVisualizer::OutputConfigFuncDecl(AST::Node * node)
+void ASTVisualizer::OutputConfigFuncDecl(ast::Node * node)
 {
-    auto funcDecNode = dynamic_cast<AST::NodeFuncDeclaration *>(node);
+    auto funcDecNode = dynamic_cast<ast::NodeFuncDeclaration *>(node);
     assert(funcDecNode != nullptr);
     auto arguments = funcDecNode->GetArguments();
     
     // Generate config string.
     std::ostringstream  strStream;
-    strStream   << "[label = \"{Func Decl |" << funcDecNode->GetFuncName() << "| Return Type: " << AST::TypeToString(funcDecNode->GetReturnType());
+    strStream   << "[label = \"{Func Decl |" << funcDecNode->GetFuncName() << "| Return Type: " << ast::TypeToString(funcDecNode->GetReturnType());
     
     // Write arguments.
     for (size_t index=0; index < arguments.size(); ++index)
     {
-        strStream << "| Arg: " << AST::TypeToString(arguments[index].GetType()) << " " << arguments[index].GetName() ;
+        strStream << "| Arg: " << ast::TypeToString(arguments[index].GetType()) << " " << arguments[index].GetName() ;
     }
     
     strStream   << "}\"];" << std::endl;

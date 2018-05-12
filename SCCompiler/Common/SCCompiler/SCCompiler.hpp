@@ -9,7 +9,7 @@
 
 #include "SCModule.hpp"
 
-namespace SCC
+namespace scc
 {
 
     #pragma mark - Enum SCCompileResult.
@@ -42,7 +42,6 @@ namespace SCC
 
         // Returns compile error message.
         virtual std::string GetErrorMessage() = 0;
-        
     };
 
 };
