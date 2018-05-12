@@ -10,8 +10,8 @@
 
 using namespace scc;
 
-#pragma mark - SCCompiler Implementations.
 
+#pragma mark - SCCompiler Implementations.
 
 SCCompiler * SCCompiler::Create()
 {
