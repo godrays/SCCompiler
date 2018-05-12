@@ -149,6 +149,7 @@ ScopeNode::~ScopeNode()
     for (auto pair : m_symbolTable)
     {
         // Has table pair.first = key, pair.second = symbol
+        delete pair.second->GetProperty();
         delete pair.second;
     }
 
