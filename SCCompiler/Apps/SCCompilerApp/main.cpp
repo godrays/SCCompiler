@@ -7,9 +7,7 @@
 
 #include <iostream>
 
-#include "JITEngine.hpp"
-#include "Compiler.hpp"
-
+#include "SCCompiler.hpp"
 
 int main(int , const char **)
 {
