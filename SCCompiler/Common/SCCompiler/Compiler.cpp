@@ -1,5 +1,5 @@
 //
-//  SCC.cpp
+//  Compiler.cpp
 //
 //  Created by Arkin Terli on 4/10/18.
 //  Copyright © 2018 Arkin Terli. All rights reserved.
