@@ -34,7 +34,7 @@ namespace scc
     class TypeChecker
     {
     public:
-        // Check if two types are equal.
+        // Promote types if possible.
         static Type Promote(Type type1, Type type2);
         
     protected:
