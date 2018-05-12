@@ -47,45 +47,45 @@ Type SemanticPass::Visit(ast::Node * node)
 {
     switch(node->GetNodeType())
     {
-        case ast::NodeType::tNodeTypeProgram:
+        case ast::NodeType::kNodeTypeProgram:
             VisitProgram(dynamic_cast<ast::NodeProgram *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeVariableDeclaration:
+        case ast::NodeType::kNodeTypeVariableDeclaration:
             VisitVariableDeclaration(dynamic_cast<ast::NodeVarDeclaration *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeFunctionDeclaration:
+        case ast::NodeType::kNodeTypeFunctionDeclaration:
             VisitFunctionDeclaration(dynamic_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeBlock:
+        case ast::NodeType::kNodeTypeBlock:
             VisitBlock(dynamic_cast<ast::NodeBlock *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeReturnStatement:
+        case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(dynamic_cast<ast::NodeReturnStatement *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeFuncCall:
+        case ast::NodeType::kNodeTypeFuncCall:
             return VisitFunctionCall(dynamic_cast<ast::NodeFuncCall *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeAssignment:
+        case ast::NodeType::kNodeTypeAssignment:
             return VisitAssignment(dynamic_cast<ast::NodeAssignment *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeAOPMul:
-        case ast::NodeType::tNodeTypeAOPDiv:
-        case ast::NodeType::tNodeTypeAOPAdd:
-        case ast::NodeType::tNodeTypeAOPSub:
+        case ast::NodeType::kNodeTypeAOPMul:
+        case ast::NodeType::kNodeTypeAOPDiv:
+        case ast::NodeType::kNodeTypeAOPAdd:
+        case ast::NodeType::kNodeTypeAOPSub:
             return VisitAOP(dynamic_cast<ast::NodeAOP *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeLiteralFloat:
-        case ast::NodeType::tNodeTypeLiteralInt32:
-        case ast::NodeType::tNodeTypeLiteralBool:
-        case ast::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::kNodeTypeLiteralFloat:
+        case ast::NodeType::kNodeTypeLiteralInt32:
+        case ast::NodeType::kNodeTypeLiteralBool:
+        case ast::NodeType::kNodeTypeLiteralID:
             return VisitLiteral(dynamic_cast<ast::NodeLiteral *>(node));
             break;
 
@@ -94,7 +94,7 @@ Type SemanticPass::Visit(ast::Node * node)
             break;
     }
 
-    return Type::tTypeUnknown;
+    return Type::kTypeUnknown;
 }
 
 
@@ -137,14 +137,14 @@ void SemanticPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     auto funcReturnType = node->GetReturnType();
 
     // Function return type can't be unknown.
-    assert(funcReturnType != Type::tTypeUnknown);
+    assert(funcReturnType != Type::kTypeUnknown);
 
     // Rule: Function must have at least one return statement if it returns a value.
-    if (funcReturnType != Type::tTypeVoid)
+    if (funcReturnType != Type::kTypeVoid)
     {
         // This search could be done faster by marking function declaration nodes when
         // visiting return statement nodes. Must keep AST nodes as simple as possible.
-        if (node->FindClosestChildNode(ast::NodeType::tNodeTypeReturnStatement) == nullptr)
+        if (node->FindClosestChildNode(ast::NodeType::kNodeTypeReturnStatement) == nullptr)
         {
             std::stringstream   message;
             message << "Line: " << node->GetSourceCodeLine() << " - " << node->GetFuncName()
@@ -170,14 +170,14 @@ void SemanticPass::VisitReturnStatement(ast::NodeReturnStatement * node)
     assert(node->ChildCount() < 2);
 
     // Find belonging function declaration parent node.
-    auto funcDeclNode = dynamic_cast<ast::NodeFuncDeclaration *>(node->FindClosestParentNode(ast::NodeType::tNodeTypeFunctionDeclaration));
+    auto funcDeclNode = dynamic_cast<ast::NodeFuncDeclaration *>(node->FindClosestParentNode(ast::NodeType::kNodeTypeFunctionDeclaration));
     assert(funcDeclNode != nullptr);
 
     auto scope = funcDeclNode->GetScope();
     auto funcSymbol = scope->ResolveSymbol(funcDeclNode->GetFuncName());
     
     // Rule: Void function should not return a value.
-    if (funcSymbol->GetType() == Type::tTypeVoid && node->ChildCount() == 1)
+    if (funcSymbol->GetType() == Type::kTypeVoid && node->ChildCount() == 1)
     {
         std::stringstream   message;
         message << "Line: " << node->GetSourceCodeLine() << " - Void function "
@@ -186,7 +186,7 @@ void SemanticPass::VisitReturnStatement(ast::NodeReturnStatement * node)
     }
     else
     // Rule: Non-Void function should return a value.
-    if (funcSymbol->GetType() != Type::tTypeVoid && node->ChildCount() == 0)
+    if (funcSymbol->GetType() != Type::kTypeVoid && node->ChildCount() == 0)
     {
         std::stringstream   message;
         message << "Line: " << node->GetSourceCodeLine() << " - Non-void function "
@@ -286,7 +286,7 @@ Type SemanticPass::VisitAOP(ast::NodeAOP * node)
     auto rightOperandType = Visit(node->GetChild(1));
     auto promotedType = TypeChecker::Promote(leftOperandType, rightOperandType);
     
-    if (leftOperandType != rightOperandType && promotedType == Type::tTypeUnknown)
+    if (leftOperandType != rightOperandType && promotedType == Type::kTypeUnknown)
     {
         std::stringstream   message;
         message << "Line: " << node->GetSourceCodeLine() << " - Arithmetic operation type mismatch." << std::endl;
@@ -299,23 +299,23 @@ Type SemanticPass::VisitAOP(ast::NodeAOP * node)
 
 Type SemanticPass::VisitLiteral(ast::NodeLiteral * node)
 {
-    Type literalType = Type::tTypeUnknown;
+    Type literalType = Type::kTypeUnknown;
     
     switch (node->GetNodeType())
     {
-        case ast::NodeType::tNodeTypeLiteralFloat:
-        literalType = Type::tTypeFloat;
+        case ast::NodeType::kNodeTypeLiteralFloat:
+        literalType = Type::kTypeFloat;
         break;
         
-        case ast::NodeType::tNodeTypeLiteralInt32:
-        literalType = Type::tTypeInt;
+        case ast::NodeType::kNodeTypeLiteralInt32:
+        literalType = Type::kTypeInt;
         break;
         
-        case ast::NodeType::tNodeTypeLiteralBool:
-        literalType = Type::tTypeBool;
+        case ast::NodeType::kNodeTypeLiteralBool:
+        literalType = Type::kTypeBool;
         break;
         
-        case ast::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::kNodeTypeLiteralID:
         {
             // Rule: Resolve variable name. It has to be defined before it's used.
             auto scope = node->GetScope();

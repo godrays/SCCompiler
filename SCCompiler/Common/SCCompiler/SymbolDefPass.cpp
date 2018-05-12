@@ -17,7 +17,7 @@ using namespace scc;
 
 ScopeNode * SymbolDefPass::CreateScopeTree(ast::Node * node)
 {
-    ScopeNode *  scopeTreeHead = new ScopeNode(ScopeCategory::cScopeCategoryGlobal, nullptr);
+    ScopeNode *  scopeTreeHead = new ScopeNode(ScopeCategory::kScopeCategoryGlobal, nullptr);
     m_currentScope = scopeTreeHead;
 
     // Add Built-In Types. They have no type definition.
@@ -51,30 +51,30 @@ void SymbolDefPass::Visit(ast::Node * node)
 
     switch(node->GetNodeType())
     {
-        case ast::NodeType::tNodeTypeVariableDeclaration:
+        case ast::NodeType::kNodeTypeVariableDeclaration:
             VisitVariableDeclaration(dynamic_cast<ast::NodeVarDeclaration *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeFunctionDeclaration:
+        case ast::NodeType::kNodeTypeFunctionDeclaration:
             VisitFunctionDeclaration(dynamic_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeBlock:
+        case ast::NodeType::kNodeTypeBlock:
             VisitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeProgram:
-        case ast::NodeType::tNodeTypeReturnStatement:
-        case ast::NodeType::tNodeTypeFuncCall:
-        case ast::NodeType::tNodeTypeAssignment:
-        case ast::NodeType::tNodeTypeAOPMul:
-        case ast::NodeType::tNodeTypeAOPDiv:
-        case ast::NodeType::tNodeTypeAOPAdd:
-        case ast::NodeType::tNodeTypeAOPSub:
-        case ast::NodeType::tNodeTypeLiteralFloat:
-        case ast::NodeType::tNodeTypeLiteralInt32:
-        case ast::NodeType::tNodeTypeLiteralBool:
-        case ast::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::kNodeTypeProgram:
+        case ast::NodeType::kNodeTypeReturnStatement:
+        case ast::NodeType::kNodeTypeFuncCall:
+        case ast::NodeType::kNodeTypeAssignment:
+        case ast::NodeType::kNodeTypeAOPMul:
+        case ast::NodeType::kNodeTypeAOPDiv:
+        case ast::NodeType::kNodeTypeAOPAdd:
+        case ast::NodeType::kNodeTypeAOPSub:
+        case ast::NodeType::kNodeTypeLiteralFloat:
+        case ast::NodeType::kNodeTypeLiteralInt32:
+        case ast::NodeType::kNodeTypeLiteralBool:
+        case ast::NodeType::kNodeTypeLiteralID:
             VisitChilds(node);
             break;
 
@@ -135,7 +135,7 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
 
     // CREATE NEW SCOPE FOR FUNCTION
     
-    m_currentScope = new ScopeNode(ScopeCategory::cScopeCategoryFunction, m_currentScope);
+    m_currentScope = new ScopeNode(ScopeCategory::kScopeCategoryFunction, m_currentScope);
 
     // Add function arguments to function scope.
     auto arguments = node->GetArguments();
@@ -171,7 +171,7 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
 void SymbolDefPass::SymbolDefPass::VisitBlock(ast::NodeBlock * node)
 {
     // CREATE NEW SCOPE FOR FUNCTION
-    m_currentScope = new ScopeNode(ScopeCategory::cScopeCategoryBlock, m_currentScope);
+    m_currentScope = new ScopeNode(ScopeCategory::kScopeCategoryBlock, m_currentScope);
 
     // Visit function childs
     VisitChilds(node);

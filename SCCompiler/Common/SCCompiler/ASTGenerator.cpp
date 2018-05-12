@@ -17,13 +17,13 @@ using namespace scc;
 
 Type ASTGenerator::ToASTType(std::string type)
 {
-    if (type == "float")     return Type::tTypeFloat;
-    else if (type == "int")  return Type::tTypeInt;
-    else if (type == "bool") return Type::tTypeBool;
-    else if (type == "void") return Type::tTypeVoid;
+    if (type == "float")     return Type::kTypeFloat;
+    else if (type == "int")  return Type::kTypeInt;
+    else if (type == "bool") return Type::kTypeBool;
+    else if (type == "void") return Type::kTypeVoid;
     else assert(false && "Unknown type in ASTGenerator::ToASTType()");
 
-    return Type::tTypeUnknown;
+    return Type::kTypeUnknown;
 }
 
 
@@ -191,26 +191,26 @@ antlrcpp::Any ASTGenerator::visitAssignmentStatement(SCCompilerParser::Assignmen
 
 antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx)
 {
-    ast::NodeType nodeType =ast::NodeType::tNodeTypeUnknown;
+    ast::NodeType nodeType =ast::NodeType::kNodeTypeUnknown;
     std::string  value = ctx->getText();
 
     // Get type of the literal.
     switch (ctx->getStart()->getType())
     {
         case SCCompilerParser::ID:
-        nodeType = ast::NodeType::tNodeTypeLiteralID;
+        nodeType = ast::NodeType::kNodeTypeLiteralID;
         break;
 
         case SCCompilerParser::FLOAT:
-        nodeType =ast::NodeType::tNodeTypeLiteralFloat;
+        nodeType =ast::NodeType::kNodeTypeLiteralFloat;
         break;
 
         case SCCompilerParser::INT:
-        nodeType =ast::NodeType::tNodeTypeLiteralInt32;
+        nodeType =ast::NodeType::kNodeTypeLiteralInt32;
         break;
 
         case SCCompilerParser::BOOL:
-        nodeType =ast::NodeType::tNodeTypeLiteralBool;
+        nodeType =ast::NodeType::kNodeTypeLiteralBool;
         break;
 
         default:
@@ -243,14 +243,14 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
 
 antlrcpp::Any ASTGenerator::visitAOPExpr(SCCompilerParser::AOPExprContext *ctx)
 {
-    ast::NodeType nodeType = ast::NodeType::tNodeTypeUnknown;
+    ast::NodeType nodeType = ast::NodeType::kNodeTypeUnknown;
     assert(ctx->children.size() == 3);
     std::string  aop = ctx->children[1]->getText(); // Second child is arithmetic operator in the expression.
 
-    if (aop == "*") nodeType = ast::NodeType::tNodeTypeAOPMul;
-    else if (aop == "/") nodeType = ast::NodeType::tNodeTypeAOPDiv;
-    else if (aop == "+") nodeType = ast::NodeType::tNodeTypeAOPAdd;
-    else if (aop == "-") nodeType = ast::NodeType::tNodeTypeAOPSub;
+    if (aop == "*") nodeType = ast::NodeType::kNodeTypeAOPMul;
+    else if (aop == "/") nodeType = ast::NodeType::kNodeTypeAOPDiv;
+    else if (aop == "+") nodeType = ast::NodeType::kNodeTypeAOPAdd;
+    else if (aop == "-") nodeType = ast::NodeType::kNodeTypeAOPSub;
     else assert(false && "Unknown arithmetic perator.");
 
     // Create new AST Node.

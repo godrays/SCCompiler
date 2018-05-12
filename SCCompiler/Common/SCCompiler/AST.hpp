@@ -28,23 +28,23 @@ namespace ast
     // Node types for AST tree.
     enum NodeType : uint32_t
     {
-        tNodeTypeUnknown,
-        tNodeTypeProgram,
-        tNodeTypeVariableDeclaration,
-        tNodeTypeFunctionDeclaration,
-        tNodeTypeIfStatement,
-        tNodeTypeReturnStatement,
-        tNodeTypeFuncCall,
-        tNodeTypeBlock,
-        tNodeTypeAssignment,
-        tNodeTypeAOPMul,
-        tNodeTypeAOPDiv,
-        tNodeTypeAOPAdd,
-        tNodeTypeAOPSub,
-        tNodeTypeLiteralFloat,
-        tNodeTypeLiteralInt32,
-        tNodeTypeLiteralBool,
-        tNodeTypeLiteralID,
+        kNodeTypeUnknown,
+        kNodeTypeProgram,
+        kNodeTypeVariableDeclaration,
+        kNodeTypeFunctionDeclaration,
+        kNodeTypeIfStatement,
+        kNodeTypeReturnStatement,
+        kNodeTypeFuncCall,
+        kNodeTypeBlock,
+        kNodeTypeAssignment,
+        kNodeTypeAOPMul,
+        kNodeTypeAOPDiv,
+        kNodeTypeAOPAdd,
+        kNodeTypeAOPSub,
+        kNodeTypeLiteralFloat,
+        kNodeTypeLiteralInt32,
+        kNodeTypeLiteralBool,
+        kNodeTypeLiteralID,
     };
 
 
@@ -129,7 +129,7 @@ namespace ast
         void DeleteChilds();
 
         // Node Type
-        NodeType    m_nodeType = tNodeTypeUnknown;
+        NodeType    m_nodeType = kNodeTypeUnknown;
 
         // Points parent node.
         Node *   m_parent = nullptr;
@@ -176,7 +176,7 @@ namespace ast
         std::string GetVarName();
 
     protected:
-        Type         m_varType = Type::tTypeUnknown;
+        Type         m_varType = Type::kTypeUnknown;
         std::string  m_varName;
     };
 
@@ -205,7 +205,7 @@ namespace ast
         std::vector<FuncArg> GetArguments();
 
     protected:
-        Type   m_returnType = Type::tTypeUnknown;
+        Type   m_returnType = Type::kTypeUnknown;
         std::string   m_funcName;
         std::vector<FuncArg>   m_argumentList;
     };

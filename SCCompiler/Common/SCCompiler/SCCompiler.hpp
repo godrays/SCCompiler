@@ -16,10 +16,10 @@ namespace scc
 
     enum SCCompileResult : uint32_t
     {
-        rSCCompileResultOk,
-        rSCCompileResultSyntaxError,
-        rSCCompileResultSemanticError,
-        rSCCompileResultCompileError,
+        kSCCompileResultOk,
+        kSCCompileResultSyntaxError,
+        kSCCompileResultSemanticError,
+        kSCCompileResultCompileError,
     };
 
 

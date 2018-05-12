@@ -116,71 +116,71 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
 
     switch (nodeType)
     {
-        case ast::NodeType::tNodeTypeProgram:
+        case ast::NodeType::kNodeTypeProgram:
         typeInString = "tNodeTypeProgram";
         break;
 
-        case ast::NodeType::tNodeTypeAOPAdd:
+        case ast::NodeType::kNodeTypeAOPAdd:
         typeInString = "tNodeTypeAOPAdd";
         break;
 
-        case ast::NodeType::tNodeTypeAOPDiv:
+        case ast::NodeType::kNodeTypeAOPDiv:
         typeInString = "tNodeTypeAOPDiv";
         break;
 
-        case ast::NodeType::tNodeTypeAOPMul:
+        case ast::NodeType::kNodeTypeAOPMul:
         typeInString = "tNodeTypeAOPMul";
         break;
 
-        case ast::NodeType::tNodeTypeAOPSub:
+        case ast::NodeType::kNodeTypeAOPSub:
         typeInString = "tNodeTypeAOPSub";
         break;
 
-        case ast::NodeType::tNodeTypeAssignment:
+        case ast::NodeType::kNodeTypeAssignment:
         typeInString = "tNodeTypeAssignment";
         break;
 
-        case ast::NodeType::tNodeTypeBlock:
+        case ast::NodeType::kNodeTypeBlock:
         typeInString = "tNodeTypeBlock";
         break;
 
-        case ast::NodeType::tNodeTypeFuncCall:
+        case ast::NodeType::kNodeTypeFuncCall:
         typeInString = "tNodeTypeFuncCall";
         break;
 
-        case ast::NodeType::tNodeTypeFunctionDeclaration:
+        case ast::NodeType::kNodeTypeFunctionDeclaration:
         typeInString = "tNodeTypeFunctionDeclaration";
         break;
 
-        case ast::NodeType::tNodeTypeIfStatement:
+        case ast::NodeType::kNodeTypeIfStatement:
         typeInString = "tNodeTypeIfStatement";
         break;
 
-        case ast::NodeType::tNodeTypeLiteralBool:
+        case ast::NodeType::kNodeTypeLiteralBool:
         typeInString = "tNodeTypeLiteralBool";
         break;
 
-        case ast::NodeType::tNodeTypeLiteralFloat:
+        case ast::NodeType::kNodeTypeLiteralFloat:
         typeInString = "tNodeTypeLiteralFloat";
         break;
 
-        case ast::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::kNodeTypeLiteralID:
         typeInString = "tNodeTypeLiteralID";
         break;
 
-        case ast::NodeType::tNodeTypeLiteralInt32:
+        case ast::NodeType::kNodeTypeLiteralInt32:
         typeInString = "tNodeTypeLiteralInt32";
         break;
 
-        case ast::NodeType::tNodeTypeReturnStatement:
+        case ast::NodeType::kNodeTypeReturnStatement:
         typeInString = "tNodeTypeReturnStatement";
         break;
 
-        case ast::NodeType::tNodeTypeUnknown:
+        case ast::NodeType::kNodeTypeUnknown:
         typeInString = "tNodeTypeReturnStatement";
         break;
 
-        case ast::NodeType::tNodeTypeVariableDeclaration:
+        case ast::NodeType::kNodeTypeVariableDeclaration:
         typeInString = "tNodeTypeVariableDeclaration";
         break;
     
@@ -246,7 +246,7 @@ ScopeNode * ast::Node::GetScope()
 
 ast::NodeProgram::NodeProgram()
 {
-    m_nodeType = tNodeTypeProgram;
+    m_nodeType = kNodeTypeProgram;
 }
 
 
@@ -258,7 +258,7 @@ ast::NodeProgram::~NodeProgram()
 
 #pragma mark - NodeVarDeclaration Implementation
 
-ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) : ast::Node(tNodeTypeVariableDeclaration)
+ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) : ast::Node(kNodeTypeVariableDeclaration)
 {
     m_varType = type;
     m_varName = varName;
@@ -285,7 +285,7 @@ std::string ast::NodeVarDeclaration::GetVarName()
 
 #pragma mark - NodeFuncDeclaration Implementation
 
-ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) : ast::Node(tNodeTypeFunctionDeclaration)
+ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) : ast::Node(kNodeTypeFunctionDeclaration)
 {
     m_returnType = returnType;
     m_funcName = funcName;
@@ -324,7 +324,7 @@ std::vector<ast::FuncArg> ast::NodeFuncDeclaration::GetArguments()
 
 #pragma mark - NodeIfStatement Implementation
 
-ast::NodeIfStatement::NodeIfStatement() : ast::Node(tNodeTypeIfStatement)
+ast::NodeIfStatement::NodeIfStatement() : ast::Node(kNodeTypeIfStatement)
 {
 
 }
@@ -337,7 +337,7 @@ ast::NodeIfStatement::~NodeIfStatement()
 
 #pragma mark - NodeReturnStatement Implementation
 
-ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(tNodeTypeReturnStatement)
+ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(kNodeTypeReturnStatement)
 {
 
 }
@@ -351,7 +351,7 @@ ast::NodeReturnStatement::~NodeReturnStatement()
 
 #pragma mark - NodeFuncCall Implementation
 
-ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(tNodeTypeFuncCall)
+ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(kNodeTypeFuncCall)
 {
     m_funcName = funcName;
 }
@@ -371,7 +371,7 @@ std::string ast::NodeFuncCall::GetFuncName()
 
 ast::NodeBlock::NodeBlock()
 {
-    m_nodeType = tNodeTypeBlock;
+    m_nodeType = kNodeTypeBlock;
 }
 
 
@@ -384,7 +384,7 @@ ast::NodeBlock::~NodeBlock()
 
 #pragma mark - NodeAssignment Implementation
 
-ast::NodeAssignment::NodeAssignment() : Node(tNodeTypeAssignment)
+ast::NodeAssignment::NodeAssignment() : Node(kNodeTypeAssignment)
 {
 
 }
@@ -401,10 +401,10 @@ ast::NodeAssignment::~NodeAssignment()
 
 ast::NodeAOP::NodeAOP(ast::NodeType nodeType) : ast::Node(nodeType)
 {
-    assert(nodeType == ast::NodeType::tNodeTypeAOPMul
-        || nodeType == ast::NodeType::tNodeTypeAOPDiv
-        || nodeType == ast::NodeType::tNodeTypeAOPAdd
-        || nodeType == ast::NodeType::tNodeTypeAOPSub);
+    assert(nodeType == ast::NodeType::kNodeTypeAOPMul
+        || nodeType == ast::NodeType::kNodeTypeAOPDiv
+        || nodeType == ast::NodeType::kNodeTypeAOPAdd
+        || nodeType == ast::NodeType::kNodeTypeAOPSub);
 }
 
 
@@ -420,10 +420,10 @@ ast::NodeLiteral::NodeLiteral(ast::NodeType nodeType, std::string value) :
     ast::Node(nodeType),
     m_value(value)
 {
-    assert(nodeType == ast::NodeType::tNodeTypeLiteralFloat
-        || nodeType == ast::NodeType::tNodeTypeLiteralInt32
-        || nodeType == ast::NodeType::tNodeTypeLiteralBool
-        || nodeType == ast::NodeType::tNodeTypeLiteralID);
+    assert(nodeType == ast::NodeType::kNodeTypeLiteralFloat
+        || nodeType == ast::NodeType::kNodeTypeLiteralInt32
+        || nodeType == ast::NodeType::kNodeTypeLiteralBool
+        || nodeType == ast::NodeType::kNodeTypeLiteralID);
 }
 
 
@@ -445,19 +445,19 @@ std::string ast::TypeToString(Type type)
 {
     switch (type)
     {
-        case tTypeFloat:
+        case kTypeFloat:
             return "float";
         break;
 
-        case tTypeInt:
+        case kTypeInt:
             return "int";
         break;
 
-        case tTypeBool:
+        case kTypeBool:
             return "bool";
         break;
 
-        case tTypeVoid:
+        case kTypeVoid:
             return "void";
         break;
 

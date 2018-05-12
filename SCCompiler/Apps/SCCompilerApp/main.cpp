@@ -16,7 +16,7 @@ int main(int , const char **)
     
     auto scModule = compiler->CompileFromFile("SCCompilerTestCode.src", compileResult);
 
-    if (scc::rSCCompileResultOk != compileResult)
+    if (scc::kSCCompileResultOk != compileResult)
     {
         std::cerr << compiler->GetErrorMessage() << std::endl;
         return -1;
@@ -25,7 +25,7 @@ int main(int , const char **)
     // We no longer need compiler. We just need SCModule, compiled module.
     delete compiler;
 
-    typedef int (* FuncFib)(int);
+    using FuncFib = int (*)(int);
     auto fib = reinterpret_cast<FuncFib>(scModule->GetFunctionPtr("fib"));
     std::cout << fib(3) << std::endl;
 

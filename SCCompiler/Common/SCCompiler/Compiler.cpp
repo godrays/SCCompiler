@@ -63,7 +63,7 @@ scc::SCModule * scc::Compiler::CompileFromFile(std::string filename, scc::SCComp
     }
 
     m_errorMessage = "Source code file not found.";
-    compileResult = scc::SCCompileResult::rSCCompileResultCompileError;
+    compileResult = scc::SCCompileResult::kSCCompileResultCompileError;
     return nullptr;
 }
 
@@ -109,7 +109,7 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
         if (lexer.getNumberOfSyntaxErrors() > 0 || parser.getNumberOfSyntaxErrors() > 0)
         {
             m_errorMessage = parserErrorListener.GetErrorMessage();
-            compileResult = scc::SCCompileResult::rSCCompileResultSyntaxError;
+            compileResult = scc::SCCompileResult::kSCCompileResultSyntaxError;
             return nullptr;
         }
 
@@ -144,23 +144,23 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
     catch (SemanticErrorException & e)
     {
         m_errorMessage = e.what();
-        compileResult = scc::SCCompileResult::rSCCompileResultSemanticError;
+        compileResult = scc::SCCompileResult::kSCCompileResultSemanticError;
         return nullptr;
     }
     catch (CompileErrorException & e)
     {
         m_errorMessage = e.what();
-        compileResult = scc::SCCompileResult::rSCCompileResultCompileError;
+        compileResult = scc::SCCompileResult::kSCCompileResultCompileError;
         return nullptr;
     }
     catch (std::exception & e)
     {
         m_errorMessage = e.what();
-        compileResult = scc::SCCompileResult::rSCCompileResultCompileError;
+        compileResult = scc::SCCompileResult::kSCCompileResultCompileError;
         return nullptr;
     }
 
-    compileResult = scc::SCCompileResult::rSCCompileResultOk;
+    compileResult = scc::SCCompileResult::kSCCompileResultOk;
     return scModule;
 }
 

@@ -28,11 +28,11 @@ namespace scc
     // Symbol category.
     enum SymbolCategory : uint32_t
     {
-        tSymbolCategoryUnknown,
-        tSymbolCategoryType,
-        tSymbolCategoryVariable,
-        tSymbolCategoryFunction,
-        tSymbolCategoryFunctionArgument,
+        kSymbolCategoryUnknown,
+        kSymbolCategoryType,
+        kSymbolCategoryVariable,
+        kSymbolCategoryFunction,
+        kSymbolCategoryFunctionArgument,
     };
 
 
@@ -150,10 +150,10 @@ namespace scc
     // Scope category.
     enum ScopeCategory : uint32_t
     {
-        cScopeCategoryUnknown,
-        cScopeCategoryGlobal,
-        cScopeCategoryFunction,
-        cScopeCategoryBlock,
+        kScopeCategoryUnknown,
+        kScopeCategoryGlobal,
+        kScopeCategoryFunction,
+        kScopeCategoryBlock,
     };
 
 

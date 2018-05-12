@@ -92,6 +92,6 @@ void SyntaxTests::SyntaxAcceptanceTest()
     bool  func24() { bool b=func13(true); return b; }   \n\
     float func25() { return func4((4*5)+2/(2-3)*5, (4.2*5.1)+2.99/(2.10-3)*5, false); }  \n\
     int   func26() { return (4*5)+2/(2-3)*5; }  \n\
-    ", SCCompileResult::rSCCompileResultOk, true);
+    ", SCCompileResult::kSCCompileResultOk, true);
 
 }

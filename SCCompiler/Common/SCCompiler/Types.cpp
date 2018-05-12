@@ -14,20 +14,20 @@ using namespace scc;
 
 #pragma mark - Type Checker Implementations.
 
-Type TypeChecker::m_typePromotionTable[tTypeMax][tTypeMax] =
+Type TypeChecker::m_typePromotionTable[kTypeMax][kTypeMax] =
 {
-                           // tTypeUnknown, tTypeFloat,   tTypeInt,     tTypeBool,    tTypeVoid
-    /* tTypeUnknown */      { tTypeUnknown, tTypeUnknown, tTypeUnknown, tTypeUnknown, tTypeUnknown  },
-    /* tTypeFloat */        { tTypeUnknown, tTypeFloat,   tTypeFloat,   tTypeUnknown, tTypeUnknown  },
-    /* tTypeInt */          { tTypeUnknown, tTypeFloat,   tTypeInt,     tTypeUnknown, tTypeUnknown  },
-    /* tTypeBool */         { tTypeUnknown, tTypeUnknown, tTypeUnknown, tTypeBool,    tTypeUnknown  },
-    /* tTypeVoid */         { tTypeUnknown, tTypeUnknown, tTypeUnknown, tTypeUnknown, tTypeVoid     },
+                           // kTypeUnknown, kTypeFloat,   kTypeInt,     kTypeBool,    kTypeVoid
+    /* kTypeUnknown */      { kTypeUnknown, kTypeUnknown, kTypeUnknown, kTypeUnknown, kTypeUnknown  },
+    /* kTypeFloat */        { kTypeUnknown, kTypeFloat,   kTypeFloat,   kTypeUnknown, kTypeUnknown  },
+    /* kTypeInt */          { kTypeUnknown, kTypeFloat,   kTypeInt,     kTypeUnknown, kTypeUnknown  },
+    /* kTypeBool */         { kTypeUnknown, kTypeUnknown, kTypeUnknown, kTypeBool,    kTypeUnknown  },
+    /* kTypeVoid */         { kTypeUnknown, kTypeUnknown, kTypeUnknown, kTypeUnknown, kTypeVoid     },
 };
 
 
 Type TypeChecker::Promote(Type type1, Type type2)
 {
-    assert(type1 < tTypeMax && type2 < tTypeMax);
+    assert(type1 < kTypeMax && type2 < kTypeMax);
 
     return m_typePromotionTable[type1][type2];
 }

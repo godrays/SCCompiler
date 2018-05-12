@@ -43,63 +43,63 @@ void ASTVisualizer::Visit(ast::Node * node)
     // Output node specific data to dot file.
     switch(node->GetNodeType())
     {
-        case ast::NodeType::tNodeTypeProgram:
+        case ast::NodeType::kNodeTypeProgram:
             OutputConfig(node, "[label = \"Program\"];");
             break;
     
-        case ast::NodeType::tNodeTypeVariableDeclaration:
+        case ast::NodeType::kNodeTypeVariableDeclaration:
             OutputConfigVariableDecl(node);
             break;
 
-        case ast::NodeType::tNodeTypeFunctionDeclaration:
+        case ast::NodeType::kNodeTypeFunctionDeclaration:
             OutputConfigFuncDecl(node);
             break;
 
-        case ast::NodeType::tNodeTypeBlock:
+        case ast::NodeType::kNodeTypeBlock:
             OutputConfig(node, "[label = \"Block\"];");
             break;
 
-        case ast::NodeType::tNodeTypeReturnStatement:
+        case ast::NodeType::kNodeTypeReturnStatement:
             OutputConfig(node, "[label = \"Func Return\"];");
             break;
 
-        case ast::NodeType::tNodeTypeFuncCall:
+        case ast::NodeType::kNodeTypeFuncCall:
             OutputConfig(node, "[label = \"Func Call: " + dynamic_cast<ast::NodeFuncCall*>(node)->GetFuncName() + "\"];");
             break;
 
-        case ast::NodeType::tNodeTypeAssignment:
+        case ast::NodeType::kNodeTypeAssignment:
             OutputConfig(node, "[label = \"=\"];");
             break;
 
-        case ast::NodeType::tNodeTypeAOPMul:
+        case ast::NodeType::kNodeTypeAOPMul:
             OutputConfig(node, "[label = \"*\"];");
             break;
 
-        case ast::NodeType::tNodeTypeAOPDiv:
+        case ast::NodeType::kNodeTypeAOPDiv:
             OutputConfig(node, "[label = \"/\"];");
             break;
 
-        case ast::NodeType::tNodeTypeAOPAdd:
+        case ast::NodeType::kNodeTypeAOPAdd:
              OutputConfig(node, "[label = \"+\"];");
             break;
 
-        case ast::NodeType::tNodeTypeAOPSub:
+        case ast::NodeType::kNodeTypeAOPSub:
             OutputConfig(node, "[label = \"-\"];");
             break;
 
-        case ast::NodeType::tNodeTypeLiteralFloat:
+        case ast::NodeType::kNodeTypeLiteralFloat:
             OutputConfig(node, "[label = \"Float: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
-        case ast::NodeType::tNodeTypeLiteralInt32:
+        case ast::NodeType::kNodeTypeLiteralInt32:
             OutputConfig(node, "[label = \"Int: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
-        case ast::NodeType::tNodeTypeLiteralBool:
+        case ast::NodeType::kNodeTypeLiteralBool:
             OutputConfig(node, "[label = \"Bool: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
-        case ast::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::kNodeTypeLiteralID:
             OutputConfig(node, "[label = \"Variable: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 

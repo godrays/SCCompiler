@@ -84,45 +84,45 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
 {
     switch(node->GetNodeType())
     {
-        case ast::NodeType::tNodeTypeProgram:
+        case ast::NodeType::kNodeTypeProgram:
             VisitProgram(static_cast<ast::NodeProgram *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeVariableDeclaration:
+        case ast::NodeType::kNodeTypeVariableDeclaration:
             VisitVariableDeclaration(static_cast<ast::NodeVarDeclaration *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeFunctionDeclaration:
+        case ast::NodeType::kNodeTypeFunctionDeclaration:
             VisitFunctionDeclaration(static_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeBlock:
+        case ast::NodeType::kNodeTypeBlock:
             VisitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeReturnStatement:
+        case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(static_cast<ast::NodeReturnStatement *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeFuncCall:
+        case ast::NodeType::kNodeTypeFuncCall:
             VisitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeAssignment:
+        case ast::NodeType::kNodeTypeAssignment:
             VisitAssignment(static_cast<ast::NodeAssignment *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeAOPMul:
-        case ast::NodeType::tNodeTypeAOPDiv:
-        case ast::NodeType::tNodeTypeAOPAdd:
-        case ast::NodeType::tNodeTypeAOPSub:
+        case ast::NodeType::kNodeTypeAOPMul:
+        case ast::NodeType::kNodeTypeAOPDiv:
+        case ast::NodeType::kNodeTypeAOPAdd:
+        case ast::NodeType::kNodeTypeAOPSub:
             return VisitAOP(static_cast<ast::NodeAOP *>(node));
             break;
 
-        case ast::NodeType::tNodeTypeLiteralFloat:
-        case ast::NodeType::tNodeTypeLiteralInt32:
-        case ast::NodeType::tNodeTypeLiteralBool:
-        case ast::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::kNodeTypeLiteralFloat:
+        case ast::NodeType::kNodeTypeLiteralInt32:
+        case ast::NodeType::kNodeTypeLiteralBool:
+        case ast::NodeType::kNodeTypeLiteralID:
             return VisitLiteral(static_cast<ast::NodeLiteral *>(node));
             break;
 
@@ -149,7 +149,7 @@ void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
     assert(childCount < 2);
 
     // Create global variable if variable is in global scope.
-    if (node->GetScope()->GetCategory() == ScopeCategory::cScopeCategoryGlobal)
+    if (node->GetScope()->GetCategory() == ScopeCategory::kScopeCategoryGlobal)
     {
         // Create global variable if there is no initializer.
         if (childCount == 0)
@@ -162,10 +162,10 @@ void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
             auto rightExprNode = node->GetChild(0);
             auto nodeType = rightExprNode->GetNodeType();
             // If expression is constant value.
-            if (nodeType == ast::NodeType::tNodeTypeLiteralInt32 ||
-                nodeType == ast::NodeType::tNodeTypeLiteralFloat ||
-                nodeType == ast::NodeType::tNodeTypeLiteralBool  ||
-                nodeType == ast::NodeType::tNodeTypeLiteralID)
+            if (nodeType == ast::NodeType::kNodeTypeLiteralInt32 ||
+                nodeType == ast::NodeType::kNodeTypeLiteralFloat ||
+                nodeType == ast::NodeType::kNodeTypeLiteralBool  ||
+                nodeType == ast::NodeType::kNodeTypeLiteralID)
             {
                 auto literalNode = dynamic_cast<ast::NodeLiteral *>(rightExprNode);
                 auto globalVar = CreateGlobalVariable(varName, node->GetVarType(), literalNode->GetValue());
@@ -315,19 +315,19 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 
     switch (node->GetNodeType())
     {
-        case ast::NodeType::tNodeTypeAOPMul:
+        case ast::NodeType::kNodeTypeAOPMul:
         resultValue = m_irBuilder->CreateMul(leftOperandValue, rightOperandValue, "multmp");
         break;
 
-        case ast::NodeType::tNodeTypeAOPDiv:
+        case ast::NodeType::kNodeTypeAOPDiv:
         resultValue = m_irBuilder->CreateSDiv(leftOperandValue, rightOperandValue, "sdivtmp");
         break;
 
-        case ast::NodeType::tNodeTypeAOPAdd:
+        case ast::NodeType::kNodeTypeAOPAdd:
         resultValue = m_irBuilder->CreateAdd(leftOperandValue, rightOperandValue, "addtmp");
         break;
 
-        case ast::NodeType::tNodeTypeAOPSub:
+        case ast::NodeType::kNodeTypeAOPSub:
         resultValue = m_irBuilder->CreateSub(leftOperandValue, rightOperandValue, "subtmp");
         break;
 
@@ -348,33 +348,33 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
     
     switch (node->GetNodeType())
     {
-        case ast::NodeType::tNodeTypeLiteralFloat:
+        case ast::NodeType::kNodeTypeLiteralFloat:
         {
             // We create temp local variable and assign constant value.
-            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::tTypeFloat), nullptr, "_ci");
+            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeFloat), nullptr, "_ci");
             // Since we store constant, we don't need to load value from an address.
-            m_irBuilder->CreateStore(CreateConstant(scc::Type::tTypeFloat, node->GetValue()), localVar);
+            m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeFloat, node->GetValue()), localVar);
             // Returns pointer to local variable.
             literalValue = localVar;
         }
         break;
         
-        case ast::NodeType::tNodeTypeLiteralInt32:
+        case ast::NodeType::kNodeTypeLiteralInt32:
         {
             // We create temp local variable and assign constant value.
-            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::tTypeInt), nullptr, "_cf");
+            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeInt), nullptr, "_cf");
             // Since we store constant, we don't need to load value from an address.
-            m_irBuilder->CreateStore(CreateConstant(scc::Type::tTypeInt, node->GetValue()), localVar);
+            m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeInt, node->GetValue()), localVar);
             // Returns pointer to local variable.
             literalValue = localVar;
         }
         break;
         
-        case ast::NodeType::tNodeTypeLiteralBool:
+        case ast::NodeType::kNodeTypeLiteralBool:
         assert("Not Implemented");
         break;
         
-        case ast::NodeType::tNodeTypeLiteralID:
+        case ast::NodeType::kNodeTypeLiteralID:
         {
             // Return llvm value object of the variable, which is stored as symbol property in symbol object.
             // llvm object is referring to variable pointer. Needs to be loaded to access to value of the variable.
@@ -396,15 +396,15 @@ llvm::Type * CodeGenPass::CreateBaseType(scc::Type type)
 {
     switch(type)
     {
-        case scc::Type::tTypeInt:
+        case scc::Type::kTypeInt:
             return m_irBuilder->getInt32Ty();
         break;
 
-        case scc::Type::tTypeFloat:
+        case scc::Type::kTypeFloat:
             return m_irBuilder->getFloatTy();
         break;
 
-        case scc::Type::tTypeVoid:
+        case scc::Type::kTypeVoid:
             return m_irBuilder->getVoidTy();
         break;
 
@@ -423,11 +423,11 @@ llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string &
 
     switch(type)
     {
-        case scc::Type::tTypeInt:
+        case scc::Type::kTypeInt:
             return llvm::ConstantInt::get(*m_context, llvm::APInt(32, uint32_t(atoi(value.c_str())), true));
             break;
 
-        case scc::Type::tTypeFloat:
+        case scc::Type::kTypeFloat:
             return llvm::ConstantFP::get(*m_context, llvm::APFloat(float(atof(value.c_str()))));
             break;
 

@@ -135,8 +135,8 @@ int main(int argc, char * const argv[])
         return EXIT_CODE_ERROR;
     }
     
-    typedef std::map<std::string, CppUnit::Outputter *>  OutputterMap;
-    typedef std::map<std::string, CppUnit::TestListener *>  ListenerMap;
+    using OutputterMap = std::map<std::string, CppUnit::Outputter *>;
+    using ListenerMap = std::map<std::string, CppUnit::TestListener *>;
     
     CppUnit::TestResult result;
     CppUnit::TestResultCollector collector;

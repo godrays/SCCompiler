@@ -78,7 +78,7 @@ void Symbol::SetProperty(SymbolPropertyBase * property)
 
 #pragma mark - Class BuiltInTypeSymbol
 
-BuiltInTypeSymbol::BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCategory::tSymbolCategoryType, Type::tTypeUnknown)
+BuiltInTypeSymbol::BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCategory::kSymbolCategoryType, Type::kTypeUnknown)
 {
 
 }
@@ -86,7 +86,7 @@ BuiltInTypeSymbol::BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCate
 
 #pragma mark - Class VariableSymbol
 
-VariableSymbol::VariableSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryVariable, type)
+VariableSymbol::VariableSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::kSymbolCategoryVariable, type)
 {
 
 }
@@ -94,7 +94,7 @@ VariableSymbol::VariableSymbol(std::string name, Type type) : Symbol(name, Symbo
 
 #pragma mark - Class FuncArgSymbol
 
-FuncArgSymbol::FuncArgSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunctionArgument, type)
+FuncArgSymbol::FuncArgSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::kSymbolCategoryFunctionArgument, type)
 {
 
 }
@@ -102,7 +102,7 @@ FuncArgSymbol::FuncArgSymbol(std::string name, Type type) : Symbol(name, SymbolC
 
 #pragma mark - Class FunctionSymbol
 
-FunctionSymbol::FunctionSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::tSymbolCategoryFunction, type)
+FunctionSymbol::FunctionSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::kSymbolCategoryFunction, type)
 {
 
 }

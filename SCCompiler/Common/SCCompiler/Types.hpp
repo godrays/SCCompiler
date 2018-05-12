@@ -20,12 +20,12 @@ namespace scc
     // Note: Changes to this enum requires change in promotion table.
     enum Type : uint32_t
     {
-        tTypeUnknown     = 0,
-        tTypeFloat       = 1,
-        tTypeInt         = 2,
-        tTypeBool        = 3,
-        tTypeVoid        = 4,
-        tTypeMax         = 5,
+        kTypeUnknown     = 0,
+        kTypeFloat       = 1,
+        kTypeInt         = 2,
+        kTypeBool        = 3,
+        kTypeVoid        = 4,
+        kTypeMax         = 5,
     };
 
 
@@ -44,7 +44,7 @@ namespace scc
 
     private:
         // Type promotion table.
-        static Type m_typePromotionTable[tTypeMax][tTypeMax];
+        static Type m_typePromotionTable[kTypeMax][kTypeMax];
     };
 
 }
