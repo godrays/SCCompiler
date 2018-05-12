@@ -99,14 +99,14 @@ void RunMatchingTests(CppUnit::Test * test, const std::string & pattern, CppUnit
 
 int main(int argc, char * const argv[])
 {
-    // NOTE: USAGE text context and indentations is very sensitive.
+    // NOTE: USAGE text context and indentations is very sensitive. Must have only 2 chars indent.
     static const char USAGE[] =
     R"(SCC Test Application.
 
     Usage:
-      SCCTestApp  [--output-style=<style>] [--progress=<progress>] [--test=<test>] [--repeat=<count>]
-      SCCTestApp  --list-all
-      SCCTestApp  (-h | --help)
+      SCCompilerTestApp  [--output-style=<style>] [--progress=<progress>] [--test=<test>] [--repeat=<count>]
+      SCCompilerTestApp  --list-all
+      SCCompilerTestApp  (-h | --help)
 
     Options:
 
