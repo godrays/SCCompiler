@@ -24,4 +24,4 @@ namespace scc
         virtual void * GetFunctionPtr(std::string name) = 0;
     };
 
-};
+}

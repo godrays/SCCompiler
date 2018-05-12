@@ -39,4 +39,4 @@ namespace scc
         std::string     m_errorMessage;
     };
 
-};
+}

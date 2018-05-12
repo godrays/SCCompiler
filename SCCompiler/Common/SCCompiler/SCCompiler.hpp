@@ -44,4 +44,4 @@ namespace scc
         virtual std::string GetErrorMessage() = 0;
     };
 
-};
+}
