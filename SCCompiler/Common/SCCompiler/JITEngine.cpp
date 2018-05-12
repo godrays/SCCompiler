@@ -50,8 +50,8 @@ JITEngine::~JITEngine()
 
 void * JITEngine::GetFunctionPtr(std::string name)
 {
-    auto func = m_module->getFunction(name);
-    auto funcPtr = m_executionEngine->getPointerToFunction(func);
+    // OLD WAY : auto funcPtr = m_executionEngine->getPointerToFunction(m_module->getFunction(name));
+    void * funcPtr = reinterpret_cast<void *>(m_executionEngine->getFunctionAddress(name));
     assert(funcPtr != nullptr);
     return funcPtr;
 }

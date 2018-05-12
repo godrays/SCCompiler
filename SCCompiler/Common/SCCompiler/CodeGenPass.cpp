@@ -464,6 +464,7 @@ llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
                                          std::vector<llvm::Type *> & argTypes)
 {
     llvm::FunctionType * funcType = llvm::FunctionType::get(CreateBaseType(returnType), argTypes, false);
+    // ExternalLinkage enumeration member means that the function can be referred from other modules.
     llvm::Function * func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name, m_module.get());
 
     return func;
