@@ -28,8 +28,8 @@ public:
     
     // Tests given source code.
     scc::SCModule * TestCode(std::string sourceCode,
-                                    scc::SCCompileResult expectedCompileResult,
-                                    bool acceptExpectedCompileResult);
+                             scc::SCCompileResult expectedCompileResult,
+                             bool acceptExpectedCompileResult);
 
     // Code Generation Tests
 
