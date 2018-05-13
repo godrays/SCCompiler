@@ -459,7 +459,7 @@ llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name,
 
 llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
                                          scc::Type returnType,
-                                         std:: string name,
+                                         std::string name,
                                          std::vector<llvm::Type *> & argTypes)
 {
     llvm::FunctionType * funcType = llvm::FunctionType::get(CreateBaseType(returnType), argTypes, false);

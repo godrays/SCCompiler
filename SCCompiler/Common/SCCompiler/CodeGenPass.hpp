@@ -119,10 +119,10 @@ namespace scc
         llvm::GlobalVariable * CreateGlobalVariable(std::string name, scc::Type, const std::string & value);
 
         // Create function.
-        llvm::Function * CreateFunc(llvm::IRBuilder <> &Builder, scc::Type returnType, std:: string Name, std::vector<llvm::Type *> & argTypes);
+        llvm::Function * CreateFunc(llvm::IRBuilder <> &Builder, scc::Type returnType, std::string Name, std::vector<llvm::Type *> & argTypes);
 
         // Create basic block.
-        llvm::BasicBlock * CreateBasicBlock(llvm::Function * func, std:: string name);
+        llvm::BasicBlock * CreateBasicBlock(llvm::Function * func, std::string name);
 
         // Loads if value is pointer type.
         llvm::Value * LoadIfPointerType(llvm::Value * value);
