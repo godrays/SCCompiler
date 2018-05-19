@@ -60,6 +60,9 @@ namespace scc
         // Reset and initialize global variables.
         void Reset();
 
+        // Optimize IR code.
+        void OptimizeIR();
+
     protected:
         // Pointer to program module object.
         llvm::Module *  m_module;
