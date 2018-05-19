@@ -57,6 +57,9 @@ namespace scc
         // Run function.
         llvm::GenericValue RunFunction(std::string funcName, std::vector<llvm::GenericValue> & args);
 
+        // Reset and initialize global variables.
+        void Reset();
+
     protected:
         // Pointer to program module object.
         llvm::Module *  m_module;

@@ -63,3 +63,12 @@ llvm::GenericValue JITEngine::RunFunction(std::string funcName, std::vector<llvm
 
     return returnVal;
 }
+
+
+void JITEngine::Reset()
+{
+    using InitFuncType = void (*)();
+    auto initFunc = reinterpret_cast<InitFuncType>(GetFunctionPtr("__initGlobalVariables__"));
+    // Initialize global variables.
+    initFunc();
+}

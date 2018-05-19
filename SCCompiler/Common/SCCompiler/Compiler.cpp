@@ -138,6 +138,12 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
         CodeGenPass codeGenerationPass;
         scModule = codeGenerationPass.GenerateCode(ast);
 
+        // Initialize global variables.
+        if (scModule)
+        {
+            scModule->Reset();
+        }
+
         delete scopeTree;
         delete ast;
     }

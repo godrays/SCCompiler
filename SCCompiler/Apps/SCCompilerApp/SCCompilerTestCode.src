@@ -1,14 +1,13 @@
 
-int gVar1 = 0;
-float gVar2 = 0.0;
+int gVar1 = 5*6;
+int gVar2 = gVar1 * 2;
 
 int fib(int i)
 {
-    gVar1 = 1;
     i = 5 + gVar1;
     int var = i*2;
     int temp = (5*4)/var + gVar1 * var / i;
-    return temp;
+    return gVar2 * temp;
 }
 
 

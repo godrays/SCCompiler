@@ -40,6 +40,7 @@ llvm::Value * SymbolProperty::GetValue()
 CodeGenPass::CodeGenPass() :
     m_module(nullptr),
     m_context(nullptr),
+    m_initFunction(nullptr),
     m_currentFunction(nullptr),
     m_irBuilder(nullptr)
 {
@@ -61,8 +62,12 @@ JITEngine * CodeGenPass::GenerateCode(ast::Node * node)
     // Create new IRBuilder for global scope.
     m_irBuilder = new llvm::IRBuilder<>(*m_context);
 
+    CreateInternalInitializerFunction();
+
     Visit(node);
-    
+
+    FinalizeInternalInitializerFunction();
+
     DumpIRCode();
 
     // Create JITEngine. Transfer ownership of m_module and m_context to JITEngine.
@@ -151,32 +156,26 @@ void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
     // Create global variable if variable is in global scope.
     if (node->GetScope()->GetCategory() == ScopeCategory::kScopeCategoryGlobal)
     {
-        // Create global variable if there is no initializer.
-        if (childCount == 0)
+        auto globalVar = CreateGlobalVariable(varName, node->GetVarType());
+        node->GetScope()->ResolveSymbol(varName)->SetProperty(new SymbolProperty(globalVar));
+
+        // Generate initialization code in internal initialization function.
+        if (childCount == 1)
         {
-            auto globalVar = CreateGlobalVariable(varName, node->GetVarType(), "");
-            node->GetScope()->ResolveSymbol(varName)->SetProperty(new SymbolProperty(globalVar));
-        }
-        else if (childCount == 1)
-        {
-            auto rightExprNode = node->GetChild(0);
-            auto nodeType = rightExprNode->GetNodeType();
-            // If expression is constant value.
-            if (nodeType == ast::NodeType::kNodeTypeLiteralInt32 ||
-                nodeType == ast::NodeType::kNodeTypeLiteralFloat ||
-                nodeType == ast::NodeType::kNodeTypeLiteralBool  ||
-                nodeType == ast::NodeType::kNodeTypeLiteralID)
-            {
-                auto literalNode = dynamic_cast<ast::NodeLiteral *>(rightExprNode);
-                auto globalVar = CreateGlobalVariable(varName, node->GetVarType(), literalNode->GetValue());
-                node->GetScope()->ResolveSymbol(varName)->SetProperty(new SymbolProperty(globalVar));
-            }
-            else
-            {
-                assert(false);
-                // TODO: Generate initializer code in internal initializer function.
-                Visit(rightExprNode);
-            }
+            // Save current block
+            auto prevBlock = m_irBuilder->GetInsertBlock();
+
+            // Set instruction generation pos to initialization function.
+            m_irBuilder->SetInsertPoint(&m_initFunction->getEntryBlock());
+
+            // Generate code for right expression and get assignment value.
+            auto rightExprValue = Visit(node->GetChild(0));
+
+            // We load value from rightExprValue address and store at globalVar address.
+            m_irBuilder->CreateStore(LoadIfPointerType(rightExprValue), globalVar);
+
+            // Restore saved block (Intruction generation point).
+            m_irBuilder->SetInsertPoint(prevBlock);
         }
     }
     else
@@ -392,6 +391,35 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
 }
 
 
+void CodeGenPass::CreateInternalInitializerFunction()
+{
+    // Save current block.
+    llvm::BasicBlock *  prevBlock = m_irBuilder->GetInsertBlock();
+
+    // No argument is required.
+    std::vector<llvm::Type *> argTypes;
+
+    // Create initializer function.
+    m_initFunction = CreateFunc(*m_irBuilder, Type::kTypeVoid, "__initGlobalVariables__", argTypes);
+
+    // Create basic block for function.
+    CreateBasicBlock(m_initFunction, "entry");
+    
+    // Restore previous block.
+    m_irBuilder->SetInsertPoint(prevBlock);
+}
+
+
+void CodeGenPass::FinalizeInternalInitializerFunction()
+{
+    // Finalize global variable initialization code.
+    auto prevBlock = m_irBuilder->GetInsertBlock();
+    m_irBuilder->SetInsertPoint(&m_initFunction->getEntryBlock());
+    m_irBuilder->CreateRetVoid();
+    m_irBuilder->SetInsertPoint(prevBlock);
+}
+
+
 llvm::Type * CodeGenPass::CreateBaseType(scc::Type type)
 {
     switch(type)
@@ -440,19 +468,14 @@ llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string &
 }
 
 
-llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name,
-                                                         scc::Type type,
-                                                         const std::string & value)
+llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name, scc::Type type)
 {
     m_module->getOrInsertGlobal(name, CreateBaseType(type));
     auto gVar = m_module->getNamedGlobal(name);
     gVar->setLinkage(llvm::GlobalValue::CommonLinkage);
     gVar->setAlignment(4);
+    gVar->setInitializer(CreateConstant(type, "0"));
 
-    if (value.size() > 0)
-    {
-        gVar->setInitializer(CreateConstant(type, value));
-    }
     return gVar;
 }
 

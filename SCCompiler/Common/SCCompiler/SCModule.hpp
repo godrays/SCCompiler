@@ -22,6 +22,9 @@ namespace scc
 
         // Returns pointer of a function.
         virtual void * GetFunctionPtr(std::string name) = 0;
+
+        // Reset and initialize global variables.
+        virtual void Reset() = 0;
     };
 
 }

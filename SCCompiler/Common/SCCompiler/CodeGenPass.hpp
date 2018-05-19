@@ -109,6 +109,12 @@ namespace scc
         llvm::Value * VisitLiteral(ast::NodeLiteral * node);
         
     private:
+        // Create internal initializer function.
+        void CreateInternalInitializerFunction();
+
+        // Finalize internal initializer function.
+        void FinalizeInternalInitializerFunction();
+
         // Creates LLVM base type. (float, int, bool etc..)
         llvm::Type * CreateBaseType(scc::Type type);
 
@@ -116,7 +122,7 @@ namespace scc
         llvm::Constant * CreateConstant(scc::Type type, const std::string & value);
 
         // Creates new global variable.
-        llvm::GlobalVariable * CreateGlobalVariable(std::string name, scc::Type, const std::string & value);
+        llvm::GlobalVariable * CreateGlobalVariable(std::string name, scc::Type);
 
         // Create function.
         llvm::Function * CreateFunc(llvm::IRBuilder <> &Builder, scc::Type returnType, std::string Name, std::vector<llvm::Type *> & argTypes);
@@ -143,6 +149,9 @@ namespace scc
         // Pointer to current LLVM Function.
         llvm::Function *  m_currentFunction;
         
+        // Initializer function for global variables.
+        llvm::Function *  m_initFunction;
+
         // IR builder stack
         llvm::IRBuilder<> * m_irBuilder;
    };
