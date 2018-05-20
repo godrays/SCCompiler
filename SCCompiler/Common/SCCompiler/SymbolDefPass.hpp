@@ -45,6 +45,8 @@ namespace scc
 
         void VisitBlock(ast::NodeBlock * node);
 
+        void VisitLiteral(ast::NodeLiteral * node);
+
     private:
         // Stores current scope.
         ScopeNode *  m_currentScope;

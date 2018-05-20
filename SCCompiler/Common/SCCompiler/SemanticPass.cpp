@@ -25,9 +25,8 @@ void SemanticPass::SemanticCheck(ast::Node * node)
     // No error should be left to code geneartion pass.
     
     // Semantic Analysis Process In Visit Methods:
-    // 1. Resolve symbol names. (Means check if var, func etc.. names are defined).
-    // 2. Check do type promotion and check type equivalence.
-    // 3. Do semantic validation.
+    // 1. Check do type promotion and check type equivalence.
+    // 2. Do semantic validation.
 
     Visit(node);
 }
@@ -320,12 +319,7 @@ Type SemanticPass::VisitLiteral(ast::NodeLiteral * node)
             // Rule: Resolve variable name. It has to be defined before it's used.
             auto scope = node->GetScope();
             auto symbol = scope->ResolveSymbol(node->GetValue());
-            if (!symbol)
-            {
-                std::stringstream   message;
-                message << "Line: " << node->GetSourceCodeLine() << " - Use of undeclared identifier: " << node->GetValue() << std::endl;
-                throw SemanticErrorException(message.str());
-            }
+            assert(symbol && "Use of undeclared identifier");
             literalType = symbol->GetType();
         }
         break;

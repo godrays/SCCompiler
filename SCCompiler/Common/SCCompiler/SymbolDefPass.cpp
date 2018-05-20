@@ -5,6 +5,8 @@
 //  Copyright © 2018 Arkin Terli. All rights reserved.
 //
 
+#include <sstream>
+
 #include "AST.hpp"
 #include "Symbols.hpp"
 #include "SymbolDefPass.hpp"
@@ -74,10 +76,13 @@ void SymbolDefPass::Visit(ast::Node * node)
         case ast::NodeType::kNodeTypeLiteralFloat:
         case ast::NodeType::kNodeTypeLiteralInt32:
         case ast::NodeType::kNodeTypeLiteralBool:
-        case ast::NodeType::kNodeTypeLiteralID:
             VisitChilds(node);
             break;
-
+        
+        case ast::NodeType::kNodeTypeLiteralID:
+            VisitLiteral(static_cast<ast::NodeLiteral *>(node));
+            break;
+            
         default:
             assert(false && "Unknown node type in SymbolDefPass.");
             break;
@@ -178,4 +183,39 @@ void SymbolDefPass::SymbolDefPass::VisitBlock(ast::NodeBlock * node)
 
     // LEAVE SCOPE OF FUNCTION
     m_currentScope = m_currentScope->GeEnclosingScope();
+}
+
+
+void SymbolDefPass::VisitLiteral(ast::NodeLiteral * node)
+{
+    
+    switch (node->GetNodeType())
+    {
+        case ast::NodeType::kNodeTypeLiteralFloat:
+        case ast::NodeType::kNodeTypeLiteralInt32:
+        case ast::NodeType::kNodeTypeLiteralBool:
+        // Nothing to do with other literal types.
+        break;
+        
+        case ast::NodeType::kNodeTypeLiteralID:
+        {
+            // Rule: Resolve variable name. It has to be defined before it's used.
+            auto scope = node->GetScope();
+            auto symbol = scope->ResolveSymbol(node->GetValue());
+            if (!symbol)
+            {
+                std::stringstream   message;
+                message << "Line: " << node->GetSourceCodeLine() << " - Use of undeclared identifier: " << node->GetValue() << std::endl;
+                throw SemanticErrorException(message.str());
+            }
+        }
+        break;
+        
+        default:
+            assert(false && "Unknown node type in SemanticPass::VisitLiteral");
+        break;
+    }
+
+    // This node should have no children.
+    assert(node->ChildCount() == 0);
 }
