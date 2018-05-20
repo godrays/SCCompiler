@@ -186,6 +186,20 @@ void SymbolDefPass::SymbolDefPass::VisitBlock(ast::NodeBlock * node)
 }
 
 
+void SymbolDefPass::VisitFunctionCall(ast::NodeFuncCall * node)
+{
+    // Rule: Function name must resolve (must defined).
+    auto scope = node->GetScope();
+    auto symbol = static_cast<FunctionSymbol *>(scope->ResolveSymbol(node->GetFuncName()));
+    if (!symbol)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Use of undeclared identifier: " << node->GetFuncName() << std::endl;
+        throw SemanticErrorException(message.str());
+    }
+}
+
+
 void SymbolDefPass::VisitLiteral(ast::NodeLiteral * node)
 {
     

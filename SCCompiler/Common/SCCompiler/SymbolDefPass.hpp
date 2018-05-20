@@ -45,6 +45,8 @@ namespace scc
 
         void VisitBlock(ast::NodeBlock * node);
 
+        void VisitFunctionCall(ast::NodeFuncCall * node);
+
         void VisitLiteral(ast::NodeLiteral * node);
 
     private:
