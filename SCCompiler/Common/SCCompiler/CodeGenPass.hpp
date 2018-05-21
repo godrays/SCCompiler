@@ -100,7 +100,7 @@ namespace scc
 
         void VisitReturnStatement(ast::NodeReturnStatement * node);
 
-        void VisitFunctionCall(ast::NodeFuncCall * node);
+        llvm::Value *  VisitFunctionCall(ast::NodeFuncCall * node);
         
         void VisitAssignment(ast::NodeAssignment * node);
 

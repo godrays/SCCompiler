@@ -110,7 +110,7 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             break;
 
         case ast::NodeType::kNodeTypeFuncCall:
-            VisitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
+            return VisitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
             break;
 
         case ast::NodeType::kNodeTypeAssignment:
@@ -206,7 +206,6 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     auto funcName = node->GetFuncName();
 
     auto funcSymbol = static_cast<FunctionSymbol*>(node->GetScope()->ResolveSymbol(funcName));
-    funcSymbol->SetProperty(new SymbolProperty(m_currentFunction));
 
     // Create function argument types.
     std::vector<llvm::Type *>  argTypes;
@@ -217,6 +216,7 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     
     // Create function with arguments.
     m_currentFunction = CreateFunc(*m_irBuilder, node->GetReturnType(), funcName, argTypes);
+    funcSymbol->SetProperty(new SymbolProperty(m_currentFunction));
 
     // Create basic block for function.
     llvm::BasicBlock * funcBlock = CreateBasicBlock(m_currentFunction, "entry");
@@ -267,10 +267,24 @@ void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 }
 
 
-void CodeGenPass::VisitFunctionCall(ast::NodeFuncCall * node)
+llvm::Value * CodeGenPass::VisitFunctionCall(ast::NodeFuncCall * node)
 {
-    // Visit childs
-    VisitChilds(node);
+    std::vector<llvm::Value *> args;
+
+    // Visit all function argument expressions.
+    for (size_t index=0; index < node->ChildCount(); ++index)
+    {
+        auto argExprValue = Visit(node->GetChild(index));
+        args.emplace_back(LoadIfPointerType(argExprValue));
+    }
+    auto funcName = node->GetFuncName();
+    auto funcSymbol = static_cast<FunctionSymbol *>(node->GetScope()->ResolveSymbol(funcName));
+    assert(funcSymbol != nullptr);
+    
+    auto func = static_cast<SymbolProperty *>(funcSymbol->GetProperty())->GetValue();
+    assert(func != nullptr);
+
+    return m_irBuilder->CreateCall(func, args);
 }
 
 
