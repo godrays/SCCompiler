@@ -65,9 +65,16 @@ void SymbolDefPass::Visit(ast::Node * node)
             VisitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeFuncCall:
+            VisitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
+            break;
+
+        case ast::NodeType::kNodeTypeLiteralID:
+            VisitLiteral(static_cast<ast::NodeLiteral *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeProgram:
         case ast::NodeType::kNodeTypeReturnStatement:
-        case ast::NodeType::kNodeTypeFuncCall:
         case ast::NodeType::kNodeTypeAssignment:
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
@@ -77,10 +84,6 @@ void SymbolDefPass::Visit(ast::Node * node)
         case ast::NodeType::kNodeTypeLiteralInt32:
         case ast::NodeType::kNodeTypeLiteralBool:
             VisitChilds(node);
-            break;
-        
-        case ast::NodeType::kNodeTypeLiteralID:
-            VisitLiteral(static_cast<ast::NodeLiteral *>(node));
             break;
             
         default:
