@@ -1,6 +1,7 @@
 
 int fib(int i)
 {
+    bool b = false;
     float f = 4.5;
     return int(2.5 * float(i) * f);
 }

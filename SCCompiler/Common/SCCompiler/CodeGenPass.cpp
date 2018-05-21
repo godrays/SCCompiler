@@ -437,7 +437,14 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
         break;
         
         case ast::NodeType::kNodeTypeLiteralBool:
-        assert("Not Implemented");
+        {
+            // We create temp local variable and assign constant value.
+            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeBool), nullptr, "_cb");
+            // Since we store constant, we don't need to load value from an address.
+            m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeBool, node->GetValue()), localVar);
+            // Returns pointer to local variable.
+            literalValue = localVar;
+        }
         break;
         
         case ast::NodeType::kNodeTypeLiteralID:
@@ -503,6 +510,10 @@ llvm::Type * CodeGenPass::CreateBaseType(scc::Type type)
             return m_irBuilder->getVoidTy();
         break;
 
+        case scc::Type::kTypeBool:
+            return m_irBuilder->getInt1Ty();
+        break;
+
         default:
             assert(false && "Unknown type.");
         break;
@@ -524,6 +535,10 @@ llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string &
 
         case scc::Type::kTypeFloat:
             return llvm::ConstantFP::get(*m_context, llvm::APFloat(float(atof(value.c_str()))));
+            break;
+
+        case scc::Type::kTypeBool:
+            return llvm::ConstantInt::get(*m_context, llvm::APInt(1, value == "true" ? 1 : 0, true));
             break;
 
         default:
