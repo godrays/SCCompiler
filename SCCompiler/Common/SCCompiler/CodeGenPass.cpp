@@ -121,6 +121,11 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             return VisitExplicitTypeConversion(static_cast<ast::NodeExplicitTypeConversion *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeUOPMinus:
+        case ast::NodeType::kNodeTypeUOPPlus:
+            return VisitNodeUnaryOP(static_cast<ast::NodeUnaryOP *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:
@@ -404,6 +409,38 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
 
 
     return convertedValue;
+}
+
+
+llvm::Value * CodeGenPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
+{
+    // Generate code for right expression.
+    auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
+    llvm::Value * negatedValue = nullptr;
+
+    // Nothing to do for '+' unary operation. Just return expr value.
+    if (node->GetNodeType() == ast::NodeType::kNodeTypeUOPPlus)
+    {
+        return exprValue;
+    }
+
+    // Negate value based on type. After semantic pass, only allowed types should reach to this point.
+    switch (exprValue->getType()->getTypeID())
+    {
+        case llvm::Type::TypeID::FloatTyID:
+            negatedValue = m_irBuilder->CreateFMul(CreateConstant(scc::Type::kTypeFloat, "-1"), exprValue, "negtmp");
+        break;
+
+        case llvm::Type::TypeID::IntegerTyID:
+            negatedValue = m_irBuilder->CreateMul(CreateConstant(scc::Type::kTypeInt, "-1"), exprValue, "negtmp");
+        break;
+
+        default:
+        assert(false && "Unhandled type for unary operation.");
+        break;
+    }
+    
+    return negatedValue;
 }
 
 

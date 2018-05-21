@@ -85,6 +85,11 @@ Type SemanticPass::Visit(ast::Node * node)
             return VisitAOP(dynamic_cast<ast::NodeAOP *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeUOPPlus:
+        case ast::NodeType::kNodeTypeUOPMinus:
+            return VisitNodeUnaryOP(dynamic_cast<ast::NodeUnaryOP *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeLiteralFloat:
         case ast::NodeType::kNodeTypeLiteralInt32:
         case ast::NodeType::kNodeTypeLiteralBool:
@@ -341,4 +346,24 @@ Type SemanticPass::VisitLiteral(ast::NodeLiteral * node)
 
     // Return type of literal then parent node can do type check if necessary.
     return literalType;
+}
+
+
+Type SemanticPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
+{
+    // Node must have two child nodes.
+    assert(node->ChildCount() == 1);
+
+    auto rightOperandType = Visit(node->GetChild(0));
+    
+    if (rightOperandType != Type::kTypeFloat &&
+        rightOperandType != Type::kTypeInt)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Unary operation type mismatch." << std::endl;
+        throw SemanticErrorException( message.str());
+    }
+
+    // Return type of right expr value.
+    return rightOperandType;
 }

@@ -283,7 +283,7 @@ antlrcpp::Any ASTGenerator::visitAOPExpr(SCCompilerParser::AOPExprContext *ctx)
     else if (aop == "/") nodeType = ast::NodeType::kNodeTypeAOPDiv;
     else if (aop == "+") nodeType = ast::NodeType::kNodeTypeAOPAdd;
     else if (aop == "-") nodeType = ast::NodeType::kNodeTypeAOPSub;
-    else assert(false && "Unknown arithmetic perator.");
+    else assert(false && "Unknown arithmetic operator.");
 
     // Create new AST Node.
     auto newNode = new ast::NodeAOP(nodeType);
@@ -334,3 +334,35 @@ antlrcpp::Any ASTGenerator::visitFuncCallExpr(SCCompilerParser::FuncCallExprCont
     return visitResult;
 }
 
+
+antlrcpp::Any  ASTGenerator::visitUnaryExpr(SCCompilerParser::UnaryExprContext *ctx)
+{
+    ast::NodeType nodeType = ast::NodeType::kNodeTypeUnknown;
+    assert(ctx->children.size() == 2);
+    std::string  uop = ctx->children[0]->getText(); // First child is unary operator in the expression.
+
+    if (uop == "-") nodeType = ast::NodeType::kNodeTypeUOPMinus;
+    else if (uop == "+") nodeType = ast::NodeType::kNodeTypeUOPPlus;
+    else assert(false && "Unknown unary operator.");
+
+    // Create new AST Node.
+    auto newNode = new ast::NodeUnaryOP(nodeType);
+    newNode->SetSourceCodeLine(ctx->getStart()->getLine());
+
+    // Set parent node. Parent node is the top element in the currentNode Stack.
+    newNode->SetParent(m_currentNodeStack.top());
+
+    // Add yourself as child to parent node.
+    m_currentNodeStack.top()->AddChild(newNode);
+
+    // Push new parent node into stack. It becomes new parent node for child visits.
+    m_currentNodeStack.push(newNode);
+
+    // Visit parser tree childrens.
+    auto visitResult = visitChildren(ctx);
+
+    // Pop current parent node since we are leaving the method.
+    m_currentNodeStack.pop();
+
+    return visitResult;
+}

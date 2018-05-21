@@ -65,6 +65,9 @@ public:
   virtual void enterAOPExpr(SCCompilerParser::AOPExprContext *ctx) = 0;
   virtual void exitAOPExpr(SCCompilerParser::AOPExprContext *ctx) = 0;
 
+  virtual void enterUnaryExpr(SCCompilerParser::UnaryExprContext *ctx) = 0;
+  virtual void exitUnaryExpr(SCCompilerParser::UnaryExprContext *ctx) = 0;
+
   virtual void enterFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) = 0;
   virtual void exitFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) = 0;
 

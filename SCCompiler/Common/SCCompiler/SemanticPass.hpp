@@ -24,6 +24,8 @@ namespace scc
         class NodeAssignment;
         class NodeAOP;
         class NodeLiteral;
+        class NodeExplicitTypeConversion;
+        class NodeUnaryOP;
     }
 
 
@@ -59,6 +61,8 @@ namespace scc
         Type VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 
         Type VisitAOP(ast::NodeAOP * node);
+
+        Type VisitNodeUnaryOP(ast::NodeUnaryOP * node);
 
         Type VisitLiteral(ast::NodeLiteral * node);
    };

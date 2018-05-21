@@ -75,6 +75,14 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"ExplTypeConv To: " + ast::TypeToString(dynamic_cast<ast::NodeExplicitTypeConversion*>(node)->GetConversionType()) + "\"];");
             break;
 
+        case ast::NodeType::kNodeTypeUOPPlus:
+            OutputConfig(node, "[label = \"UnaryOP: +\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeUOPMinus:
+            OutputConfig(node, "[label = \"UnaryOP: -\"];");
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
             OutputConfig(node, "[label = \"*\"];");
             break;

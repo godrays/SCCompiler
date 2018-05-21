@@ -67,6 +67,9 @@ public:
   virtual void enterAOPExpr(SCCompilerParser::AOPExprContext * /*ctx*/) override { }
   virtual void exitAOPExpr(SCCompilerParser::AOPExprContext * /*ctx*/) override { }
 
+  virtual void enterUnaryExpr(SCCompilerParser::UnaryExprContext * /*ctx*/) override { }
+  virtual void exitUnaryExpr(SCCompilerParser::UnaryExprContext * /*ctx*/) override { }
+
   virtual void enterFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }
   virtual void exitFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }
 

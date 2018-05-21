@@ -53,6 +53,8 @@ public:
 
     virtual antlrcpp::Any visitAOPExpr(SCCompilerParser::AOPExprContext *context) = 0;
 
+    virtual antlrcpp::Any visitUnaryExpr(SCCompilerParser::UnaryExprContext *context) = 0;
+
     virtual antlrcpp::Any visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *context) = 0;
 
 

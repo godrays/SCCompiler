@@ -108,6 +108,8 @@ namespace scc
 
         llvm::Value * VisitAOP(ast::NodeAOP * node);
 
+        llvm::Value * VisitNodeUnaryOP(ast::NodeUnaryOP * node);
+
         llvm::Value * VisitLiteral(ast::NodeLiteral * node);
         
     private:

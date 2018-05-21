@@ -65,7 +65,7 @@ expr
     :   ID '(' exprList? ')'    #FuncCallExpr       // Func call like f(), f(x), f(1,2)
     |   ('float' | 'int' | 'bool') '(' expr ')'     #ExplicitTypeConversion
 //    |   ID '[' expr ']'         #ArrayIndexExpr     // Array index like a[i]
-//    |   ('-' | '+') expr        #UnaryExpr
+    |   ('-' | '+') expr        #UnaryExpr
 //    |   '!' expr                #BoolNotExpr        // Boolean not
     |   expr ('*'|'/') expr     #AOPExpr
     |   expr ('+'|'-') expr     #AOPExpr

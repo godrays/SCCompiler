@@ -183,7 +183,19 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
         case ast::NodeType::kNodeTypeVariableDeclaration:
         typeInString = "tNodeTypeVariableDeclaration";
         break;
-    
+
+        case ast::NodeType::kNodeTypeExplicitTypeConversion:
+        typeInString = "kNodeTypeExplicitTypeConversion";
+        break;
+
+        case ast::NodeType::kNodeTypeUOPPlus:
+        typeInString = "kNodeTypeUOPPlus";
+        break;
+
+        case ast::NodeType::kNodeTypeUOPMinus:
+        typeInString = "kNodeTypeUOPMinus";
+        break;
+
         default:
         assert(false && "Unknown node type in Node::GetNodeTypeInString()");
         break;
@@ -418,6 +430,20 @@ ast::NodeExplicitTypeConversion::~NodeExplicitTypeConversion()
     DeleteChilds();
 }
 
+
+#pragma mark - NodeUnaryOP Implementation
+
+ast::NodeUnaryOP::NodeUnaryOP(NodeType nodeType) : Node(nodeType)
+{
+    assert(nodeType == ast::NodeType::kNodeTypeUOPPlus
+        || nodeType == ast::NodeType::kNodeTypeUOPMinus);
+}
+
+
+ast::NodeUnaryOP::~NodeUnaryOP()
+{
+    DeleteChilds();
+}
 
 
 #pragma mark - NodeAOP Implementation

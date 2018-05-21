@@ -38,6 +38,8 @@ namespace ast
         kNodeTypeBlock,
         kNodeTypeAssignment,
         kNodeTypeExplicitTypeConversion,
+        kNodeTypeUOPPlus,
+        kNodeTypeUOPMinus,
         kNodeTypeAOPMul,
         kNodeTypeAOPDiv,
         kNodeTypeAOPAdd,
@@ -300,6 +302,19 @@ namespace ast
     protected:
         // ConversionType.
         Type m_conversionType;
+    };
+
+
+    #pragma mark - Class NodeUnaryOP
+
+    class NodeUnaryOP : public Node
+    {
+    public:
+        // Constructor.
+        explicit NodeUnaryOP(NodeType nodeType);
+
+        // Destructor.
+        virtual ~NodeUnaryOP();
     };
 
 
