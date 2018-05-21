@@ -244,7 +244,7 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     VisitChilds(node);
 
     // We add "return void" if function return type is void since every function must have a return instruction.
-    if (funcSymbol->GetType() == Type::kTypeVoid)
+    if (funcBlock->getTerminator() == nullptr)
     {
         m_irBuilder->CreateRetVoid();
     }
@@ -263,10 +263,16 @@ void CodeGenPass::VisitBlock(ast::NodeBlock * node)
 
 void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 {
+    // Terminator (return instruction currently in the block) is allowed only one per block.
+    if (m_currentFunction->getEntryBlock().getTerminator() != nullptr)
+    {
+        return;
+    }
+
     // If there is no child then return void. Function return type is void.
     if (node->ChildCount() == 0)
     {
-        m_irBuilder->CreateRet(nullptr);
+        m_irBuilder->CreateRetVoid();
         return;
     }
 
@@ -585,7 +591,6 @@ llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string &
             break;
 
         case scc::Type::kTypeBool:
-            assert(value == "true" || value == "false");
             return llvm::ConstantInt::get(*m_context, llvm::APInt(1, value == "true" ? 1 : 0, false));
             break;
 
