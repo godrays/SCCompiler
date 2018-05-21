@@ -284,6 +284,17 @@ public:
    
   };
 
+  class  ExplicitTypeConversionContext : public ExprContext {
+  public:
+    ExplicitTypeConversionContext(ExprContext *ctx);
+
+    ExprContext *expr();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  ParenthesisExprContext : public ExprContext {
   public:
     ParenthesisExprContext(ExprContext *ctx);

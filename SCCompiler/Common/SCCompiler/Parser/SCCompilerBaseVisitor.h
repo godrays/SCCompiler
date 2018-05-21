@@ -67,6 +67,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *ctx) override {
     return visitChildren(ctx);
   }

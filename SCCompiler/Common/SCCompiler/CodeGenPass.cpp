@@ -117,6 +117,10 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             VisitAssignment(static_cast<ast::NodeAssignment *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeExplicitTypeConversion:
+            return VisitExplicitTypeConversion(static_cast<ast::NodeExplicitTypeConversion *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:
@@ -307,6 +311,46 @@ void CodeGenPass::VisitAssignment(ast::NodeAssignment * node)
 
     // We load value from rightExprValue address and store at localVar address.
     m_irBuilder->CreateStore(LoadIfPointerType(rightExprValue), variable);
+}
+
+
+llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node)
+{
+    // Generate code for expression.
+    auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
+    llvm::Value * convertedValue = nullptr;
+    
+    // Convert exprValue from Float To (int or bool)
+    if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::FloatTyID)
+    {
+        switch (node->GetConversionType())
+        {
+            case Type::kTypeInt:
+            convertedValue = m_irBuilder->CreateFPToSI(exprValue, CreateBaseType(Type::kTypeInt));
+            break;
+
+            default:
+            assert(false && "Unhandled conversion type.");
+            break;
+        }
+    }
+
+    // Convert exprValue from Int To (float or bool)
+    if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID)
+    {
+        switch (node->GetConversionType())
+        {
+            case Type::kTypeFloat:
+            convertedValue = m_irBuilder->CreateSIToFP(exprValue, CreateBaseType(Type::kTypeFloat));
+            break;
+
+            default:
+            assert(false && "Unhandled conversion type.");
+            break;
+        }
+    }
+
+    return convertedValue;
 }
 
 

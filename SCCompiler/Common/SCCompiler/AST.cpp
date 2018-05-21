@@ -329,6 +329,7 @@ ast::NodeIfStatement::NodeIfStatement() : ast::Node(kNodeTypeIfStatement)
 
 }
 
+
 ast::NodeIfStatement::~NodeIfStatement()
 {
     DeleteChilds();
@@ -342,7 +343,7 @@ ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(kNodeTypeReturnState
 
 }
 
-// Destructor.
+
 ast::NodeReturnStatement::~NodeReturnStatement()
 {
     DeleteChilds();
@@ -391,6 +392,28 @@ ast::NodeAssignment::NodeAssignment() : Node(kNodeTypeAssignment)
 
 
 ast::NodeAssignment::~NodeAssignment()
+{
+    DeleteChilds();
+}
+
+
+#pragma mark - NodeExplicitTypeConversion Implementation
+
+ast::NodeExplicitTypeConversion::NodeExplicitTypeConversion(Type conversionType) :
+    Node(kNodeTypeExplicitTypeConversion),
+    m_conversionType(conversionType)
+{
+
+}
+
+
+Type ast::NodeExplicitTypeConversion::GetConversionType()
+{
+    return m_conversionType;
+}
+
+
+ast::NodeExplicitTypeConversion::~NodeExplicitTypeConversion()
 {
     DeleteChilds();
 }

@@ -74,6 +74,10 @@ Type SemanticPass::Visit(ast::Node * node)
             return VisitAssignment(dynamic_cast<ast::NodeAssignment *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeExplicitTypeConversion:
+            return VisitExplicitTypeConversion(dynamic_cast<ast::NodeExplicitTypeConversion *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:
@@ -265,6 +269,16 @@ Type SemanticPass::VisitAssignment(ast::NodeAssignment * node)
     }
 
     return leftOperandType;
+}
+
+
+Type SemanticPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node)
+{
+    auto conversionType = node->GetConversionType();
+    
+    Visit(node->GetChild(0));
+    
+    return node->GetConversionType();
 }
 
 

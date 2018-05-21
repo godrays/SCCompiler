@@ -71,6 +71,10 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"=\"];");
             break;
 
+        case ast::NodeType::kNodeTypeExplicitTypeConversion:
+            OutputConfig(node, "[label = \"ExplTypeConv To: " + ast::TypeToString(dynamic_cast<ast::NodeExplicitTypeConversion*>(node)->GetConversionType()) + "\"];");
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
             OutputConfig(node, "[label = \"*\"];");
             break;

@@ -189,6 +189,38 @@ antlrcpp::Any ASTGenerator::visitAssignmentStatement(SCCompilerParser::Assignmen
 }
 
 
+antlrcpp::Any ASTGenerator::visitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *ctx)
+{
+    Type conversionType = Type::kTypeUnknown;
+    auto strConvType = ctx->getStart()->getText();
+    
+    if (strConvType == "float") conversionType = Type::kTypeFloat;
+    else if (strConvType == "int") conversionType = Type::kTypeInt;
+    else if (strConvType == "bool") conversionType = Type::kTypeBool;
+
+    // Create new AST Node.
+    auto newNode = new ast::NodeExplicitTypeConversion(conversionType);
+    newNode->SetSourceCodeLine(ctx->getStart()->getLine());
+
+    // Set parent node. Parent node is the top element in the currentNode Stack.
+    newNode->SetParent(m_currentNodeStack.top());
+
+    // Add yourself as child to parent node.
+    m_currentNodeStack.top()->AddChild(newNode);
+
+    // Push new parent node into stack. It becomes new parent node for child visits.
+    m_currentNodeStack.push(newNode);
+
+    // Visit parser tree childrens.
+    auto visitResult = visitChildren(ctx);
+
+    // Pop current parent node since we are leaving the method.
+    m_currentNodeStack.pop();
+
+    return visitResult;
+}
+
+
 antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx)
 {
     ast::NodeType nodeType =ast::NodeType::kNodeTypeUnknown;

@@ -37,6 +37,7 @@ namespace ast
         kNodeTypeFuncCall,
         kNodeTypeBlock,
         kNodeTypeAssignment,
+        kNodeTypeExplicitTypeConversion,
         kNodeTypeAOPMul,
         kNodeTypeAOPDiv,
         kNodeTypeAOPAdd,
@@ -279,6 +280,26 @@ namespace ast
 
         // Destructor.
         virtual ~NodeAssignment();
+    };
+
+
+    #pragma mark - Class NodeExplicitTypeConversion
+
+    class NodeExplicitTypeConversion : public Node
+    {
+    public:
+        // Constructor.
+        NodeExplicitTypeConversion(Type conversionType);
+
+        // Destructor.
+        virtual ~NodeExplicitTypeConversion();
+        
+        // Get explicit conversion type.
+        Type GetConversionType();
+        
+    protected:
+        // ConversionType.
+        Type m_conversionType;
     };
 
 

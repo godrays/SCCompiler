@@ -56,6 +56,8 @@ namespace scc
         
         Type VisitAssignment(ast::NodeAssignment * node);
 
+        Type VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
+
         Type VisitAOP(ast::NodeAOP * node);
 
         Type VisitLiteral(ast::NodeLiteral * node);

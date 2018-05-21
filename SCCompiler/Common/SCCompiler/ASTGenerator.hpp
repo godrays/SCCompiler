@@ -50,6 +50,8 @@ namespace scc
 
         antlrcpp::Any  visitAssignmentStatement(SCCompilerParser::AssignmentStatementContext *ctx) final;
 
+        antlrcpp::Any  visitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *ctx) final;
+
         antlrcpp::Any  visitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) final;
 
         antlrcpp::Any  visitAOPExpr(SCCompilerParser::AOPExprContext *ctx) final;
