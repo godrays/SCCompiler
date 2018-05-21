@@ -200,12 +200,13 @@ void SymbolDefPass::VisitFunctionCall(ast::NodeFuncCall * node)
         message << "Line: " << node->GetSourceCodeLine() << " - Use of undeclared identifier: " << node->GetFuncName() << std::endl;
         throw SemanticErrorException(message.str());
     }
+
+    VisitChilds(node);
 }
 
 
 void SymbolDefPass::VisitLiteral(ast::NodeLiteral * node)
 {
-    
     switch (node->GetNodeType())
     {
         case ast::NodeType::kNodeTypeLiteralFloat:
