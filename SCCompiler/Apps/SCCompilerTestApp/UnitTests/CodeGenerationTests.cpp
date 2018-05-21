@@ -164,3 +164,65 @@ void CodeGenerationTests::CodeGenerationExplicitTypeConversionTests()
 
     delete scModule;
 }
+
+
+void CodeGenerationTests::CodeGenerationUnaryOPTests()
+{
+    Compiler compiler;
+    SCCompileResult compileResult;
+
+    std::string testCode = "\
+    float NegFloat(float f) { return -f;  }       \
+    float PosFloat(float f) { return +f;  }       \
+    int   NegInt(int i)     { return -i;  }       \
+    int   PosInt(int i)     { return +i;  }       \
+    ";
+    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+
+    CPPUNIT_ASSERT(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    CPPUNIT_ASSERT(scModule != nullptr);
+
+    // FLOAT
+    using FuncNegFloat = float (*)(float);
+    auto NegFloat = reinterpret_cast<FuncNegFloat>(scModule->GetFunctionPtr("NegFloat"));
+
+    CPPUNIT_ASSERT(NegFloat(0.0f) == 0.0f);
+    CPPUNIT_ASSERT(NegFloat(-1.123456f) == 1.123456f);
+    CPPUNIT_ASSERT(NegFloat(1.123456f) == -1.123456f);
+    CPPUNIT_ASSERT(NegFloat(std::numeric_limits<float>::max()) == -std::numeric_limits<float>::max());
+    CPPUNIT_ASSERT(NegFloat(std::numeric_limits<float>::min()) == -std::numeric_limits<float>::min());
+
+    using FuncPosFloat = float (*)(float);
+    auto PosFloat = reinterpret_cast<FuncPosFloat>(scModule->GetFunctionPtr("PosFloat"));
+
+    CPPUNIT_ASSERT(PosFloat(0.0f) == 0.0f);
+    CPPUNIT_ASSERT(PosFloat(1.123456f) == 1.123456f);
+    CPPUNIT_ASSERT(PosFloat(-1.123456f) == -1.123456f);
+    CPPUNIT_ASSERT(PosFloat(std::numeric_limits<float>::max()) == std::numeric_limits<float>::max());
+    CPPUNIT_ASSERT(PosFloat(std::numeric_limits<float>::min()) == std::numeric_limits<float>::min());
+    CPPUNIT_ASSERT(PosFloat(-std::numeric_limits<float>::max()) == -std::numeric_limits<float>::max());
+    CPPUNIT_ASSERT(PosFloat(-std::numeric_limits<float>::min()) == -std::numeric_limits<float>::min());
+
+    // INT
+    using FuncNegInt = int (*)(int);
+    auto NegInt = reinterpret_cast<FuncNegInt>(scModule->GetFunctionPtr("NegInt"));
+
+    CPPUNIT_ASSERT(NegInt(0.0f) == 0.0f);
+    CPPUNIT_ASSERT(NegInt(-1) == 1);
+    CPPUNIT_ASSERT(NegInt(1) == -1);
+    CPPUNIT_ASSERT(NegInt(std::numeric_limits<int>::max()) == -std::numeric_limits<int>::max());
+    CPPUNIT_ASSERT(NegInt(std::numeric_limits<int>::min()) == -std::numeric_limits<int>::min());
+
+    using FuncPosInt = int (*)(int);
+    auto PosInt = reinterpret_cast<FuncPosInt>(scModule->GetFunctionPtr("PosInt"));
+
+    CPPUNIT_ASSERT(PosInt(0.0f) == 0.0f);
+    CPPUNIT_ASSERT(PosInt(1) == 1);
+    CPPUNIT_ASSERT(PosInt(-1) == -1);
+    CPPUNIT_ASSERT(PosInt(std::numeric_limits<int>::max()) == std::numeric_limits<int>::max());
+    CPPUNIT_ASSERT(PosInt(std::numeric_limits<int>::min()) == std::numeric_limits<int>::min());
+    CPPUNIT_ASSERT(PosInt(-std::numeric_limits<int>::max()) == -std::numeric_limits<int>::max());
+    CPPUNIT_ASSERT(PosInt(-std::numeric_limits<int>::min()) == -std::numeric_limits<int>::min());
+
+    delete scModule;
+}

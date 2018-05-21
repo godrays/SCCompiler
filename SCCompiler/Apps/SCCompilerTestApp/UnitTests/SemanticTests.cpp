@@ -126,3 +126,16 @@ void SemanticTests::SemanticNonSpecificTest()
     float  func()  {  }    \n\
     ", SCCompileResult::kSCCompileResultSemanticError, true);
 }
+
+
+void SemanticTests::SemanticUnaryOPTest()
+{
+    TestCode("\
+    bool   func()  { return -true; }       \n\
+    ", SCCompileResult::kSCCompileResultSemanticError, true);
+
+    TestCode("\
+    bool   func(bool b)  { return -b; }    \n\
+    ", SCCompileResult::kSCCompileResultSemanticError, true);
+}
+

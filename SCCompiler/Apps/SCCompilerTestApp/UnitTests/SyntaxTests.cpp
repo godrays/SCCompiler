@@ -57,9 +57,12 @@ void SyntaxTests::SyntaxAcceptanceTest()
     int i;                             \n\
     int i1 = 1;                        \n\
     int i2 = (4*5)+2/(2-3)*5;          \n\
+    int i3 = -4*5;                     \n\
+    int i4 = -i3;                      \n\
     float f;                           \n\
     float f1 = 1.0;                    \n\
     float f2 = (4.2*5.1)+2.99/(2.10-3.0)*5.0;   \n\
+    float f3 = -4.2*5.1;               \n\
     bool k;                            \n\
     bool k1 = true;                    \n\
     bool k2 = false;                   \n\
@@ -92,6 +95,7 @@ void SyntaxTests::SyntaxAcceptanceTest()
     bool  func24() { bool b=func13(true); return b; }   \n\
     float func25() { return func4((4*5)+2/(2-3)*5, (4.2*5.1)+2.99/(2.10-3.0)*5.0, false); }  \n\
     int   func26() { return (4*5)+2/(2-3)*5; }  \n\
+    float func27() { return -func4(-5, -4.2, false); }  \n\
     ", SCCompileResult::kSCCompileResultOk, true);
 
 }
