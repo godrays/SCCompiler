@@ -69,6 +69,14 @@ void SemanticTests::SemanticUndeclaredIdentifierTest()
     TestCode("\
     void func() { func2(); }     \n\
     ", SCCompileResult::kSCCompileResultSemanticError, true);
+
+    TestCode("\
+    void func() { func2(); }  void func2() { }   \n\
+    ", SCCompileResult::kSCCompileResultSemanticError, true);
+
+    TestCode("\
+    int func() { return i; }  int i;   \n\
+    ", SCCompileResult::kSCCompileResultSemanticError, true);
 }
 
 
