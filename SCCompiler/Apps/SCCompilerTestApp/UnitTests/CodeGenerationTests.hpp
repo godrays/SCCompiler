@@ -18,6 +18,8 @@ class CodeGenerationTests : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE( CodeGenerationTests );
     
+    CPPUNIT_TEST( CodeGenerationExplicitTypeConversionTests );
+
     CPPUNIT_TEST_SUITE_END();
     
 public:
@@ -32,5 +34,7 @@ public:
                              bool acceptExpectedCompileResult);
 
     // Code Generation Tests
+
+    void CodeGenerationExplicitTypeConversionTests();
 
 };

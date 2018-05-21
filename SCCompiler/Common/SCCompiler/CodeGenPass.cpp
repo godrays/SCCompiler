@@ -329,6 +329,15 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
             convertedValue = m_irBuilder->CreateFPToSI(exprValue, CreateBaseType(Type::kTypeInt));
             break;
 
+            case Type::kTypeBool:
+            convertedValue = m_irBuilder->CreateFCmpUNE(exprValue, CreateConstant(scc::Type::kTypeFloat, "0"));
+            break;
+
+            case Type::kTypeFloat:
+            // No need to do any conversion.
+            convertedValue = exprValue;
+            break;
+
             default:
             assert(false && "Unhandled conversion type.");
             break;
@@ -336,7 +345,8 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
     }
 
     // Convert exprValue from Int To (float or bool)
-    if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID)
+    if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID &&
+        exprValue->getType()->getPrimitiveSizeInBits() == 32)
     {
         switch (node->GetConversionType())
         {
@@ -344,11 +354,48 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
             convertedValue = m_irBuilder->CreateSIToFP(exprValue, CreateBaseType(Type::kTypeFloat));
             break;
 
+            case Type::kTypeBool:
+            convertedValue = m_irBuilder->CreateICmpNE(exprValue, CreateConstant(scc::Type::kTypeInt, "0"));
+            break;
+
+            case Type::kTypeInt:
+            // No need to do any conversion.
+            convertedValue = exprValue;
+            break;
+
             default:
             assert(false && "Unhandled conversion type.");
             break;
         }
     }
+
+    // Convert exprValue from Bool To (float or Int)
+    if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID &&
+        exprValue->getType()->getPrimitiveSizeInBits() == 1)
+    {
+        switch (node->GetConversionType())
+        {
+            case Type::kTypeFloat:
+            convertedValue = m_irBuilder->CreateUIToFP(exprValue, CreateBaseType(Type::kTypeFloat));
+            break;
+
+            case Type::kTypeInt:
+            {
+                convertedValue = m_irBuilder->CreateZExt(exprValue, CreateBaseType(scc::Type::kTypeInt));
+            }
+            break;
+
+            case Type::kTypeBool:
+            // No need to do any conversion.
+            convertedValue = exprValue;
+            break;
+
+            default:
+            assert(false && "Unhandled conversion type.");
+            break;
+        }
+    }
+
 
     return convertedValue;
 }
@@ -538,7 +585,8 @@ llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string &
             break;
 
         case scc::Type::kTypeBool:
-            return llvm::ConstantInt::get(*m_context, llvm::APInt(1, value == "true" ? 1 : 0, true));
+            assert(value == "true" || value == "false");
+            return llvm::ConstantInt::get(*m_context, llvm::APInt(1, value == "true" ? 1 : 0, false));
             break;
 
         default:
