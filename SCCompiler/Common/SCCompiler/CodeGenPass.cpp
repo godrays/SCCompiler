@@ -365,12 +365,6 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
     //std::cout << "BeforeLeftTypeID:" << DebugLLVMTypeAsString(leftOperandValue->getType()->getTypeID()) << std::endl;
     //std::cout << "BeforeRightTypeID:" << DebugLLVMTypeAsString(rightOperandValue->getType()->getTypeID()) << std::endl;
 
-    leftOperandValue = LoadIfPointerType(leftOperandValue);
-    rightOperandValue = LoadIfPointerType(rightOperandValue);
-
-    //std::cout << "AfterLeftTypeID:" << DebugLLVMTypeAsString(leftOperandValue->getType()->getTypeID()) << std::endl;
-    //std::cout << "AfterRightTypeID:" << DebugLLVMTypeAsString(rightOperandValue->getType()->getTypeID()) << std::endl;
-
     // Type promotion should be done here.
     llvm::Type::TypeID leftOpTypeID = leftOperandValue->getType()->getTypeID();
     llvm::Type::TypeID rightOpTypeID = rightOperandValue->getType()->getTypeID();
@@ -378,19 +372,31 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
     switch (node->GetNodeType())
     {
         case ast::NodeType::kNodeTypeAOPMul:
-        resultValue = m_irBuilder->CreateMul(leftOperandValue, rightOperandValue, "multmp");
+            if (leftOpTypeID == llvm::Type::FloatTyID)
+                resultValue = m_irBuilder->CreateFMul(leftOperandValue, rightOperandValue, "fmultmp");
+            else
+                resultValue = m_irBuilder->CreateMul(leftOperandValue, rightOperandValue, "multmp");
         break;
 
         case ast::NodeType::kNodeTypeAOPDiv:
-        resultValue = m_irBuilder->CreateSDiv(leftOperandValue, rightOperandValue, "sdivtmp");
+            if (leftOpTypeID == llvm::Type::FloatTyID)
+                resultValue = m_irBuilder->CreateFDiv(leftOperandValue, rightOperandValue, "fdivtmp");
+            else
+                resultValue = m_irBuilder->CreateSDiv(leftOperandValue, rightOperandValue, "sdivtmp");
         break;
 
         case ast::NodeType::kNodeTypeAOPAdd:
-        resultValue = m_irBuilder->CreateAdd(leftOperandValue, rightOperandValue, "addtmp");
+            if (leftOpTypeID == llvm::Type::FloatTyID)
+                resultValue = m_irBuilder->CreateFAdd(leftOperandValue, rightOperandValue, "faddtmp");
+            else
+                resultValue = m_irBuilder->CreateAdd(leftOperandValue, rightOperandValue, "addtmp");
         break;
 
         case ast::NodeType::kNodeTypeAOPSub:
-        resultValue = m_irBuilder->CreateSub(leftOperandValue, rightOperandValue, "subtmp");
+            if (leftOpTypeID == llvm::Type::FloatTyID)
+                resultValue = m_irBuilder->CreateFSub(leftOperandValue, rightOperandValue, "fsubtmp");
+            else
+                resultValue = m_irBuilder->CreateSub(leftOperandValue, rightOperandValue, "subtmp");
         break;
 
         default:
@@ -398,8 +404,6 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
         break;
     }
 
-    //std::cout << "ResultTypeID:" << DebugLLVMTypeAsString(resultValue->getType()->getTypeID()) << std::endl;
-    
     return resultValue;
 }
 

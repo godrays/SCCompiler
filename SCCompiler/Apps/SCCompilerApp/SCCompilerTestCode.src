@@ -1,10 +1,8 @@
 
-int gVar1 = 5*6;
-int gVar2 = gVar1 * 2;
-
 int fib(int i)
 {
-    return int(1.6);
+    float f = 4.5;
+    return int(2.5 * float(i) * f);
 }
 
 

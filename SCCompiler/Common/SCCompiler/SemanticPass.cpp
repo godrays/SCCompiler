@@ -291,16 +291,15 @@ Type SemanticPass::VisitAOP(ast::NodeAOP * node)
     // Rule: Left and right expression type must match.
     auto leftOperandType = Visit(node->GetChild(0));
     auto rightOperandType = Visit(node->GetChild(1));
-    auto promotedType = TypeChecker::Promote(leftOperandType, rightOperandType);
     
-    if (leftOperandType != rightOperandType && promotedType == Type::kTypeUnknown)
+    if (leftOperandType != rightOperandType)
     {
         std::stringstream   message;
         message << "Line: " << node->GetSourceCodeLine() << " - Arithmetic operation type mismatch." << std::endl;
         throw SemanticErrorException( message.str());
     }
 
-    return promotedType;
+    return leftOperandType;
 }
 
 
