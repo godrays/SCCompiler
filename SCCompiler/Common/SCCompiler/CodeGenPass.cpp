@@ -204,7 +204,6 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     llvm::BasicBlock *  prevBlock = m_irBuilder->GetInsertBlock();
 
     auto funcName = node->GetFuncName();
-
     auto funcSymbol = static_cast<FunctionSymbol*>(node->GetScope()->ResolveSymbol(funcName));
 
     // Create function argument types.
@@ -240,6 +239,12 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     // Visit childs.
     VisitChilds(node);
 
+    // We add "return void" if function return type is void since every function must have a return instruction.
+    if (funcSymbol->GetType() == Type::kTypeVoid)
+    {
+        m_irBuilder->CreateRetVoid();
+    }
+    
     m_currentFunction = nullptr;
     m_irBuilder->SetInsertPoint(prevBlock);
 }
