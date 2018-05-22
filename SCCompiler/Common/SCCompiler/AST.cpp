@@ -196,6 +196,30 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
         typeInString = "kNodeTypeUOPMinus";
         break;
 
+        case ast::NodeType::kNodeTypeCompOPEQ:
+        typeInString = "kNodeTypeCompOPEQ";
+        break;
+
+        case ast::NodeType::kNodeTypeCompOPNEQ:
+        typeInString = "kNodeTypeCompOPNEQ";
+        break;
+
+        case ast::NodeType::kNodeTypeCompOPLE:
+        typeInString = "kNodeTypeCompOPLE";
+        break;
+
+        case ast::NodeType::kNodeTypeCompOPGE:
+        typeInString = "kNodeTypeCompOPGE";
+        break;
+
+        case ast::NodeType::kNodeTypeCompOPL:
+        typeInString = "kNodeTypeCompOPL";
+        break;
+
+        case ast::NodeType::kNodeTypeCompOPG:
+        typeInString = "kNodeTypeCompOPG";
+        break;
+
         default:
         assert(false && "Unknown node type in Node::GetNodeTypeInString()");
         break;
@@ -441,6 +465,25 @@ ast::NodeUnaryOP::NodeUnaryOP(NodeType nodeType) : Node(nodeType)
 
 
 ast::NodeUnaryOP::~NodeUnaryOP()
+{
+    DeleteChilds();
+}
+
+
+#pragma mark - NodeCompOP Implementation
+
+ast::NodeCompOP::NodeCompOP(ast::NodeType nodeType) : ast::Node(nodeType)
+{
+    assert(nodeType == ast::NodeType::kNodeTypeCompOPEQ
+        || nodeType == ast::NodeType::kNodeTypeCompOPNEQ
+        || nodeType == ast::NodeType::kNodeTypeCompOPLE
+        || nodeType == ast::NodeType::kNodeTypeCompOPGE
+        || nodeType == ast::NodeType::kNodeTypeCompOPL
+        || nodeType == ast::NodeType::kNodeTypeCompOPG);
+}
+
+
+ast::NodeCompOP::~NodeCompOP()
 {
     DeleteChilds();
 }

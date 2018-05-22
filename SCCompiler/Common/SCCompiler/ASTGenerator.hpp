@@ -60,6 +60,8 @@ namespace scc
 
         antlrcpp::Any  visitUnaryExpr(SCCompilerParser::UnaryExprContext *ctx) final;
     
+        antlrcpp::Any  visitCompExpr(SCCompilerParser::CompExprContext *ctx) final;
+
     protected:
         ast::Node *   m_rootNode = nullptr;
         std::stack<ast::Node *>  m_currentNodeStack;

@@ -126,6 +126,15 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             return VisitNodeUnaryOP(static_cast<ast::NodeUnaryOP *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeCompOPEQ:
+        case ast::NodeType::kNodeTypeCompOPNEQ:
+        case ast::NodeType::kNodeTypeCompOPLE:
+        case ast::NodeType::kNodeTypeCompOPGE:
+        case ast::NodeType::kNodeTypeCompOPL:
+        case ast::NodeType::kNodeTypeCompOPG:
+            return VisitCompOP(static_cast<ast::NodeCompOP *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:
@@ -444,6 +453,93 @@ llvm::Value * CodeGenPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
 }
 
 
+llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
+{
+    llvm::Value * resultValue = nullptr;
+
+    // Visit always return pointer to value so we need to load to get value from pointed address.
+    auto leftOperandValue = LoadIfPointerType(Visit(node->GetChild(0)));
+    auto rightOperandValue = LoadIfPointerType(Visit(node->GetChild(1)));
+
+    llvm::Type::TypeID leftOpTypeID = leftOperandValue->getType()->getTypeID();
+    llvm::Type::TypeID rightOpTypeID = rightOperandValue->getType()->getTypeID();
+    assert(leftOpTypeID == rightOpTypeID);
+
+    if (leftOpTypeID == llvm::Type::FloatTyID)
+    {
+        switch (node->GetNodeType())
+        {
+            case ast::NodeType::kNodeTypeCompOPEQ:
+                resultValue = m_irBuilder->CreateFCmpOEQ(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPNEQ:
+                resultValue = m_irBuilder->CreateFCmpONE(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPLE:
+                resultValue = m_irBuilder->CreateFCmpOLE(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPGE:
+                resultValue = m_irBuilder->CreateFCmpOGE(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPL:
+                resultValue = m_irBuilder->CreateFCmpOLT(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPG:
+                resultValue = m_irBuilder->CreateFCmpOGT(leftOperandValue, rightOperandValue);
+            break;
+
+            default:
+                assert(false && "Unknown comparison node type.");
+            break;
+        }
+    }
+    else if (leftOpTypeID == llvm::Type::IntegerTyID)
+    {
+        switch (node->GetNodeType())
+        {
+            case ast::NodeType::kNodeTypeCompOPEQ:
+                resultValue = m_irBuilder->CreateICmpEQ(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPNEQ:
+                resultValue = m_irBuilder->CreateICmpNE(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPLE:
+                resultValue = m_irBuilder->CreateICmpSLE(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPGE:
+                resultValue = m_irBuilder->CreateICmpSGE(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPL:
+                resultValue = m_irBuilder->CreateICmpSLT(leftOperandValue, rightOperandValue);
+            break;
+
+            case ast::NodeType::kNodeTypeCompOPG:
+                resultValue = m_irBuilder->CreateICmpSGT(leftOperandValue, rightOperandValue);
+            break;
+
+            default:
+                assert(false && "Unknown comparison node type.");
+            break;
+        }
+    }
+    else
+    {
+        assert(false && "Unknown comparison type.");
+    }
+
+    return resultValue;
+}
+
+
 llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 {
     llvm::Value * resultValue = nullptr;
@@ -496,6 +592,7 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 
     return resultValue;
 }
+
 
 
 llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)

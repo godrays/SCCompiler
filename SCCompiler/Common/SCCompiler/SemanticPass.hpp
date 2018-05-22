@@ -65,6 +65,8 @@ namespace scc
         Type VisitNodeUnaryOP(ast::NodeUnaryOP * node);
 
         Type VisitLiteral(ast::NodeLiteral * node);
+
+        Type VisitCompOP(ast::NodeCompOP * node);
    };
 
 }

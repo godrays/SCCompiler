@@ -44,6 +44,12 @@ namespace ast
         kNodeTypeAOPDiv,
         kNodeTypeAOPAdd,
         kNodeTypeAOPSub,
+        kNodeTypeCompOPEQ,
+        kNodeTypeCompOPNEQ,
+        kNodeTypeCompOPLE,
+        kNodeTypeCompOPGE,
+        kNodeTypeCompOPL,
+        kNodeTypeCompOPG,
         kNodeTypeLiteralFloat,
         kNodeTypeLiteralInt32,
         kNodeTypeLiteralBool,
@@ -315,6 +321,19 @@ namespace ast
 
         // Destructor.
         virtual ~NodeUnaryOP();
+    };
+
+
+    #pragma mark - Class NodeCompOP
+
+    class NodeCompOP : public Node
+    {
+    public:
+        // Constructor.
+        explicit NodeCompOP(NodeType nodeType);
+
+        // Destructor.
+        virtual ~NodeCompOP();
     };
 
 

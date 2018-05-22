@@ -79,6 +79,12 @@ void SymbolDefPass::Visit(ast::Node * node)
         case ast::NodeType::kNodeTypeExplicitTypeConversion:
         case ast::NodeType::kNodeTypeUOPPlus:
         case ast::NodeType::kNodeTypeUOPMinus:
+        case ast::NodeType::kNodeTypeCompOPEQ:
+        case ast::NodeType::kNodeTypeCompOPNEQ:
+        case ast::NodeType::kNodeTypeCompOPLE:
+        case ast::NodeType::kNodeTypeCompOPGE:
+        case ast::NodeType::kNodeTypeCompOPL:
+        case ast::NodeType::kNodeTypeCompOPG:
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:

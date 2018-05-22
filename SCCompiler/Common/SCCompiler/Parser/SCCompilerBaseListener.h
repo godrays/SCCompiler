@@ -64,6 +64,9 @@ public:
   virtual void enterLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
   virtual void exitLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
 
+  virtual void enterCompExpr(SCCompilerParser::CompExprContext * /*ctx*/) override { }
+  virtual void exitCompExpr(SCCompilerParser::CompExprContext * /*ctx*/) override { }
+
   virtual void enterAOPExpr(SCCompilerParser::AOPExprContext * /*ctx*/) override { }
   virtual void exitAOPExpr(SCCompilerParser::AOPExprContext * /*ctx*/) override { }
 

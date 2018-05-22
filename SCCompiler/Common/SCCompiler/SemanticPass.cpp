@@ -78,6 +78,15 @@ Type SemanticPass::Visit(ast::Node * node)
             return VisitExplicitTypeConversion(dynamic_cast<ast::NodeExplicitTypeConversion *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeCompOPEQ:
+        case ast::NodeType::kNodeTypeCompOPNEQ:
+        case ast::NodeType::kNodeTypeCompOPLE:
+        case ast::NodeType::kNodeTypeCompOPGE:
+        case ast::NodeType::kNodeTypeCompOPL:
+        case ast::NodeType::kNodeTypeCompOPG:
+            return VisitCompOP(dynamic_cast<ast::NodeCompOP *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:
@@ -366,4 +375,26 @@ Type SemanticPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
 
     // Return type of right expr value.
     return rightOperandType;
+}
+
+
+Type SemanticPass::VisitCompOP(ast::NodeCompOP * node)
+{
+    // Rule: Comparison operation requires two operands.
+    // Node must have two child nodes.
+    assert(node->ChildCount() == 2);
+
+    // Rule: Left and right expression type must match.
+    auto leftOperandType = Visit(node->GetChild(0));
+    auto rightOperandType = Visit(node->GetChild(1));
+    
+    if (leftOperandType != rightOperandType)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Comparison operation type mismatch." << std::endl;
+        throw SemanticErrorException( message.str());
+    }
+
+    // Comparison result type is always bool type.
+    return Type::kTypeBool;
 }

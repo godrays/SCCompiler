@@ -69,9 +69,9 @@ expr
 //    |   '!' expr                #BoolNotExpr        // Boolean not
     |   expr ('*'|'/') expr     #AOPExpr
     |   expr ('+'|'-') expr     #AOPExpr
-//    |   expr '==' expr          #CompExpr           // Equality comparison (lowest priority op)
+    |   expr ('=='|'!='|'<='|'>='|'<'|'>') expr     #CompExpr             // Comparison Operations
     |   (ID | FLOAT | INT | BOOL)    #LiteralExpr
-    |   '(' expr ')'            #ParenthesisExpr        //Ignore
+    |   '(' expr ')'            #ParenthesisExpr      // Ignore
     ;
 
 

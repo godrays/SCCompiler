@@ -66,6 +66,18 @@ void SyntaxTests::SyntaxAcceptanceTest()
     bool k;                            \n\
     bool k1 = true;                    \n\
     bool k2 = false;                   \n\
+    bool k3 = 3 == 4;                  \n\
+    bool k4 = 3 >= 4;                  \n\
+    bool k5 = 3 <= 4;                  \n\
+    bool k6 = 3 != 4;                  \n\
+    bool k7 = 3 > 4;                   \n\
+    bool k8 = 3 < 4;                   \n\
+    bool k9 = 3.1 == 4.1;              \n\
+    bool k10 = 3.1 >= 4.1;             \n\
+    bool k11 = 3.1 <= 4.1;             \n\
+    bool k12 = 3.1 != 4.1;             \n\
+    bool k13 = 3.1 > 4.1;              \n\
+    bool k14 = 3.1 < 4.1;              \n\
     /* Comment */                      \n\
     void func1() { }                   \n\
     void func2() { return; }           \n\

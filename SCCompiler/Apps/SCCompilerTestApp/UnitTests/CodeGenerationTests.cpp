@@ -226,3 +226,93 @@ void CodeGenerationTests::CodeGenerationUnaryOPTests()
 
     delete scModule;
 }
+
+
+void CodeGenerationTests::CodeGenerationComparisonOPTests()
+{
+    Compiler compiler;
+    SCCompileResult compileResult;
+
+    std::string testCode = "\
+    bool FloatCmpEQ(float a, float b)  { return a == b;  }       \
+    bool FloatCmpNEQ(float a, float b) { return a != b;  }       \
+    bool FloatCmpLE(float a, float b)  { return a <= b;  }       \
+    bool FloatCmpGE(float a, float b)  { return a >= b;  }       \
+    bool FloatCmpL(float a, float b)   { return a < b;  }        \
+    bool FloatCmpG(float a, float b)   { return a > b;  }        \
+    ";
+    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+
+    CPPUNIT_ASSERT(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    CPPUNIT_ASSERT(scModule != nullptr);
+
+    auto fmax = std::numeric_limits<float>::max();
+    auto fmin = std::numeric_limits<float>::min();
+
+    // FLOAT
+    using FuncFloatCmp = bool (*)(float, float);
+
+    auto FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpEQ"));
+    CPPUNIT_ASSERT(FloatCmp(0.0f, 0.0f) == true);
+    CPPUNIT_ASSERT(FloatCmp(-0.0f, 0.0f) == true);
+    CPPUNIT_ASSERT(FloatCmp(1.12f, 1.12f) == true);
+    CPPUNIT_ASSERT(FloatCmp(1.12f, -1.12f) == false);
+    CPPUNIT_ASSERT(FloatCmp(-1.0f, 1.0f) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmax) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmin) == true);
+
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpNEQ"));
+    CPPUNIT_ASSERT(FloatCmp(0.0f, 0.0f) == false);
+    CPPUNIT_ASSERT(FloatCmp(-0.0f, 0.0f) == false);
+    CPPUNIT_ASSERT(FloatCmp(1.12f, 1.12f) == false);
+    CPPUNIT_ASSERT(FloatCmp(1.12f, -1.12f) == true);
+    CPPUNIT_ASSERT(FloatCmp(-1.0f, 1.0f) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmax) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmin) == false);
+
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpLE"));
+    CPPUNIT_ASSERT(FloatCmp(0.0f, 0.0f) == true);
+    CPPUNIT_ASSERT(FloatCmp(-0.0f, 0.0f) == true);
+    CPPUNIT_ASSERT(FloatCmp(1.12f, 1.12f) == true);
+    CPPUNIT_ASSERT(FloatCmp(1.11f, 1.12f) == true);
+    CPPUNIT_ASSERT(FloatCmp(-1.0f, 1.0f) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmax) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmax) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmin) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmin) == true);
+
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpGE"));
+    CPPUNIT_ASSERT(FloatCmp(0.0f, 0.0f) == true);
+    CPPUNIT_ASSERT(FloatCmp(-0.0f, 0.0f) == true);
+    CPPUNIT_ASSERT(FloatCmp(1.12f, 1.12f) == true);
+    CPPUNIT_ASSERT(FloatCmp(1.11f, 1.12f) == false);
+    CPPUNIT_ASSERT(FloatCmp(-1.0f, 1.0f) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmax) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmax) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmin) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmin) == true);
+
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpL"));
+    CPPUNIT_ASSERT(FloatCmp(0.0f, 0.0f) == false);
+    CPPUNIT_ASSERT(FloatCmp(-0.0f, 0.0f) == false);
+    CPPUNIT_ASSERT(FloatCmp(1.12f, 1.12f) == false);
+    CPPUNIT_ASSERT(FloatCmp(1.11f, 1.12f) == true);
+    CPPUNIT_ASSERT(FloatCmp(-1.0f, 1.0f) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmax) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmax) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmin) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmin) == false);
+
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpG"));
+    CPPUNIT_ASSERT(FloatCmp(0.0f, 0.0f) == false);
+    CPPUNIT_ASSERT(FloatCmp(-0.0f, 0.0f) == false);
+    CPPUNIT_ASSERT(FloatCmp(1.12f, 1.12f) == false);
+    CPPUNIT_ASSERT(FloatCmp(1.11f, 1.12f) == false);
+    CPPUNIT_ASSERT(FloatCmp(-1.0f, 1.0f) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmax) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmax) == false);
+    CPPUNIT_ASSERT(FloatCmp(fmax, fmin) == true);
+    CPPUNIT_ASSERT(FloatCmp(fmin, fmin) == false);
+
+    delete scModule;
+}

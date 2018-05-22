@@ -366,3 +366,40 @@ antlrcpp::Any  ASTGenerator::visitUnaryExpr(SCCompilerParser::UnaryExprContext *
 
     return visitResult;
 }
+
+
+antlrcpp::Any ASTGenerator::visitCompExpr(SCCompilerParser::CompExprContext *ctx)
+{
+    ast::NodeType nodeType = ast::NodeType::kNodeTypeUnknown;
+    assert(ctx->children.size() == 3);
+    std::string  compOP = ctx->children[1]->getText(); // Second child is comparison operator in the expression.
+
+    if (compOP == "==") nodeType = ast::NodeType::kNodeTypeCompOPEQ;
+    else if (compOP == "!=") nodeType = ast::NodeType::kNodeTypeCompOPNEQ;
+    else if (compOP == "<=") nodeType = ast::NodeType::kNodeTypeCompOPLE;
+    else if (compOP == ">=") nodeType = ast::NodeType::kNodeTypeCompOPGE;
+    else if (compOP == "<") nodeType = ast::NodeType::kNodeTypeCompOPL;
+    else if (compOP == ">") nodeType = ast::NodeType::kNodeTypeCompOPG;
+    else assert(false && "Unknown arithmetic operator.");
+
+    // Create new AST Node.
+    auto newNode = new ast::NodeCompOP(nodeType);
+    newNode->SetSourceCodeLine(ctx->getStart()->getLine());
+
+    // Set parent node. Parent node is the top element in the currentNode Stack.
+    newNode->SetParent(m_currentNodeStack.top());
+
+    // Add yourself as child to parent node.
+    m_currentNodeStack.top()->AddChild(newNode);
+
+    // Push new parent node into stack. It becomes new parent node for child visits.
+    m_currentNodeStack.push(newNode);
+
+    // Visit parser tree childrens.
+    auto visitResult = visitChildren(ctx);
+
+    // Pop current parent node since we are leaving the method.
+    m_currentNodeStack.pop();
+
+    return visitResult;
+}

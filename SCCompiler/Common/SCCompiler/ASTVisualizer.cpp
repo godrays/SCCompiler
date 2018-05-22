@@ -83,6 +83,30 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"UnaryOP: -\"];");
             break;
 
+        case ast::NodeType::kNodeTypeCompOPEQ:
+            OutputConfig(node, "[label = \"==\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeCompOPNEQ:
+            OutputConfig(node, "[label = \"!=\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeCompOPLE:
+            OutputConfig(node, "[label = \"<=\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeCompOPGE:
+            OutputConfig(node, "[label = \">=\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeCompOPL:
+            OutputConfig(node, "[label = \"<\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeCompOPG:
+            OutputConfig(node, "[label = \">\"];");
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
             OutputConfig(node, "[label = \"*\"];");
             break;

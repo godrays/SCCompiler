@@ -62,6 +62,9 @@ public:
   virtual void enterLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) = 0;
   virtual void exitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) = 0;
 
+  virtual void enterCompExpr(SCCompilerParser::CompExprContext *ctx) = 0;
+  virtual void exitCompExpr(SCCompilerParser::CompExprContext *ctx) = 0;
+
   virtual void enterAOPExpr(SCCompilerParser::AOPExprContext *ctx) = 0;
   virtual void exitAOPExpr(SCCompilerParser::AOPExprContext *ctx) = 0;
 
