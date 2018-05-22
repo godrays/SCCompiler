@@ -34,7 +34,8 @@ JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
 
     OptimizeIR();
 
-    llvm::outs() << "[OPTIMIZED] ----------------------------------------\n" << *m_module;
+    // DEBUG
+    // llvm::outs() << "[OPTIMIZED] ----------------------------------------\n" << *m_module;
 
     std::string error;
     m_executionEngine = llvm::EngineBuilder(std::move(module)).setEngineKind(llvm::EngineKind::Kind::JIT).setErrorStr(&error).create();
@@ -54,7 +55,7 @@ JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
 JITEngine::~JITEngine()
 {
     delete m_executionEngine;
-    llvm::llvm_shutdown();
+    //TODO: llvm::llvm_shutdown(); needs to be called per process one time only.
 }
 
 

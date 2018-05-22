@@ -68,7 +68,8 @@ JITEngine * CodeGenPass::GenerateCode(ast::Node * node)
 
     FinalizeInternalInitializerFunction();
 
-    DumpIRCode();
+    // DEBUG
+    // DumpIRCode();
 
     // Create JITEngine. Transfer ownership of m_module and m_context to JITEngine.
     return new JITEngine(std::move(m_module));
