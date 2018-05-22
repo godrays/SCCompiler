@@ -30,7 +30,7 @@ void SemanticTests::tearDown()
 }
 
 
-SCModule * SemanticTests::TestCode(std::string sourceCode, SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult)
+void SemanticTests::TestCode(std::string sourceCode, SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult)
 {
     Compiler compiler;
     
@@ -46,7 +46,7 @@ SCModule * SemanticTests::TestCode(std::string sourceCode, SCCompileResult expec
         CPPUNIT_ASSERT(false);
     }
     
-    return scModule;
+    delete scModule;
 }
 
 

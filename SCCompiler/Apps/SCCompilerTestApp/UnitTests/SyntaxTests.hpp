@@ -31,9 +31,9 @@ public:
     void tearDown();
     
     // Tests given source code.
-    scc::SCModule * TestCode(std::string sourceCode,
-                             scc::SCCompileResult expectedCompileResult,
-                             bool acceptExpectedCompileResult);
+    void TestCode(std::string sourceCode,
+                  scc::SCCompileResult expectedCompileResult,
+                  bool acceptExpectedCompileResult);
     
     // Syntax Acceptance Test
     

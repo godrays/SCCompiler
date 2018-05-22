@@ -29,7 +29,7 @@ void SyntaxTests::tearDown()
 }
 
 
-SCModule * SyntaxTests::TestCode(std::string sourceCode, SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult)
+void SyntaxTests::TestCode(std::string sourceCode, SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult)
 {
     Compiler compiler;
     
@@ -44,8 +44,8 @@ SCModule * SyntaxTests::TestCode(std::string sourceCode, SCCompileResult expecte
         std::cerr << compiler.GetErrorMessage() << std::endl;
         CPPUNIT_ASSERT(false);
     }
-    
-    return scModule;
+
+    delete scModule;
 }
 
 
@@ -109,5 +109,4 @@ void SyntaxTests::SyntaxAcceptanceTest()
     int   func26() { return (4*5)+2/(2-3)*5; }  \n\
     float func27() { return -func4(-5, -4.2, false); }  \n\
     ", SCCompileResult::kSCCompileResultOk, true);
-
 }
