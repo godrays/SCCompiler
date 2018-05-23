@@ -106,6 +106,10 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             VisitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeIfStatement:
+            VisitIfStatement(static_cast<ast::NodeIfStatement *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(static_cast<ast::NodeReturnStatement *>(node));
             break;
@@ -223,6 +227,7 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     llvm::BasicBlock *  prevBlock = m_irBuilder->GetInsertBlock();
 
     auto funcName = node->GetFuncName();
+    auto funcReturnType = node->GetReturnType();
     auto funcSymbol = static_cast<FunctionSymbol*>(node->GetScope()->ResolveSymbol(funcName));
 
     // Create function argument types.
@@ -233,7 +238,7 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     }
     
     // Create function with arguments.
-    m_currentFunction = CreateFunc(*m_irBuilder, node->GetReturnType(), funcName, argTypes);
+    m_currentFunction = CreateFunc(*m_irBuilder, funcReturnType, funcName, argTypes);
     funcSymbol->SetProperty(new SymbolProperty(m_currentFunction));
 
     // Create basic block for function.
@@ -258,12 +263,23 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     // Visit childs.
     VisitChilds(node);
 
-    // We add "return void" if function return type is void since every function must have a return instruction.
-    if (funcBlock->getTerminator() == nullptr)
+    if (m_irBuilder->GetInsertBlock()->getTerminator() == nullptr)
     {
+        // We add "return void" if function return type is void since every function must have a return instruction.
         m_irBuilder->CreateRetVoid();
     }
     
+    // DEBUG
+    // m_currentFunction->viewCFG();
+
+    // Remove unreacable code blocks in basic blocks. It's possible each basic block could have multiple
+    // return instructions so we throw all instruction after first found return instruction.
+    auto & bbList = m_currentFunction->getBasicBlockList();
+    for (auto it = bbList.begin(); it != bbList.end(); ++it)
+    {
+        DeleteDeadCode(&*it);
+    }
+
     m_currentFunction = nullptr;
     m_irBuilder->SetInsertPoint(prevBlock);
 }
@@ -276,21 +292,51 @@ void CodeGenPass::VisitBlock(ast::NodeBlock * node)
 }
 
 
+void CodeGenPass::VisitIfStatement(ast::NodeIfStatement * node)
+{
+    //auto prevBlock = m_irBuilder->GetInsertBlock();
+
+    auto condNode = node->GetChild(0);
+    auto thenNode = node->GetChild(1);
+    auto elseNode = node->ChildCount() == 3 ? node->GetChild(2) : nullptr;
+
+    // Generate code for condition Expression.
+    auto conditionValue = LoadIfPointerType(Visit(condNode));
+
+    // Generate blocks.
+    auto thenBlock  = CreateBasicBlock(m_currentFunction, "if.then");
+    auto elseBlock  = CreateBasicBlock(m_currentFunction, "if.else");
+    auto continueBlock = CreateBasicBlock(m_currentFunction, "if.cont");
+    m_irBuilder->CreateCondBr(conditionValue, thenBlock, elseBlock);
+
+    // Generate code for then statement.
+    m_irBuilder->SetInsertPoint(thenBlock);
+    auto thenValue = Visit(thenNode);
+    m_irBuilder->CreateBr(continueBlock);
+
+    m_irBuilder->SetInsertPoint(elseBlock);
+    // Generate code only if there is else statement.
+    if (elseNode != nullptr)
+    {
+        Visit(elseNode);
+    }
+    // Even there is no else block, we create else block to make flow work properly.
+    // Empty else block will be eliminated by code optimizer.
+    m_irBuilder->CreateBr(continueBlock);
+
+    // New code generation should start in continue block.
+    m_irBuilder->SetInsertPoint(continueBlock);
+}
+
+
 void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 {
-    // Terminator (return instruction currently in the block) is allowed only one per block.
-    if (m_currentFunction->getEntryBlock().getTerminator() != nullptr)
-    {
-        return;
-    }
-
     // If there is no child then return void. Function return type is void.
     if (node->ChildCount() == 0)
     {
         m_irBuilder->CreateRetVoid();
         return;
     }
-
     // return <expression>
     auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
     m_irBuilder->CreateRet(exprValue);
@@ -777,6 +823,41 @@ llvm::Value * CodeGenPass::LoadIfPointerType(llvm::Value * value)
     }
 
     return value;
+}
+
+
+void CodeGenPass::DeleteDeadCode(llvm::BasicBlock * basicBlock)
+{
+    for (auto it = basicBlock->begin(); it != basicBlock->end(); ++it)
+    {
+        // DEBUG: std::cout << (*it).getOpcodeName() << std::endl;
+        // Split after return instruction.
+        if (it->getOpcode() == llvm::Instruction::Ret)
+        {
+            // Split only if there is a following instruction.
+            ++it;
+            if (it != basicBlock->getInstList().end())
+            {
+                auto deadCodeBlock = SplitBasicBlock(basicBlock, it);
+                //TODO: Needs investigation: deadCodeBlock->eraseFromParent();
+            }
+            return;
+        }
+    }
+}
+
+
+llvm::BasicBlock * CodeGenPass::SplitBasicBlock(llvm::BasicBlock * basicBlock, llvm::BasicBlock::iterator it)
+{
+  assert(basicBlock->getTerminator() && "Block must have terminator instruction.");
+  assert(it != basicBlock->getInstList().end() && "Can't split block since there is no following instriong in the basic block!");
+
+  auto newBlock = llvm::BasicBlock::Create(basicBlock->getContext(), "splitedBlock", basicBlock->getParent(), basicBlock->getNextNode());
+
+  // Move all of the instructions from original block into new block.
+  newBlock->getInstList().splice(newBlock->end(), basicBlock->getInstList(), it, basicBlock->end());
+
+  return newBlock;
 }
 
 

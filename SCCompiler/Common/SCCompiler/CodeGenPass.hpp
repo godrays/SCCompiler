@@ -98,6 +98,8 @@ namespace scc
 
         void VisitBlock(ast::NodeBlock * node);
 
+        void VisitIfStatement(ast::NodeIfStatement * node);
+
         void VisitReturnStatement(ast::NodeReturnStatement * node);
 
         void VisitAssignment(ast::NodeAssignment * node);
@@ -145,6 +147,12 @@ namespace scc
         // Convert llvm type to string.
         std::string DebugLLVMTypeAsString(llvm::Type::TypeID typeID) const;
 
+        // Deletes unreachable/dead code in basic block.
+        void DeleteDeadCode(llvm::BasicBlock * basicBlock);
+
+        // Splits block from given instruction iterator.
+        llvm::BasicBlock * SplitBasicBlock(llvm::BasicBlock * basicBlock, llvm::BasicBlock::iterator it);
+
     protected:
         // Stores entire code.
         std::unique_ptr<llvm::Module>  m_module;
@@ -162,3 +170,4 @@ namespace scc
         llvm::IRBuilder<> * m_irBuilder;
    };
 }
+

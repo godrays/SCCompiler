@@ -1,9 +1,15 @@
 
+
+int IfTest1(bool b1, bool b2) { int a=0; if (b1) { return 1; } else { if (b2) { return 2; } a = 3; } return a; }
+
+
 int fib(int i)
 {
-    bool b = false;
-    float f = 4.5;
-    return -int(2.5 * float(i) * f);
+    int a = 0;
+
+    if (i == 2) { a=11; return IfTest1(true, true); a = 5; return 3; } else { if (i == 3) { return 10; } a = 7; }
+
+    return a;
 }
 
 

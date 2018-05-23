@@ -108,5 +108,6 @@ void SyntaxTests::SyntaxAcceptanceTest()
     float func25() { return func4((4*5)+2/(2-3)*5, (4.2*5.1)+2.99/(2.10-3.0)*5.0, false); }  \n\
     int   func26() { return (4*5)+2/(2-3)*5; }  \n\
     float func27() { return -func4(-5, -4.2, false); }  \n\
+    int   func28(int i) { int a=i; if (i == 2) { a=11; return 4; a = 5; return 3; } else { if (i == 3) { return 10; } a = 7; } return a; }  \n\
     ", SCCompileResult::kSCCompileResultOk, true);
 }

@@ -46,6 +46,8 @@ namespace scc
 
         antlrcpp::Any  visitBlock(SCCompilerParser::BlockContext *ctx) final;
 
+        antlrcpp::Any  visitIfStatement(SCCompilerParser::IfStatementContext *ctx) final;
+
         antlrcpp::Any  visitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) final;
 
         antlrcpp::Any  visitAssignmentStatement(SCCompilerParser::AssignmentStatementContext *ctx) final;

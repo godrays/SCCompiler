@@ -37,6 +37,8 @@ public:
 
     virtual antlrcpp::Any visitVarDeclStatement(SCCompilerParser::VarDeclStatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitIfStatement(SCCompilerParser::IfStatementContext *context) = 0;
+
     virtual antlrcpp::Any visitReturnStatement(SCCompilerParser::ReturnStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitAssignmentStatement(SCCompilerParser::AssignmentStatementContext *context) = 0;

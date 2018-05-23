@@ -43,6 +43,9 @@ public:
   virtual void enterVarDeclStatement(SCCompilerParser::VarDeclStatementContext * /*ctx*/) override { }
   virtual void exitVarDeclStatement(SCCompilerParser::VarDeclStatementContext * /*ctx*/) override { }
 
+  virtual void enterIfStatement(SCCompilerParser::IfStatementContext * /*ctx*/) override { }
+  virtual void exitIfStatement(SCCompilerParser::IfStatementContext * /*ctx*/) override { }
+
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
 

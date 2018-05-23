@@ -41,6 +41,9 @@ public:
   virtual void enterVarDeclStatement(SCCompilerParser::VarDeclStatementContext *ctx) = 0;
   virtual void exitVarDeclStatement(SCCompilerParser::VarDeclStatementContext *ctx) = 0;
 
+  virtual void enterIfStatement(SCCompilerParser::IfStatementContext *ctx) = 0;
+  virtual void exitIfStatement(SCCompilerParser::IfStatementContext *ctx) = 0;
+
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) = 0;
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) = 0;
 

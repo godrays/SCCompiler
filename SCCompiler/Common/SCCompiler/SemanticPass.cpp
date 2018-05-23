@@ -62,6 +62,10 @@ Type SemanticPass::Visit(ast::Node * node)
             VisitBlock(dynamic_cast<ast::NodeBlock *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeIfStatement:
+            VisitIfStatement(dynamic_cast<ast::NodeIfStatement *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(dynamic_cast<ast::NodeReturnStatement *>(node));
             break;
@@ -177,6 +181,16 @@ void SemanticPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 
 void SemanticPass::VisitBlock(ast::NodeBlock * node)
 {
+    // Visit childs
+    VisitChilds(node);
+}
+
+
+void SemanticPass::VisitIfStatement(ast::NodeIfStatement * node)
+{
+    // Requires max three childs: ConditionExpr, Then Statement, Else Statement
+    assert(node->ChildCount() < 4);
+
     // Visit childs
     VisitChilds(node);
 }

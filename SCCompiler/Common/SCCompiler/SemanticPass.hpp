@@ -19,6 +19,7 @@ namespace scc
         class NodeVarDeclaration;
         class NodeFuncDeclaration;
         class NodeBlock;
+        class NodeIfStatement;
         class NodeReturnStatement;
         class NodeFuncCall;
         class NodeAssignment;
@@ -51,6 +52,8 @@ namespace scc
         void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
 
         void VisitBlock(ast::NodeBlock * node);
+
+        void VisitIfStatement(ast::NodeIfStatement * node);
 
         void VisitReturnStatement(ast::NodeReturnStatement * node);
 

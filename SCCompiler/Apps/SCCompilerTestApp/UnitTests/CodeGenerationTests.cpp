@@ -316,3 +316,44 @@ void CodeGenerationTests::CodeGenerationComparisonOPTests()
 
     delete scModule;
 }
+
+
+void CodeGenerationTests::CodeGenerationIfStatementTests()
+{
+    Compiler compiler;
+    SCCompileResult compileResult;
+
+    std::string testCode = "\
+    int IfTest1(bool b1) { int a=-1; if (b1) { return 1; } return a; }                                                  \n\
+    int IfTest2(bool b1, bool b2) { int a=-1; if (b1) { return 1; } else { if (b2) { return 2; } a = 3; } return a; }   \n\
+    int IfTest3(bool b1) { int a=-1; if (b1) { } else { } return a; }                                                   \n\
+    int IfTest4(bool b1) { int a=-1; if (b1) { a=1; } else { a=2; } return a; }                                         \n\
+    ";
+    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+
+    CPPUNIT_ASSERT(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    CPPUNIT_ASSERT(scModule != nullptr);
+
+    using FuncIfTest1 = int (*)(bool);
+    auto IfTest1 = reinterpret_cast<FuncIfTest1>(scModule->GetFunctionPtr("IfTest1"));
+    CPPUNIT_ASSERT(IfTest1(true)  == 1);
+    CPPUNIT_ASSERT(IfTest1(false) == -1);
+
+    using FuncIfTest2 = int (*)(bool, bool);
+    auto IfTest2 = reinterpret_cast<FuncIfTest2>(scModule->GetFunctionPtr("IfTest2"));
+    CPPUNIT_ASSERT(IfTest2(true, false)  == 1);
+    CPPUNIT_ASSERT(IfTest2(false, true)  == 2);
+    CPPUNIT_ASSERT(IfTest2(false, false) == 3);
+
+    using FuncIfTest3 = int (*)(bool);
+    auto IfTest3 = reinterpret_cast<FuncIfTest3>(scModule->GetFunctionPtr("IfTest3"));
+    CPPUNIT_ASSERT(IfTest3(true) == -1);
+    CPPUNIT_ASSERT(IfTest3(true) == -1);
+
+    using FuncIfTest4 = int (*)(bool);
+    auto IfTest4 = reinterpret_cast<FuncIfTest4>(scModule->GetFunctionPtr("IfTest4"));
+    CPPUNIT_ASSERT(IfTest4(true) == 1);
+    CPPUNIT_ASSERT(IfTest4(false) == 2);
+
+    delete scModule;
+}

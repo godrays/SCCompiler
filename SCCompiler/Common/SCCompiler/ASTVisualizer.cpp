@@ -59,6 +59,10 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"Block\"];");
             break;
 
+        case ast::NodeType::kNodeTypeIfStatement:
+            OutputConfig(node, "[label = \"If\"];");
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             OutputConfig(node, "[label = \"Func Return\"];");
             break;

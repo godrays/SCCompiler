@@ -48,7 +48,7 @@ block
 stat
     :   block                                   #BlockStatement         // Ignore
     |   varDecl                                 #VarDeclStatement       // Ignore
-//    |   'if' '(' expr ')' stat ('else' stat)?   #IfStatement
+    |   'if' '(' expr ')' stat ('else' stat)?   #IfStatement
     |   'return' expr? ';'                      #ReturnStatement
     |   expr '=' expr ';'                       #AssignmentStatement
     |   expr ';'                                #FuncCallStatement      // Ignore
