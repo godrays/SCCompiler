@@ -82,6 +82,10 @@ Type SemanticPass::Visit(ast::Node * node)
             return VisitExplicitTypeConversion(dynamic_cast<ast::NodeExplicitTypeConversion *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeLogicalNotOP:
+            return VisitLogicalNotOP(dynamic_cast<ast::NodeLogicalNotOP *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeCompOPEQ:
         case ast::NodeType::kNodeTypeCompOPNEQ:
         case ast::NodeType::kNodeTypeCompOPLE:
@@ -307,6 +311,16 @@ Type SemanticPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion *
     Visit(node->GetChild(0));
     
     return node->GetConversionType();
+}
+
+
+Type SemanticPass::VisitLogicalNotOP(ast::NodeLogicalNotOP * node)
+{
+    // Node must have one child node.
+    assert(node->ChildCount() == 1);
+
+    // Visit child.
+    return Visit(node->GetChild(0));
 }
 
 

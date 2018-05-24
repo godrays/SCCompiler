@@ -51,6 +51,8 @@ public:
 
     virtual antlrcpp::Any visitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *context) = 0;
 
+    virtual antlrcpp::Any visitLogicalNotExpr(SCCompilerParser::LogicalNotExprContext *context) = 0;
+
     virtual antlrcpp::Any visitLiteralExpr(SCCompilerParser::LiteralExprContext *context) = 0;
 
     virtual antlrcpp::Any visitCompExpr(SCCompilerParser::CompExprContext *context) = 0;

@@ -108,6 +108,8 @@ namespace scc
 
         llvm::Value * VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 
+        llvm::Value * VisitLogicalNotOP(ast::NodeLogicalNotOP * node);
+
         llvm::Value * VisitAOP(ast::NodeAOP * node);
 
         llvm::Value * VisitCompOP(ast::NodeCompOP * node);

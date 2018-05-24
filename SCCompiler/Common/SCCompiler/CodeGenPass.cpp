@@ -126,6 +126,10 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             return VisitExplicitTypeConversion(static_cast<ast::NodeExplicitTypeConversion *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeLogicalNotOP:
+            return VisitLogicalNotOP(static_cast<ast::NodeLogicalNotOP *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeUOPMinus:
         case ast::NodeType::kNodeTypeUOPPlus:
             return VisitNodeUnaryOP(static_cast<ast::NodeUnaryOP *>(node));
@@ -465,6 +469,38 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
 
 
     return convertedValue;
+}
+
+
+llvm::Value * CodeGenPass::VisitLogicalNotOP(ast::NodeLogicalNotOP * node)
+{
+    auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
+    auto exprType = exprValue->getType()->getTypeID();
+    
+    if (exprType == llvm::Type::TypeID::FloatTyID)
+    {
+        exprValue = m_irBuilder->CreateFCmpUNE(exprValue, CreateConstant(scc::Type::kTypeFloat, "0"));
+        exprValue = m_irBuilder->CreateXor(exprValue, CreateConstant(scc::Type::kTypeBool, "true"));
+        exprValue = m_irBuilder->CreateUIToFP(exprValue, CreateBaseType(scc::Type::kTypeFloat));
+    }
+    else if (exprType == llvm::Type::TypeID::IntegerTyID &&
+             exprValue->getType()->getPrimitiveSizeInBits() == 32)
+    {
+        exprValue = m_irBuilder->CreateICmpNE(exprValue, CreateConstant(scc::Type::kTypeInt, "0"));
+        exprValue = m_irBuilder->CreateXor(exprValue, CreateConstant(scc::Type::kTypeBool, "true"));
+        exprValue = m_irBuilder->CreateZExt(exprValue, CreateBaseType(scc::Type::kTypeInt));
+    }
+    else if (exprType == llvm::Type::TypeID::IntegerTyID &&
+             exprValue->getType()->getPrimitiveSizeInBits() == 1)
+    {
+        exprValue = m_irBuilder->CreateXor(exprValue, CreateConstant(scc::Type::kTypeBool, "true"));
+    }
+    else
+    {
+        assert(false && "Unknown type for logical not operator.");
+    }
+
+    return exprValue;
 }
 
 

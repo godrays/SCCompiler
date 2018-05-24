@@ -38,6 +38,7 @@ namespace ast
         kNodeTypeBlock,
         kNodeTypeAssignment,
         kNodeTypeExplicitTypeConversion,
+        kNodeTypeLogicalNotOP,
         kNodeTypeUOPPlus,
         kNodeTypeUOPMinus,
         kNodeTypeAOPMul,
@@ -308,6 +309,19 @@ namespace ast
     protected:
         // ConversionType.
         Type m_conversionType;
+    };
+
+
+    #pragma mark - Class NodeLogicalNotOP
+
+    class NodeLogicalNotOP : public Node
+    {
+    public:
+        // Constructor.
+        NodeLogicalNotOP();
+
+        // Destructor.
+        virtual ~NodeLogicalNotOP();
     };
 
 

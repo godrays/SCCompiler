@@ -66,7 +66,7 @@ expr
     |   ('float' | 'int' | 'bool') '(' expr ')'     #ExplicitTypeConversion
 //    |   ID '[' expr ']'         #ArrayIndexExpr     // Array index like a[i]
     |   ('-' | '+') expr        #UnaryExpr
-//    |   '!' expr                #BoolNotExpr        // Boolean not
+    |   '!' expr                #LogicalNotExpr       // Logical not
     |   expr ('*'|'/') expr     #AOPExpr
     |   expr ('+'|'-') expr     #AOPExpr
     |   expr ('=='|'!='|'<='|'>='|'<'|'>') expr     #CompExpr             // Comparison Operations

@@ -15,8 +15,8 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, BOOL = 25, INT = 26, 
-    FLOAT = 27, ID = 28, WS = 29, LINECOMMENT = 30, BLOCKCOMMENT = 31
+    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, BOOL = 26, 
+    INT = 27, FLOAT = 28, ID = 29, WS = 30, LINECOMMENT = 31, BLOCKCOMMENT = 32
   };
 
   SCCompilerLexer(antlr4::CharStream *input);

@@ -63,6 +63,8 @@ namespace scc
 
         Type VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 
+        Type VisitLogicalNotOP(ast::NodeLogicalNotOP * node);
+
         Type VisitAOP(ast::NodeAOP * node);
 
         Type VisitNodeUnaryOP(ast::NodeUnaryOP * node);

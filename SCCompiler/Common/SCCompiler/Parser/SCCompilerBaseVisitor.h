@@ -79,6 +79,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitLogicalNotExpr(SCCompilerParser::LogicalNotExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) override {
     return visitChildren(ctx);
   }

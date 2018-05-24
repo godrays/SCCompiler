@@ -455,6 +455,20 @@ ast::NodeExplicitTypeConversion::~NodeExplicitTypeConversion()
 }
 
 
+#pragma mark - NodeLogicalNotOP Implementation
+
+ast::NodeLogicalNotOP::NodeLogicalNotOP() : Node(ast::NodeType::kNodeTypeLogicalNotOP)
+{
+
+}
+
+
+ast::NodeLogicalNotOP::~NodeLogicalNotOP()
+{
+    DeleteChilds();
+}
+
+
 #pragma mark - NodeUnaryOP Implementation
 
 ast::NodeUnaryOP::NodeUnaryOP(NodeType nodeType) : Node(nodeType)

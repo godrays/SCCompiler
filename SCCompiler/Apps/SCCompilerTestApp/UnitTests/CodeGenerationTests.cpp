@@ -357,3 +357,55 @@ void CodeGenerationTests::CodeGenerationIfStatementTests()
 
     delete scModule;
 }
+
+
+void CodeGenerationTests::CodeGenerationLogicalNotOPTests()
+{
+    Compiler compiler;
+    SCCompileResult compileResult;
+
+    std::string testCode = "\
+    bool FloatNot(float f) { return bool(!f); }         \n\
+    bool IntNot(int i)     { return bool(!i); }         \n\
+    bool BoolNot(bool b)   { return !b; }               \n\
+    ";
+    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+
+    CPPUNIT_ASSERT(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    CPPUNIT_ASSERT(scModule != nullptr);
+
+    auto fmax = std::numeric_limits<float>::max();
+    auto fmin = std::numeric_limits<float>::min();
+
+    auto imax = std::numeric_limits<int>::max();
+    auto imin = std::numeric_limits<int>::min();
+
+    // Float Logical Not Tests
+    using FuncFloatNot = bool (*)(float);
+    auto FloatNot = reinterpret_cast<FuncFloatNot>(scModule->GetFunctionPtr("FloatNot"));
+    CPPUNIT_ASSERT(FloatNot(0.0f) == bool(!0.0f));
+    CPPUNIT_ASSERT(FloatNot(-0.0f) == bool(!-0.0f));
+    CPPUNIT_ASSERT(FloatNot(1.12f) == bool(!1.12f));
+    CPPUNIT_ASSERT(FloatNot(-1.12f) == bool(!-1.12f));
+    CPPUNIT_ASSERT(FloatNot(fmax) == bool(!fmax));
+    CPPUNIT_ASSERT(FloatNot(fmin) == bool(!fmin));
+    
+    // Integer Logical Not Tests
+    using FuncIntNot = bool (*)(int);
+    auto IntNot = reinterpret_cast<FuncIntNot>(scModule->GetFunctionPtr("IntNot"));
+    CPPUNIT_ASSERT(IntNot(0) == bool(!0));
+    CPPUNIT_ASSERT(IntNot(-0) == bool(!-0));
+    CPPUNIT_ASSERT(IntNot(1) == bool(!1));
+    CPPUNIT_ASSERT(IntNot(-1) == bool(!-1));
+    CPPUNIT_ASSERT(IntNot(imax) == bool(!imax));
+    CPPUNIT_ASSERT(IntNot(imin) == bool(!imin));
+
+    // Bool Logical Not Tests
+    using FuncBoolNot = bool (*)(bool);
+    auto BoolNot = reinterpret_cast<FuncBoolNot>(scModule->GetFunctionPtr("BoolNot"));
+    CPPUNIT_ASSERT(BoolNot(true) == false);
+    CPPUNIT_ASSERT(BoolNot(false) == true);
+
+    delete scModule;
+}
+

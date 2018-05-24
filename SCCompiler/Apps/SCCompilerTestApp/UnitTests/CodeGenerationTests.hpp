@@ -22,6 +22,7 @@ class CodeGenerationTests : public CppUnit::TestFixture
     CPPUNIT_TEST( CodeGenerationUnaryOPTests );
     CPPUNIT_TEST( CodeGenerationComparisonOPTests );
     CPPUNIT_TEST( CodeGenerationIfStatementTests );
+    CPPUNIT_TEST( CodeGenerationLogicalNotOPTests );
 
     CPPUNIT_TEST_SUITE_END();
     
@@ -45,4 +46,6 @@ public:
     void CodeGenerationComparisonOPTests();
     
     void CodeGenerationIfStatementTests();
+
+    void CodeGenerationLogicalNotOPTests();
 };

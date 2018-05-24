@@ -64,6 +64,9 @@ public:
   virtual void enterParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
   virtual void exitParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
 
+  virtual void enterLogicalNotExpr(SCCompilerParser::LogicalNotExprContext * /*ctx*/) override { }
+  virtual void exitLogicalNotExpr(SCCompilerParser::LogicalNotExprContext * /*ctx*/) override { }
+
   virtual void enterLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
   virtual void exitLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
 
