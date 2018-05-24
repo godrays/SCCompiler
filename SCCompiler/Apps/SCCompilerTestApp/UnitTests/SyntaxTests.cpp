@@ -112,5 +112,6 @@ void SyntaxTests::SyntaxAcceptanceTest()
     bool  func29(float f) { return bool(!f); }  \n\
     bool  func30(int i) { return bool(!i); }    \n\
     bool  func31(bool b) { return !b; }         \n\
+    void  func32(int i)  { if (i <= 0) return; func32(i - 1);  }       \n\
     ", SCCompileResult::kSCCompileResultOk, true);
 }

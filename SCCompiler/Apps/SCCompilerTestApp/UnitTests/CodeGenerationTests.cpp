@@ -409,3 +409,33 @@ void CodeGenerationTests::CodeGenerationLogicalNotOPTests()
     delete scModule;
 }
 
+
+void CodeGenerationTests::CodeGenerationRecursiveCallTests()
+{
+    Compiler compiler;
+    SCCompileResult compileResult;
+
+    std::string testCode = "\
+    int counter = 0;                                                                            \n\
+    int GetCounter() { return counter; }                                                        \n\
+    void RecursiveCall(int i) { if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; } }   \n\
+    ";
+    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+
+    CPPUNIT_ASSERT(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    CPPUNIT_ASSERT(scModule != nullptr);
+
+    // Recursice function call tests.
+    using FuncRecursiveCall = void (*)(int);
+    auto RecursiveCall = reinterpret_cast<FuncRecursiveCall>(scModule->GetFunctionPtr("RecursiveCall"));
+
+    using FuncGetCounter = int (*)();
+    auto GetCounter = reinterpret_cast<FuncGetCounter>(scModule->GetFunctionPtr("GetCounter"));
+
+    int callCount= 10;
+    RecursiveCall(callCount);
+    CPPUNIT_ASSERT(GetCounter() == callCount);
+
+    delete scModule;
+}
+

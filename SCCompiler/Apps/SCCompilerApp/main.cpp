@@ -27,7 +27,7 @@ int main(int , const char **)
 
     using FuncFib = int (*)(int);
     auto fib = reinterpret_cast<FuncFib>(scModule->GetFunctionPtr("fib"));
-    std::cout << fib(3) << std::endl;
+    std::cout << fib(1000) << std::endl;
 
     delete scModule;
 

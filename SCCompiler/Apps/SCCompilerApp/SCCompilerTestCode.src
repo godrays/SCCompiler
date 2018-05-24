@@ -1,15 +1,15 @@
 
 
-int IfTest1(bool b1, bool b2) { int a=0; if (b1) { return 1; } else { if (b2) { return 2; } a = 3; } return a; }
+int counter = 0;
+int GetCounter() { return counter; }
+void RecursiveCall(int i) { if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; } }
 
 
 int fib(int i)
 {
-    int a = 0;
+    RecursiveCall(i);
 
-    if (i == 2) { a=11; return IfTest1(true, true); a = 5; return 3; } else { if (i == 3) { return 10; } a = 7; }
-
-    return a;
+    return counter;
 }
 
 
