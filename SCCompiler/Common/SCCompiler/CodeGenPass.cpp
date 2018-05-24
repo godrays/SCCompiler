@@ -866,16 +866,15 @@ void CodeGenPass::DeleteDeadCode(llvm::BasicBlock * basicBlock)
 {
     for (auto it = basicBlock->begin(); it != basicBlock->end(); ++it)
     {
-        // DEBUG: std::cout << (*it).getOpcodeName() << std::endl;
         // Split after return instruction.
         if (it->getOpcode() == llvm::Instruction::Ret)
         {
-            // Split only if there is a following instruction.
             ++it;
+            // Split only if there is a following instruction.
             if (it != basicBlock->getInstList().end())
             {
-                auto deadCodeBlock = SplitBasicBlock(basicBlock, it);
-                //TODO: Needs investigation: deadCodeBlock->eraseFromParent();
+                auto deadCodeBlock = SplitBasicBlock(basicBlock, it, "UnreachableBlock");
+                deadCodeBlock->eraseFromParent();
             }
             return;
         }
@@ -883,17 +882,36 @@ void CodeGenPass::DeleteDeadCode(llvm::BasicBlock * basicBlock)
 }
 
 
-llvm::BasicBlock * CodeGenPass::SplitBasicBlock(llvm::BasicBlock * basicBlock, llvm::BasicBlock::iterator it)
+llvm::BasicBlock * CodeGenPass::SplitBasicBlock(llvm::BasicBlock * basicBlock, llvm::BasicBlock::iterator it, std::string newBlockLabel)
 {
-  assert(basicBlock->getTerminator() && "Block must have terminator instruction.");
-  assert(it != basicBlock->getInstList().end() && "Can't split block since there is no following instriong in the basic block!");
+    assert(basicBlock->getTerminator() && "Block must have terminator instruction.");
+    assert(it != basicBlock->getInstList().end() && "Can't split block since there is no following instruction in the basic block.");
 
-  auto newBlock = llvm::BasicBlock::Create(basicBlock->getContext(), "splitedBlock", basicBlock->getParent(), basicBlock->getNextNode());
+    auto newBlock = llvm::BasicBlock::Create(basicBlock->getContext(), newBlockLabel, basicBlock->getParent(), basicBlock->getNextNode());
 
-  // Move all of the instructions from original block into new block.
-  newBlock->getInstList().splice(newBlock->end(), basicBlock->getInstList(), it, basicBlock->end());
+    // Move all of the instructions from original block into new block.
+    newBlock->getInstList().splice(newBlock->end(), basicBlock->getInstList(), it, basicBlock->end());
 
-  return newBlock;
+/*
+    // NOTE: Still not sure if this code section is necessary.
+    // Update any PHI nodes in successors.
+    for (llvm::succ_iterator it = llvm::succ_begin(newBlock), itEnd = llvm::succ_end(newBlock); it != itEnd; ++it)
+    {
+        // Loop over any phi nodes in the basic block, updating the basic block field of incoming values.
+        llvm::BasicBlock * Successor = *it;
+        for (auto & phiNode : Successor->phis())
+        {
+            int Idx = phiNode.getBasicBlockIndex(basicBlock);
+            while (Idx != -1)
+            {
+                phiNode.setIncomingBlock((unsigned)Idx, newBlock);
+                Idx = phiNode.getBasicBlockIndex(basicBlock);
+            }
+        }
+    }
+*/
+
+    return newBlock;
 }
 
 

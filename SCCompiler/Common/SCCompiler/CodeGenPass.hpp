@@ -9,6 +9,7 @@
 
 #include <list>
 
+#include "llvm/IR/CFG.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/ExecutionEngine/MCJIT.h"
@@ -153,7 +154,7 @@ namespace scc
         void DeleteDeadCode(llvm::BasicBlock * basicBlock);
 
         // Splits block from given instruction iterator.
-        llvm::BasicBlock * SplitBasicBlock(llvm::BasicBlock * basicBlock, llvm::BasicBlock::iterator it);
+        llvm::BasicBlock * SplitBasicBlock(llvm::BasicBlock * basicBlock, llvm::BasicBlock::iterator it, std::string newBlockLabel);
 
     protected:
         // Stores entire code.
