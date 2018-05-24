@@ -62,16 +62,16 @@ exprList
 // Expressions are part of statements. Anything that can be reduced to a value is called expression.
 
 expr
-    :   ID '(' exprList? ')'    #FuncCallExpr       // Func call like f(), f(x), f(1,2)
+    :   ID '(' exprList? ')'                        #FuncCallExpr           // Func call like f(), f(x), f(1,2)
     |   ('float' | 'int' | 'bool') '(' expr ')'     #ExplicitTypeConversion
-//    |   ID '[' expr ']'         #ArrayIndexExpr     // Array index like a[i]
-    |   ('-' | '+') expr        #UnaryExpr
-    |   '!' expr                #LogicalNotExpr       // Logical not
-    |   expr ('*'|'/') expr     #AOPExpr
-    |   expr ('+'|'-') expr     #AOPExpr
-    |   expr ('=='|'!='|'<='|'>='|'<'|'>') expr     #CompExpr             // Comparison Operations
-    |   (ID | FLOAT | INT | BOOL)    #LiteralExpr
-    |   '(' expr ')'            #ParenthesisExpr      // Ignore
+//    |   ID '[' expr ']'                           #ArrayIndexExpr         // Array index like a[i]
+    |   ('-' | '+') expr                            #UnaryExpr
+    |   '!' expr                                    #LogicalNotExpr
+    |   expr ('*'|'/') expr                         #AOPExpr
+    |   expr ('+'|'-') expr                         #AOPExpr
+    |   expr ('=='|'!='|'<='|'>='|'<'|'>') expr     #CompExpr
+    |   (ID | FLOAT | INT | BOOL)                   #LiteralExpr
+    |   '(' expr ')'                                #ParenthesisExpr
     ;
 
 
