@@ -92,27 +92,27 @@ void ASTVisualizer::Visit(ast::Node * node)
             break;
 
         case ast::NodeType::kNodeTypeCompOPEQ:
-            OutputConfig(node, "[label = \"==\"];");
+            OutputConfig(node, "[label = \"Cmp EQ\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPNEQ:
-            OutputConfig(node, "[label = \"!=\"];");
+            OutputConfig(node, "[label = \"Cmp NE\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPLE:
-            OutputConfig(node, "[label = \"<=\"];");
+            OutputConfig(node, "[label = \"Cmp LE\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPGE:
-            OutputConfig(node, "[label = \">=\"];");
+            OutputConfig(node, "[label = \"Cmp GE\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPL:
-            OutputConfig(node, "[label = \"<\"];");
+            OutputConfig(node, "[label = \"Cmp LT\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPG:
-            OutputConfig(node, "[label = \">\"];");
+            OutputConfig(node, "[label = \"Cmp GT\"];");
             break;
 
         case ast::NodeType::kNodeTypeAOPMul:
