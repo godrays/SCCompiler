@@ -25,9 +25,9 @@ int main(int , const char **)
     // We no longer need compiler. We just need SCModule, compiled module.
     delete compiler;
 
-    using FuncFib = int (*)(int);
-    auto fib = reinterpret_cast<FuncFib>(scModule->GetFunctionPtr("fib"));
-    std::cout << fib(1000) << std::endl;
+    using FuncMain = int (*)(int);
+    auto mainFunc = reinterpret_cast<FuncMain>(scModule->GetFunctionPtr("main"));
+    std::cout << mainFunc(10) << std::endl;
 
     delete scModule;
 
