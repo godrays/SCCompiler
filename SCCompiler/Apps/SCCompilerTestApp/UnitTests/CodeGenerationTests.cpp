@@ -419,6 +419,7 @@ void CodeGenerationTests::CodeGenerationRecursiveCallTests()
     int counter = 0;                                                                            \n\
     int GetCounter() { return counter; }                                                        \n\
     void RecursiveCall(int i) { if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; } }   \n\
+    int Fibonacci(int n) { if (n == 0) return n; else if (n == 1) return n; return Fibonacci(n-1) + Fibonacci(n-2); }   \n\
     ";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
@@ -435,6 +436,10 @@ void CodeGenerationTests::CodeGenerationRecursiveCallTests()
     int callCount= 10;
     RecursiveCall(callCount);
     CPPUNIT_ASSERT(GetCounter() == callCount);
+
+    using FuncFibonacci = int (*)(int);
+    auto Fibonacci = reinterpret_cast<FuncFibonacci>(scModule->GetFunctionPtr("Fibonacci"));
+    CPPUNIT_ASSERT(Fibonacci(10) == 55);
 
     delete scModule;
 }
