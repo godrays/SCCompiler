@@ -61,6 +61,10 @@ void SymbolDefPass::Visit(ast::Node * node)
             VisitFunctionDeclaration(dynamic_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeForStatement:
+            VisitForStatement(dynamic_cast<ast::NodeForStatement *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeBlock:
             VisitBlock(static_cast<ast::NodeBlock *>(node));
             break;
@@ -77,6 +81,9 @@ void SymbolDefPass::Visit(ast::Node * node)
         case ast::NodeType::kNodeTypeReturnStatement:
         case ast::NodeType::kNodeTypeAssignment:
         case ast::NodeType::kNodeTypeIfStatement:
+        case ast::NodeType::kNodeTypeForVarDecl:
+        case ast::NodeType::kNodeTypeForCondition:
+        case ast::NodeType::kNodeTypeForIncrement:
         case ast::NodeType::kNodeTypeExplicitTypeConversion:
         case ast::NodeType::kNodeTypeLogicalNotOP:
         case ast::NodeType::kNodeTypeUOPPlus:
@@ -183,6 +190,21 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
         // Add argument symbol to function symbol to track arguments.
         funcSymbol->AddArgumentSymbol(argSymbol);
     }
+
+    // Visit function childs
+    VisitChilds(node);
+
+    // LEAVE SCOPE OF FUNCTION
+    
+    m_currentScope = m_currentScope->GeEnclosingScope();
+}
+
+
+void SymbolDefPass::VisitForStatement(ast::NodeForStatement * node)
+{
+    // CREATE NEW SCOPE FOR FOR
+    
+    m_currentScope = new ScopeNode(ScopeCategory::kScopeCategoryFor, m_currentScope);
 
     // Visit function childs
     VisitChilds(node);

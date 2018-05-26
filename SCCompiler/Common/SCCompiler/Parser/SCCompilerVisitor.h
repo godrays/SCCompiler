@@ -41,13 +41,11 @@ public:
 
     virtual antlrcpp::Any visitIfStatement(SCCompilerParser::IfStatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitIgnore(SCCompilerParser::IgnoreContext *context) = 0;
+
     virtual antlrcpp::Any visitReturnStatement(SCCompilerParser::ReturnStatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitAssignmentStatement(SCCompilerParser::AssignmentStatementContext *context) = 0;
-
     virtual antlrcpp::Any visitFuncCallStatement(SCCompilerParser::FuncCallStatementContext *context) = 0;
-
-    virtual antlrcpp::Any visitExprList(SCCompilerParser::ExprListContext *context) = 0;
 
     virtual antlrcpp::Any visitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *context) = 0;
 
@@ -64,6 +62,20 @@ public:
     virtual antlrcpp::Any visitUnaryExpr(SCCompilerParser::UnaryExprContext *context) = 0;
 
     virtual antlrcpp::Any visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *context) = 0;
+
+    virtual antlrcpp::Any visitExprList(SCCompilerParser::ExprListContext *context) = 0;
+
+    virtual antlrcpp::Any visitAssignment(SCCompilerParser::AssignmentContext *context) = 0;
+
+    virtual antlrcpp::Any visitForStatement(SCCompilerParser::ForStatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitForVarDecl(SCCompilerParser::ForVarDeclContext *context) = 0;
+
+    virtual antlrcpp::Any visitForCondition(SCCompilerParser::ForConditionContext *context) = 0;
+
+    virtual antlrcpp::Any visitForIncrements(SCCompilerParser::ForIncrementsContext *context) = 0;
+
+    virtual antlrcpp::Any visitForInc(SCCompilerParser::ForIncContext *context) = 0;
 
 
 };

@@ -59,19 +59,15 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitIgnore(SCCompilerParser::IgnoreContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAssignmentStatement(SCCompilerParser::AssignmentStatementContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitFuncCallStatement(SCCompilerParser::FuncCallStatementContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitExprList(SCCompilerParser::ExprListContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -104,6 +100,34 @@ public:
   }
 
   virtual antlrcpp::Any visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExprList(SCCompilerParser::ExprListContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAssignment(SCCompilerParser::AssignmentContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitForStatement(SCCompilerParser::ForStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitForVarDecl(SCCompilerParser::ForVarDeclContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitForCondition(SCCompilerParser::ForConditionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitForIncrements(SCCompilerParser::ForIncrementsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitForInc(SCCompilerParser::ForIncContext *ctx) override {
     return visitChildren(ctx);
   }
 

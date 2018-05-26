@@ -63,6 +63,22 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"If\"];");
             break;
 
+        case ast::NodeType::kNodeTypeForStatement:
+            OutputConfig(node, "[label = \"For\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeForVarDecl:
+            OutputConfig(node, "[label = \"ForVarDecl\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeForCondition:
+            OutputConfig(node, "[label = \"ForCondition\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeForIncrement:
+            OutputConfig(node, "[label = \"ForIncrement\"];");
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             OutputConfig(node, "[label = \"Func Return\"];");
             break;

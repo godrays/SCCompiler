@@ -66,6 +66,17 @@ Type SemanticPass::Visit(ast::Node * node)
             VisitIfStatement(dynamic_cast<ast::NodeIfStatement *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeForStatement:
+            VisitForStatement(dynamic_cast<ast::NodeForStatement *>(node));
+            break;
+
+        case ast::NodeType::kNodeTypeForVarDecl:
+        case ast::NodeType::kNodeTypeForCondition:
+        case ast::NodeType::kNodeTypeForIncrement:
+            // These are just sub-statement / grouping nodes. Nothing to do with.
+            VisitChilds(node);
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(dynamic_cast<ast::NodeReturnStatement *>(node));
             break;
@@ -195,6 +206,23 @@ void SemanticPass::VisitIfStatement(ast::NodeIfStatement * node)
     // Requires max three childs: ConditionExpr, Then Statement, Else Statement
     assert(node->ChildCount() < 4);
 
+    // Visit childs
+    VisitChilds(node);
+}
+
+
+void SemanticPass::VisitForStatement(ast::NodeForStatement * node)
+{
+    // There must be forVarDec, ForCond, ForInc and a Statement
+    assert(node->ChildCount() == 4);
+    
+    auto forConditionNode = node->GetChild(1);
+    if (forConditionNode->ChildCount() > 0 && Visit(forConditionNode->GetChild(0)) != Type::kTypeBool)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - For comparison type mismatch." << std::endl;
+        throw SemanticErrorException(message.str());
+    }
     // Visit childs
     VisitChilds(node);
 }

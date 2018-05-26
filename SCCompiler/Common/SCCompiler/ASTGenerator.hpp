@@ -48,9 +48,17 @@ namespace scc
 
         antlrcpp::Any  visitIfStatement(SCCompilerParser::IfStatementContext *ctx) final;
 
+        antlrcpp::Any  visitForStatement(SCCompilerParser::ForStatementContext *ctx) final;
+
+        antlrcpp::Any  visitForVarDecl(SCCompilerParser::ForVarDeclContext *ctx) final;
+
+        antlrcpp::Any  visitForCondition(SCCompilerParser::ForConditionContext *ctx) final;
+
+        antlrcpp::Any  visitForIncrements(SCCompilerParser::ForIncrementsContext *ctx) final;
+
         antlrcpp::Any  visitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) final;
 
-        antlrcpp::Any  visitAssignmentStatement(SCCompilerParser::AssignmentStatementContext *ctx) final;
+        antlrcpp::Any  visitAssignment(SCCompilerParser::AssignmentContext *ctx) final;
 
         antlrcpp::Any  visitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *ctx) final;
 

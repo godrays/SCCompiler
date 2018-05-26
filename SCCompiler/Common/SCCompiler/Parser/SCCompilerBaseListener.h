@@ -49,17 +49,14 @@ public:
   virtual void enterIfStatement(SCCompilerParser::IfStatementContext * /*ctx*/) override { }
   virtual void exitIfStatement(SCCompilerParser::IfStatementContext * /*ctx*/) override { }
 
+  virtual void enterIgnore(SCCompilerParser::IgnoreContext * /*ctx*/) override { }
+  virtual void exitIgnore(SCCompilerParser::IgnoreContext * /*ctx*/) override { }
+
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
 
-  virtual void enterAssignmentStatement(SCCompilerParser::AssignmentStatementContext * /*ctx*/) override { }
-  virtual void exitAssignmentStatement(SCCompilerParser::AssignmentStatementContext * /*ctx*/) override { }
-
   virtual void enterFuncCallStatement(SCCompilerParser::FuncCallStatementContext * /*ctx*/) override { }
   virtual void exitFuncCallStatement(SCCompilerParser::FuncCallStatementContext * /*ctx*/) override { }
-
-  virtual void enterExprList(SCCompilerParser::ExprListContext * /*ctx*/) override { }
-  virtual void exitExprList(SCCompilerParser::ExprListContext * /*ctx*/) override { }
 
   virtual void enterExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext * /*ctx*/) override { }
   virtual void exitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext * /*ctx*/) override { }
@@ -84,6 +81,27 @@ public:
 
   virtual void enterFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }
   virtual void exitFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }
+
+  virtual void enterExprList(SCCompilerParser::ExprListContext * /*ctx*/) override { }
+  virtual void exitExprList(SCCompilerParser::ExprListContext * /*ctx*/) override { }
+
+  virtual void enterAssignment(SCCompilerParser::AssignmentContext * /*ctx*/) override { }
+  virtual void exitAssignment(SCCompilerParser::AssignmentContext * /*ctx*/) override { }
+
+  virtual void enterForStatement(SCCompilerParser::ForStatementContext * /*ctx*/) override { }
+  virtual void exitForStatement(SCCompilerParser::ForStatementContext * /*ctx*/) override { }
+
+  virtual void enterForVarDecl(SCCompilerParser::ForVarDeclContext * /*ctx*/) override { }
+  virtual void exitForVarDecl(SCCompilerParser::ForVarDeclContext * /*ctx*/) override { }
+
+  virtual void enterForCondition(SCCompilerParser::ForConditionContext * /*ctx*/) override { }
+  virtual void exitForCondition(SCCompilerParser::ForConditionContext * /*ctx*/) override { }
+
+  virtual void enterForIncrements(SCCompilerParser::ForIncrementsContext * /*ctx*/) override { }
+  virtual void exitForIncrements(SCCompilerParser::ForIncrementsContext * /*ctx*/) override { }
+
+  virtual void enterForInc(SCCompilerParser::ForIncContext * /*ctx*/) override { }
+  virtual void exitForInc(SCCompilerParser::ForIncContext * /*ctx*/) override { }
 
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

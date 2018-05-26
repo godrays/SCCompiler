@@ -153,6 +153,7 @@ namespace scc
         kScopeCategoryUnknown,
         kScopeCategoryGlobal,
         kScopeCategoryFunction,
+        kScopeCategoryFor,
         kScopeCategoryBlock,
     };
 

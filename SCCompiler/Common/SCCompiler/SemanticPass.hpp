@@ -20,6 +20,8 @@ namespace scc
         class NodeFuncDeclaration;
         class NodeBlock;
         class NodeIfStatement;
+        class NodeForStatement;
+        class NodeFor;
         class NodeReturnStatement;
         class NodeFuncCall;
         class NodeAssignment;
@@ -54,6 +56,8 @@ namespace scc
         void VisitBlock(ast::NodeBlock * node);
 
         void VisitIfStatement(ast::NodeIfStatement * node);
+
+        void VisitForStatement(ast::NodeForStatement * node);
 
         void VisitReturnStatement(ast::NodeReturnStatement * node);
 

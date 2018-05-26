@@ -33,6 +33,10 @@ namespace ast
         kNodeTypeVariableDeclaration,
         kNodeTypeFunctionDeclaration,
         kNodeTypeIfStatement,
+        kNodeTypeForStatement,
+        kNodeTypeForVarDecl,
+        kNodeTypeForCondition,
+        kNodeTypeForIncrement,
         kNodeTypeReturnStatement,
         kNodeTypeFuncCall,
         kNodeTypeBlock,
@@ -231,6 +235,32 @@ namespace ast
 
         // Destructor.
         virtual ~NodeIfStatement();
+    };
+
+
+    #pragma mark - Class NodeForStatement
+
+    class NodeForStatement : public Node
+    {
+    public:
+        // Constructor.
+        NodeForStatement();
+
+        // Destructor.
+        virtual ~NodeForStatement();
+    };
+
+
+    #pragma mark - Class NodeFor
+
+    class NodeFor : public Node
+    {
+    public:
+        // Constructor.
+        NodeFor(ast::NodeType nodeType);
+
+        // Destructor.
+        virtual ~NodeFor();
     };
 
 

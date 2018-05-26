@@ -110,6 +110,15 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             VisitIfStatement(static_cast<ast::NodeIfStatement *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeForStatement:
+            VisitForStatement(static_cast<ast::NodeForStatement *>(node));
+            break;
+
+        case ast::NodeType::kNodeTypeForVarDecl:
+        case ast::NodeType::kNodeTypeForIncrement:
+            VisitChilds(node);
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(static_cast<ast::NodeReturnStatement *>(node));
             break;
@@ -156,6 +165,10 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
         case ast::NodeType::kNodeTypeLiteralBool:
         case ast::NodeType::kNodeTypeLiteralID:
             return VisitLiteral(static_cast<ast::NodeLiteral *>(node));
+            break;
+
+        case ast::NodeType::kNodeTypeForCondition:
+            assert(false && "VisitForStatement() must manage this node implicitly.");
             break;
 
         default:
@@ -330,6 +343,83 @@ void CodeGenPass::VisitIfStatement(ast::NodeIfStatement * node)
 
     // New code generation should start in continue block.
     m_irBuilder->SetInsertPoint(continueBlock);
+}
+
+
+void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
+{
+    auto childCount = node->ChildCount();
+    // There has to be min 4 childs. ForVarDec, ForCondition, ForIncrements and ForCodeBlock
+    assert(childCount == 4);
+
+    // for ( varDecl ; forCondition ; forIncrements ) forBody
+    auto forVarDeclNode = node->GetChild(0);
+    auto forCondNode    = node->GetChild(1);
+    auto forIncsNode    = node->GetChild(2);
+    auto forBodyNode    = node->GetChild(3);
+
+    // Create basic blocks for loop construction.
+    // Note: The reason we have extra block (for.body) is that LLVM has a strict rule that every basic block
+    //       has to end with a terminator (ret, br etc..) instruction and each block can have only one terminator.
+    /*
+        for.cmp:
+            <condition comparison>
+            br for.body or for.exit
+     
+        for.body:
+            <for body instructions>
+            br for.inc
+
+        for.Inc:
+            <for increment instructions>
+            br for.cmp
+     
+        for.exit:
+            <...>
+    */
+    auto forCondBlock = CreateBasicBlock(m_currentFunction, "for.cmp");
+    auto forBodyBlock = CreateBasicBlock(m_currentFunction, "for.body");
+    auto forIncBlock  = CreateBasicBlock(m_currentFunction, "for.inc");
+    auto forExitBlock = CreateBasicBlock(m_currentFunction, "for.exit");
+
+    // Generate code for variable declarations in current block.
+    VisitChilds(forVarDeclNode);
+    m_irBuilder->CreateBr(forCondBlock);
+    
+    // Generate code for.cmp
+
+    m_irBuilder->SetInsertPoint(forCondBlock);
+
+    if (forCondNode->ChildCount() > 0)
+    {
+        auto condValue = LoadIfPointerType(Visit(forCondNode->GetChild(0)));
+        m_irBuilder->CreateCondBr(condValue, forBodyBlock, forExitBlock);
+    }
+    else
+    {
+        // If there is no condition then jump to body.
+        m_irBuilder->CreateBr(forBodyBlock);
+    }
+
+    // Generate code for.body
+    m_irBuilder->SetInsertPoint(forBodyBlock);
+    VisitChilds(forBodyNode);
+    m_irBuilder->CreateBr(forIncBlock);
+
+    // Generate code for.Inc
+
+    m_irBuilder->SetInsertPoint(forIncBlock);
+
+    if (forIncsNode->ChildCount() > 0)
+    {
+        VisitChilds(forIncsNode);
+    }
+    
+    m_irBuilder->CreateBr(forCondBlock);
+
+    // Set the code geneartion block to for.exit
+
+    m_irBuilder->SetInsertPoint(forExitBlock);
 }
 
 

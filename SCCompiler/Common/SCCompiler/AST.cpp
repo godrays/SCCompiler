@@ -156,6 +156,22 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
         typeInString = "tNodeTypeIfStatement";
         break;
 
+        case ast::NodeType::kNodeTypeForStatement:
+        typeInString = "tNodeTypeForStatement";
+        break;
+
+        case ast::NodeType::kNodeTypeForVarDecl:
+        typeInString = "kNodeTypeForVarDecl";
+        break;
+
+        case ast::NodeType::kNodeTypeForCondition:
+        typeInString = "kNodeTypeForCondition";
+        break;
+
+        case ast::NodeType::kNodeTypeForIncrement:
+        typeInString = "kNodeTypeForIncrement";
+        break;
+
         case ast::NodeType::kNodeTypeLiteralBool:
         typeInString = "tNodeTypeLiteralBool";
         break;
@@ -367,6 +383,34 @@ ast::NodeIfStatement::NodeIfStatement() : ast::Node(kNodeTypeIfStatement)
 
 
 ast::NodeIfStatement::~NodeIfStatement()
+{
+    DeleteChilds();
+}
+
+
+#pragma mark - NodeForStatement Implementation
+
+ast::NodeForStatement::NodeForStatement() : ast::Node(kNodeTypeForStatement)
+{
+
+}
+
+
+ast::NodeForStatement::~NodeForStatement()
+{
+    DeleteChilds();
+}
+
+
+#pragma mark - NodeFor Implementation
+
+ast::NodeFor::NodeFor(ast::NodeType nodeType) : Node(nodeType)
+{
+
+}
+
+
+ast::NodeFor::~NodeFor()
 {
     DeleteChilds();
 }

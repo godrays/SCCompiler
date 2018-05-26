@@ -47,17 +47,14 @@ public:
   virtual void enterIfStatement(SCCompilerParser::IfStatementContext *ctx) = 0;
   virtual void exitIfStatement(SCCompilerParser::IfStatementContext *ctx) = 0;
 
+  virtual void enterIgnore(SCCompilerParser::IgnoreContext *ctx) = 0;
+  virtual void exitIgnore(SCCompilerParser::IgnoreContext *ctx) = 0;
+
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) = 0;
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) = 0;
 
-  virtual void enterAssignmentStatement(SCCompilerParser::AssignmentStatementContext *ctx) = 0;
-  virtual void exitAssignmentStatement(SCCompilerParser::AssignmentStatementContext *ctx) = 0;
-
   virtual void enterFuncCallStatement(SCCompilerParser::FuncCallStatementContext *ctx) = 0;
   virtual void exitFuncCallStatement(SCCompilerParser::FuncCallStatementContext *ctx) = 0;
-
-  virtual void enterExprList(SCCompilerParser::ExprListContext *ctx) = 0;
-  virtual void exitExprList(SCCompilerParser::ExprListContext *ctx) = 0;
 
   virtual void enterExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *ctx) = 0;
   virtual void exitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *ctx) = 0;
@@ -82,6 +79,27 @@ public:
 
   virtual void enterFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) = 0;
   virtual void exitFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) = 0;
+
+  virtual void enterExprList(SCCompilerParser::ExprListContext *ctx) = 0;
+  virtual void exitExprList(SCCompilerParser::ExprListContext *ctx) = 0;
+
+  virtual void enterAssignment(SCCompilerParser::AssignmentContext *ctx) = 0;
+  virtual void exitAssignment(SCCompilerParser::AssignmentContext *ctx) = 0;
+
+  virtual void enterForStatement(SCCompilerParser::ForStatementContext *ctx) = 0;
+  virtual void exitForStatement(SCCompilerParser::ForStatementContext *ctx) = 0;
+
+  virtual void enterForVarDecl(SCCompilerParser::ForVarDeclContext *ctx) = 0;
+  virtual void exitForVarDecl(SCCompilerParser::ForVarDeclContext *ctx) = 0;
+
+  virtual void enterForCondition(SCCompilerParser::ForConditionContext *ctx) = 0;
+  virtual void exitForCondition(SCCompilerParser::ForConditionContext *ctx) = 0;
+
+  virtual void enterForIncrements(SCCompilerParser::ForIncrementsContext *ctx) = 0;
+  virtual void exitForIncrements(SCCompilerParser::ForIncrementsContext *ctx) = 0;
+
+  virtual void enterForInc(SCCompilerParser::ForIncContext *ctx) = 0;
+  virtual void exitForInc(SCCompilerParser::ForIncContext *ctx) = 0;
 
 
 };

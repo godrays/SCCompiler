@@ -43,6 +43,8 @@ namespace scc
 
         void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
 
+        void VisitForStatement(ast::NodeForStatement * node);
+
         void VisitBlock(ast::NodeBlock * node);
 
         void VisitFunctionCall(ast::NodeFuncCall * node);

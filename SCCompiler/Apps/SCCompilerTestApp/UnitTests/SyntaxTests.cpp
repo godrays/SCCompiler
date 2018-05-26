@@ -113,5 +113,10 @@ void SyntaxTests::SyntaxAcceptanceTest()
     bool  func30(int i) { return bool(!i); }    \n\
     bool  func31(bool b) { return !b; }         \n\
     void  func32(int i)  { if (i <= 0) return; func32(i - 1);  }       \n\
+    void  func33() { for ( ; ; ) { }  }              \n\
+    void  func34() { for (int i,j,k; ; ) { }  }      \n\
+    void  func35() { for (int i=0,j=i*2; ; ) { }  }  \n\
+    int   func36() { int a; for (int i=0,j=i*2; i < 10; i=j+1, j=j+i) { a = j + i; }  return a; }  \n\
+    int   func37() { int a; for (int i=0,j=i*2; i < 10; i=j+1, j=j+i) a = j + i;  return a; }      \n\
     ", SCCompileResult::kSCCompileResultOk, true);
 }

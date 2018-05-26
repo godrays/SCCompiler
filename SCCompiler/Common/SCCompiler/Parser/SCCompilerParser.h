@@ -15,14 +15,17 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, BOOL = 26, 
-    INT = 27, FLOAT = 28, ID = 29, WS = 30, LINECOMMENT = 31, BLOCKCOMMENT = 32
+    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
+    BOOL = 27, INT = 28, FLOAT = 29, ID = 30, WS = 31, LINECOMMENT = 32, 
+    BLOCKCOMMENT = 33
   };
 
   enum {
     RuleProgram = 0, RuleVarDecl = 1, RuleVarInit = 2, RuleType = 3, RuleFunctionDecl = 4, 
     RuleFormalParameters = 5, RuleFormalParameter = 6, RuleBlock = 7, RuleStat = 8, 
-    RuleExprList = 9, RuleExpr = 10
+    RuleExpr = 9, RuleExprList = 10, RuleAssignment = 11, RuleForStatement = 12, 
+    RuleForVarDecl = 13, RuleForCondition = 14, RuleForIncrements = 15, 
+    RuleForInc = 16
   };
 
   SCCompilerParser(antlr4::TokenStream *input);
@@ -44,8 +47,14 @@ public:
   class FormalParameterContext;
   class BlockContext;
   class StatContext;
+  class ExprContext;
   class ExprListContext;
-  class ExprContext; 
+  class AssignmentContext;
+  class ForStatementContext;
+  class ForVarDeclContext;
+  class ForConditionContext;
+  class ForIncrementsContext;
+  class ForIncContext; 
 
   class  ProgramContext : public antlr4::ParserRuleContext {
   public:
@@ -228,12 +237,12 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  AssignmentStatementContext : public StatContext {
+  class  IgnoreContext : public StatContext {
   public:
-    AssignmentStatementContext(StatContext *ctx);
+    IgnoreContext(StatContext *ctx);
 
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
+    ForStatementContext *forStatement();
+    AssignmentContext *assignment();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
@@ -285,22 +294,6 @@ public:
   };
 
   StatContext* stat();
-
-  class  ExprListContext : public antlr4::ParserRuleContext {
-  public:
-    ExprListContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
-
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ExprListContext* exprList();
 
   class  ExprContext : public antlr4::ParserRuleContext {
   public:
@@ -411,6 +404,118 @@ public:
 
   ExprContext* expr();
   ExprContext* expr(int precedence);
+  class  ExprListContext : public antlr4::ParserRuleContext {
+  public:
+    ExprListContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExprListContext* exprList();
+
+  class  AssignmentContext : public antlr4::ParserRuleContext {
+  public:
+    AssignmentContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AssignmentContext* assignment();
+
+  class  ForStatementContext : public antlr4::ParserRuleContext {
+  public:
+    ForStatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ForVarDeclContext *forVarDecl();
+    ForConditionContext *forCondition();
+    ForIncrementsContext *forIncrements();
+    StatContext *stat();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ForStatementContext* forStatement();
+
+  class  ForVarDeclContext : public antlr4::ParserRuleContext {
+  public:
+    ForVarDeclContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    VarDeclContext *varDecl();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ForVarDeclContext* forVarDecl();
+
+  class  ForConditionContext : public antlr4::ParserRuleContext {
+  public:
+    ForConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ExprContext *expr();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ForConditionContext* forCondition();
+
+  class  ForIncrementsContext : public antlr4::ParserRuleContext {
+  public:
+    ForIncrementsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ForIncContext *> forInc();
+    ForIncContext* forInc(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ForIncrementsContext* forIncrements();
+
+  class  ForIncContext : public antlr4::ParserRuleContext {
+  public:
+    ForIncContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ExprContext *expr();
+    AssignmentContext *assignment();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ForIncContext* forInc();
+
 
   virtual bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
   bool exprSempred(ExprContext *_localctx, size_t predicateIndex);

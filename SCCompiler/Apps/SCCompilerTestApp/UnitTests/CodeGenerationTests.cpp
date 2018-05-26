@@ -439,3 +439,34 @@ void CodeGenerationTests::CodeGenerationRecursiveCallTests()
     delete scModule;
 }
 
+
+void CodeGenerationTests::CodeGenerationForStatementTests()
+{
+    Compiler compiler;
+    SCCompileResult compileResult;
+
+    std::string testCode = "\
+    int Test1(int a)   { for (int i=0; i<5; i=i+1) { a = i; } return a; }                    \n\
+    int Test2(int a)   { for (int i=0,j=1; i<5; i=i+1, j=j+1) { a = j; } return a; }         \n\
+    int Test3(int a, bool b)   { for (; b; ) { a = a+1; b=false; } return a; }               \n\
+    ";
+    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+
+    CPPUNIT_ASSERT(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    CPPUNIT_ASSERT(scModule != nullptr);
+
+    using FuncTest1 = int (*)(int);
+    auto Test1 = reinterpret_cast<FuncTest1>(scModule->GetFunctionPtr("Test1"));
+    CPPUNIT_ASSERT(Test1(5) == 4);
+
+    using FuncTest2 = int (*)(int);
+    auto Test2 = reinterpret_cast<FuncTest2>(scModule->GetFunctionPtr("Test2"));
+    CPPUNIT_ASSERT(Test2(5) == 5);
+
+    using FuncTest3 = int (*)(int, bool);
+    auto Test3 = reinterpret_cast<FuncTest3>(scModule->GetFunctionPtr("Test3"));
+    CPPUNIT_ASSERT(Test3(5, false) == 5);
+    CPPUNIT_ASSERT(Test3(5, true) == 6);
+
+    delete scModule;
+}

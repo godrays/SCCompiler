@@ -50,18 +50,14 @@ block
 // Anything that can make up a meaningful line or lines (If, While etc) are called statement.
 
 stat
-    :   block                                   #BlockStatement         // Ignore
-    |   varDecl ';'                             #VarDeclStatement       // Ignore
-    |   'if' '(' expr ')' stat ('else' stat)?   #IfStatement
-    |   'return' expr? ';'                      #ReturnStatement
-    |   expr '=' expr ';'                       #AssignmentStatement
-    |   expr ';'                                #FuncCallStatement      // Ignore
+    :   block                                                   #BlockStatement
+    |   varDecl ';'                                             #VarDeclStatement
+    |   'if' '(' expr ')' stat ('else' stat)?                   #IfStatement
+    |   forStatement                                            #Ignore
+    |   'return' expr? ';'                                      #ReturnStatement
+    |   assignment ';'                                          #Ignore
+    |   expr ';'                                                #FuncCallStatement
     ;
-
-exprList
-    :   expr (',' expr)*        // Argument list
-    ;
-
 
 // Expressions are part of statements. Anything that can be reduced to a value is called expression.
 
@@ -76,6 +72,35 @@ expr
     |   expr ('=='|'!='|'<='|'>='|'<'|'>') expr     #CompExpr
     |   (ID | FLOAT | INT | BOOL)                   #LiteralExpr
     |   '(' expr ')'                                #ParenthesisExpr
+    ;
+
+exprList
+    :   expr (',' expr)*        // Argument list
+    ;
+
+assignment
+    :   expr '=' expr
+    ;
+
+forStatement
+    :   'for' '(' forVarDecl ';' forCondition ';' forIncrements ')'  stat
+    ;
+
+forVarDecl
+    :   varDecl?
+    ;
+
+forCondition
+    : expr?
+    ;
+
+forIncrements
+    :   (forInc (',' forInc)*)?
+    ;
+
+forInc
+    :   expr
+    |   assignment
     ;
 
 
