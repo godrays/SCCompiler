@@ -23,6 +23,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitVarInit(SCCompilerParser::VarInitContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitType(SCCompilerParser::TypeContext *ctx) override {
     return visitChildren(ctx);
   }

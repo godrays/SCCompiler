@@ -47,28 +47,39 @@ antlrcpp::Any ASTGenerator::visitProgram(SCCompilerParser::ProgramContext *ctx)
 antlrcpp::Any ASTGenerator::visitVarDecl(SCCompilerParser::VarDeclContext *ctx)
 {
     Type   type = ASTGenerator::ToASTType(ctx->type()->getText());
-    std::string varName = ctx->ID()->getText();
+    auto varInits = ctx->getRuleContexts<SCCompilerParser::VarInitContext>();
 
-    // Create new AST Node.
-    auto newNode = new ast::NodeVarDeclaration(type, varName);
-    newNode->SetSourceCodeLine(ctx->getStart()->getLine());
+    // Get all VarInit under this node.
+    for (size_t index=0; index < varInits.size(); ++index)
+    {
+        auto child = dynamic_cast<SCCompilerParser::VarInitContext *>(varInits[index]);
+        assert(child && "Child must be exist!");
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
-    newNode->SetParent(m_currentNodeStack.top());
+        std::string varName = child->ID()->getText();
 
-    // Add yourself as child to parent node.
-    m_currentNodeStack.top()->AddChild(newNode);
+        // Create new AST Node.
+        auto newNode = new ast::NodeVarDeclaration(type, varName);
+        newNode->SetSourceCodeLine(child->getStart()->getLine());
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
-    m_currentNodeStack.push(newNode);
+        // Set parent node. Parent node is the top element in the currentNode Stack.
+        newNode->SetParent(m_currentNodeStack.top());
 
-    // Visit parser tree childrens.
-    auto visitResult = visitChildren(ctx);
+        // Add yourself as child to parent node.
+        m_currentNodeStack.top()->AddChild(newNode);
 
-    // Pop current parent node since we are leaving the method.
-    m_currentNodeStack.pop();
+        // Push new parent node into stack. It becomes new parent node for child visits.
+        m_currentNodeStack.push(newNode);
 
-    return visitResult;
+        // Visit parser tree children.
+        visitChildren(child);
+
+        // Pop current parent node since we are leaving the method.
+        m_currentNodeStack.pop();
+    }
+
+    // Since we visit multiple child from this node, we have no result to return from child nodes.
+    // Also any return value is not used.
+    return nullptr;
 }
 
 

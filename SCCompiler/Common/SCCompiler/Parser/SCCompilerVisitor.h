@@ -23,6 +23,8 @@ public:
 
     virtual antlrcpp::Any visitVarDecl(SCCompilerParser::VarDeclContext *context) = 0;
 
+    virtual antlrcpp::Any visitVarInit(SCCompilerParser::VarInitContext *context) = 0;
+
     virtual antlrcpp::Any visitType(SCCompilerParser::TypeContext *context) = 0;
 
     virtual antlrcpp::Any visitFuncDeclaration(SCCompilerParser::FuncDeclarationContext *context) = 0;

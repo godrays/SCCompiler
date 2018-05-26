@@ -20,6 +20,9 @@ public:
   virtual void enterVarDecl(SCCompilerParser::VarDeclContext *ctx) = 0;
   virtual void exitVarDecl(SCCompilerParser::VarDeclContext *ctx) = 0;
 
+  virtual void enterVarInit(SCCompilerParser::VarInitContext *ctx) = 0;
+  virtual void exitVarInit(SCCompilerParser::VarInitContext *ctx) = 0;
+
   virtual void enterType(SCCompilerParser::TypeContext *ctx) = 0;
   virtual void exitType(SCCompilerParser::TypeContext *ctx) = 0;
 

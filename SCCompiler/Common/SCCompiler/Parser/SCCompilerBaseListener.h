@@ -22,6 +22,9 @@ public:
   virtual void enterVarDecl(SCCompilerParser::VarDeclContext * /*ctx*/) override { }
   virtual void exitVarDecl(SCCompilerParser::VarDeclContext * /*ctx*/) override { }
 
+  virtual void enterVarInit(SCCompilerParser::VarInitContext * /*ctx*/) override { }
+  virtual void exitVarInit(SCCompilerParser::VarInitContext * /*ctx*/) override { }
+
   virtual void enterType(SCCompilerParser::TypeContext * /*ctx*/) override { }
   virtual void exitType(SCCompilerParser::TypeContext * /*ctx*/) override { }
 

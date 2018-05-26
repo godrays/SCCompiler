@@ -15,11 +15,15 @@ grammar SCCompiler;
 // Parser grammer begin rule name must be "program".
 
 program
-    :   (varDecl | functionDecl)+ EOF
+    :   (varDecl ';' | functionDecl)+ EOF
     ;
 
 varDecl
-    :   type ID ('=' expr)? ';'
+    :   type varInit (',' varInit)*
+    ;
+
+varInit
+    :   ID ('=' expr)?
     ;
 
 type
@@ -47,7 +51,7 @@ block
 
 stat
     :   block                                   #BlockStatement         // Ignore
-    |   varDecl                                 #VarDeclStatement       // Ignore
+    |   varDecl ';'                             #VarDeclStatement       // Ignore
     |   'if' '(' expr ')' stat ('else' stat)?   #IfStatement
     |   'return' expr? ';'                      #ReturnStatement
     |   expr '=' expr ';'                       #AssignmentStatement

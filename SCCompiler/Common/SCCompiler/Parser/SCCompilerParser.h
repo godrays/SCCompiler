@@ -20,9 +20,9 @@ public:
   };
 
   enum {
-    RuleProgram = 0, RuleVarDecl = 1, RuleType = 2, RuleFunctionDecl = 3, 
-    RuleFormalParameters = 4, RuleFormalParameter = 5, RuleBlock = 6, RuleStat = 7, 
-    RuleExprList = 8, RuleExpr = 9
+    RuleProgram = 0, RuleVarDecl = 1, RuleVarInit = 2, RuleType = 3, RuleFunctionDecl = 4, 
+    RuleFormalParameters = 5, RuleFormalParameter = 6, RuleBlock = 7, RuleStat = 8, 
+    RuleExprList = 9, RuleExpr = 10
   };
 
   SCCompilerParser(antlr4::TokenStream *input);
@@ -37,6 +37,7 @@ public:
 
   class ProgramContext;
   class VarDeclContext;
+  class VarInitContext;
   class TypeContext;
   class FunctionDeclContext;
   class FormalParametersContext;
@@ -70,6 +71,22 @@ public:
     VarDeclContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     TypeContext *type();
+    std::vector<VarInitContext *> varInit();
+    VarInitContext* varInit(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  VarDeclContext* varDecl();
+
+  class  VarInitContext : public antlr4::ParserRuleContext {
+  public:
+    VarInitContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *ID();
     ExprContext *expr();
 
@@ -80,7 +97,7 @@ public:
    
   };
 
-  VarDeclContext* varDecl();
+  VarInitContext* varInit();
 
   class  TypeContext : public antlr4::ParserRuleContext {
   public:
