@@ -403,7 +403,7 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
 
     // Generate code for.body
     m_irBuilder->SetInsertPoint(forBodyBlock);
-    VisitChilds(forBodyNode);
+    Visit(forBodyNode);
     m_irBuilder->CreateBr(forIncBlock);
 
     // Generate code for.Inc

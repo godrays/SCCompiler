@@ -449,6 +449,8 @@ void CodeGenerationTests::CodeGenerationForStatementTests()
     int Test1(int a)   { for (int i=0; i<5; i=i+1) { a = i; } return a; }                    \n\
     int Test2(int a)   { for (int i=0,j=1; i<5; i=i+1, j=j+1) { a = j; } return a; }         \n\
     int Test3(int a, bool b)   { for (; b; ) { a = a+1; b=false; } return a; }               \n\
+    int Test4(int a)   { for (int i=0; i<5; i=i+1) a = i; return a; }                        \n\
+    int Test5(int a, bool b)   { for (; b; ) a = a+1; return a; }                            \n\
     ";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
@@ -467,6 +469,14 @@ void CodeGenerationTests::CodeGenerationForStatementTests()
     auto Test3 = reinterpret_cast<FuncTest3>(scModule->GetFunctionPtr("Test3"));
     CPPUNIT_ASSERT(Test3(5, false) == 5);
     CPPUNIT_ASSERT(Test3(5, true) == 6);
+
+    using FuncTest4 = int (*)(int);
+    auto Test4 = reinterpret_cast<FuncTest4>(scModule->GetFunctionPtr("Test4"));
+    CPPUNIT_ASSERT(Test4(5) == 4);
+
+    using FuncTest5 = int (*)(int, bool);
+    auto Test5 = reinterpret_cast<FuncTest5>(scModule->GetFunctionPtr("Test5"));
+    CPPUNIT_ASSERT(Test5(5, false) == 5);
 
     delete scModule;
 }
