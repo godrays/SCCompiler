@@ -1,88 +1,18 @@
 
-int counter = 0, a = 3, b = 5*4;
-// int GetCounter() { return counter; }
-// void RecursiveCall(int i) { if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; } }
+//int counter = 0, a = 3, b = 5*4;
+//int GetCounter() { return counter; }
+//void RecursiveCall(int i) { if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; } }
 
 int fib(int n) { if (n == 0) return n; else if (n == 1) return n; return fib(n-1) + fib(n-2); }
 
 int main(int a)
 {
-    // if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; }
-    // for (int i=0, k=5; i; i=i+1, i=0)
+    //if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; }
+    //for (int i=0, k=5; i; i=i+1, i=0)
     //for (int i=0; i<5; i=i+1) a = i;
     //for ( ; true; ) a=1;
-
     // RecursiveCall(i);
 
     return fib(a);
 }
 
-
-/*
-float z;
-bool var = true;
-
-int fib(int i)
-{
-    i = 5 + integer1;
-    int var = i*2;
-    int temp = (5*4);
-    return temp;
-}
-
-
-float fib(int i, float j, float z)
-{
-    {
-        int i;
-    }
-    return 1.0;
-}
-
-void TestFunc()
-{
-    return;
-}
-
-
-float fib2()
-{
-    //a[i] = 5*4 + 2;
-    float x;
-
-    var = false;
-
-    x = fib(1+2, 1.5 * 2.5, 4.5);
-
-    fib(1, fib2(), 5.0);
-
-    return 1.0;
-    return (1+2)*(3+4.5);
-}
-
-
-float f = fib2();
-
-
-int main()
-{
-    int x = 5;
-    false f = 4.5;
-    float w;
-
-    float y = fib(-fib(x, 1), (f*5)+2);
-
-    if (w == f) w = 5;
-
-    if (w == f) { w = .5; }
-
-
-    //if (w == f) { w = 5; } else w = 5;
-
-    //if (w == f) { w = 5; } else { w = 5; }
-
-    //if (w == f) w = 5; else { w = 5; }
-
-    return x;
-}
-*/
