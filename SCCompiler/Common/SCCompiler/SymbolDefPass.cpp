@@ -122,7 +122,9 @@ void SymbolDefPass::SymbolDefPass::VisitVariableDeclaration(ast::NodeVarDeclarat
     // Symbol redefinition is not allowed.
     if (m_currentScope->IsDefined(symbolName))
     {
-        throw SemanticErrorException("Redefinition of a symbol: " + symbolName);
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Redefinition of a symbol: " <<  symbolName << std::endl;
+        throw SemanticErrorException(message.str());
     }
     
     auto symbol = new VariableSymbol(symbolName, symbolType);
@@ -144,7 +146,9 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
     // Symbol redefinition is not allowed.
     if (m_currentScope->IsDefined(funcSymbolName))
     {
-        throw SemanticErrorException("Redefinition of a symbol: " + funcSymbolName);
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Redefinition of a symbol: " <<  funcSymbolName << std::endl;
+        throw SemanticErrorException(message.str());
     }
     
     auto funcSymbol = new FunctionSymbol(funcSymbolName, funcSymbolType);
@@ -166,7 +170,9 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
         // Symbol redefinition is not allowed.
         if (m_currentScope->IsDefined(argName))
         {
-            throw SemanticErrorException("Redefinition of a symbol: " + argName);
+            std::stringstream   message;
+            message << "Line: " << node->GetSourceCodeLine() << " - Redefinition of a symbol: " << argName << std::endl;
+            throw SemanticErrorException(message.str());
         }
 
         auto argSymbol = new FuncArgSymbol(argName, argType);
