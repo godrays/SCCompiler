@@ -35,6 +35,110 @@ llvm::Value * SymbolProperty::GetValue()
 }
 
 
+#pragma mark - NodeBasicBlocks Implementations.
+
+NodeBasicBlocks::NodeBasicBlocks(ast::Node * node,
+                llvm::BasicBlock * conditionBasicBlock,
+                llvm::BasicBlock * bodyBasicBlock,
+                llvm::BasicBlock * incrementBasicBlock,
+                llvm::BasicBlock * exitBasicBlock)
+    : m_node(node),
+      m_conditionBasicBlock(conditionBasicBlock),
+      m_bodyBasicBlock(bodyBasicBlock),
+      m_incrementBasicBlock(incrementBasicBlock),
+      m_exitBasicBlock(exitBasicBlock)
+{
+
+}
+
+
+ast::Node * NodeBasicBlocks::GetNode()
+{
+    return m_node;
+}
+
+
+llvm::BasicBlock * NodeBasicBlocks::GetConditionBasicBlock()
+{
+    assert(m_conditionBasicBlock != nullptr && "No reason to use if it is nullptr.");
+    return m_conditionBasicBlock;
+}
+
+
+llvm::BasicBlock * NodeBasicBlocks::GetBodyBasicBlock()
+{
+    assert(m_bodyBasicBlock != nullptr && "No reason to use if it is nullptr.");
+    return m_bodyBasicBlock;
+}
+
+
+llvm::BasicBlock * NodeBasicBlocks::GetIncrementBasicBlock()
+{
+    assert(m_incrementBasicBlock != nullptr && "No reason to use if it is nullptr.");
+    return m_incrementBasicBlock;
+}
+
+
+llvm::BasicBlock * NodeBasicBlocks::GetExitBasicBlock()
+{
+    assert(m_exitBasicBlock != nullptr && "No reason to use if it is nullptr.");
+    return m_exitBasicBlock;
+}
+
+
+#pragma mark - NodeBasicBlocksStack Implementations.
+
+NodeBasicBlocksStack::~NodeBasicBlocksStack()
+{
+    assert(m_nodeBBStack.size() == 0 && "Stack size has to be zero.");
+    m_nodeBBStack.clear();
+}
+
+
+void NodeBasicBlocksStack::Push(NodeBasicBlocks * nodeBasicBlocks)
+{
+    assert(nodeBasicBlocks != nullptr);
+    m_nodeBBStack.emplace_back(nodeBasicBlocks);
+}
+
+
+void NodeBasicBlocksStack::PopAndDelete()
+{
+    auto stackSize = m_nodeBBStack.size();
+    assert(stackSize > 0);
+
+    // Pop nodeBBs.
+    auto nodeBBs = m_nodeBBStack[stackSize - 1];
+    m_nodeBBStack.pop_back();
+
+    // Delete.
+    assert(nodeBBs != nullptr);
+    delete nodeBBs;
+}
+
+
+NodeBasicBlocks * NodeBasicBlocksStack::GetOneOfThese(const std::vector<ast::NodeType> & nodeTypes)
+{
+    auto size = m_nodeBBStack.size();
+    assert(size > 0);
+    
+    for (size_t index=0; index < size; ++index)
+    {
+        // If node type matches one of the given type then return it.
+        for (size_t ntIndex=0; ntIndex < nodeTypes.size(); ++ntIndex)
+        {
+            auto nodeBasicBlocks = m_nodeBBStack[size-index-1];
+            if (nodeBasicBlocks->GetNode()->GetNodeType() == nodeTypes[ntIndex])
+            {
+                return nodeBasicBlocks;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+
 #pragma mark - CodeGenPass Implementations.
 
 CodeGenPass::CodeGenPass() :
@@ -121,6 +225,10 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
 
         case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(static_cast<ast::NodeReturnStatement *>(node));
+            break;
+
+        case ast::NodeType::kNodeTypeContinue:
+            VisitContinue(static_cast<ast::NodeContinue *>(node));
             break;
 
         case ast::NodeType::kNodeTypeFuncCall:
@@ -384,6 +492,11 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
     auto forIncBlock  = CreateBasicBlock(m_currentFunction, "for.inc");
     auto forExitBlock = CreateBasicBlock(m_currentFunction, "for.exit");
 
+    // Push BasicBlocks into the stack for this node. We may need these blocks create branch
+    // for continue, break, return etc statements to create brach to jump to this nodes blocks
+    // if necessary.
+    m_nodeBBStack.Push(new NodeBasicBlocks(node, forCondBlock, forBodyBlock, forIncBlock, forExitBlock));
+
     // Generate code for variable declarations in current block.
     VisitChilds(forVarDeclNode);
     m_irBuilder->CreateBr(forCondBlock);
@@ -422,6 +535,9 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
     // Set the code geneartion block to for.exit
 
     m_irBuilder->SetInsertPoint(forExitBlock);
+    
+    // Pop BasiBlock info from stack.
+    m_nodeBBStack.PopAndDelete();
 }
 
 
@@ -442,6 +558,28 @@ void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
     // Creating a new block and generating all unreachable code in then optimizer can eliminate it.
     auto unreachableBlock = CreateBasicBlock(m_currentFunction, "unreachable");
     m_irBuilder->SetInsertPoint(unreachableBlock);
+}
+
+
+void CodeGenPass::VisitContinue(ast::NodeContinue * node)
+{
+    auto nodeBasicBlocks = m_nodeBBStack.GetOneOfThese({ast::NodeType::kNodeTypeForStatement});
+    assert(nodeBasicBlocks);
+    
+    switch (nodeBasicBlocks->GetNode()->GetNodeType())
+    {
+        case ast::NodeType::kNodeTypeForStatement:
+        m_irBuilder->CreateBr(nodeBasicBlocks->GetIncrementBasicBlock());
+        break;
+
+        default:
+        assert(false && "Unhandled node type!");
+        break;
+    }
+
+    // Create new basic blcok for unreachable instructions after coming continue statement.
+    auto unreachableBasicBlock = CreateBasicBlock(m_currentFunction, "unreachable");
+    m_irBuilder->SetInsertPoint(unreachableBasicBlock);
 }
 
 

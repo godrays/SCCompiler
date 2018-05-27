@@ -81,6 +81,10 @@ Type SemanticPass::Visit(ast::Node * node)
             VisitReturnStatement(dynamic_cast<ast::NodeReturnStatement *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeContinue:
+            VisitContinue(dynamic_cast<ast::NodeContinue *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeFuncCall:
             return VisitFunctionCall(dynamic_cast<ast::NodeFuncCall *>(node));
             break;
@@ -233,7 +237,7 @@ void SemanticPass::VisitReturnStatement(ast::NodeReturnStatement * node)
     assert(node->ChildCount() < 2);
 
     // Find belonging function declaration parent node.
-    auto funcDeclNode = dynamic_cast<ast::NodeFuncDeclaration *>(node->FindClosestParentNode(ast::NodeType::kNodeTypeFunctionDeclaration));
+    auto funcDeclNode = dynamic_cast<ast::NodeFuncDeclaration *>(node->FindClosestParentNode({ast::NodeType::kNodeTypeFunctionDeclaration}));
     assert(funcDeclNode != nullptr);
 
     auto scope = funcDeclNode->GetScope();
@@ -271,6 +275,21 @@ void SemanticPass::VisitReturnStatement(ast::NodeReturnStatement * node)
             throw SemanticErrorException(message.str());
         }
     }
+}
+
+
+void SemanticPass::VisitContinue(ast::NodeContinue * node)
+{
+    auto loopNode = node->FindClosestParentNode({ast::NodeType::kNodeTypeForStatement});
+    
+    if (loopNode == nullptr)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - 'continue' statement is allowed only in loops." << std::endl;
+        throw SemanticErrorException(message.str());
+    }
+    
+    assert(node->ChildCount() == 0 && "continue statement node must have zero child!");
 }
 
 

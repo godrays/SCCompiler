@@ -8,6 +8,7 @@
 #pragma once
 
 #include <list>
+#include <vector>
 
 #include "llvm/IR/CFG.h"
 #include "llvm/ADT/STLExtras.h"
@@ -71,6 +72,75 @@ namespace scc
     };
 
 
+    #pragma mark - Class NodeBasicBlocks
+
+    class NodeBasicBlocks final
+    {
+    public:
+        // Constructor
+        NodeBasicBlocks(ast::Node * node,
+                        llvm::BasicBlock * conditionBasicBlock,
+                        llvm::BasicBlock * bodyBasicBlock,
+                        llvm::BasicBlock * incrementBasicBlock,
+                        llvm::BasicBlock * exitBasicBlock);
+
+        // Return node.
+        ast::Node * GetNode();
+
+        // Return condition basic block.
+        llvm::BasicBlock * GetConditionBasicBlock();
+
+        // Return body basic block.
+        llvm::BasicBlock * GetBodyBasicBlock();
+
+        // Return increment basic block.
+        llvm::BasicBlock * GetIncrementBasicBlock();
+
+        // Return exit basic block.
+        llvm::BasicBlock * GetExitBasicBlock();
+
+    protected:
+        // AST Node.
+        ast::Node *  m_node;
+    
+        // Condition basic block.
+        llvm::BasicBlock *  m_conditionBasicBlock;
+
+        // Body basic block.
+        llvm::BasicBlock *  m_bodyBasicBlock;
+ 
+        // Increment basic block.
+        llvm::BasicBlock *  m_incrementBasicBlock;
+ 
+        // Exit basic block.
+        llvm::BasicBlock *  m_exitBasicBlock;
+    };
+
+
+    #pragma mark - Class NodeBasicBlocksStack
+
+    class NodeBasicBlocksStack final
+    {
+    public:
+        // Destructor.
+        ~NodeBasicBlocksStack();
+
+        // Pushes new element to stack.
+        void Push(NodeBasicBlocks * nodeBasicBlocks);
+
+        // Pops and deletes top element in stack.
+        void PopAndDelete();
+
+        // Returns NodeBasicBlocks object if node matches with given one of the node types.
+        NodeBasicBlocks * GetOneOfThese(const std::vector<ast::NodeType> & nodeTypes);
+
+    protected:
+        // Node BsaicBlock Stack. Using vector here to implement stack behavior since
+        // std::stack implementation doesn't support iteration on its elements.
+        std::vector<NodeBasicBlocks *>  m_nodeBBStack;
+    };
+
+
     #pragma mark - Class CodeGenPass
 
     class  CodeGenPass
@@ -105,6 +175,8 @@ namespace scc
         void VisitForStatement(ast::NodeForStatement * node);
 
         void VisitReturnStatement(ast::NodeReturnStatement * node);
+
+        void VisitContinue(ast::NodeContinue * node);
 
         void VisitAssignment(ast::NodeAssignment * node);
 
@@ -171,6 +243,9 @@ namespace scc
 
         // IR builder stack
         llvm::IRBuilder<> * m_irBuilder;
+        
+        // Stores LLVM BasicBlocks.
+        NodeBasicBlocksStack    m_nodeBBStack;
    };
 }
 

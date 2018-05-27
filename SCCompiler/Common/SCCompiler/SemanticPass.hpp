@@ -23,6 +23,7 @@ namespace scc
         class NodeForStatement;
         class NodeFor;
         class NodeReturnStatement;
+        class NodeContinue;
         class NodeFuncCall;
         class NodeAssignment;
         class NodeAOP;
@@ -60,6 +61,8 @@ namespace scc
         void VisitForStatement(ast::NodeForStatement * node);
 
         void VisitReturnStatement(ast::NodeReturnStatement * node);
+
+        void VisitContinue(ast::NodeContinue * node);
 
         Type VisitFunctionCall(ast::NodeFuncCall * node);
         

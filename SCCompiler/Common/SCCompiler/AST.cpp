@@ -192,6 +192,10 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
         typeInString = "tNodeTypeReturnStatement";
         break;
 
+        case ast::NodeType::kNodeTypeContinue:
+        typeInString = "kNodeTypeContinue";
+        break;
+
         case ast::NodeType::kNodeTypeUnknown:
         typeInString = "tNodeTypeReturnStatement";
         break;
@@ -245,16 +249,20 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
 }
 
 
-ast::Node * ast::Node::FindClosestParentNode(ast::NodeType nodeType)
+ast::Node * ast::Node::FindClosestParentNode(const std::vector<ast::NodeType> & nodeTypes)
 {
-    if (m_nodeType == nodeType)
+    // If node type matches one of the given type then return it.
+    for (size_t fIdx=0; fIdx < nodeTypes.size(); ++fIdx)
     {
-        return this;
+        if (m_nodeType == nodeTypes[fIdx])
+        {
+            return this;
+        }
     }
 
     if ( m_parent != nullptr )
     {
-        return m_parent->FindClosestParentNode(nodeType);
+        return m_parent->FindClosestParentNode(nodeTypes);
     }
 
     return nullptr;
@@ -425,6 +433,20 @@ ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(kNodeTypeReturnState
 
 
 ast::NodeReturnStatement::~NodeReturnStatement()
+{
+    DeleteChilds();
+}
+
+
+#pragma mark - NodeContinue Implementation
+
+ast::NodeContinue::NodeContinue() : ast::Node(kNodeTypeContinue)
+{
+
+}
+
+
+ast::NodeContinue::~NodeContinue()
 {
     DeleteChilds();
 }

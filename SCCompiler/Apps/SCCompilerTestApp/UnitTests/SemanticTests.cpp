@@ -139,3 +139,11 @@ void SemanticTests::SemanticUnaryOPTest()
     ", SCCompileResult::kSCCompileResultSemanticError, true);
 }
 
+
+void SemanticTests::SemanticContinueStatementTest()
+{
+    // Continue statement is allowed only in loops.
+    TestCode("\
+    void   func()  { continue; }           \n\
+    ", SCCompileResult::kSCCompileResultSemanticError, true);
+}

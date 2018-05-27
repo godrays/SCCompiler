@@ -79,6 +79,7 @@ void SymbolDefPass::Visit(ast::Node * node)
 
         case ast::NodeType::kNodeTypeProgram:
         case ast::NodeType::kNodeTypeReturnStatement:
+        case ast::NodeType::kNodeTypeContinue:
         case ast::NodeType::kNodeTypeAssignment:
         case ast::NodeType::kNodeTypeIfStatement:
         case ast::NodeType::kNodeTypeForVarDecl:

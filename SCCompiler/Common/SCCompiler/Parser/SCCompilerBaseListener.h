@@ -55,6 +55,9 @@ public:
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
 
+  virtual void enterContinue(SCCompilerParser::ContinueContext * /*ctx*/) override { }
+  virtual void exitContinue(SCCompilerParser::ContinueContext * /*ctx*/) override { }
+
   virtual void enterFuncCallStatement(SCCompilerParser::FuncCallStatementContext * /*ctx*/) override { }
   virtual void exitFuncCallStatement(SCCompilerParser::FuncCallStatementContext * /*ctx*/) override { }
 

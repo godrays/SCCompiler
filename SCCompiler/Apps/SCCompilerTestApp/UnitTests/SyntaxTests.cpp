@@ -118,5 +118,7 @@ void SyntaxTests::SyntaxAcceptanceTest()
     void  func35() { for (int i=0,j=i*2; ; ) { }  }  \n\
     int   func36() { int a; for (int i=0,j=i*2; i < 10; i=j+1, j=j+i) { a = j + i; }  return a; }  \n\
     int   func37() { int a; for (int i=0,j=i*2; i < 10; i=j+1, j=j+i) a = j + i;  return a; }      \n\
+    int   func38() { for (int i=0; i < 10; i=i+1) continue;  return 0; }                 \n\
+    int   func39() { for (int i=0; i < 10; i=i+1) { continue; i=i+1; } return 0; }       \n\
     ", SCCompileResult::kSCCompileResultOk, true);
 }

@@ -55,6 +55,7 @@ stat
     |   'if' '(' expr ')' stat ('else' stat)?                   #IfStatement
     |   forStatement                                            #Ignore
     |   'return' expr? ';'                                      #ReturnStatement
+    |   'continue' ';'                                          #Continue
     |   assignment ';'                                          #Ignore
     |   expr ';'                                                #FuncCallStatement
     ;

@@ -16,8 +16,8 @@ public:
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
-    BOOL = 27, INT = 28, FLOAT = 29, ID = 30, WS = 31, LINECOMMENT = 32, 
-    BLOCKCOMMENT = 33
+    T__26 = 27, BOOL = 28, INT = 29, FLOAT = 30, ID = 31, WS = 32, LINECOMMENT = 33, 
+    BLOCKCOMMENT = 34
   };
 
   enum {
@@ -276,6 +276,16 @@ public:
     BlockStatementContext(StatContext *ctx);
 
     BlockContext *block();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  ContinueContext : public StatContext {
+  public:
+    ContinueContext(StatContext *ctx);
+
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 

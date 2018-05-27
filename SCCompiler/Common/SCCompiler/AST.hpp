@@ -38,6 +38,7 @@ namespace ast
         kNodeTypeForCondition,
         kNodeTypeForIncrement,
         kNodeTypeReturnStatement,
+        kNodeTypeContinue,
         kNodeTypeFuncCall,
         kNodeTypeBlock,
         kNodeTypeAssignment,
@@ -131,7 +132,7 @@ namespace ast
         size_t  GetSourceCodeLine();
 
         // Finds the closest parent node with given type in path from current node to tree root node.
-        Node * FindClosestParentNode(NodeType nodeType);
+        Node * FindClosestParentNode(const std::vector<NodeType> & nodeType);
 
         // Finds the closest child node with given type in path from current node to childs.
         Node * FindClosestChildNode(NodeType nodeType);
@@ -274,6 +275,19 @@ namespace ast
 
         // Destructor.
         virtual ~NodeReturnStatement();
+    };
+
+
+    #pragma mark - Class NodeContinue
+
+    class NodeContinue : public Node
+    {
+    public:
+        // Constructor.
+        NodeContinue();
+
+        // Destructor.
+        virtual ~NodeContinue();
     };
 
 
