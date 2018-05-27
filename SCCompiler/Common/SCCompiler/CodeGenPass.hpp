@@ -152,6 +152,9 @@ namespace scc
 
         // Convert llvm type to string.
         std::string DebugLLVMTypeAsString(llvm::Type::TypeID typeID) const;
+        
+        // Delete unreachable blocks in function basic block list.
+        void DeleteUnreachableBasicBlocks(llvm::Function * function);
 
     protected:
         // Stores entire code.

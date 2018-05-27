@@ -280,12 +280,22 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     // Visit childs.
     VisitChilds(node);
 
+    // It's possible final nasic block may not have an return instruction.
+    // Note: This is a workaround solution until return path analysis is done in semantic pass.
     if (m_irBuilder->GetInsertBlock()->getTerminator() == nullptr)
     {
-        // We add "return void" if function return type is void since every function must have a return instruction.
-        m_irBuilder->CreateRetVoid();
+        if (funcReturnType == scc::Type::kTypeVoid)
+        {
+            m_irBuilder->CreateRetVoid();
+        }
+        else
+        {
+            m_irBuilder->CreateRet(CreateConstant(funcReturnType, "0"));
+        }
     }
     
+    DeleteUnreachableBasicBlocks(m_currentFunction);
+
     // DEBUG
     // m_currentFunction->viewCFG();
 
@@ -954,6 +964,23 @@ void CodeGenPass::DumpIRCode() const
 {
     m_module->dump();
 }
+
+
+void CodeGenPass::DeleteUnreachableBasicBlocks(llvm::Function * function)
+{
+    auto & bbList = m_currentFunction->getBasicBlockList();
+    auto prevIt = bbList.begin();
+    for (auto it = bbList.begin(); it != bbList.end(); ++it)
+    {
+        if (it->getName().str().size() > 10 && it->getName().str().compare(0, 11, "unreachable") == 0)
+        {
+            it->eraseFromParent();
+            it = prevIt;
+        }
+        prevIt = it;
+    }
+}
+
 
 std::string CodeGenPass::DebugLLVMTypeAsString(llvm::Type::TypeID typeID) const
 {
