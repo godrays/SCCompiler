@@ -289,14 +289,6 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     // DEBUG
     // m_currentFunction->viewCFG();
 
-    // Remove unreacable code blocks in basic blocks. It's possible each basic block could have multiple
-    // return instructions so we throw all instruction after first found return instruction.
-    auto & bbList = m_currentFunction->getBasicBlockList();
-    for (auto it = bbList.begin(); it != bbList.end(); ++it)
-    {
-        DeleteDeadCode(&*it);
-    }
-
     m_currentFunction = nullptr;
     m_irBuilder->SetInsertPoint(prevBlock);
 }
@@ -429,11 +421,17 @@ void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
     if (node->ChildCount() == 0)
     {
         m_irBuilder->CreateRetVoid();
-        return;
     }
-    // return <expression>
-    auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
-    m_irBuilder->CreateRet(exprValue);
+    else
+    {
+        // return <expression>
+        auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
+        m_irBuilder->CreateRet(exprValue);
+    }
+    // Any instruction after a terminator instruction (ret, br, switch, ...) won't be executed.
+    // Creating a new block and generating all unreachable code in then optimizer can eliminate it.
+    auto unreachableBlock = CreateBasicBlock(m_currentFunction, "unreachable");
+    m_irBuilder->SetInsertPoint(unreachableBlock);
 }
 
 
@@ -949,59 +947,6 @@ llvm::Value * CodeGenPass::LoadIfPointerType(llvm::Value * value)
     }
 
     return value;
-}
-
-
-void CodeGenPass::DeleteDeadCode(llvm::BasicBlock * basicBlock)
-{
-    for (auto it = basicBlock->begin(); it != basicBlock->end(); ++it)
-    {
-        // Split after return instruction.
-        if (it->getOpcode() == llvm::Instruction::Ret)
-        {
-            ++it;
-            // Split only if there is a following instruction.
-            if (it != basicBlock->getInstList().end())
-            {
-                auto deadCodeBlock = SplitBasicBlock(basicBlock, it, "UnreachableBlock");
-                deadCodeBlock->eraseFromParent();
-            }
-            return;
-        }
-    }
-}
-
-
-llvm::BasicBlock * CodeGenPass::SplitBasicBlock(llvm::BasicBlock * basicBlock, llvm::BasicBlock::iterator it, std::string newBlockLabel)
-{
-    assert(basicBlock->getTerminator() && "Block must have terminator instruction.");
-    assert(it != basicBlock->getInstList().end() && "Can't split block since there is no following instruction in the basic block.");
-
-    auto newBlock = llvm::BasicBlock::Create(basicBlock->getContext(), newBlockLabel, basicBlock->getParent(), basicBlock->getNextNode());
-
-    // Move all of the instructions from original block into new block.
-    newBlock->getInstList().splice(newBlock->end(), basicBlock->getInstList(), it, basicBlock->end());
-
-/*
-    // NOTE: Still not sure if this code section is necessary.
-    // Update any PHI nodes in successors.
-    for (llvm::succ_iterator it = llvm::succ_begin(newBlock), itEnd = llvm::succ_end(newBlock); it != itEnd; ++it)
-    {
-        // Loop over any phi nodes in the basic block, updating the basic block field of incoming values.
-        llvm::BasicBlock * Successor = *it;
-        for (auto & phiNode : Successor->phis())
-        {
-            int Idx = phiNode.getBasicBlockIndex(basicBlock);
-            while (Idx != -1)
-            {
-                phiNode.setIncomingBlock((unsigned)Idx, newBlock);
-                Idx = phiNode.getBasicBlockIndex(basicBlock);
-            }
-        }
-    }
-*/
-
-    return newBlock;
 }
 
 
