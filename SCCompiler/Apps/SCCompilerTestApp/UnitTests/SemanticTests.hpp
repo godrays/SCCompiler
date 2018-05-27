@@ -26,6 +26,7 @@ class SemanticTests : public CppUnit::TestFixture
     CPPUNIT_TEST( SemanticNonSpecificTest );
     CPPUNIT_TEST( SemanticUnaryOPTest );
     CPPUNIT_TEST( SemanticContinueStatementTest );
+    CPPUNIT_TEST( SemanticBreakStatementTest );
 
     CPPUNIT_TEST_SUITE_END();
     
@@ -51,6 +52,7 @@ public:
     void SemanticUnaryOPTest();
 
     void SemanticContinueStatementTest();
-};
 
+    void SemanticBreakStatementTest();
+};
 

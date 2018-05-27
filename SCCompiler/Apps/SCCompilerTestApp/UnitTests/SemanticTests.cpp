@@ -147,3 +147,11 @@ void SemanticTests::SemanticContinueStatementTest()
     void   func()  { continue; }           \n\
     ", SCCompileResult::kSCCompileResultSemanticError, true);
 }
+
+void SemanticTests::SemanticBreakStatementTest()
+{
+    // Break statement is allowed only in loops.
+    TestCode("\
+    void   func()  { break; }              \n\
+    ", SCCompileResult::kSCCompileResultSemanticError, true);
+}

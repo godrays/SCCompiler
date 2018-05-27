@@ -196,6 +196,10 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
         typeInString = "kNodeTypeContinue";
         break;
 
+        case ast::NodeType::kNodeTypeBreak:
+        typeInString = "kNodeTypeBreak";
+        break;
+
         case ast::NodeType::kNodeTypeUnknown:
         typeInString = "tNodeTypeReturnStatement";
         break;
@@ -447,6 +451,20 @@ ast::NodeContinue::NodeContinue() : ast::Node(kNodeTypeContinue)
 
 
 ast::NodeContinue::~NodeContinue()
+{
+    DeleteChilds();
+}
+
+
+#pragma mark - NodeBreak Implementation
+
+ast::NodeBreak::NodeBreak() : ast::Node(kNodeTypeBreak)
+{
+
+}
+
+
+ast::NodeBreak::~NodeBreak()
 {
     DeleteChilds();
 }

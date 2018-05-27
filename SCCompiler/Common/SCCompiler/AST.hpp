@@ -39,6 +39,7 @@ namespace ast
         kNodeTypeForIncrement,
         kNodeTypeReturnStatement,
         kNodeTypeContinue,
+        kNodeTypeBreak,
         kNodeTypeFuncCall,
         kNodeTypeBlock,
         kNodeTypeAssignment,
@@ -288,6 +289,19 @@ namespace ast
 
         // Destructor.
         virtual ~NodeContinue();
+    };
+
+
+    #pragma mark - Class NodeBreak
+
+    class NodeBreak : public Node
+    {
+    public:
+        // Constructor.
+        NodeBreak();
+
+        // Destructor.
+        virtual ~NodeBreak();
     };
 
 

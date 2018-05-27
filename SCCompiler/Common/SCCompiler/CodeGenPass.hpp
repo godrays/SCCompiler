@@ -45,6 +45,7 @@ namespace scc
         class NodeForStatement;
         class NodeBlock;
         class NodeReturnStatement;
+        class NodeBreak;
         class NodeFuncCall;
         class NodeAssignment;
         class NodeAOP;
@@ -177,6 +178,8 @@ namespace scc
         void VisitReturnStatement(ast::NodeReturnStatement * node);
 
         void VisitContinue(ast::NodeContinue * node);
+
+        void VisitBreak(ast::NodeBreak * node);
 
         void VisitAssignment(ast::NodeAssignment * node);
 

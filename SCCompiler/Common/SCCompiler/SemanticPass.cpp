@@ -85,6 +85,10 @@ Type SemanticPass::Visit(ast::Node * node)
             VisitContinue(dynamic_cast<ast::NodeContinue *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeBreak:
+            VisitBreak(dynamic_cast<ast::NodeBreak *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeFuncCall:
             return VisitFunctionCall(dynamic_cast<ast::NodeFuncCall *>(node));
             break;
@@ -290,6 +294,21 @@ void SemanticPass::VisitContinue(ast::NodeContinue * node)
     }
     
     assert(node->ChildCount() == 0 && "continue statement node must have zero child!");
+}
+
+
+void SemanticPass::VisitBreak(ast::NodeBreak * node)
+{
+    auto loopNode = node->FindClosestParentNode({ast::NodeType::kNodeTypeForStatement});
+    
+    if (loopNode == nullptr)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - 'break' statement is allowed only in loops." << std::endl;
+        throw SemanticErrorException(message.str());
+    }
+    
+    assert(node->ChildCount() == 0 && "break statement node must have zero child!");
 }
 
 

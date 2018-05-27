@@ -231,6 +231,10 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             VisitContinue(static_cast<ast::NodeContinue *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeBreak:
+            VisitBreak(static_cast<ast::NodeBreak *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeFuncCall:
             return VisitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
             break;
@@ -578,6 +582,28 @@ void CodeGenPass::VisitContinue(ast::NodeContinue * node)
     }
 
     // Create new basic blcok for unreachable instructions after coming continue statement.
+    auto unreachableBasicBlock = CreateBasicBlock(m_currentFunction, "unreachable");
+    m_irBuilder->SetInsertPoint(unreachableBasicBlock);
+}
+
+
+void CodeGenPass::VisitBreak(ast::NodeBreak * node)
+{
+    auto nodeBasicBlocks = m_nodeBBStack.GetOneOfThese({ast::NodeType::kNodeTypeForStatement});
+    assert(nodeBasicBlocks);
+    
+    switch (nodeBasicBlocks->GetNode()->GetNodeType())
+    {
+        case ast::NodeType::kNodeTypeForStatement:
+        m_irBuilder->CreateBr(nodeBasicBlocks->GetExitBasicBlock());
+        break;
+
+        default:
+        assert(false && "Unhandled node type!");
+        break;
+    }
+
+    // Create new basic blcok for unreachable instructions after coming break statement.
     auto unreachableBasicBlock = CreateBasicBlock(m_currentFunction, "unreachable");
     m_irBuilder->SetInsertPoint(unreachableBasicBlock);
 }

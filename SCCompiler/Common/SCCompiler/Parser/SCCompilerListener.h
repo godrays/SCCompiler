@@ -56,6 +56,9 @@ public:
   virtual void enterContinue(SCCompilerParser::ContinueContext *ctx) = 0;
   virtual void exitContinue(SCCompilerParser::ContinueContext *ctx) = 0;
 
+  virtual void enterBreak(SCCompilerParser::BreakContext *ctx) = 0;
+  virtual void exitBreak(SCCompilerParser::BreakContext *ctx) = 0;
+
   virtual void enterFuncCallStatement(SCCompilerParser::FuncCallStatementContext *ctx) = 0;
   virtual void exitFuncCallStatement(SCCompilerParser::FuncCallStatementContext *ctx) = 0;
 

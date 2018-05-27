@@ -71,6 +71,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitBreak(SCCompilerParser::BreakContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitFuncCallStatement(SCCompilerParser::FuncCallStatementContext *ctx) override {
     return visitChildren(ctx);
   }

@@ -60,6 +60,8 @@ namespace scc
 
         antlrcpp::Any  visitContinue(SCCompilerParser::ContinueContext *ctx) final;
 
+        antlrcpp::Any  visitBreak(SCCompilerParser::BreakContext *ctx) final;
+
         antlrcpp::Any  visitAssignment(SCCompilerParser::AssignmentContext *ctx) final;
 
         antlrcpp::Any  visitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *ctx) final;

@@ -458,6 +458,9 @@ void CodeGenerationTests::CodeGenerationForStatementTests()
     int Test5(int a, bool b)   { for (; b; ) a = a+1; return a; }                            \n\
     int Test6(int a)   { for (int i=0; i<5; i=i+1) { a=i; continue; a=-1; } return a; }      \n\
     int Test7(int a)   { for (int i=0; i<5; i=i+1) { a=i; if (true){ continue; } a=-1; } return a; }   \n\
+    int Test8(int a)   { for (int i=0; i<5; i=i+1) { a=i; break; a=-1; } return a; }                   \n\
+    int Test9(int a)   { for (int i=0; i<5; i=i+1) { a=i; if (i==2){ break; } a=-1; } return a; }      \n\
+    int Test10(int a)  { for (int i=0; i<5; i=i+1) { a=i; for (int j=0; j<5; j=j+1) { break; a=-1; } } return a; }    \n\
     ";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
@@ -492,6 +495,18 @@ void CodeGenerationTests::CodeGenerationForStatementTests()
     using FuncTest7 = int (*)(int);
     auto Test7 = reinterpret_cast<FuncTest7>(scModule->GetFunctionPtr("Test7"));
     CPPUNIT_ASSERT(Test7(5) == 4);
+
+    using FuncTest8 = int (*)(int);
+    auto Test8 = reinterpret_cast<FuncTest8>(scModule->GetFunctionPtr("Test8"));
+    CPPUNIT_ASSERT(Test8(5) == 0);
+
+    using FuncTest9 = int (*)(int);
+    auto Test9 = reinterpret_cast<FuncTest9>(scModule->GetFunctionPtr("Test9"));
+    CPPUNIT_ASSERT(Test9(5) == 2);
+
+    using FuncTest10 = int (*)(int);
+    auto Test10 = reinterpret_cast<FuncTest10>(scModule->GetFunctionPtr("Test10"));
+    CPPUNIT_ASSERT(Test10(5) == 4);
 
     delete scModule;
 }

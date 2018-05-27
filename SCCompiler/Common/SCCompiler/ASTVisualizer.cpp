@@ -87,6 +87,10 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"Continue\"];");
             break;
 
+        case ast::NodeType::kNodeTypeBreak:
+            OutputConfig(node, "[label = \"Break\"];");
+            break;
+
         case ast::NodeType::kNodeTypeFuncCall:
             OutputConfig(node, "[label = \"Func Call: " + dynamic_cast<ast::NodeFuncCall*>(node)->GetFuncName() + "\"];");
             break;

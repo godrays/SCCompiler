@@ -56,6 +56,7 @@ stat
     |   forStatement                                            #Ignore
     |   'return' expr? ';'                                      #ReturnStatement
     |   'continue' ';'                                          #Continue
+    |   'break' ';'                                             #Break
     |   assignment ';'                                          #Ignore
     |   expr ';'                                                #FuncCallStatement
     ;
