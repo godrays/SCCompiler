@@ -22,6 +22,7 @@ namespace scc
         class NodeIfStatement;
         class NodeForStatement;
         class NodeFor;
+        class NodeWhileStatement;
         class NodeReturnStatement;
         class NodeContinue;
         class NodeBreak;
@@ -60,6 +61,8 @@ namespace scc
         void VisitIfStatement(ast::NodeIfStatement * node);
 
         void VisitForStatement(ast::NodeForStatement * node);
+
+        void VisitWhileStatement(ast::NodeWhileStatement * node);
 
         void VisitReturnStatement(ast::NodeReturnStatement * node);
 

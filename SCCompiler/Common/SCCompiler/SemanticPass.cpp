@@ -77,6 +77,10 @@ Type SemanticPass::Visit(ast::Node * node)
             VisitChilds(node);
             break;
 
+        case ast::NodeType::kNodeTypeWhileStatement:
+            VisitWhileStatement(dynamic_cast<ast::NodeWhileStatement *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(dynamic_cast<ast::NodeReturnStatement *>(node));
             break;
@@ -236,6 +240,25 @@ void SemanticPass::VisitForStatement(ast::NodeForStatement * node)
 }
 
 
+void SemanticPass::VisitWhileStatement(ast::NodeWhileStatement * node)
+{
+    // There must be condition expr and body.
+    assert(node->ChildCount() == 2);
+    
+    auto conditionNode = node->GetChild(0);
+    if (Visit(conditionNode) != Type::kTypeBool)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - While comparison type mismatch." << std::endl;
+        throw SemanticErrorException(message.str());
+    }
+
+    // Visit body statement childs.
+    auto bodyNode = node->GetChild(1);
+    Visit(bodyNode);
+}
+
+
 void SemanticPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 {
     assert(node->ChildCount() < 2);
@@ -284,7 +307,8 @@ void SemanticPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 
 void SemanticPass::VisitContinue(ast::NodeContinue * node)
 {
-    auto loopNode = node->FindClosestParentNode({ast::NodeType::kNodeTypeForStatement});
+    auto loopNode = node->FindClosestParentNode({ast::NodeType::kNodeTypeForStatement,
+                                                 ast::NodeType::kNodeTypeWhileStatement});
     
     if (loopNode == nullptr)
     {
@@ -299,8 +323,9 @@ void SemanticPass::VisitContinue(ast::NodeContinue * node)
 
 void SemanticPass::VisitBreak(ast::NodeBreak * node)
 {
-    auto loopNode = node->FindClosestParentNode({ast::NodeType::kNodeTypeForStatement});
-    
+    auto loopNode = node->FindClosestParentNode({ast::NodeType::kNodeTypeForStatement,
+                                                 ast::NodeType::kNodeTypeWhileStatement});
+
     if (loopNode == nullptr)
     {
         std::stringstream   message;

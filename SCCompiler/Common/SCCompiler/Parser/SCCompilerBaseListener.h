@@ -52,6 +52,9 @@ public:
   virtual void enterIgnore(SCCompilerParser::IgnoreContext * /*ctx*/) override { }
   virtual void exitIgnore(SCCompilerParser::IgnoreContext * /*ctx*/) override { }
 
+  virtual void enterWhileStatement(SCCompilerParser::WhileStatementContext * /*ctx*/) override { }
+  virtual void exitWhileStatement(SCCompilerParser::WhileStatementContext * /*ctx*/) override { }
+
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
 

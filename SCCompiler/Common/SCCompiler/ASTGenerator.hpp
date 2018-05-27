@@ -56,6 +56,8 @@ namespace scc
 
         antlrcpp::Any  visitForIncrements(SCCompilerParser::ForIncrementsContext *ctx) final;
 
+        antlrcpp::Any  visitWhileStatement(SCCompilerParser::WhileStatementContext *ctx) final;
+
         antlrcpp::Any  visitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) final;
 
         antlrcpp::Any  visitContinue(SCCompilerParser::ContinueContext *ctx) final;

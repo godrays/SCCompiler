@@ -63,6 +63,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitWhileStatement(SCCompilerParser::WhileStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) override {
     return visitChildren(ctx);
   }

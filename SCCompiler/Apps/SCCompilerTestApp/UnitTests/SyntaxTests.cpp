@@ -122,5 +122,11 @@ void SyntaxTests::SyntaxAcceptanceTest()
     int   func39() { for (int i=0; i < 10; i=i+1) { continue; i=i+1; } return 0; }       \n\
     int   func40() { for (int i=0; i < 10; i=i+1) break;  return 0; }                    \n\
     int   func41() { for (int i=0; i < 10; i=i+1) { break; i=i+1; } return 0; }          \n\
+    void  func42() { int i=0; while (i < 10) { } }                                       \n\
+    void  func43() { int i=0; while (i < 10) { i=i+1; } }                                \n\
+    int   func44() { int i=0; while (i < 10) continue;  return 0; }                      \n\
+    int   func45() { int i=0; while (i < 10) { continue; i=i+1; } return 0; }            \n\
+    int   func46() { int i=0; while (i < 10) break; return 0; }                          \n\
+    int   func47() { int i=0; while (i < 10) { break; i=i+1; } return 0; }               \n\
     ", SCCompileResult::kSCCompileResultOk, true);
 }

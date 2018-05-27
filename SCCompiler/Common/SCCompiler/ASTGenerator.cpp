@@ -275,6 +275,31 @@ antlrcpp::Any  ASTGenerator::visitForIncrements(SCCompilerParser::ForIncrementsC
 }
 
 
+antlrcpp::Any ASTGenerator::visitWhileStatement(SCCompilerParser::WhileStatementContext *ctx)
+{
+    // Create new AST Node.
+    auto newNode = new ast::NodeWhileStatement();
+    newNode->SetSourceCodeLine(ctx->getStart()->getLine());
+
+    // Set parent node. Parent node is the top element in the currentNode Stack.
+    newNode->SetParent(m_currentNodeStack.top());
+
+    // Add yourself as child to parent node.
+    m_currentNodeStack.top()->AddChild(newNode);
+
+    // Push new parent node into stack. It becomes new parent node for child visits.
+    m_currentNodeStack.push(newNode);
+
+    // Visit parser tree childrens.
+    auto visitResult = visitChildren(ctx);
+
+    // Pop current parent node since we are leaving the method.
+    m_currentNodeStack.pop();
+
+    return visitResult;
+}
+
+
 antlrcpp::Any ASTGenerator::visitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx)
 {
     // Create new AST Node.

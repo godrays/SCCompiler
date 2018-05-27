@@ -37,6 +37,7 @@ namespace ast
         kNodeTypeForVarDecl,
         kNodeTypeForCondition,
         kNodeTypeForIncrement,
+        kNodeTypeWhileStatement,
         kNodeTypeReturnStatement,
         kNodeTypeContinue,
         kNodeTypeBreak,
@@ -263,6 +264,19 @@ namespace ast
 
         // Destructor.
         virtual ~NodeFor();
+    };
+
+
+    #pragma mark - Class NodeWhileStatement
+
+    class NodeWhileStatement : public Node
+    {
+    public:
+        // Constructor.
+        NodeWhileStatement();
+
+        // Destructor.
+        virtual ~NodeWhileStatement();
     };
 
 

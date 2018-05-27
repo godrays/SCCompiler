@@ -79,6 +79,10 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"ForIncrement\"];");
             break;
 
+        case ast::NodeType::kNodeTypeWhileStatement:
+            OutputConfig(node, "[label = \"While\"];");
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             OutputConfig(node, "[label = \"Func Return\"];");
             break;

@@ -50,6 +50,9 @@ public:
   virtual void enterIgnore(SCCompilerParser::IgnoreContext *ctx) = 0;
   virtual void exitIgnore(SCCompilerParser::IgnoreContext *ctx) = 0;
 
+  virtual void enterWhileStatement(SCCompilerParser::WhileStatementContext *ctx) = 0;
+  virtual void exitWhileStatement(SCCompilerParser::WhileStatementContext *ctx) = 0;
+
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) = 0;
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) = 0;
 

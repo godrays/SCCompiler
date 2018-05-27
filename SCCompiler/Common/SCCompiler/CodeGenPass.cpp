@@ -223,6 +223,10 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             VisitChilds(node);
             break;
 
+        case ast::NodeType::kNodeTypeWhileStatement:
+            VisitWhileStatement(static_cast<ast::NodeWhileStatement *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(static_cast<ast::NodeReturnStatement *>(node));
             break;
@@ -545,6 +549,63 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
 }
 
 
+void CodeGenPass::VisitWhileStatement(ast::NodeWhileStatement * node)
+{
+    auto childCount = node->ChildCount();
+    // There has to be 2 childs. expr and body.
+    assert(childCount == 2);
+
+    // while ( condition ) body
+    auto condNode = node->GetChild(0);
+    auto bodyNode = node->GetChild(1);
+
+    // Create basic blocks for while loop construction.
+    // Note: The reason we have extra block (while.body) is that LLVM has a strict rule that every basic block
+    //       has to end with a terminator (ret, br etc..) instruction and each block can have only one terminator.
+    /*
+        while.cmp:
+            <condition comparison>
+            br while.body or while.exit
+     
+        while.body:
+            <body instructions>
+            br while.cmp
+     
+        while.exit:
+            <...>
+    */
+    auto condBlock = CreateBasicBlock(m_currentFunction, "while.cmp");
+    auto bodyBlock = CreateBasicBlock(m_currentFunction, "while.body");
+    auto exitBlock = CreateBasicBlock(m_currentFunction, "while.exit");
+
+    // Push BasicBlocks into the stack for this node. We may need these blocks create branch
+    // for continue, break, return etc statements to create brach to jump to this nodes blocks
+    // if necessary.
+    m_nodeBBStack.Push(new NodeBasicBlocks(node, condBlock, bodyBlock, nullptr, exitBlock));
+
+    // Jump from current block to condition block.
+    m_irBuilder->CreateBr(condBlock);
+    
+    // Generate code while.cmp
+
+    m_irBuilder->SetInsertPoint(condBlock);
+
+    auto condValue = LoadIfPointerType(Visit(condNode));
+    m_irBuilder->CreateCondBr(condValue, bodyBlock, exitBlock);
+
+    // Generate code while.body
+    m_irBuilder->SetInsertPoint(bodyBlock);
+    Visit(bodyNode);
+    m_irBuilder->CreateBr(condBlock);
+
+    // Set the code geneartion block to for.exit
+    m_irBuilder->SetInsertPoint(exitBlock);
+    
+    // Pop BasiBlock info from stack.
+    m_nodeBBStack.PopAndDelete();
+}
+
+
 void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 {
     // If there is no child then return void. Function return type is void.
@@ -567,13 +628,18 @@ void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 
 void CodeGenPass::VisitContinue(ast::NodeContinue * node)
 {
-    auto nodeBasicBlocks = m_nodeBBStack.GetOneOfThese({ast::NodeType::kNodeTypeForStatement});
+    auto nodeBasicBlocks = m_nodeBBStack.GetOneOfThese({ast::NodeType::kNodeTypeForStatement,
+                                                        ast::NodeType::kNodeTypeWhileStatement});
     assert(nodeBasicBlocks);
     
     switch (nodeBasicBlocks->GetNode()->GetNodeType())
     {
         case ast::NodeType::kNodeTypeForStatement:
         m_irBuilder->CreateBr(nodeBasicBlocks->GetIncrementBasicBlock());
+        break;
+
+        case ast::NodeType::kNodeTypeWhileStatement:
+        m_irBuilder->CreateBr(nodeBasicBlocks->GetConditionBasicBlock());
         break;
 
         default:
@@ -589,12 +655,17 @@ void CodeGenPass::VisitContinue(ast::NodeContinue * node)
 
 void CodeGenPass::VisitBreak(ast::NodeBreak * node)
 {
-    auto nodeBasicBlocks = m_nodeBBStack.GetOneOfThese({ast::NodeType::kNodeTypeForStatement});
+    auto nodeBasicBlocks = m_nodeBBStack.GetOneOfThese({ast::NodeType::kNodeTypeForStatement,
+                                                        ast::NodeType::kNodeTypeWhileStatement});
     assert(nodeBasicBlocks);
     
     switch (nodeBasicBlocks->GetNode()->GetNodeType())
     {
         case ast::NodeType::kNodeTypeForStatement:
+        m_irBuilder->CreateBr(nodeBasicBlocks->GetExitBasicBlock());
+        break;
+
+        case ast::NodeType::kNodeTypeWhileStatement:
         m_irBuilder->CreateBr(nodeBasicBlocks->GetExitBasicBlock());
         break;
 

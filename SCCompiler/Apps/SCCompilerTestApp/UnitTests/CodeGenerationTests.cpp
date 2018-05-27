@@ -510,3 +510,55 @@ void CodeGenerationTests::CodeGenerationForStatementTests()
 
     delete scModule;
 }
+
+
+void CodeGenerationTests::CodeGenerationWhileStatementTests()
+{
+    Compiler compiler;
+    SCCompileResult compileResult;
+
+    std::string testCode = "\
+    int Test1(int a)   { int i=0; while (i<5) { a = i;  i=i+1; } return a; }                 \n\
+    int Test3(int a, bool b)   { while (b) { a = a+1; b=false; } return a; }                 \n\
+    int Test6(int a)   { int i=0; while (i<5) { a=i; i=i+1; continue; a=-1; } return a; }    \n\
+    int Test7(int a)   { int i=0; while (i<5) { a=i; i=i+1; if (true) { continue; } a=-1; } return a; }   \n\
+    int Test8(int a)   { int i=0; while (i<5) { a=i; i=i+1; break; a=-1; } return a; }                    \n\
+    int Test9(int a)   { int i=0; while (i<5) { a=i; if (i==2){ break; } a=-1; i=i+1; } return a; }       \n\
+    int Test10(int a)  { int i=0; while (i<5) { a=i; i=i+1; int j=0; while(j<5) { j=j+1; break; a=-1; } } return a; }  \n\
+    ";
+    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+
+    CPPUNIT_ASSERT(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    CPPUNIT_ASSERT(scModule != nullptr);
+
+    using FuncTest1 = int (*)(int);
+    auto Test1 = reinterpret_cast<FuncTest1>(scModule->GetFunctionPtr("Test1"));
+    CPPUNIT_ASSERT(Test1(5) == 4);
+
+    using FuncTest3 = int (*)(int, bool);
+    auto Test3 = reinterpret_cast<FuncTest3>(scModule->GetFunctionPtr("Test3"));
+    CPPUNIT_ASSERT(Test3(5, false) == 5);
+    CPPUNIT_ASSERT(Test3(5, true) == 6);
+
+    using FuncTest6 = int (*)(int);
+    auto Test6 = reinterpret_cast<FuncTest6>(scModule->GetFunctionPtr("Test6"));
+    CPPUNIT_ASSERT(Test6(5) == 4);
+
+    using FuncTest7 = int (*)(int);
+    auto Test7 = reinterpret_cast<FuncTest7>(scModule->GetFunctionPtr("Test7"));
+    CPPUNIT_ASSERT(Test7(5) == 4);
+
+    using FuncTest8 = int (*)(int);
+    auto Test8 = reinterpret_cast<FuncTest8>(scModule->GetFunctionPtr("Test8"));
+    CPPUNIT_ASSERT(Test8(5) == 0);
+
+    using FuncTest9 = int (*)(int);
+    auto Test9 = reinterpret_cast<FuncTest9>(scModule->GetFunctionPtr("Test9"));
+    CPPUNIT_ASSERT(Test9(5) == 2);
+
+    using FuncTest10 = int (*)(int);
+    auto Test10 = reinterpret_cast<FuncTest10>(scModule->GetFunctionPtr("Test10"));
+    CPPUNIT_ASSERT(Test10(5) == 4);
+
+    delete scModule;
+}
