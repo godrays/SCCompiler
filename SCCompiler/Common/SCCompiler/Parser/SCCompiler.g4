@@ -55,6 +55,7 @@ stat
     |   'if' '(' expr ')' stat ('else' stat)?                   #IfStatement
     |   forStatement                                            #Ignore
     |   'while' '(' expr ')' stat                               #WhileStatement
+    |   'do' stat 'while' '(' expr ')' ';'                      #DoWhileStatement
     |   'return' expr? ';'                                      #ReturnStatement
     |   'continue' ';'                                          #Continue
     |   'break' ';'                                             #Break

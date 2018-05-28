@@ -176,6 +176,10 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
         typeInString = "tNodeTypeWhileStatement";
         break;
 
+        case ast::NodeType::kNodeTypeDoWhileStatement:
+        typeInString = "tNodeTypeDoWhileStatement";
+        break;
+
         case ast::NodeType::kNodeTypeLiteralBool:
         typeInString = "tNodeTypeLiteralBool";
         break;
@@ -441,6 +445,20 @@ ast::NodeWhileStatement::NodeWhileStatement() : ast::Node(kNodeTypeWhileStatemen
 
 
 ast::NodeWhileStatement::~NodeWhileStatement()
+{
+    DeleteChilds();
+}
+
+
+#pragma mark - NodeDoWhileStatement Implementation
+
+ast::NodeDoWhileStatement::NodeDoWhileStatement() : ast::Node(kNodeTypeDoWhileStatement)
+{
+
+}
+
+
+ast::NodeDoWhileStatement::~NodeDoWhileStatement()
 {
     DeleteChilds();
 }

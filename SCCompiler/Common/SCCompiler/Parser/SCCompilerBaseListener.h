@@ -55,6 +55,9 @@ public:
   virtual void enterWhileStatement(SCCompilerParser::WhileStatementContext * /*ctx*/) override { }
   virtual void exitWhileStatement(SCCompilerParser::WhileStatementContext * /*ctx*/) override { }
 
+  virtual void enterDoWhileStatement(SCCompilerParser::DoWhileStatementContext * /*ctx*/) override { }
+  virtual void exitDoWhileStatement(SCCompilerParser::DoWhileStatementContext * /*ctx*/) override { }
+
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext * /*ctx*/) override { }
 

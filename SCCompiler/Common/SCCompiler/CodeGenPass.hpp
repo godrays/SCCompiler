@@ -44,6 +44,7 @@ namespace scc
         class NodeFuncDeclaration;
         class NodeForStatement;
         class NodeWhileStatement;
+        class NodeDoWhileStatement;
         class NodeBlock;
         class NodeReturnStatement;
         class NodeBreak;
@@ -177,6 +178,8 @@ namespace scc
         void VisitForStatement(ast::NodeForStatement * node);
 
         void VisitWhileStatement(ast::NodeWhileStatement * node);
+
+        void VisitDoWhileStatement(ast::NodeDoWhileStatement * node);
 
         void VisitReturnStatement(ast::NodeReturnStatement * node);
 

@@ -81,6 +81,10 @@ Type SemanticPass::Visit(ast::Node * node)
             VisitWhileStatement(dynamic_cast<ast::NodeWhileStatement *>(node));
             break;
 
+        case ast::NodeType::kNodeTypeDoWhileStatement:
+            VisitDoWhileStatement(dynamic_cast<ast::NodeDoWhileStatement *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             VisitReturnStatement(dynamic_cast<ast::NodeReturnStatement *>(node));
             break;
@@ -250,6 +254,25 @@ void SemanticPass::VisitWhileStatement(ast::NodeWhileStatement * node)
     {
         std::stringstream   message;
         message << "Line: " << node->GetSourceCodeLine() << " - While comparison type mismatch." << std::endl;
+        throw SemanticErrorException(message.str());
+    }
+
+    // Visit body statement childs.
+    auto bodyNode = node->GetChild(1);
+    Visit(bodyNode);
+}
+
+
+void SemanticPass::VisitDoWhileStatement(ast::NodeDoWhileStatement * node)
+{
+    // There must be condition expr and body.
+    assert(node->ChildCount() == 2);
+    
+    auto conditionNode = node->GetChild(1);
+    if (Visit(conditionNode) != Type::kTypeBool)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Do While comparison type mismatch." << std::endl;
         throw SemanticErrorException(message.str());
     }
 

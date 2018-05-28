@@ -83,6 +83,10 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"While\"];");
             break;
 
+        case ast::NodeType::kNodeTypeDoWhileStatement:
+            OutputConfig(node, "[label = \"Do While\"];");
+            break;
+
         case ast::NodeType::kNodeTypeReturnStatement:
             OutputConfig(node, "[label = \"Func Return\"];");
             break;

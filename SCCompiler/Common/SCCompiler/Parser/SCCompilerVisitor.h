@@ -45,6 +45,8 @@ public:
 
     virtual antlrcpp::Any visitWhileStatement(SCCompilerParser::WhileStatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitDoWhileStatement(SCCompilerParser::DoWhileStatementContext *context) = 0;
+
     virtual antlrcpp::Any visitReturnStatement(SCCompilerParser::ReturnStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitContinue(SCCompilerParser::ContinueContext *context) = 0;

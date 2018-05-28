@@ -53,6 +53,9 @@ public:
   virtual void enterWhileStatement(SCCompilerParser::WhileStatementContext *ctx) = 0;
   virtual void exitWhileStatement(SCCompilerParser::WhileStatementContext *ctx) = 0;
 
+  virtual void enterDoWhileStatement(SCCompilerParser::DoWhileStatementContext *ctx) = 0;
+  virtual void exitDoWhileStatement(SCCompilerParser::DoWhileStatementContext *ctx) = 0;
+
   virtual void enterReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) = 0;
   virtual void exitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) = 0;
 

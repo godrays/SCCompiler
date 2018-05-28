@@ -58,6 +58,8 @@ namespace scc
 
         antlrcpp::Any  visitWhileStatement(SCCompilerParser::WhileStatementContext *ctx) final;
 
+        antlrcpp::Any  visitDoWhileStatement(SCCompilerParser::DoWhileStatementContext *ctx) final;
+
         antlrcpp::Any  visitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx) final;
 
         antlrcpp::Any  visitContinue(SCCompilerParser::ContinueContext *ctx) final;

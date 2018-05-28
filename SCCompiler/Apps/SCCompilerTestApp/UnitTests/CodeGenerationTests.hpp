@@ -26,6 +26,7 @@ class CodeGenerationTests : public CppUnit::TestFixture
     CPPUNIT_TEST( CodeGenerationRecursiveCallTests );
     CPPUNIT_TEST( CodeGenerationForStatementTests );
     CPPUNIT_TEST( CodeGenerationWhileStatementTests );
+    CPPUNIT_TEST( CodeGenerationDoWhileStatementTests );
 
     CPPUNIT_TEST_SUITE_END();
     
@@ -57,4 +58,6 @@ public:
     void CodeGenerationForStatementTests();
 
     void CodeGenerationWhileStatementTests();
+
+    void CodeGenerationDoWhileStatementTests();
 };

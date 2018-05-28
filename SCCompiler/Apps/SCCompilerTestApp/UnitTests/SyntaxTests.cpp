@@ -128,5 +128,11 @@ void SyntaxTests::SyntaxAcceptanceTest()
     int   func45() { int i=0; while (i < 10) { continue; i=i+1; } return 0; }            \n\
     int   func46() { int i=0; while (i < 10) break; return 0; }                          \n\
     int   func47() { int i=0; while (i < 10) { break; i=i+1; } return 0; }               \n\
+    void  func48() { int i=0; do { } while (i < 10); }                                   \n\
+    void  func49() { int i=0; do { i=i+1; } while (i < 10); }                            \n\
+    int   func50() { int i=0; do continue; while (i < 10); return 0; }                   \n\
+    int   func51() { int i=0; do { continue; i=i+1; } while (i < 10); return 0; }        \n\
+    int   func52() { int i=0; do break; while (i < 10); return 0; }                      \n\
+    int   func53() { int i=0; do { break; i=i+1; } while (i < 10); return 0; }           \n\
     ", SCCompileResult::kSCCompileResultOk, true);
 }
