@@ -73,7 +73,8 @@ expr
     |   '!' expr                                    #LogicalNotOPExpr
     |   expr ('*'|'/') expr                         #AOPExpr
     |   expr ('+'|'-') expr                         #AOPExpr
-    |   expr ('=='|'!='|'<='|'>='|'<'|'>') expr     #CompExpr
+    |   expr ('<'|'<='|'>'|'>=') expr               #CompExpr
+    |   expr ('=='|'!=') expr                       #CompExpr
     |   expr '&&' expr                              #LogicalOPExpr
     |   expr '||' expr                              #LogicalOPExpr
     |   (ID | FLOAT | INT | BOOL)                   #LiteralExpr
