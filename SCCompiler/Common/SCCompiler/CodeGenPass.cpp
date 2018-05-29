@@ -282,6 +282,11 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             return VisitCompOP(static_cast<ast::NodeCompOP *>(node));
             break;
 
+        case ast::NodeType::kNodeTypePrefixIncAOP:
+        case ast::NodeType::kNodeTypePrefixDecAOP:
+            return VisitPrefixAOP(static_cast<ast::NodePrefixAOP *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:
@@ -1092,6 +1097,43 @@ llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
     }
 
     return resultValue;
+}
+
+
+llvm::Value * CodeGenPass::VisitPrefixAOP(ast::NodePrefixAOP * node)
+{
+    llvm::Value * resultValue = nullptr;
+
+    // Visit always return pointer to value so we need to load to get value from pointed address.
+    auto operandVar = Visit(node->GetChild(0));
+    auto operandValue = LoadIfPointerType(operandVar);
+
+    auto opTypeID = operandValue->getType()->getTypeID();
+
+    switch (node->GetNodeType())
+    {
+        case ast::NodeType::kNodeTypePrefixIncAOP:
+            if (opTypeID == llvm::Type::FloatTyID)
+                resultValue = m_irBuilder->CreateFAdd(operandValue, CreateConstant(Type::kTypeFloat, "1.0"), "faddtmp");
+            else
+                resultValue = m_irBuilder->CreateAdd(operandValue, CreateConstant(Type::kTypeInt, "1"), "addtmp");
+        break;
+
+        case ast::NodeType::kNodeTypePrefixDecAOP:
+            if (opTypeID == llvm::Type::FloatTyID)
+                resultValue = m_irBuilder->CreateFSub(operandValue, CreateConstant(Type::kTypeFloat, "1.0"), "fsubtmp");
+            else
+                resultValue = m_irBuilder->CreateSub(operandValue, CreateConstant(Type::kTypeInt, "1"), "subtmp");
+        break;
+
+        default:
+            assert(false && "Unknown node type");
+        break;
+    }
+
+    m_irBuilder->CreateStore(resultValue, operandVar);
+
+    return operandVar;
 }
 
 

@@ -51,6 +51,8 @@ namespace ast
         kNodeTypeLogicalOrOP,
         kNodeTypeUOPPlus,
         kNodeTypeUOPMinus,
+        kNodeTypePrefixIncAOP,
+        kNodeTypePrefixDecAOP,
         kNodeTypeAOPMul,
         kNodeTypeAOPDiv,
         kNodeTypeAOPAdd,
@@ -436,6 +438,19 @@ namespace ast
 
         // Destructor.
         virtual ~NodeCompOP();
+    };
+
+
+    #pragma mark - Class NodePrefixAOP
+
+    class NodePrefixAOP : public Node
+    {
+    public:
+        // Constructor.
+        explicit NodePrefixAOP(NodeType nodeType);
+
+        // Destructor.
+        virtual ~NodePrefixAOP();
     };
 
 

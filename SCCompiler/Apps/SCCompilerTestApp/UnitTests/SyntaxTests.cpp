@@ -59,6 +59,8 @@ void SyntaxTests::SyntaxAcceptanceTest()
     int i2 = (4*5)+2/(2-3)*5;          \n\
     int i3 = -4*5;                     \n\
     int i4 = -i3;                      \n\
+    int i5 = ++i;                      \n\
+    int i6 = --i;                      \n\
     float f;                           \n\
     float f1 = 1.0;                    \n\
     float f2 = (4.2*5.1)+2.99/(2.10-3.0)*5.0;   \n\

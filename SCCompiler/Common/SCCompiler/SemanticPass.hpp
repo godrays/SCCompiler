@@ -82,6 +82,8 @@ namespace scc
 
         Type VisitLogicalOP(ast::NodeLogicalOP * node);
 
+        Type VisitPrefixAOP(ast::NodePrefixAOP * node);
+
         Type VisitAOP(ast::NodeAOP * node);
 
         Type VisitNodeUnaryOP(ast::NodeUnaryOP * node);

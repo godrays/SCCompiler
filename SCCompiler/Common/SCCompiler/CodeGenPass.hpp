@@ -51,6 +51,7 @@ namespace scc
         class NodeBreak;
         class NodeFuncCall;
         class NodeAssignment;
+        class NodePrefixAOP;
         class NodeAOP;
         class NodeLiteral;
     }
@@ -199,6 +200,8 @@ namespace scc
         llvm::Value * VisitLogicalAndOP(ast::NodeLogicalOP * node);
 
         llvm::Value * VisitLogicalOrOP(ast::NodeLogicalOP * node);
+
+        llvm::Value * VisitPrefixAOP(ast::NodePrefixAOP * node);
 
         llvm::Value * VisitAOP(ast::NodeAOP * node);
 

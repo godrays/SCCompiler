@@ -155,6 +155,14 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"Cmp GT\"];");
             break;
 
+        case ast::NodeType::kNodeTypePrefixIncAOP:
+            OutputConfig(node, "[label = \"++\"];");
+            break;
+
+        case ast::NodeType::kNodeTypePrefixDecAOP:
+            OutputConfig(node, "[label = \"--\"];");
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
             OutputConfig(node, "[label = \"*\"];");
             break;

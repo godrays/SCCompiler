@@ -91,6 +91,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *ctx) override {
     return visitChildren(ctx);
   }

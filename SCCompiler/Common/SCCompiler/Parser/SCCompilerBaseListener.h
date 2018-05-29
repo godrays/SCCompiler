@@ -73,6 +73,9 @@ public:
   virtual void enterExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext * /*ctx*/) override { }
   virtual void exitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext * /*ctx*/) override { }
 
+  virtual void enterPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext * /*ctx*/) override { }
+  virtual void exitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext * /*ctx*/) override { }
+
   virtual void enterParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
   virtual void exitParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
 

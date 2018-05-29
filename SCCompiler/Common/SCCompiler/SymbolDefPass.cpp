@@ -100,6 +100,8 @@ void SymbolDefPass::Visit(ast::Node * node)
         case ast::NodeType::kNodeTypeCompOPGE:
         case ast::NodeType::kNodeTypeCompOPL:
         case ast::NodeType::kNodeTypeCompOPG:
+        case ast::NodeType::kNodeTypePrefixIncAOP:
+        case ast::NodeType::kNodeTypePrefixDecAOP:
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:

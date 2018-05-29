@@ -567,6 +567,39 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
 }
 
 
+antlrcpp::Any ASTGenerator::visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext *ctx)
+{
+    ast::NodeType nodeType = ast::NodeType::kNodeTypeUnknown;
+    assert(ctx->children.size() == 2);
+    std::string  prefixAOP = ctx->children[0]->getText();
+
+    if (prefixAOP == "++") nodeType = ast::NodeType::kNodeTypePrefixIncAOP;
+    else if (prefixAOP == "--") nodeType = ast::NodeType::kNodeTypePrefixDecAOP;
+    else assert(false && "Unknown prefix arithmetic operator.");
+
+    // Create new AST Node.
+    auto newNode = new ast::NodePrefixAOP(nodeType);
+    newNode->SetSourceCodeLine(ctx->getStart()->getLine());
+
+    // Set parent node. Parent node is the top element in the currentNode Stack.
+    newNode->SetParent(m_currentNodeStack.top());
+
+    // Add yourself as child to parent node.
+    m_currentNodeStack.top()->AddChild(newNode);
+
+    // Push new parent node into stack. It becomes new parent node for child visits.
+    m_currentNodeStack.push(newNode);
+
+    // Visit parser tree childrens.
+    auto visitResult = visitChildren(ctx);
+
+    // Pop current parent node since we are leaving the method.
+    m_currentNodeStack.pop();
+
+    return visitResult;
+}
+
+
 antlrcpp::Any ASTGenerator::visitAOPExpr(SCCompilerParser::AOPExprContext *ctx)
 {
     ast::NodeType nodeType = ast::NodeType::kNodeTypeUnknown;

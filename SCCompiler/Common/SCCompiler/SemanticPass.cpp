@@ -124,6 +124,11 @@ Type SemanticPass::Visit(ast::Node * node)
             return VisitCompOP(dynamic_cast<ast::NodeCompOP *>(node));
             break;
 
+        case ast::NodeType::kNodeTypePrefixIncAOP:
+        case ast::NodeType::kNodeTypePrefixDecAOP:
+            return VisitPrefixAOP(dynamic_cast<ast::NodePrefixAOP *>(node));
+            break;
+
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:
@@ -454,6 +459,28 @@ Type SemanticPass::VisitLogicalOP(ast::NodeLogicalOP * node)
     }
 
     return leftOperandType;
+}
+
+
+Type SemanticPass::VisitPrefixAOP(ast::NodePrefixAOP * node)
+{
+    auto rightOperandType = Visit(node->GetChild(0));
+    
+    if (node->GetChild(0)->GetNodeType() != ast::NodeType::kNodeTypeLiteralID)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Prefix arithmetic operation is not allowed." << std::endl;
+        throw SemanticErrorException( message.str());
+    }
+
+    if (rightOperandType != Type::kTypeFloat && rightOperandType != Type::kTypeInt)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Arithmetic operation type mismatch." << std::endl;
+        throw SemanticErrorException( message.str());
+    }
+
+    return rightOperandType;
 }
 
 

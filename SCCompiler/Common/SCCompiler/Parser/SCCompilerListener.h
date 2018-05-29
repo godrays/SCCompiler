@@ -71,6 +71,9 @@ public:
   virtual void enterExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *ctx) = 0;
   virtual void exitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *ctx) = 0;
 
+  virtual void enterPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext *ctx) = 0;
+  virtual void exitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext *ctx) = 0;
+
   virtual void enterParenthesisExpr(SCCompilerParser::ParenthesisExprContext *ctx) = 0;
   virtual void exitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *ctx) = 0;
 

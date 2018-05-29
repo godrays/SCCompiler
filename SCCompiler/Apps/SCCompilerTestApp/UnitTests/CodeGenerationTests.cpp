@@ -675,3 +675,31 @@ void CodeGenerationTests::CodeGenerationDoWhileStatementTests()
 
     delete scModule;
 }
+
+
+void CodeGenerationTests::CodeGenerationPrefixAOPTests()
+{
+    Compiler compiler;
+    SCCompileResult compileResult;
+
+    std::string testCode = "\
+    int Test1(int a)  { return ++a; }        \n\
+    int Test2(int a)  { return --a; }        \n\
+    ";
+    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+
+    CPPUNIT_ASSERT(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    CPPUNIT_ASSERT(scModule != nullptr);
+
+    using FuncTest1 = int (*)(int);
+    auto Test1 = reinterpret_cast<FuncTest1>(scModule->GetFunctionPtr("Test1"));
+    CPPUNIT_ASSERT(Test1(5) == 6);
+    CPPUNIT_ASSERT(Test1(-5) == -4);
+
+    using FuncTest2 = int (*)(int);
+    auto Test2 = reinterpret_cast<FuncTest2>(scModule->GetFunctionPtr("Test2"));
+    CPPUNIT_ASSERT(Test2(5) == 4);
+    CPPUNIT_ASSERT(Test2(-5) == -6);
+
+    delete scModule;
+}

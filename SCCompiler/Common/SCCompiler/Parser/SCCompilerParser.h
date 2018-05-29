@@ -17,8 +17,8 @@ public:
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
     T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
-    BOOL = 33, INT = 34, FLOAT = 35, ID = 36, WS = 37, LINECOMMENT = 38, 
-    BLOCKCOMMENT = 39
+    T__32 = 33, T__33 = 34, BOOL = 35, INT = 36, FLOAT = 37, ID = 38, WS = 39, 
+    LINECOMMENT = 40, BLOCKCOMMENT = 41
   };
 
   enum {
@@ -356,6 +356,17 @@ public:
   class  ExplicitTypeConversionContext : public ExprContext {
   public:
     ExplicitTypeConversionContext(ExprContext *ctx);
+
+    ExprContext *expr();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  PrefixAOPExprContext : public ExprContext {
+  public:
+    PrefixAOPExprContext(ExprContext *ctx);
 
     ExprContext *expr();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;

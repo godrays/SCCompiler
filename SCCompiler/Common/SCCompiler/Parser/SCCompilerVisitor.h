@@ -57,6 +57,8 @@ public:
 
     virtual antlrcpp::Any visitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *context) = 0;
 
+    virtual antlrcpp::Any visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext *context) = 0;
+
     virtual antlrcpp::Any visitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *context) = 0;
 
     virtual antlrcpp::Any visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *context) = 0;

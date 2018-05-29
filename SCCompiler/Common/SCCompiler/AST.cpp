@@ -654,6 +654,21 @@ ast::NodeAOP::~NodeAOP()
 }
 
 
+#pragma mark - NodePrefixAOP Implementation
+
+ast::NodePrefixAOP::NodePrefixAOP(ast::NodeType nodeType) : ast::Node(nodeType)
+{
+    assert(nodeType == ast::NodeType::kNodeTypePrefixIncAOP
+        || nodeType == ast::NodeType::kNodeTypePrefixDecAOP);
+}
+
+
+ast::NodePrefixAOP::~NodePrefixAOP()
+{
+    DeleteChilds();
+}
+
+
 #pragma mark - NodeLiteral Implementation
 
 ast::NodeLiteral::NodeLiteral(ast::NodeType nodeType, std::string value) :

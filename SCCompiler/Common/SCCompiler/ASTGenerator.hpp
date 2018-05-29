@@ -72,6 +72,8 @@ namespace scc
 
         antlrcpp::Any  visitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) final;
 
+        antlrcpp::Any  visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext *ctx) final;
+
         antlrcpp::Any  visitAOPExpr(SCCompilerParser::AOPExprContext *ctx) final;
 
         antlrcpp::Any  visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) final;
