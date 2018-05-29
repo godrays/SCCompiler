@@ -74,8 +74,8 @@ public:
   virtual void enterParenthesisExpr(SCCompilerParser::ParenthesisExprContext *ctx) = 0;
   virtual void exitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *ctx) = 0;
 
-  virtual void enterLogicalNotExpr(SCCompilerParser::LogicalNotExprContext *ctx) = 0;
-  virtual void exitLogicalNotExpr(SCCompilerParser::LogicalNotExprContext *ctx) = 0;
+  virtual void enterLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *ctx) = 0;
+  virtual void exitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *ctx) = 0;
 
   virtual void enterLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) = 0;
   virtual void exitLiteralExpr(SCCompilerParser::LiteralExprContext *ctx) = 0;
@@ -88,6 +88,9 @@ public:
 
   virtual void enterUnaryExpr(SCCompilerParser::UnaryExprContext *ctx) = 0;
   virtual void exitUnaryExpr(SCCompilerParser::UnaryExprContext *ctx) = 0;
+
+  virtual void enterLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *ctx) = 0;
+  virtual void exitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *ctx) = 0;
 
   virtual void enterFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) = 0;
   virtual void exitFuncCallExpr(SCCompilerParser::FuncCallExprContext *ctx) = 0;

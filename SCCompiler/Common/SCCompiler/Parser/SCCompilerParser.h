@@ -16,8 +16,9 @@ public:
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
-    T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, BOOL = 31, INT = 32, 
-    FLOAT = 33, ID = 34, WS = 35, LINECOMMENT = 36, BLOCKCOMMENT = 37
+    T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
+    BOOL = 33, INT = 34, FLOAT = 35, ID = 36, WS = 37, LINECOMMENT = 38, 
+    BLOCKCOMMENT = 39
   };
 
   enum {
@@ -374,9 +375,9 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  LogicalNotExprContext : public ExprContext {
+  class  LogicalNotOPExprContext : public ExprContext {
   public:
-    LogicalNotExprContext(ExprContext *ctx);
+    LogicalNotOPExprContext(ExprContext *ctx);
 
     ExprContext *expr();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -428,6 +429,18 @@ public:
     UnaryExprContext(ExprContext *ctx);
 
     ExprContext *expr();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  LogicalOPExprContext : public ExprContext {
+  public:
+    LogicalOPExprContext(ExprContext *ctx);
+
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 

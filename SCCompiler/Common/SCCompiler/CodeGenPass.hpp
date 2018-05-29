@@ -46,6 +46,7 @@ namespace scc
         class NodeWhileStatement;
         class NodeDoWhileStatement;
         class NodeBlock;
+        class NodeLogicalOP;
         class NodeReturnStatement;
         class NodeBreak;
         class NodeFuncCall;
@@ -193,7 +194,11 @@ namespace scc
 
         llvm::Value * VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 
-        llvm::Value * VisitLogicalNotOP(ast::NodeLogicalNotOP * node);
+        llvm::Value * VisitLogicalNotOP(ast::NodeLogicalOP * node);
+
+        llvm::Value * VisitLogicalAndOP(ast::NodeLogicalOP * node);
+
+        llvm::Value * VisitLogicalOrOP(ast::NodeLogicalOP * node);
 
         llvm::Value * VisitAOP(ast::NodeAOP * node);
 
@@ -249,6 +254,9 @@ namespace scc
         
         // Initializer function for global variables.
         llvm::Function *  m_initFunction;
+        
+        // Initializer function last used basic block.
+        llvm::BasicBlock *  m_initFunctionBlock;
 
         // IR builder stack
         llvm::IRBuilder<> * m_irBuilder;

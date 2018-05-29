@@ -80,7 +80,9 @@ namespace scc
     
         antlrcpp::Any  visitCompExpr(SCCompilerParser::CompExprContext *ctx) final;
 
-        antlrcpp::Any  visitLogicalNotExpr(SCCompilerParser::LogicalNotExprContext *ctx) final;
+        antlrcpp::Any  visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *ctx) final;
+
+        antlrcpp::Any  visitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *ctx) final;
 
     protected:
         ast::Node *   m_rootNode = nullptr;

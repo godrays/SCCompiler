@@ -76,8 +76,8 @@ public:
   virtual void enterParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
   virtual void exitParenthesisExpr(SCCompilerParser::ParenthesisExprContext * /*ctx*/) override { }
 
-  virtual void enterLogicalNotExpr(SCCompilerParser::LogicalNotExprContext * /*ctx*/) override { }
-  virtual void exitLogicalNotExpr(SCCompilerParser::LogicalNotExprContext * /*ctx*/) override { }
+  virtual void enterLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext * /*ctx*/) override { }
+  virtual void exitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext * /*ctx*/) override { }
 
   virtual void enterLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
   virtual void exitLiteralExpr(SCCompilerParser::LiteralExprContext * /*ctx*/) override { }
@@ -90,6 +90,9 @@ public:
 
   virtual void enterUnaryExpr(SCCompilerParser::UnaryExprContext * /*ctx*/) override { }
   virtual void exitUnaryExpr(SCCompilerParser::UnaryExprContext * /*ctx*/) override { }
+
+  virtual void enterLogicalOPExpr(SCCompilerParser::LogicalOPExprContext * /*ctx*/) override { }
+  virtual void exitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext * /*ctx*/) override { }
 
   virtual void enterFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }
   virtual void exitFuncCallExpr(SCCompilerParser::FuncCallExprContext * /*ctx*/) override { }

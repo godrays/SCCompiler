@@ -220,6 +220,18 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
         typeInString = "kNodeTypeExplicitTypeConversion";
         break;
 
+        case ast::NodeType::kNodeTypeLogicalNotOP:
+        typeInString = "kNodeTypeLogicalNotOP";
+        break;
+
+        case ast::NodeType::kNodeTypeLogicalAndOP:
+        typeInString = "kNodeTypeLogicalAndOP";
+        break;
+
+        case ast::NodeType::kNodeTypeLogicalOrOP:
+        typeInString = "kNodeTypeLogicalOrOP";
+        break;
+
         case ast::NodeType::kNodeTypeUOPPlus:
         typeInString = "kNodeTypeUOPPlus";
         break;
@@ -575,15 +587,17 @@ ast::NodeExplicitTypeConversion::~NodeExplicitTypeConversion()
 }
 
 
-#pragma mark - NodeLogicalNotOP Implementation
+#pragma mark - NodeLogicalOP Implementation
 
-ast::NodeLogicalNotOP::NodeLogicalNotOP() : Node(ast::NodeType::kNodeTypeLogicalNotOP)
+ast::NodeLogicalOP::NodeLogicalOP(ast::NodeType nodeType) : Node(nodeType)
 {
-
+    assert(nodeType == ast::NodeType::kNodeTypeLogicalNotOP
+        || nodeType == ast::NodeType::kNodeTypeLogicalAndOP
+        || nodeType == ast::NodeType::kNodeTypeLogicalOrOP);
 }
 
 
-ast::NodeLogicalNotOP::~NodeLogicalNotOP()
+ast::NodeLogicalOP::~NodeLogicalOP()
 {
     DeleteChilds();
 }

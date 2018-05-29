@@ -110,7 +110,9 @@ Type SemanticPass::Visit(ast::Node * node)
             break;
 
         case ast::NodeType::kNodeTypeLogicalNotOP:
-            return VisitLogicalNotOP(dynamic_cast<ast::NodeLogicalNotOP *>(node));
+        case ast::NodeType::kNodeTypeLogicalAndOP:
+        case ast::NodeType::kNodeTypeLogicalOrOP:
+            return VisitLogicalOP(dynamic_cast<ast::NodeLogicalOP *>(node));
             break;
 
         case ast::NodeType::kNodeTypeCompOPEQ:
@@ -428,13 +430,30 @@ Type SemanticPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion *
 }
 
 
-Type SemanticPass::VisitLogicalNotOP(ast::NodeLogicalNotOP * node)
+Type SemanticPass::VisitLogicalOP(ast::NodeLogicalOP * node)
 {
-    // Node must have one child node.
-    assert(node->ChildCount() == 1);
+    auto childCount = node->ChildCount();
+    auto nodeType = node->GetNodeType();
 
-    // Visit child.
-    return Visit(node->GetChild(0));
+    // Not Operator requires only a single expression so it requires special treatment.
+    if (nodeType == ast::NodeType::kNodeTypeLogicalNotOP)
+    {
+        assert(childCount == 1);
+        return Visit(node->GetChild(0));
+    }
+
+    // Handle rest of the other type of operators which requires left and right expressions.
+    auto leftOperandType  = Visit(node->GetChild(0));
+    auto rightOperandType = Visit(node->GetChild(1));
+    
+    if (leftOperandType != rightOperandType)
+    {
+        std::stringstream   message;
+        message << "Line: " << node->GetSourceCodeLine() << " - Logical operation type mismatch." << std::endl;
+        throw SemanticErrorException( message.str());
+    }
+
+    return leftOperandType;
 }
 
 

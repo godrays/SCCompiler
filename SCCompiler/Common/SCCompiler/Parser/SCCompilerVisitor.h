@@ -59,7 +59,7 @@ public:
 
     virtual antlrcpp::Any visitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitLogicalNotExpr(SCCompilerParser::LogicalNotExprContext *context) = 0;
+    virtual antlrcpp::Any visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *context) = 0;
 
     virtual antlrcpp::Any visitLiteralExpr(SCCompilerParser::LiteralExprContext *context) = 0;
 
@@ -68,6 +68,8 @@ public:
     virtual antlrcpp::Any visitAOPExpr(SCCompilerParser::AOPExprContext *context) = 0;
 
     virtual antlrcpp::Any visitUnaryExpr(SCCompilerParser::UnaryExprContext *context) = 0;
+
+    virtual antlrcpp::Any visitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *context) = 0;
 
     virtual antlrcpp::Any visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *context) = 0;
 

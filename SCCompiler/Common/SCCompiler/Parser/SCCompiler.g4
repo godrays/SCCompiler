@@ -70,10 +70,12 @@ expr
     |   ('float' | 'int' | 'bool') '(' expr ')'     #ExplicitTypeConversion
 //    |   ID '[' expr ']'                           #ArrayIndexExpr         // Array index like a[i]
     |   ('-' | '+') expr                            #UnaryExpr
-    |   '!' expr                                    #LogicalNotExpr
+    |   '!' expr                                    #LogicalNotOPExpr
     |   expr ('*'|'/') expr                         #AOPExpr
     |   expr ('+'|'-') expr                         #AOPExpr
     |   expr ('=='|'!='|'<='|'>='|'<'|'>') expr     #CompExpr
+    |   expr '&&' expr                              #LogicalOPExpr
+    |   expr '||' expr                              #LogicalOPExpr
     |   (ID | FLOAT | INT | BOOL)                   #LiteralExpr
     |   '(' expr ')'                                #ParenthesisExpr
     ;

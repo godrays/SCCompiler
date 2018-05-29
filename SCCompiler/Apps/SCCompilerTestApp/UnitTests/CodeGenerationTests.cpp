@@ -410,6 +410,67 @@ void CodeGenerationTests::CodeGenerationLogicalNotOPTests()
 }
 
 
+void CodeGenerationTests::CodeGenerationLogicalOPTests()
+{
+    Compiler compiler;
+    SCCompileResult compileResult;
+
+    std::string testCode = "\
+    bool AndTest1(bool a, bool b)  { return a && b; }                \n\
+    bool AndTest2(bool a, bool b, bool c) { return a && b && c; }    \n\
+    bool OrTest1(bool a, bool b)   { return a || b; }                \n\
+    bool OrTest2(bool a, bool b, bool c)  { return a || b || c; }    \n\
+    bool AndOrTest1(bool a, bool b, bool c, bool d) { return a && b || c && d; }    \n\
+    ";
+    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+
+    CPPUNIT_ASSERT(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    CPPUNIT_ASSERT(scModule != nullptr);
+
+    // AND Tests
+    using FuncAndTest1 = bool (*)(bool, bool);
+    auto AndTest1 = reinterpret_cast<FuncAndTest1>(scModule->GetFunctionPtr("AndTest1"));
+    CPPUNIT_ASSERT(AndTest1(true, true) == true);
+    CPPUNIT_ASSERT(AndTest1(true, false) == false);
+    CPPUNIT_ASSERT(AndTest1(false, true) == false);
+    CPPUNIT_ASSERT(AndTest1(false, false) == false);
+
+    using FuncAndTest2 = bool (*)(bool, bool, bool);
+    auto AndTest2 = reinterpret_cast<FuncAndTest2>(scModule->GetFunctionPtr("AndTest2"));
+    CPPUNIT_ASSERT(AndTest2(true, true, true) == true);
+    CPPUNIT_ASSERT(AndTest2(true, true, false) == false);
+    CPPUNIT_ASSERT(AndTest2(true, false, true) == false);
+    CPPUNIT_ASSERT(AndTest2(true, false, false) == false);
+    CPPUNIT_ASSERT(AndTest2(false, true, true) == false);
+
+    // OR Tests
+    using FuncOrTest1 = bool (*)(bool, bool);
+    auto OrTest1 = reinterpret_cast<FuncOrTest1>(scModule->GetFunctionPtr("OrTest1"));
+    CPPUNIT_ASSERT(OrTest1(true, true) == true);
+    CPPUNIT_ASSERT(OrTest1(true, false) == true);
+    CPPUNIT_ASSERT(OrTest1(false, true) == true);
+    CPPUNIT_ASSERT(OrTest1(false, false) == false);
+
+    using FuncOrTest2 = bool (*)(bool, bool, bool);
+    auto OrTest2 = reinterpret_cast<FuncOrTest2>(scModule->GetFunctionPtr("OrTest2"));
+    CPPUNIT_ASSERT(OrTest2(true, true, true) == true);
+    CPPUNIT_ASSERT(OrTest2(true, true, false) == true);
+    CPPUNIT_ASSERT(OrTest2(false, true, false) == true);
+    CPPUNIT_ASSERT(OrTest2(false, false, true) == true);
+    CPPUNIT_ASSERT(OrTest2(false, false, false) == false);
+
+    using FuncAndOrTest1 = bool (*)(bool, bool, bool, bool);
+    auto AndOrTest1 = reinterpret_cast<FuncAndOrTest1>(scModule->GetFunctionPtr("AndOrTest1"));
+    CPPUNIT_ASSERT(AndOrTest1(false, false, true, true) == true);
+    CPPUNIT_ASSERT(AndOrTest1(false, false, false, false) == false);
+
+    // TODO: In 'expr || expr' case, if left expr result is true, code for right expr should not run.
+    // Currently, it doesn't, but need to add tests to cover these cases.
+
+    delete scModule;
+}
+
+
 void CodeGenerationTests::CodeGenerationRecursiveCallTests()
 {
     Compiler compiler;

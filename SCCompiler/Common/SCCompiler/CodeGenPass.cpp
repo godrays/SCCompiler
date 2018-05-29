@@ -145,6 +145,7 @@ CodeGenPass::CodeGenPass() :
     m_module(nullptr),
     m_context(nullptr),
     m_initFunction(nullptr),
+    m_initFunctionBlock(nullptr),
     m_currentFunction(nullptr),
     m_irBuilder(nullptr)
 {
@@ -256,7 +257,15 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
             break;
 
         case ast::NodeType::kNodeTypeLogicalNotOP:
-            return VisitLogicalNotOP(static_cast<ast::NodeLogicalNotOP *>(node));
+            return VisitLogicalNotOP(static_cast<ast::NodeLogicalOP *>(node));
+            break;
+
+        case ast::NodeType::kNodeTypeLogicalAndOP:
+            return VisitLogicalAndOP(static_cast<ast::NodeLogicalOP *>(node));
+            break;
+
+        case ast::NodeType::kNodeTypeLogicalOrOP:
+            return VisitLogicalOrOP(static_cast<ast::NodeLogicalOP *>(node));
             break;
 
         case ast::NodeType::kNodeTypeUOPMinus:
@@ -322,20 +331,30 @@ void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
         // Generate initialization code in internal initialization function.
         if (childCount == 1)
         {
+            // Save current function.
+            auto prevFunc = m_currentFunction;
             // Save current block
             auto prevBlock = m_irBuilder->GetInsertBlock();
 
+            m_currentFunction = m_initFunction;
+
             // Set instruction generation pos to initialization function.
-            m_irBuilder->SetInsertPoint(&m_initFunction->getEntryBlock());
+            m_irBuilder->SetInsertPoint(m_initFunctionBlock);
 
             // Generate code for right expression and get assignment value.
             auto rightExprValue = Visit(node->GetChild(0));
+
+            // Save last used initializer function's basic block. If there is another
+            // global variable, it will start from this block to generate code.
+            m_initFunctionBlock = m_irBuilder->GetInsertBlock();
 
             // We load value from rightExprValue address and store at globalVar address.
             m_irBuilder->CreateStore(LoadIfPointerType(rightExprValue), globalVar);
 
             // Restore saved block (Intruction generation point).
             m_irBuilder->SetInsertPoint(prevBlock);
+            // Restore saved function.
+            m_currentFunction = prevFunc;
         }
     }
     else
@@ -871,7 +890,7 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
 }
 
 
-llvm::Value * CodeGenPass::VisitLogicalNotOP(ast::NodeLogicalNotOP * node)
+llvm::Value * CodeGenPass::VisitLogicalNotOP(ast::NodeLogicalOP * node)
 {
     auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
     auto exprType = exprValue->getType()->getTypeID();
@@ -900,6 +919,60 @@ llvm::Value * CodeGenPass::VisitLogicalNotOP(ast::NodeLogicalNotOP * node)
     }
 
     return exprValue;
+}
+
+
+llvm::Value * CodeGenPass::VisitLogicalAndOP(ast::NodeLogicalOP * node)
+{
+    auto leftExprNode  = node->GetChild(0);
+    auto rightExprNode = node->GetChild(1);
+
+    auto rightExprBlock = CreateBasicBlock(m_currentFunction, "&&.rightExpr");
+    auto exitBlock = CreateBasicBlock(m_currentFunction, "&&.exit");
+
+    // Generate code in current block.
+    auto resultVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeBool), nullptr, "_cb");
+    auto leftExprValue = LoadIfPointerType(Visit(leftExprNode));
+    m_irBuilder->CreateStore(leftExprValue, resultVar);
+    m_irBuilder->CreateCondBr(leftExprValue, rightExprBlock, exitBlock);
+
+    // Generate code for rightExprBlock.
+    m_irBuilder->SetInsertPoint(rightExprBlock);
+    auto rightExprValue = LoadIfPointerType(Visit(rightExprNode));
+    m_irBuilder->CreateStore(rightExprValue, resultVar);
+    m_irBuilder->CreateBr(exitBlock);
+
+    // Generate code for exitBlock.
+    m_irBuilder->SetInsertPoint(exitBlock);
+
+    return resultVar;
+}
+
+
+llvm::Value * CodeGenPass::VisitLogicalOrOP(ast::NodeLogicalOP * node)
+{
+    auto leftExprNode  = node->GetChild(0);
+    auto rightExprNode = node->GetChild(1);
+
+    auto rightExprBlock = CreateBasicBlock(m_currentFunction, "&&.rightExpr");
+    auto exitBlock = CreateBasicBlock(m_currentFunction, "&&.exit");
+
+    // Generate code in current block.
+    auto resultVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeBool), nullptr);
+    auto leftExprValue = LoadIfPointerType(Visit(leftExprNode));
+    m_irBuilder->CreateStore(leftExprValue, resultVar);
+    m_irBuilder->CreateCondBr(leftExprValue, exitBlock, rightExprBlock);
+
+    // Generate code for rightExprBlock.
+    m_irBuilder->SetInsertPoint(rightExprBlock);
+    auto rightExprValue = LoadIfPointerType(Visit(rightExprNode));
+    m_irBuilder->CreateStore(rightExprValue, resultVar);
+    m_irBuilder->CreateBr(exitBlock);
+
+    // Generate code for exitBlock.
+    m_irBuilder->SetInsertPoint(exitBlock);
+
+    return resultVar;
 }
 
 
@@ -1146,7 +1219,7 @@ void CodeGenPass::CreateInternalInitializerFunction()
     m_initFunction = CreateFunc(*m_irBuilder, Type::kTypeVoid, "__initGlobalVariables__", argTypes);
 
     // Create basic block for function.
-    CreateBasicBlock(m_initFunction, "entry");
+    m_initFunctionBlock = CreateBasicBlock(m_initFunction, "entry");
     
     // Restore previous block.
     m_irBuilder->SetInsertPoint(prevBlock);
@@ -1157,7 +1230,7 @@ void CodeGenPass::FinalizeInternalInitializerFunction()
 {
     // Finalize global variable initialization code.
     auto prevBlock = m_irBuilder->GetInsertBlock();
-    m_irBuilder->SetInsertPoint(&m_initFunction->getEntryBlock());
+    m_irBuilder->SetInsertPoint(m_initFunctionBlock);
     m_irBuilder->CreateRetVoid();
     m_irBuilder->SetInsertPoint(prevBlock);
 }

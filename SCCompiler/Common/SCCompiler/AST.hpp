@@ -47,6 +47,8 @@ namespace ast
         kNodeTypeAssignment,
         kNodeTypeExplicitTypeConversion,
         kNodeTypeLogicalNotOP,
+        kNodeTypeLogicalAndOP,
+        kNodeTypeLogicalOrOP,
         kNodeTypeUOPPlus,
         kNodeTypeUOPMinus,
         kNodeTypeAOPMul,
@@ -398,16 +400,16 @@ namespace ast
     };
 
 
-    #pragma mark - Class NodeLogicalNotOP
+    #pragma mark - Class NodeLogicalOP
 
-    class NodeLogicalNotOP : public Node
+    class NodeLogicalOP : public Node
     {
     public:
         // Constructor.
-        NodeLogicalNotOP();
+        NodeLogicalOP(ast::NodeType nodetype);
 
         // Destructor.
-        virtual ~NodeLogicalNotOP();
+        virtual ~NodeLogicalOP();
     };
 
 

@@ -115,6 +115,14 @@ void ASTVisualizer::Visit(ast::Node * node)
             OutputConfig(node, "[label = \"!\"];");
             break;
 
+        case ast::NodeType::kNodeTypeLogicalAndOP:
+            OutputConfig(node, "[label = \"&&\"];");
+            break;
+
+        case ast::NodeType::kNodeTypeLogicalOrOP:
+            OutputConfig(node, "[label = \"||\"];");
+            break;
+
         case ast::NodeType::kNodeTypeUOPPlus:
             OutputConfig(node, "[label = \"UnaryOP: +\"];");
             break;

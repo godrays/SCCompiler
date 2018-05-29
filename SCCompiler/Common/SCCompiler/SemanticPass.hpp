@@ -27,6 +27,7 @@ namespace scc
         class NodeReturnStatement;
         class NodeContinue;
         class NodeBreak;
+        class NodeLogicalOP;
         class NodeFuncCall;
         class NodeAssignment;
         class NodeAOP;
@@ -79,7 +80,7 @@ namespace scc
 
         Type VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 
-        Type VisitLogicalNotOP(ast::NodeLogicalNotOP * node);
+        Type VisitLogicalOP(ast::NodeLogicalOP * node);
 
         Type VisitAOP(ast::NodeAOP * node);
 

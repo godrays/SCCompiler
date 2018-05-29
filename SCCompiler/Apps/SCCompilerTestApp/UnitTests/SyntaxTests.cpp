@@ -78,6 +78,11 @@ void SyntaxTests::SyntaxAcceptanceTest()
     bool k12 = 3.1 != 4.1;             \n\
     bool k13 = 3.1 > 4.1;              \n\
     bool k14 = 3.1 < 4.1;              \n\
+    bool k15 = true && false;             \n\
+    bool k16 = k13 && k14 && k15;         \n\
+    bool k17 = true || false;             \n\
+    bool k18 = k13 || k14 || k15;         \n\
+    bool k19 = k13 && k14 || k15 && k16;  \n\
     /* Comment */                      \n\
     void func1() { }                   \n\
     void func2() { return; }           \n\

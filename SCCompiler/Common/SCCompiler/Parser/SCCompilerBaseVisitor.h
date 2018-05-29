@@ -95,7 +95,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLogicalNotExpr(SCCompilerParser::LogicalNotExprContext *ctx) override {
+  virtual antlrcpp::Any visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -112,6 +112,10 @@ public:
   }
 
   virtual antlrcpp::Any visitUnaryExpr(SCCompilerParser::UnaryExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
