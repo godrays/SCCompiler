@@ -1,10 +1,12 @@
 # Mac OS X
 .DS_Store
-
-# XCode
 *.xcuserstate
 xcuserdata/
 
 #Generated Files
+cmake-build*
 build/
 installed/
+
+#CLion
+.idea
