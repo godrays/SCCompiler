@@ -10,7 +10,7 @@
 
 #include <catch.hpp>
 
-#include "Compiler.hpp"
+#include <Compiler.hpp>
 #include "TestUtils.hpp"
 
 using namespace scc;

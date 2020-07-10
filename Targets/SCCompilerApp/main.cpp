@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include "SCCompiler.hpp"
+#include <SCCompiler.hpp>
 
 int main(int , const char **)
 {
