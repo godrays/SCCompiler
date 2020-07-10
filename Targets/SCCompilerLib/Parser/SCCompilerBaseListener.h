@@ -1,5 +1,5 @@
 
-// Generated from ./Common/SCCompiler/Parser/SCCompiler.g4 by ANTLR 4.7.1
+// Generated from ./Common/SCCompilerLib/Parser/SCCompilerLib.g4 by ANTLR 4.7.1
 
 #pragma once
 

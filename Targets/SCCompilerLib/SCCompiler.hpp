@@ -1,5 +1,5 @@
 //
-//  SCCompiler.hpp
+//  SCCompilerLib.hpp
 //
 //  Created by Arkin Terli on 5/11/18.
 //  Copyright © 2018 Arkin Terli. All rights reserved.
@@ -28,7 +28,7 @@ namespace scc
     class SCCompiler
     {
     public:
-        // Creates SCCompiler object.
+        // Creates SCCompilerLib object.
         static SCCompiler * Create();
 
         // Destructor.

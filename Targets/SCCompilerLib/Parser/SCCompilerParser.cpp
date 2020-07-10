@@ -1,5 +1,5 @@
 
-// Generated from ./Common/SCCompiler/Parser/SCCompiler.g4 by ANTLR 4.7.1
+// Generated from ./Common/SCCompilerLib/Parser/SCCompilerLib.g4 by ANTLR 4.7.1
 
 
 #include "SCCompilerListener.h"
@@ -20,7 +20,7 @@ SCCompilerParser::~SCCompilerParser() {
 }
 
 std::string SCCompilerParser::getGrammarFileName() const {
-  return "SCCompiler.g4";
+  return "SCCompilerLib.g4";
 }
 
 const std::vector<std::string>& SCCompilerParser::getRuleNames() const {

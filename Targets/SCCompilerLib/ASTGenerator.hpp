@@ -10,7 +10,7 @@
 #include <stack>
 
 #include "Types.hpp"
-#include "SCCompilerBaseVisitor.h"
+#include "Parser/SCCompilerBaseVisitor.h"
 
 
 namespace scc

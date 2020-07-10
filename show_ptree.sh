@@ -1,6 +1,6 @@
 PROJECT_PATH=`echo $PWD | sed 's/\(Compiler\).*/\1/g'`
 GRAMMAR_NAME=SCCompiler
-GRAMMAR_PATH=$PROJECT_PATH/SCCompiler/Common/SCCompiler/Parser
+GRAMMAR_PATH=$PROJECT_PATH/Targets/SCCompilerLib/Parser
 GRAMMAR_FILE=$GRAMMAR_NAME.g4
 INPUT_FILE=$1
 JAR_FILE=$PROJECT_PATH/Externals/ANTLR/4.7.1/Tool/antlr-4.7.1-complete.jar
@@ -28,4 +28,3 @@ javac -cp "$JAR_FILE" $GRAMMAR_NAME*.java &&
 java -cp ".:$JAR_FILE" org.antlr.v4.gui.TestRig $GRAMMAR_NAME $PARSER_FIRST_RULE_NAME -gui < $(basename $INPUT_FILE)
 
 popd  &> /dev/null
-

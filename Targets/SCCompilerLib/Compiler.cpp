@@ -11,8 +11,8 @@
 #include <sstream>
 
 #include "antlr4-runtime.h"
-#include "SCCompilerLexer.h"
-#include "SCCompilerParser.h"
+#include "Parser/SCCompilerLexer.h"
+#include "Parser/SCCompilerParser.h"
 
 #include "Symbols.hpp"
 #include "AST.hpp"
@@ -121,7 +121,7 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
         // DEBUG ONLY -----------------
         // Generate Graphviz DOT file to visualize AST.
         ASTVisualizer   astVisualizer;
-        astVisualizer.GenerateDOTFile(ast, "/Users/arkin/Projects/Compiler/SCCompiler/ast.dot");
+        astVisualizer.GenerateDOTFile(ast, "/Users/arkin/Projects/Compiler/SCCompilerLib/ast.dot");
         // DEBUG ONLY -----------------
 
         // PASS: Create scope tree and define symbols by visiting AST nodes.

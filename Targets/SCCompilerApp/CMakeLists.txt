@@ -1,0 +1,19 @@
+add_executable(SCCompilerApp
+        main.cpp
+        )
+
+target_link_libraries(SCCompilerApp SCCompilerLib)
+
+# Post build command to copy resources in every single build step
+add_custom_command(
+        TARGET SCCompilerApp POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+                ${CMAKE_CURRENT_SOURCE_DIR}/SCCompilerTestCode.src
+                ${CMAKE_CURRENT_BINARY_DIR}/SCCompilerTestCode.src
+        )
+
+# Copy shared dynamic libraries to binary folder
+file(COPY
+        ${CMAKE_SOURCE_DIR}/Externals/ANTLR/4.7.1/Runtime/lib/libantlr4-runtime.dylib
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
+        )

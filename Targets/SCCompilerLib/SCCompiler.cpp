@@ -1,5 +1,5 @@
 //
-//  SCCompiler.cpp
+//  SCCompilerLib.cpp
 //
 //  Created by Arkin Terli on 5/11/18.
 //  Copyright © 2018 Arkin Terli. All rights reserved.

@@ -1,31 +1,26 @@
-add_executable(SCCompilerTestApp
-        main.cpp
-        SyntaxTests.cpp
-        SemanticTests.cpp
-        CodeGenerationTests.cpp
-        TestUtils.cpp
-        ../../Common/SCCompiler/Symbols.cpp
-        ../../Common/SCCompiler/JITEngine.cpp
-        ../../Common/SCCompiler/ASTGenerator.cpp
-        ../../Common/SCCompiler/Exceptions.cpp
-        ../../Common/SCCompiler/AST.cpp
-        ../../Common/SCCompiler/Compiler.cpp
-        ../../Common/SCCompiler/ASTVisualizer.cpp
-        ../../Common/SCCompiler/CodeGenPass.cpp
-        ../../Common/SCCompiler/SCCompiler.cpp
-        ../../Common/SCCompiler/Types.cpp
-        ../../Common/SCCompiler/SCModule.cpp
-        ../../Common/SCCompiler/SemanticPass.cpp
-        ../../Common/SCCompiler/SymbolDefPass.cpp
-        ../../Common/SCCompiler/Parser/SCCompilerBaseListener.cpp
-        ../../Common/SCCompiler/Parser/SCCompilerBaseVisitor.cpp
-        ../../Common/SCCompiler/Parser/SCCompilerLexer.cpp
-        ../../Common/SCCompiler/Parser/SCCompilerListener.cpp
-        ../../Common/SCCompiler/Parser/SCCompilerParser.cpp
-        ../../Common/SCCompiler/Parser/SCCompilerVisitor.cpp
+add_library(SCCompilerLib
+        AST.cpp
+        ASTGenerator.cpp
+        ASTVisualizer.cpp
+        CodeGenPass.cpp
+        Compiler.cpp
+        Exceptions.cpp
+        JITEngine.cpp
+        SemanticPass.cpp
+        SCCompiler.cpp
+        SCModule.cpp
+        Symbols.cpp
+        SymbolDefPass.cpp
+        Types.cpp
+        Parser/SCCompilerBaseListener.cpp
+        Parser/SCCompilerBaseVisitor.cpp
+        Parser/SCCompilerLexer.cpp
+        Parser/SCCompilerListener.cpp
+        Parser/SCCompilerParser.cpp
+        Parser/SCCompilerVisitor.cpp
         )
 
-target_link_libraries(SCCompilerTestApp
+target_link_libraries(SCCompilerLib
         antlr4-runtime
         z
         pthread
@@ -164,10 +159,4 @@ target_link_libraries(SCCompilerTestApp
         LLVMBinaryFormat
         LLVMSupport
         LLVMDemangle
-        )
-
-# Copy shared dynamic libraries to binary folder
-file(COPY
-        ${CMAKE_SOURCE_DIR}/Externals/ANTLR/4.7.1/Runtime/lib/libantlr4-runtime.dylib
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
         )
