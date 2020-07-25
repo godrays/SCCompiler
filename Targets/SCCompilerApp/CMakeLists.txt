@@ -2,7 +2,7 @@ add_executable(SCCompilerApp
         main.cpp
         )
 
-target_link_libraries(SCCompilerApp SCCompilerLib)
+target_link_libraries(SCCompilerApp PRIVATE SCCompilerLib)
 
 # Post build command to copy resources in every single build step
 add_custom_command(

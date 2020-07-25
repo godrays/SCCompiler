@@ -20,7 +20,7 @@ add_library(SCCompilerLib
         Parser/SCCompilerVisitor.cpp
         )
 
-target_link_libraries(SCCompilerLib
+target_link_libraries(SCCompilerLib PRIVATE
         antlr4-runtime
         z
         pthread

@@ -6,7 +6,7 @@ add_executable(SCCompilerTestApp
         TestUtils.cpp
         )
 
-target_link_libraries(SCCompilerTestApp SCCompilerLib)
+target_link_libraries(SCCompilerTestApp PRIVATE SCCompilerLib)
 
 # Copy shared dynamic libraries to binary folder
 file(COPY
