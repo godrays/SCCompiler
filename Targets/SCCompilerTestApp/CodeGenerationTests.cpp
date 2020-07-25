@@ -67,7 +67,8 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
         REQUIRE(FloatToInt(1.5f) == 1);
         REQUIRE(FloatToInt(-1.5f) == -1);
         REQUIRE(FloatToInt(std::numeric_limits<float>::min()) == int(std::numeric_limits<float>::min()));
-        REQUIRE(FloatToInt(std::numeric_limits<float>::max()) == int(std::numeric_limits<float>::max()));
+        // According to C++ standards, int(FLT_MAX) has undefined behaviour. Not a valid test.
+        // REQUIRE(FloatToInt(std::numeric_limits<float>::max()) == int(std::numeric_limits<float>::max()));
     }
 
     SECTION("FLOAT to FLOAT conversions")
