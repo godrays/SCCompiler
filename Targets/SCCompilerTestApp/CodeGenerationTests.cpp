@@ -391,10 +391,10 @@ TEST_CASE("CodeGenerationLogicalNotOPTests", "[CodeGenerationTests]")
     // Float Logical Not Tests
     using FuncFloatNot = bool (*)(float);
     auto FloatNot = reinterpret_cast<FuncFloatNot>(scModule->GetFunctionPtr("FloatNot"));
-    REQUIRE(FloatNot(0.0f) == bool(!0.0f));
-    REQUIRE(FloatNot(-0.0f) == bool(!-0.0f));
-    REQUIRE(FloatNot(1.12f) == bool(!1.12f));
-    REQUIRE(FloatNot(-1.12f) == bool(!-1.12f));
+    REQUIRE(FloatNot(0.0f) == !bool(0.0f));
+    REQUIRE(FloatNot(-0.0f) == !bool(-0.0f));
+    REQUIRE(FloatNot(1.12f) == !bool(1.12f));
+    REQUIRE(FloatNot(-1.12f) == !bool(-1.12f));
     REQUIRE(FloatNot(fmax) == bool(!fmax));
     REQUIRE(FloatNot(fmin) == bool(!fmin));
     
