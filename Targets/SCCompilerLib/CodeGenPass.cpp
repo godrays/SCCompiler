@@ -173,8 +173,7 @@ JITEngine * CodeGenPass::GenerateCode(ast::Node * node)
 
     FinalizeInternalInitializerFunction();
 
-    // DEBUG
-    // DumpIRCode();
+    // DumpIRCode(); // REQUIRES to build LLVM in debug mode.
 
     // Create JITEngine. Transfer ownership of m_module and m_context to JITEngine.
     return new JITEngine(std::move(m_module));
@@ -1378,7 +1377,8 @@ llvm::Value * CodeGenPass::LoadIfPointerType(llvm::Value * value)
 
 void CodeGenPass::DumpIRCode() const
 {
-    m_module->dump();
+    // REQUIRES to build LLVM in debug mode.
+    // m_module->dump();
 }
 
 
