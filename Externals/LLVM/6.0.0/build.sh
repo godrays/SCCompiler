@@ -3,8 +3,10 @@
 # The following line requires for macOS, otherwise configure application fails to find grep.
 export GREP_OPTIONS="--color=auto"
 
-rm -rf $PWD/installed
-./configure --prefix=$PWD/installed --disable-shared --enable-static
-make -j 8
+rm -rf build
+mkdir build
+cd build
 
-make install
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../installed
+cmake --build . --target install -- -j 8
+
