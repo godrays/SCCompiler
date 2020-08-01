@@ -6,6 +6,7 @@ xcuserdata/
 #Generated Files
 cmake-build*
 build/
+build-*/
 installed/
 
 #CLion

@@ -2,11 +2,13 @@ cmake_minimum_required(VERSION 3.10)
 
 project(SCCompiler)
 
+# set(CMAKE_VERBOSE_MAKEFILE on)
+
 set(CMAKE_CONFIGURATION_TYPES "CCov;ASan;TSan" CACHE STRING "" FORCE)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Set default duild type as Release
+# Set default build type as Release
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -29,3 +31,7 @@ link_directories(Externals/LLVM/6.0.0/installed/lib)
 add_subdirectory(Targets/SCCompilerLib)
 add_subdirectory(Targets/SCCompilerApp)
 add_subdirectory(Targets/SCCompilerTestApp)
+
+install(TARGETS SCCompilerApp SCCompilerTestApp DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES Externals/ANTLR/4.7.1/Runtime/lib/libantlr4-runtime.dylib DESTINATION  ${CMAKE_INSTALL_PREFIX})
+install(FILES Targets/SCCompilerApp/SCCompilerTestCode.src DESTINATION ${CMAKE_INSTALL_PREFIX})
