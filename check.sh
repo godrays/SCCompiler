@@ -49,6 +49,7 @@ function reportCodeCoverage()
     LLVM_COV_EXEC=`xcrun -find llvm-cov`                                ;checkReturn
     LLVM_PROFILE_FILE="$2.profraw" ./$2                                 ;checkReturn
     $LLVM_PROFDATA_EXEC merge -sparse $2.profraw -o default.profdata    ;checkReturn
+    $LLVM_COV_EXEC show ./$2 -instr-profile=default.profdata -ignore-filename-regex=Externals/* -format=html -tab-size=4 >> DetailedCodeCoverageReport.html ;checkReturn
     $LLVM_COV_EXEC report ./$2 -instr-profile=default.profdata -ignore-filename-regex=Externals/*  ;checkReturn
     cd $currentDir
     echo ""
