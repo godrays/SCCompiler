@@ -22,21 +22,34 @@ function checkReturn()
 
 function build()
 {
-    echoColor 32 "Building $1."
-    ./$buildScript $1 $currentDir/build-$1 $core_count
-    checkReturn
+    echoColor 32 "Building $1 in build-$1 folder."
+    ./$buildScript $1 build-$1 $currentDir/build-$1-product $core_count      ;checkReturn
     cd $currentDir
     echo ""
 }
 
 function runTests()
 {
-    echoColor 32 "Running tests in build-$1."
-    cd build-$1
-    ./SCCompilerApp
-    checkReturn
-    ./SCCompilerTestApp
-    checkReturn
+    echoColor 32 "Running tests in build-$1-product."
+    cd build-$1-product
+    ./SCCompilerApp       ;checkReturn
+    ./SCCompilerTestApp   ;checkReturn
+    cd $currentDir
+    echo ""
+}
+
+function reportCodeCoverage()
+{
+    echoColor 32 "Running code coverage in build-$1-product."
+    cd build-$1-product
+    rm -rf *.profraw
+    rm -rf *.prodata
+    # TODO: Linux and Windows needs to be supported.
+    LLVM_PROFDATA_EXEC=`xcrun -find llvm-profdata`                      ;checkReturn
+    LLVM_COV_EXEC=`xcrun -find llvm-cov`                                ;checkReturn
+    LLVM_PROFILE_FILE="$2.profraw" ./$2                                 ;checkReturn
+    $LLVM_PROFDATA_EXEC merge -sparse $2.profraw -o default.profdata    ;checkReturn
+    $LLVM_COV_EXEC report ./$2 -instr-profile=default.profdata -ignore-filename-regex=Externals/*  ;checkReturn
     cd $currentDir
     echo ""
 }
@@ -46,9 +59,13 @@ build debug
 build release
 build asan
 build tsan
+build ccov
 
 # Run tests
 runTests debug
 runTests release
 runTests asan
 runTests tsan
+
+# Report test code coverage
+reportCodeCoverage ccov SCCompilerTestApp
