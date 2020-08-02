@@ -1,6 +1,6 @@
 #!/bin/bash
 
-core_count=8
+coreCount=8
 buildScript=build.sh
 currentDir=$PWD
 export ASAN_OPTIONS=detect_container_overflow=0
@@ -23,7 +23,7 @@ function checkReturn()
 function build()
 {
     echoColor 32 "Building $1 in build-$1 folder."
-    ./$buildScript $1 build-$1 $currentDir/build-$1-product $core_count      ;checkReturn
+    ./$buildScript $1 build-$1 $currentDir/build-$1-product $coreCount      ;checkReturn
     cd $currentDir
     echo ""
 }
@@ -49,6 +49,7 @@ function reportCodeCoverage()
     LLVM_COV_EXEC=`xcrun -find llvm-cov`                                ;checkReturn
     LLVM_PROFILE_FILE="$2.profraw" ./$2                                 ;checkReturn
     $LLVM_PROFDATA_EXEC merge -sparse $2.profraw -o default.profdata    ;checkReturn
+    $LLVM_COV_EXEC show ./$2 -instr-profile=default.profdata -ignore-filename-regex=Externals/* -format=html -tab-size=4 >> DetailedCodeCoverageReport.html ;checkReturn
     $LLVM_COV_EXEC report ./$2 -instr-profile=default.profdata -ignore-filename-regex=Externals/*  ;checkReturn
     cd $currentDir
     echo ""
