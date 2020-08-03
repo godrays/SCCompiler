@@ -22,10 +22,10 @@ set(CMAKE_CXX_FLAGS_TSAN "${CMAKE_CXX_FLAGS} -g -O2 -fsanitize=thread -fPIE")
 
 include_directories(Targets/SCCompilerLib)
 include_directories(Externals/catch2/single_include/catch2)
-include_directories(Externals/ANTLR/4.7.1/Runtime/antlr4-runtime)
+include_directories(Externals/ANTLR/4.8/installed/include/antlr4-runtime)
 include_directories(Externals/LLVM/6.0.0/installed/include)
 
-link_directories(Externals/ANTLR/4.7.1/Runtime/lib)
+link_directories(Externals/ANTLR/4.8/installed/lib)
 link_directories(Externals/LLVM/6.0.0/installed/lib)
 
 add_subdirectory(Targets/SCCompilerLib)
@@ -33,5 +33,5 @@ add_subdirectory(Targets/SCCompilerApp)
 add_subdirectory(Targets/SCCompilerTestApp)
 
 install(TARGETS SCCompilerApp SCCompilerTestApp DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES Externals/ANTLR/4.7.1/Runtime/lib/libantlr4-runtime.dylib DESTINATION  ${CMAKE_INSTALL_PREFIX})
+install(FILES Externals/ANTLR/4.8/installed/lib/libantlr4-runtime.4.8.dylib DESTINATION  ${CMAKE_INSTALL_PREFIX})
 install(FILES Targets/SCCompilerApp/SCCompilerTestCode.src DESTINATION ${CMAKE_INSTALL_PREFIX})
