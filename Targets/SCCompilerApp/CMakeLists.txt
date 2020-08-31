@@ -15,9 +15,3 @@ add_custom_command(
                 ${CMAKE_CURRENT_SOURCE_DIR}/SCCompilerTestCode.src
                 ${CMAKE_CURRENT_BINARY_DIR}/SCCompilerTestCode.src
         )
-
-# Copy shared dynamic libraries to binary folder
-file(COPY
-        ${CMAKE_SOURCE_DIR}/Externals/ANTLR/4.8/installed/lib/${ANTLR4_LIB}
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
-        )

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.13)
 
 project(SCCompiler)
 
@@ -28,21 +28,9 @@ include_directories(Externals/LLVM/6.0.0/installed/include)
 link_directories(Externals/ANTLR/4.8/installed/lib)
 link_directories(Externals/LLVM/6.0.0/installed/lib)
 
-# OS Specific setup
-if (UNIX)
-    if (APPLE)
-        set(ANTLR4_LIB "libantlr4-runtime.4.8.dylib")
-    else ()
-        set(ANTLR4_LIB "libantlr4-runtime.so.4.8")
-    endif ()
-else ()
-    message(FATAL_ERROR "Unknown OS '${CMAKE_SYSTEM_NAME}'")
-endif ()
-
 add_subdirectory(Targets/SCCompilerLib)
 add_subdirectory(Targets/SCCompilerApp)
 add_subdirectory(Targets/SCCompilerTestApp)
 
 install(TARGETS SCCompilerApp SCCompilerTestApp DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES Externals/ANTLR/4.8/installed/lib/${ANTLR4_LIB} DESTINATION  ${CMAKE_INSTALL_PREFIX})
 install(FILES Targets/SCCompilerApp/SCCompilerTestCode.src DESTINATION ${CMAKE_INSTALL_PREFIX})

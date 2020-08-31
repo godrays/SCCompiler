@@ -25,7 +25,7 @@ add_library(SCCompilerLib
         )
 
 target_link_libraries(SCCompilerLib PRIVATE
-        antlr4-runtime
+        antlr4-runtime_s
         z
         pthread
         edit

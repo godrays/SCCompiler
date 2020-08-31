@@ -73,7 +73,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   endif()
 endif()
 
-set(static_lib_suffix "")
+set(static_lib_suffix "_s")
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   set(static_lib_suffix "-static")
 endif()

@@ -26,7 +26,7 @@ mkdir build
 cd build
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../installed
-cmake --build . --target all -- -j $logical_core_count
+cmake --build . --target antlr4_static -- -j $logical_core_count
 cmake --build . --target install -- -j $logical_core_count
 
 popd
