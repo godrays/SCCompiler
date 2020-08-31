@@ -13,43 +13,43 @@
 namespace scc
 {
 
-     // Forward declaration.
-    namespace ast
-    {
-        class Node;
-    }
+// Forward declaration.
+namespace ast
+{
+    class Node;
+}
 
 
-   #pragma mark - Class ASTVisualizer
+#pragma mark - Class ASTVisualizer
 
-    class  ASTVisualizer
-    {
-    public:
-        // Contructor.
-        ASTVisualizer() { }
+class  ASTVisualizer
+{
+public:
+    // Contructor.
+    ASTVisualizer() = default;
 
-        // Destructor.
-        virtual ~ASTVisualizer() { }
+    // Destructor.
+    virtual ~ASTVisualizer() = default;
 
-        // Genearates DOT file from AST tree and outputs to a file.
-        void GenerateDOTFile(ast::Node * node, std::string filename);
+    // Genearates DOT file from AST tree and outputs to a file.
+    void GenerateDOTFile(ast::Node * node, const std::string& filename);
 
-    protected:
-        // Visits node to genearte Graphviz DOT file for visualization.
-        void Visit(ast::Node * node);
-    
-        // Output string for a node
-        void OutputConfig(ast::Node * node, const std::string & nodeConfig);
+protected:
+    // Visits node to genearte Graphviz DOT file for visualization.
+    void Visit(ast::Node * node);
 
-        // Output variable declaration node string.
-        void OutputConfigVariableDecl(ast::Node * node);
+    // Output string for a node
+    void OutputConfig(ast::Node * node, const std::string & nodeConfig);
 
-        // Output function declaration node string.
-        void OutputConfigFuncDecl(ast::Node * node);
+    // Output variable declaration node string.
+    void OutputConfigVariableDecl(ast::Node * node);
 
-    private:
-        // Output file.
-        std::ofstream   m_outputFile;
-    };
+    // Output function declaration node string.
+    void OutputConfigFuncDecl(ast::Node * node);
+
+private:
+    // Output file.
+    std::ofstream   m_outputFile;
+};
     
 }

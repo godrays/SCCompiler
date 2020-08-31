@@ -15,7 +15,7 @@ using namespace scc;
 
 #pragma mark - ASTVisualizer Implementations.
 
-Type ASTGenerator::ToASTType(std::string type)
+Type ASTGenerator::ToASTType(const std::string & type)
 {
     if (type == "float")     return Type::kTypeFloat;
     else if (type == "int")  return Type::kTypeInt;
@@ -50,9 +50,9 @@ antlrcpp::Any ASTGenerator::visitVarDecl(SCCompilerParser::VarDeclContext *ctx)
     auto varInits = ctx->getRuleContexts<SCCompilerParser::VarInitContext>();
 
     // Get all VarInit under this node.
-    for (size_t index=0; index < varInits.size(); ++index)
+    for (const auto & varInit : varInits)
     {
-        auto child = dynamic_cast<SCCompilerParser::VarInitContext *>(varInits[index]);
+        auto child = dynamic_cast<SCCompilerParser::VarInitContext *>(varInit);
         assert(child && "Child must be exist!");
 
         std::string varName = child->ID()->getText();

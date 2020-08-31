@@ -6,6 +6,7 @@
 //
 
 #include <cassert>
+#include <utility>
 
 #include "AST.hpp"
 
@@ -14,7 +15,7 @@ using namespace scc;
 
 #pragma mark - FuncArg Implementation
 
-ast::FuncArg::FuncArg(Type type, std::string name) : m_type(type), m_name(name)
+ast::FuncArg::FuncArg(Type type, std::string name) : m_type(type), m_name(std::move(name))
 {
 
 }
@@ -33,11 +34,6 @@ std::string ast::FuncArg::GetName()
 
 
 #pragma mark - Node Implementation
-
-ast::Node::Node()
-{
-
-}
 
 
 ast::Node::Node(NodeType nodeType) : m_nodeType(nodeType)
@@ -104,7 +100,7 @@ void ast::Node::SetSourceCodeLine(size_t lineNumber)
     m_lineNumber = lineNumber;
 }
 
-size_t ast::Node::GetSourceCodeLine()
+size_t ast::Node::GetSourceCodeLine() const
 {
     return m_lineNumber;
 }
@@ -276,9 +272,9 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
 ast::Node * ast::Node::FindClosestParentNode(const std::vector<ast::NodeType> & nodeTypes)
 {
     // If node type matches one of the given type then return it.
-    for (size_t fIdx=0; fIdx < nodeTypes.size(); ++fIdx)
+    for (auto nodeType : nodeTypes)
     {
-        if (m_nodeType == nodeTypes[fIdx])
+        if (m_nodeType == nodeType)
         {
             return this;
         }
@@ -300,9 +296,9 @@ ast::Node * ast::Node::FindClosestChildNode(ast::NodeType nodeType)
         return this;
     }
 
-    for (size_t index=0; index < m_childs.size(); ++index)
+    for (const auto & m_child : m_childs)
     {
-        auto foundNode = m_childs[index]->FindClosestChildNode(nodeType);
+        auto foundNode = m_child->FindClosestChildNode(nodeType);
 
         if (foundNode)
         {
@@ -345,7 +341,7 @@ ast::NodeProgram::~NodeProgram()
 ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) : ast::Node(kNodeTypeVariableDeclaration)
 {
     m_varType = type;
-    m_varName = varName;
+    m_varName = std::move(varName);
 }
 
 
@@ -372,7 +368,7 @@ std::string ast::NodeVarDeclaration::GetVarName()
 ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) : ast::Node(kNodeTypeFunctionDeclaration)
 {
     m_returnType = returnType;
-    m_funcName = funcName;
+    m_funcName = std::move(funcName);
 }
 
 
@@ -394,7 +390,7 @@ Type ast::NodeFuncDeclaration::GetReturnType()
 }
 
 
-void ast::NodeFuncDeclaration::AddArgument(ast::FuncArg argument)
+void ast::NodeFuncDeclaration::AddArgument(const ast::FuncArg & argument)
 {
     m_argumentList.emplace_back(argument);
 }
@@ -522,7 +518,7 @@ ast::NodeBreak::~NodeBreak()
 
 ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(kNodeTypeFuncCall)
 {
-    m_funcName = funcName;
+    m_funcName = std::move(funcName);
 }
 
 ast::NodeFuncCall::~NodeFuncCall()
@@ -673,7 +669,7 @@ ast::NodePrefixAOP::~NodePrefixAOP()
 
 ast::NodeLiteral::NodeLiteral(ast::NodeType nodeType, std::string value) :
     ast::Node(nodeType),
-    m_value(value)
+    m_value(std::move(value))
 {
     assert(nodeType == ast::NodeType::kNodeTypeLiteralFloat
         || nodeType == ast::NodeType::kNodeTypeLiteralInt32

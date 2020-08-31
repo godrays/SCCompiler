@@ -19,7 +19,7 @@ using namespace scc;
 
 ScopeNode * SymbolDefPass::CreateScopeTree(ast::Node * node)
 {
-    ScopeNode *  scopeTreeHead = new ScopeNode(ScopeCategory::kScopeCategoryGlobal, nullptr);
+    auto scopeTreeHead = new ScopeNode(ScopeCategory::kScopeCategoryGlobal, nullptr);
     m_currentScope = scopeTreeHead;
 
     // Add Built-In Types. They have no type definition.
@@ -177,10 +177,10 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
 
     // Add function arguments to function scope.
     auto arguments = node->GetArguments();
-    for (size_t index=0; index < arguments.size(); ++index)
+    for (auto & argument : arguments)
     {
-        auto argName = arguments[index].GetName();
-        auto argType = arguments[index].GetType();
+        auto argName = argument.GetName();
+        auto argType = argument.GetType();
 
         // Symbol redefinition is not allowed.
         if (m_currentScope->IsDefined(argName))

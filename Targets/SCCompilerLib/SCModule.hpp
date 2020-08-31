@@ -12,19 +12,19 @@
 namespace scc
 {
 
-    #pragma mark - Class SCModule.
+#pragma mark - Class SCModule.
 
-    class SCModule
-    {
-    public:
-        // Destructor.
-        virtual ~SCModule() = 0;
+class SCModule
+{
+public:
+    // Destructor.
+    virtual ~SCModule() = 0;
 
-        // Returns pointer of a function.
-        virtual void * GetFunctionPtr(std::string name) = 0;
+    // Returns pointer of a function.
+    virtual void * GetFunctionPtr(std::string name) = 0;
 
-        // Reset and initialize global variables.
-        virtual void Reset() = 0;
-    };
+    // Reset and initialize global variables.
+    virtual void Reset() = 0;
+};
 
 }

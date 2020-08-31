@@ -11,49 +11,52 @@
 namespace scc
 {
 
-    // Fordward declaration.
-    class ScopeNode;
+// Fordward declaration.
+class ScopeNode;
 
-    // Fordward declaration.
-    namespace ast
-    {
-        class Node;
-        class NodeVarDeclaration;
-        class NodeFuncDeclaration;
-        class NodeBlock;
-    }
+// Fordward declaration.
+namespace ast
+{
+    class Node;
+    class NodeVarDeclaration;
+    class NodeFuncDeclaration;
+    class NodeBlock;
+}
 
 
-    #pragma mark - Class SymbolDefPass
+#pragma mark - Class SymbolDefPass
 
-    class  SymbolDefPass
-    {
-    public:
-        // Creates a scope tree and defines symbols based on the AST nodes.
-        ScopeNode * CreateScopeTree(ast::Node * node);
+class  SymbolDefPass
+{
+public:
+    // Constructor.
+    SymbolDefPass() = default;
 
-    private:
-        // Visits nodes to create scopes and define symbols.
-        void Visit(ast::Node * node);
+    // Creates a scope tree and defines symbols based on the AST nodes.
+    ScopeNode * CreateScopeTree(ast::Node * node);
 
-        // Visits node childs.
-        void VisitChilds(ast::Node * node);
-        
-        void VisitVariableDeclaration(ast::NodeVarDeclaration * node);
+private:
+    // Visits nodes to create scopes and define symbols.
+    void Visit(ast::Node * node);
 
-        void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
+    // Visits node childs.
+    void VisitChilds(ast::Node * node);
 
-        void VisitForStatement(ast::NodeForStatement * node);
+    void VisitVariableDeclaration(ast::NodeVarDeclaration * node);
 
-        void VisitBlock(ast::NodeBlock * node);
+    void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
 
-        void VisitFunctionCall(ast::NodeFuncCall * node);
+    void VisitForStatement(ast::NodeForStatement * node);
 
-        void VisitLiteral(ast::NodeLiteral * node);
+    void VisitBlock(ast::NodeBlock * node);
 
-    private:
-        // Stores current scope.
-        ScopeNode *  m_currentScope;
-    };
+    void VisitFunctionCall(ast::NodeFuncCall * node);
+
+    void VisitLiteral(ast::NodeLiteral * node);
+
+private:
+    // Stores current scope.
+    ScopeNode *  m_currentScope{nullptr};
+};
 
 }

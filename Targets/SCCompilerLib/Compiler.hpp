@@ -16,27 +16,27 @@
 namespace scc
 {
 
-    #pragma mark - Class Compiler.
+#pragma mark - Class Compiler.
 
-    class Compiler : public SCCompiler
-    {
-    public:
+class Compiler : public SCCompiler
+{
+public:
 
-        // Compiles Simple C Source code from file.
-        SCModule * CompileFromFile(std::string filename, SCCompileResult & compileResult) final;
+    // Compiles Simple C Source code from file.
+    SCModule * CompileFromFile(std::string filename, SCCompileResult & compileResult) final;
 
-        // Compiles Simple C Source code from memory.
-        SCModule * CompileFromMemory(std::string sourceCode, SCCompileResult & compileResult) final;
+    // Compiles Simple C Source code from memory.
+    SCModule * CompileFromMemory(std::string sourceCode, SCCompileResult & compileResult) final;
 
-        // Returns compile error message.
-        std::string GetErrorMessage() final  { return m_errorMessage; }
+    // Returns compile error message.
+    std::string GetErrorMessage() final  { return m_errorMessage; }
 
-    protected:
-        // Compiles Simple C Source code.
-        SCModule * Compile(std::istream & sourceStream, SCCompileResult & compileResult);
+protected:
+    // Compiles Simple C Source code.
+    SCModule * Compile(std::istream & sourceStream, SCCompileResult & compileResult);
 
-    private:
-        std::string     m_errorMessage;
-    };
+private:
+    std::string     m_errorMessage;
+};
 
 }

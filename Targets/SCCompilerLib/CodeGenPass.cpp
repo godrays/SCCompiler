@@ -90,7 +90,7 @@ llvm::BasicBlock * NodeBasicBlocks::GetExitBasicBlock()
 
 NodeBasicBlocksStack::~NodeBasicBlocksStack()
 {
-    assert(m_nodeBBStack.size() == 0 && "Stack size has to be zero.");
+    assert(m_nodeBBStack.empty() && "Stack size has to be zero.");
     m_nodeBBStack.clear();
 }
 
@@ -125,10 +125,10 @@ NodeBasicBlocks * NodeBasicBlocksStack::GetOneOfThese(const std::vector<ast::Nod
     for (size_t index=0; index < size; ++index)
     {
         // If node type matches one of the given type then return it.
-        for (size_t ntIndex=0; ntIndex < nodeTypes.size(); ++ntIndex)
+        for (auto nodeType : nodeTypes)
         {
             auto nodeBasicBlocks = m_nodeBBStack[size-index-1];
-            if (nodeBasicBlocks->GetNode()->GetNodeType() == nodeTypes[ntIndex])
+            if (nodeBasicBlocks->GetNode()->GetNodeType() == nodeType)
             {
                 return nodeBasicBlocks;
             }
@@ -140,17 +140,6 @@ NodeBasicBlocks * NodeBasicBlocksStack::GetOneOfThese(const std::vector<ast::Nod
 
 
 #pragma mark - CodeGenPass Implementations.
-
-CodeGenPass::CodeGenPass() :
-    m_module(nullptr),
-    m_context(nullptr),
-    m_initFunction(nullptr),
-    m_initFunctionBlock(nullptr),
-    m_currentFunction(nullptr),
-    m_irBuilder(nullptr)
-{
-
-}
 
 
 CodeGenPass::~CodeGenPass()
@@ -364,7 +353,7 @@ void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
     else
     {
         // Create stack allocated local variable.
-        auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(node->GetVarType()), nullptr, varName.c_str());
+        auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(node->GetVarType()), nullptr, varName);
         // Set symbol property to save new llvm variable object. Save related llvm objects in symbol object.
         // We save llvm object because everytime this variable is used, we need to access to it's llvm object.
         node->GetScope()->ResolveSymbol(varName)->SetProperty(new SymbolProperty(localVar));
@@ -473,7 +462,7 @@ void CodeGenPass::VisitIfStatement(ast::NodeIfStatement * node)
 
     // Generate code for then statement.
     m_irBuilder->SetInsertPoint(thenBlock);
-    auto thenValue = Visit(thenNode);
+    Visit(thenNode);
     m_irBuilder->CreateBr(continueBlock);
 
     m_irBuilder->SetInsertPoint(elseBlock);
@@ -493,9 +482,8 @@ void CodeGenPass::VisitIfStatement(ast::NodeIfStatement * node)
 
 void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
 {
-    auto childCount = node->ChildCount();
     // There has to be min 4 childs. ForVarDec, ForCondition, ForIncrements and ForCodeBlock
-    assert(childCount == 4);
+    assert(node->ChildCount() == 4);
 
     // for ( varDecl ; forCondition ; forIncrements ) forBody
     auto forVarDeclNode = node->GetChild(0);
@@ -578,9 +566,8 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
 
 void CodeGenPass::VisitWhileStatement(ast::NodeWhileStatement * node)
 {
-    auto childCount = node->ChildCount();
     // There has to be 2 childs. expr and body.
-    assert(childCount == 2);
+    assert(node->ChildCount() == 2);
 
     // while ( condition ) body
     auto condNode = node->GetChild(0);
@@ -635,9 +622,8 @@ void CodeGenPass::VisitWhileStatement(ast::NodeWhileStatement * node)
 
 void CodeGenPass::VisitDoWhileStatement(ast::NodeDoWhileStatement * node)
 {
-    auto childCount = node->ChildCount();
     // There has to be 2 childs. expr and body.
-    assert(childCount == 2);
+    assert(node->ChildCount() == 2);
 
     // do body while ( condition )
     auto bodyNode = node->GetChild(0);
@@ -750,9 +736,6 @@ void CodeGenPass::VisitBreak(ast::NodeBreak * node)
     switch (nodeBasicBlocks->GetNode()->GetNodeType())
     {
         case ast::NodeType::kNodeTypeForStatement:
-        m_irBuilder->CreateBr(nodeBasicBlocks->GetExitBasicBlock());
-        break;
-
         case ast::NodeType::kNodeTypeWhileStatement:
         case ast::NodeType::kNodeTypeDoWhileStatement:
         m_irBuilder->CreateBr(nodeBasicBlocks->GetExitBasicBlock());
@@ -811,7 +794,7 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
 {
     // Generate code for expression.
     auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
-    llvm::Value * convertedValue = nullptr;
+    llvm::Value * convertedValue{nullptr};
     
     // Convert exprValue from Float To (int or bool)
     if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::FloatTyID)
@@ -984,7 +967,7 @@ llvm::Value * CodeGenPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
 {
     // Generate code for right expression.
     auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
-    llvm::Value * negatedValue = nullptr;
+    llvm::Value * negatedValue{nullptr};
 
     // Nothing to do for '+' unary operation. Just return expr value.
     if (node->GetNodeType() == ast::NodeType::kNodeTypeUOPPlus)
@@ -1014,15 +997,14 @@ llvm::Value * CodeGenPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
 
 llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
 {
-    llvm::Value * resultValue = nullptr;
+    llvm::Value * resultValue{nullptr};
 
     // Visit always return pointer to value so we need to load to get value from pointed address.
     auto leftOperandValue = LoadIfPointerType(Visit(node->GetChild(0)));
     auto rightOperandValue = LoadIfPointerType(Visit(node->GetChild(1)));
 
     llvm::Type::TypeID leftOpTypeID = leftOperandValue->getType()->getTypeID();
-    llvm::Type::TypeID rightOpTypeID = rightOperandValue->getType()->getTypeID();
-    assert(leftOpTypeID == rightOpTypeID);
+    assert(rightOperandValue->getType()->getTypeID() == leftOpTypeID);
 
     if (leftOpTypeID == llvm::Type::FloatTyID)
     {
@@ -1101,7 +1083,7 @@ llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
 
 llvm::Value * CodeGenPass::VisitPrefixAOP(ast::NodePrefixAOP * node)
 {
-    llvm::Value * resultValue = nullptr;
+    llvm::Value * resultValue{nullptr};
 
     // Visit always return pointer to value so we need to load to get value from pointed address.
     auto operandVar = Visit(node->GetChild(0));
@@ -1138,7 +1120,7 @@ llvm::Value * CodeGenPass::VisitPrefixAOP(ast::NodePrefixAOP * node)
 
 llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 {
-    llvm::Value * resultValue = nullptr;
+    llvm::Value * resultValue{nullptr};
 
     // Visit always return pointer to value so we need to load to get value from pointed address.
     auto leftOperandValue = LoadIfPointerType(Visit(node->GetChild(0)));
@@ -1149,7 +1131,7 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 
     // Type promotion should be done here.
     llvm::Type::TypeID leftOpTypeID = leftOperandValue->getType()->getTypeID();
-    llvm::Type::TypeID rightOpTypeID = rightOperandValue->getType()->getTypeID();
+    //llvm::Type::TypeID rightOpTypeID = rightOperandValue->getType()->getTypeID();
 
     switch (node->GetNodeType())
     {
@@ -1193,7 +1175,7 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 
 llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
 {
-    llvm::Value * literalValue = nullptr;
+    llvm::Value * literalValue{nullptr};
     
     switch (node->GetNodeType())
     {
@@ -1308,7 +1290,7 @@ llvm::Type * CodeGenPass::CreateBaseType(scc::Type type)
 
 llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string & value)
 {
-    assert(value.size() > 0);
+    assert(!value.empty());
 
     switch(type)
     {
@@ -1347,18 +1329,18 @@ llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name, scc::
 
 llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
                                          scc::Type returnType,
-                                         std::string name,
+                                         const std::string & name,
                                          std::vector<llvm::Type *> & argTypes)
 {
-    llvm::FunctionType * funcType = llvm::FunctionType::get(CreateBaseType(returnType), argTypes, false);
+    auto funcType = llvm::FunctionType::get(CreateBaseType(returnType), argTypes, false);
     // ExternalLinkage enumeration member means that the function can be referred from other modules.
-    llvm::Function * func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name, m_module.get());
+    auto func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name, m_module.get());
 
     return func;
 }
 
 
-llvm::BasicBlock * CodeGenPass::CreateBasicBlock(llvm::Function * func, std::string name)
+llvm::BasicBlock * CodeGenPass::CreateBasicBlock(llvm::Function * func, const std::string & name)
 {
     return llvm::BasicBlock::Create(*m_context, name, func);
 }

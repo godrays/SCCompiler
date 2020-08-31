@@ -7,32 +7,20 @@
 
 #include "Symbols.hpp"
 
+#include <utility>
+
 
 using namespace scc;
-
-
-#pragma mark - SymbolPropertyBase Implementations.
-
-SymbolPropertyBase::~SymbolPropertyBase()
-{
-
-}
 
 
 #pragma mark - Symbol Implementations.
 
 Symbol::Symbol(std::string name, SymbolCategory category, Type type) :
-    m_name(name),
+    m_name(std::move(name)),
     m_category(category),
     m_type(type),
     m_scopeNode(nullptr),
     m_property(nullptr)
-{
-
-}
-
-
-Symbol::~Symbol()
 {
 
 }
@@ -78,7 +66,8 @@ void Symbol::SetProperty(SymbolPropertyBase * property)
 
 #pragma mark - Class BuiltInTypeSymbol
 
-BuiltInTypeSymbol::BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCategory::kSymbolCategoryType, Type::kTypeUnknown)
+BuiltInTypeSymbol::BuiltInTypeSymbol(std::string name) :
+    Symbol(std::move(name), SymbolCategory::kSymbolCategoryType, Type::kTypeUnknown)
 {
 
 }
@@ -86,7 +75,8 @@ BuiltInTypeSymbol::BuiltInTypeSymbol(std::string name) : Symbol(name, SymbolCate
 
 #pragma mark - Class VariableSymbol
 
-VariableSymbol::VariableSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::kSymbolCategoryVariable, type)
+VariableSymbol::VariableSymbol(std::string name, Type type) :
+    Symbol(std::move(name), SymbolCategory::kSymbolCategoryVariable, type)
 {
 
 }
@@ -94,7 +84,8 @@ VariableSymbol::VariableSymbol(std::string name, Type type) : Symbol(name, Symbo
 
 #pragma mark - Class FuncArgSymbol
 
-FuncArgSymbol::FuncArgSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::kSymbolCategoryFunctionArgument, type)
+FuncArgSymbol::FuncArgSymbol(std::string name, Type type) :
+    Symbol(std::move(name), SymbolCategory::kSymbolCategoryFunctionArgument, type)
 {
 
 }
@@ -102,7 +93,8 @@ FuncArgSymbol::FuncArgSymbol(std::string name, Type type) : Symbol(name, SymbolC
 
 #pragma mark - Class FunctionSymbol
 
-FunctionSymbol::FunctionSymbol(std::string name, Type type) : Symbol(name, SymbolCategory::kSymbolCategoryFunction, type)
+FunctionSymbol::FunctionSymbol(std::string name, Type type) :
+    Symbol(std::move(name), SymbolCategory::kSymbolCategoryFunction, type)
 {
 
 }
@@ -127,7 +119,9 @@ FuncArgSymbol * FunctionSymbol::GetArgumentSymbol(size_t index)
 
 #pragma mark - ScopeNode Implementations.
 
-ScopeNode::ScopeNode(ScopeCategory category, ScopeNode * enclosingScope) : m_category(category), m_enclosingScope(enclosingScope)
+ScopeNode::ScopeNode(ScopeCategory category, ScopeNode * enclosingScope) :
+    m_category(category),
+    m_enclosingScope(enclosingScope)
 {
     // In scope tree, child is always connect itself to parent.
     // Because of that, child should add itself to parents childs list.
@@ -170,7 +164,7 @@ ScopeCategory ScopeNode::GetCategory()
 }
 
 
-bool ScopeNode::IsDefined(std::string symbolName)
+bool ScopeNode::IsDefined(const std::string & symbolName)
 {
     // Return true if the symbol is exist. Othersie, false.
     return  m_symbolTable.find(symbolName) != m_symbolTable.end();
@@ -190,7 +184,7 @@ void  ScopeNode::InsertSymbol(Symbol *  symbol)
 }
 
 
-Symbol *  ScopeNode::ResolveSymbol(std::string symbolName)
+Symbol *  ScopeNode::ResolveSymbol(const std::string & symbolName)
 {
     // Check if symbol is available in symbol table.
     auto pair = m_symbolTable.find(symbolName);

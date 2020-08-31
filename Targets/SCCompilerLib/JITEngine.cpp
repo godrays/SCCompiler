@@ -5,16 +5,15 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+#include <memory>
 #include <sstream>
 
 #include "llvm/Analysis/TargetTransformInfo.h"
 #include "llvm/Bitcode/BitcodeWriterPass.h"
 #include "llvm/IR/LegacyPassManager.h"
-#include "llvm/IR/LegacyPassNameParser.h"
 #include "llvm/LinkAllPasses.h"
 #include "llvm/Transforms/IPO/PassManagerBuilder.h"
 
-#include "Types.hpp"
 #include "Exceptions.hpp"
 #include "JITEngine.hpp"
 
@@ -68,7 +67,7 @@ void * JITEngine::GetFunctionPtr(std::string name)
 }
 
 
-llvm::GenericValue JITEngine::RunFunction(std::string funcName, std::vector<llvm::GenericValue> & args)
+llvm::GenericValue JITEngine::RunFunction(const std::string & funcName, std::vector<llvm::GenericValue> & args)
 {
     auto func = m_executionEngine->FindFunctionNamed(funcName);
     auto returnVal = m_executionEngine->runFunction(func, args);
@@ -95,7 +94,7 @@ void JITEngine::OptimizeIR()
     Passes.add(createTargetTransformInfoWrapperPass(llvm::TargetIRAnalysis()));
 
     std::unique_ptr<llvm::legacy::FunctionPassManager> FPasses;
-    FPasses.reset(new llvm::legacy::FunctionPassManager(m_module));
+    FPasses = std::make_unique<llvm::legacy::FunctionPassManager>(m_module);
     FPasses->add(createTargetTransformInfoWrapperPass(llvm::TargetIRAnalysis()));
     // Verify that input is correct
     FPasses->add(llvm::createVerifierPass());

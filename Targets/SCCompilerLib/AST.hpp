@@ -17,479 +17,480 @@
 namespace scc
 {
 
-    // Forward declaration.
-    class ScopeNode;
+// Forward declaration.
+class ScopeNode;
     
 namespace ast
 {
 
-    #pragma mark - Enum NodeType
-
-    // Node types for AST tree.
-    enum NodeType : uint32_t
-    {
-        kNodeTypeUnknown,
-        kNodeTypeProgram,
-        kNodeTypeVariableDeclaration,
-        kNodeTypeFunctionDeclaration,
-        kNodeTypeIfStatement,
-        kNodeTypeForStatement,
-        kNodeTypeForVarDecl,
-        kNodeTypeForCondition,
-        kNodeTypeForIncrement,
-        kNodeTypeWhileStatement,
-        kNodeTypeDoWhileStatement,
-        kNodeTypeReturnStatement,
-        kNodeTypeContinue,
-        kNodeTypeBreak,
-        kNodeTypeFuncCall,
-        kNodeTypeBlock,
-        kNodeTypeAssignment,
-        kNodeTypeExplicitTypeConversion,
-        kNodeTypeLogicalNotOP,
-        kNodeTypeLogicalAndOP,
-        kNodeTypeLogicalOrOP,
-        kNodeTypeUOPPlus,
-        kNodeTypeUOPMinus,
-        kNodeTypePrefixIncAOP,
-        kNodeTypePrefixDecAOP,
-        kNodeTypeAOPMul,
-        kNodeTypeAOPDiv,
-        kNodeTypeAOPAdd,
-        kNodeTypeAOPSub,
-        kNodeTypeCompOPEQ,
-        kNodeTypeCompOPNEQ,
-        kNodeTypeCompOPLE,
-        kNodeTypeCompOPGE,
-        kNodeTypeCompOPL,
-        kNodeTypeCompOPG,
-        kNodeTypeLiteralFloat,
-        kNodeTypeLiteralInt32,
-        kNodeTypeLiteralBool,
-        kNodeTypeLiteralID,
-    };
-
-
-    #pragma mark - Class FuncArg
-
-    // Class for function argument.
-    class FuncArg
-    {
-    public:
-        // Constructor.
-        FuncArg(Type type, std::string name);
-
-        // Returns argument type.
-        Type GetType();
-
-        // Returns argument name.
-        std::string GetName();
-
-    protected:
-        // Stores argument type.
-        Type   m_type;
-
-        // Stores argumen name.
-        std::string   m_name;
-    };
-
-
-    #pragma mark - Class Node
-
-    class Node
-    {
-    public:
-        // Constructor
-        Node();
-
-        // Destructor
-        virtual ~Node();
-
-        // Adds child node.
-        void    AddChild(Node * childNode);
-
-        // Returns childs' count.
-        size_t  ChildCount();
-
-        // Returns child at given index.
-        Node *  GetChild(size_t index);
-
-        // Sets parent node.
-        void    SetParent(Node * parentNode);
-
-        // Returns parent node.
-        Node *  GetParent();
-
-        // Returns node type.
-        NodeType  GetNodeType();
-
-        // Return node type in string.
-        std::string GetNodeTypeInString(ast::NodeType nodeType);
+#pragma mark - Enum NodeType
+
+// Node types for AST tree.
+enum NodeType : uint32_t
+{
+    kNodeTypeUnknown,
+    kNodeTypeProgram,
+    kNodeTypeVariableDeclaration,
+    kNodeTypeFunctionDeclaration,
+    kNodeTypeIfStatement,
+    kNodeTypeForStatement,
+    kNodeTypeForVarDecl,
+    kNodeTypeForCondition,
+    kNodeTypeForIncrement,
+    kNodeTypeWhileStatement,
+    kNodeTypeDoWhileStatement,
+    kNodeTypeReturnStatement,
+    kNodeTypeContinue,
+    kNodeTypeBreak,
+    kNodeTypeFuncCall,
+    kNodeTypeBlock,
+    kNodeTypeAssignment,
+    kNodeTypeExplicitTypeConversion,
+    kNodeTypeLogicalNotOP,
+    kNodeTypeLogicalAndOP,
+    kNodeTypeLogicalOrOP,
+    kNodeTypeUOPPlus,
+    kNodeTypeUOPMinus,
+    kNodeTypePrefixIncAOP,
+    kNodeTypePrefixDecAOP,
+    kNodeTypeAOPMul,
+    kNodeTypeAOPDiv,
+    kNodeTypeAOPAdd,
+    kNodeTypeAOPSub,
+    kNodeTypeCompOPEQ,
+    kNodeTypeCompOPNEQ,
+    kNodeTypeCompOPLE,
+    kNodeTypeCompOPGE,
+    kNodeTypeCompOPL,
+    kNodeTypeCompOPG,
+    kNodeTypeLiteralFloat,
+    kNodeTypeLiteralInt32,
+    kNodeTypeLiteralBool,
+    kNodeTypeLiteralID,
+};
+
+
+#pragma mark - Class FuncArg
+
+// Class for function argument.
+class FuncArg
+{
+public:
+    // Constructor.
+    FuncArg(Type type, std::string name);
+
+    // Returns argument type.
+    Type GetType();
+
+    // Returns argument name.
+    std::string GetName();
+
+protected:
+    // Stores argument type.
+    Type   m_type;
+
+    // Stores argumen name.
+    std::string   m_name;
+};
+
+
+#pragma mark - Class Node
+
+class Node
+{
+public:
+    // Constructor
+    Node() = default;
+
+    // Destructor
+    virtual ~Node();
+
+    // Adds child node.
+    void    AddChild(Node * childNode);
 
-        // Set scope.
-        void SetScope(ScopeNode * scope);
+    // Returns childs' count.
+    size_t  ChildCount();
+
+    // Returns child at given index.
+    Node *  GetChild(size_t index);
+
+    // Sets parent node.
+    void    SetParent(Node * parentNode);
+
+    // Returns parent node.
+    Node *  GetParent();
 
-        // Get scope.
-        ScopeNode * GetScope();
+    // Returns node type.
+    NodeType  GetNodeType();
 
-        // Set source code line.
-        void  SetSourceCodeLine(size_t lineNumber);
+    // Return node type in string.
+    std::string GetNodeTypeInString(ast::NodeType nodeType);
 
-        // Get source code line.
-        size_t  GetSourceCodeLine();
+    // Set scope.
+    void SetScope(ScopeNode * scope);
 
-        // Finds the closest parent node with given type in path from current node to tree root node.
-        Node * FindClosestParentNode(const std::vector<NodeType> & nodeType);
+    // Get scope.
+    ScopeNode * GetScope();
 
-        // Finds the closest child node with given type in path from current node to childs.
-        Node * FindClosestChildNode(NodeType nodeType);
+    // Set source code line.
+    void  SetSourceCodeLine(size_t lineNumber);
 
-    protected:
-        Node(NodeType nodeType);
+    // Get source code line.
+    size_t  GetSourceCodeLine() const;
 
-        // Delete all child nodes.
-        void DeleteChilds();
+    // Finds the closest parent node with given type in path from current node to tree root node.
+    Node * FindClosestParentNode(const std::vector<NodeType> & nodeType);
 
-        // Node Type
-        NodeType    m_nodeType = kNodeTypeUnknown;
+    // Finds the closest child node with given type in path from current node to childs.
+    Node * FindClosestChildNode(NodeType nodeType);
 
-        // Points parent node.
-        Node *   m_parent = nullptr;
+protected:
+    explicit Node(NodeType nodeType);
 
-        // Stores child nodes.
-        std::vector<Node *>   m_childs;
-        
-        // Pointer to the scope. Each AST node should know which scope are they in.
-        ScopeNode *     m_scope;
-        
-        // Source code line of the node.
-        size_t  m_lineNumber;
-    };
+    // Delete all child nodes.
+    void DeleteChilds();
 
+    // Node Type
+    NodeType    m_nodeType{kNodeTypeUnknown};
 
-    #pragma mark - Class NodeProgram
+    // Points parent node.
+    Node *   m_parent{nullptr};
 
-    class NodeProgram : public Node
-    {
-    public:
-        // Constructor.
-        NodeProgram();
+    // Stores child nodes.
+    std::vector<Node *>   m_childs;
 
-        // Destructor.
-        virtual ~NodeProgram();
-    };
+    // Pointer to the scope. Each AST node should know which scope are they in.
+    ScopeNode *     m_scope{nullptr};
 
+    // Source code line of the node.
+    size_t  m_lineNumber{0};
+};
 
-    #pragma mark - Class NodeVarDeclaration
 
-    class NodeVarDeclaration : public Node
-    {
-    public:
-        // Constructor.
-        NodeVarDeclaration(Type type, std::string varName);
+#pragma mark - Class NodeProgram
 
-        // Destructor.
-        virtual ~NodeVarDeclaration();
+class NodeProgram : public Node
+{
+public:
+    // Constructor.
+    NodeProgram();
 
-        // Get var type.
-        Type GetVarType();
+    // Destructor.
+    ~NodeProgram() override;
+};
 
-        // Get var name.
-        std::string GetVarName();
 
-    protected:
-        Type         m_varType = Type::kTypeUnknown;
-        std::string  m_varName;
-    };
+#pragma mark - Class NodeVarDeclaration
 
+class NodeVarDeclaration : public Node
+{
+public:
+    // Constructor.
+    NodeVarDeclaration(Type type, std::string varName);
 
-    #pragma mark - Class NodeFuncDeclaration
+    // Destructor.
+    ~NodeVarDeclaration() override;
 
-    class NodeFuncDeclaration : public Node
-    {
-    public:
-        // Constructor.
-        NodeFuncDeclaration(Type returnType, std::string funcName);
+    // Get var type.
+    Type GetVarType();
 
-        // Destructor.
-        virtual ~NodeFuncDeclaration();
+    // Get var name.
+    std::string GetVarName();
 
-        // Get func name.
-        std::string GetFuncName();
+protected:
+    Type         m_varType = Type::kTypeUnknown;
+    std::string  m_varName;
+};
 
-        // Get return type.
-        Type GetReturnType();
 
-        // Add argument.
-        void AddArgument(FuncArg argument);
+#pragma mark - Class NodeFuncDeclaration
 
-        // Return argument list.
-        std::vector<FuncArg> GetArguments();
+class NodeFuncDeclaration : public Node
+{
+public:
+    // Constructor.
+    NodeFuncDeclaration(Type returnType, std::string funcName);
 
-    protected:
-        Type   m_returnType = Type::kTypeUnknown;
-        std::string   m_funcName;
-        std::vector<FuncArg>   m_argumentList;
-    };
+    // Destructor.
+    ~NodeFuncDeclaration() override;
 
+    // Get func name.
+    std::string GetFuncName();
 
-    #pragma mark - Class NodeIfStatement
+    // Get return type.
+    Type GetReturnType();
 
-    class NodeIfStatement : public Node
-    {
-    public:
-        // Constructor.
-        NodeIfStatement();
+    // Add argument.
+    void AddArgument(const FuncArg& argument);
 
-        // Destructor.
-        virtual ~NodeIfStatement();
-    };
+    // Return argument list.
+    std::vector<FuncArg> GetArguments();
 
+protected:
+    Type   m_returnType = Type::kTypeUnknown;
+    std::string   m_funcName;
+    std::vector<FuncArg>   m_argumentList;
+};
 
-    #pragma mark - Class NodeForStatement
 
-    class NodeForStatement : public Node
-    {
-    public:
-        // Constructor.
-        NodeForStatement();
+#pragma mark - Class NodeIfStatement
 
-        // Destructor.
-        virtual ~NodeForStatement();
-    };
+class NodeIfStatement : public Node
+{
+public:
+    // Constructor.
+    NodeIfStatement();
 
+    // Destructor.
+    ~NodeIfStatement() override;
+};
 
-    #pragma mark - Class NodeFor
 
-    class NodeFor : public Node
-    {
-    public:
-        // Constructor.
-        NodeFor(ast::NodeType nodeType);
+#pragma mark - Class NodeForStatement
 
-        // Destructor.
-        virtual ~NodeFor();
-    };
+class NodeForStatement : public Node
+{
+public:
+    // Constructor.
+    NodeForStatement();
 
+    // Destructor.
+    ~NodeForStatement() override;
+};
 
-    #pragma mark - Class NodeWhileStatement
 
-    class NodeWhileStatement : public Node
-    {
-    public:
-        // Constructor.
-        NodeWhileStatement();
+#pragma mark - Class NodeFor
 
-        // Destructor.
-        virtual ~NodeWhileStatement();
-    };
+class NodeFor : public Node
+{
+public:
+    // Constructor.
+    explicit NodeFor(ast::NodeType nodeType);
 
+    // Destructor.
+    ~NodeFor() override;
+};
 
-    #pragma mark - Class NodeDoWhileStatement
 
-    class NodeDoWhileStatement : public Node
-    {
-    public:
-        // Constructor.
-        NodeDoWhileStatement();
+#pragma mark - Class NodeWhileStatement
 
-        // Destructor.
-        virtual ~NodeDoWhileStatement();
-    };
+class NodeWhileStatement : public Node
+{
+public:
+    // Constructor.
+    NodeWhileStatement();
 
+    // Destructor.
+    ~NodeWhileStatement() override;
+};
 
-    #pragma mark - Class NodeReturnStatement
 
-    class NodeReturnStatement : public Node
-    {
-    public:
-        // Constructor.
-        NodeReturnStatement();
+#pragma mark - Class NodeDoWhileStatement
 
-        // Destructor.
-        virtual ~NodeReturnStatement();
-    };
+class NodeDoWhileStatement : public Node
+{
+public:
+    // Constructor.
+    NodeDoWhileStatement();
 
+    // Destructor.
+    ~NodeDoWhileStatement() override;
+};
 
-    #pragma mark - Class NodeContinue
 
-    class NodeContinue : public Node
-    {
-    public:
-        // Constructor.
-        NodeContinue();
+#pragma mark - Class NodeReturnStatement
 
-        // Destructor.
-        virtual ~NodeContinue();
-    };
+class NodeReturnStatement : public Node
+{
+public:
+    // Constructor.
+    NodeReturnStatement();
 
+    // Destructor.
+    ~NodeReturnStatement() override;
+};
 
-    #pragma mark - Class NodeBreak
 
-    class NodeBreak : public Node
-    {
-    public:
-        // Constructor.
-        NodeBreak();
+#pragma mark - Class NodeContinue
 
-        // Destructor.
-        virtual ~NodeBreak();
-    };
+class NodeContinue : public Node
+{
+public:
+    // Constructor.
+    NodeContinue();
 
+    // Destructor.
+    ~NodeContinue() override;
+};
 
-    #pragma mark - Class NodeFuncCall
 
-    class NodeFuncCall : public Node
-    {
-    public:
-        // Constructor.
-        NodeFuncCall(std::string funcName);
+#pragma mark - Class NodeBreak
 
-        // Destructor.
-        virtual ~NodeFuncCall();
+class NodeBreak : public Node
+{
+public:
+    // Constructor.
+    NodeBreak();
 
-        // Returns function name.
-        std::string GetFuncName();
+    // Destructor.
+    ~NodeBreak() override;
+};
 
-    protected:
-        std::string m_funcName;
-    };
 
+#pragma mark - Class NodeFuncCall
 
-    #pragma mark - Class NodeBlock
+class NodeFuncCall : public Node
+{
+public:
+    // Constructor.
+    explicit NodeFuncCall(std::string funcName);
 
-    class NodeBlock : public Node
-    {
-    public:
-        // Constructor.
-        NodeBlock();
+    // Destructor.
+    ~NodeFuncCall() override;
 
-        // Destructor.
-        virtual ~NodeBlock();
-    };
+    // Returns function name.
+    std::string GetFuncName();
 
+protected:
+    std::string m_funcName;
+};
 
-    #pragma mark - Class NodeAssignment
 
-    class NodeAssignment : public Node
-    {
-    public:
-        // Constructor.
-        NodeAssignment();
+#pragma mark - Class NodeBlock
 
-        // Destructor.
-        virtual ~NodeAssignment();
-    };
+class NodeBlock : public Node
+{
+public:
+    // Constructor.
+    NodeBlock();
 
+    // Destructor.
+    ~NodeBlock() override;
+};
 
-    #pragma mark - Class NodeExplicitTypeConversion
 
-    class NodeExplicitTypeConversion : public Node
-    {
-    public:
-        // Constructor.
-        NodeExplicitTypeConversion(Type conversionType);
+#pragma mark - Class NodeAssignment
 
-        // Destructor.
-        virtual ~NodeExplicitTypeConversion();
-        
-        // Get explicit conversion type.
-        Type GetConversionType();
-        
-    protected:
-        // ConversionType.
-        Type m_conversionType;
-    };
+class NodeAssignment : public Node
+{
+public:
+    // Constructor.
+    NodeAssignment();
 
+    // Destructor.
+    ~NodeAssignment() override;
+};
 
-    #pragma mark - Class NodeLogicalOP
 
-    class NodeLogicalOP : public Node
-    {
-    public:
-        // Constructor.
-        NodeLogicalOP(ast::NodeType nodetype);
+#pragma mark - Class NodeExplicitTypeConversion
 
-        // Destructor.
-        virtual ~NodeLogicalOP();
-    };
+class NodeExplicitTypeConversion : public Node
+{
+public:
+    // Constructor.
+    explicit NodeExplicitTypeConversion(Type conversionType);
 
+    // Destructor.
+    ~NodeExplicitTypeConversion() override;
 
-    #pragma mark - Class NodeUnaryOP
+    // Get explicit conversion type.
+    Type GetConversionType();
 
-    class NodeUnaryOP : public Node
-    {
-    public:
-        // Constructor.
-        explicit NodeUnaryOP(NodeType nodeType);
+protected:
+    // ConversionType.
+    Type m_conversionType;
+};
 
-        // Destructor.
-        virtual ~NodeUnaryOP();
-    };
 
+#pragma mark - Class NodeLogicalOP
 
-    #pragma mark - Class NodeCompOP
+class NodeLogicalOP : public Node
+{
+public:
+    // Constructor.
+    explicit NodeLogicalOP(ast::NodeType nodetype);
 
-    class NodeCompOP : public Node
-    {
-    public:
-        // Constructor.
-        explicit NodeCompOP(NodeType nodeType);
+    // Destructor.
+    ~NodeLogicalOP() override;
+};
 
-        // Destructor.
-        virtual ~NodeCompOP();
-    };
 
+#pragma mark - Class NodeUnaryOP
 
-    #pragma mark - Class NodePrefixAOP
+class NodeUnaryOP : public Node
+{
+public:
+    // Constructor.
+    explicit NodeUnaryOP(NodeType nodeType);
 
-    class NodePrefixAOP : public Node
-    {
-    public:
-        // Constructor.
-        explicit NodePrefixAOP(NodeType nodeType);
+    // Destructor.
+    ~NodeUnaryOP() override;
+};
 
-        // Destructor.
-        virtual ~NodePrefixAOP();
-    };
 
+#pragma mark - Class NodeCompOP
 
-    #pragma mark - Class NodeAOP
+class NodeCompOP : public Node
+{
+public:
+    // Constructor.
+    explicit NodeCompOP(NodeType nodeType);
 
-    class NodeAOP : public Node
-    {
-    public:
-        // Constructor.
-        explicit NodeAOP(NodeType nodeType);
+    // Destructor.
+    ~NodeCompOP() override;
+};
 
-        // Destructor.
-        virtual ~NodeAOP();
-    };
 
+#pragma mark - Class NodePrefixAOP
 
-    #pragma mark - Class NodeLiteral
+class NodePrefixAOP : public Node
+{
+public:
+    // Constructor.
+    explicit NodePrefixAOP(NodeType nodeType);
 
-    class NodeLiteral : public Node
-    {
-    public:
-        // Constructor.
-        NodeLiteral(ast::NodeType nodeType, std::string value);
+    // Destructor.
+    ~NodePrefixAOP() override;
+};
 
-        // Destructor.
-        virtual ~NodeLiteral();
-        
-        // Get literal value.
-        std::string GetValue();
-        
-    protected:
-        // Literal value.
-        std::string m_value;
-    };
 
+#pragma mark - Class NodeAOP
 
-    #pragma mark - Function TypeToString
+class NodeAOP : public Node
+{
+public:
+    // Constructor.
+    explicit NodeAOP(NodeType nodeType);
 
-    std::string TypeToString(Type type);
+    // Destructor.
+    ~NodeAOP() override;
+};
+
+
+#pragma mark - Class NodeLiteral
+
+class NodeLiteral : public Node
+{
+public:
+    // Constructor.
+    NodeLiteral(ast::NodeType nodeType, std::string value);
+
+    // Destructor.
+    ~NodeLiteral() override;
+
+    // Get literal value.
+    std::string GetValue();
+
+protected:
+    // Literal value.
+    std::string m_value;
+};
+
+
+#pragma mark - Function TypeToString
+
+std::string TypeToString(Type type);
+
 }
 
 }

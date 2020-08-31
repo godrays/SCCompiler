@@ -16,7 +16,7 @@ using namespace scc;
 
 #pragma mark - ASTVisualizer Implementations.
 
-void ASTVisualizer::GenerateDOTFile(ast::Node * node, std::string filename)
+void ASTVisualizer::GenerateDOTFile(ast::Node * node, const std::string & filename)
 {
     // Open dot file.
     m_outputFile.open(filename);
@@ -247,9 +247,9 @@ void ASTVisualizer::OutputConfigFuncDecl(ast::Node * node)
     strStream   << "[label = \"{Func Decl |" << funcDecNode->GetFuncName() << "| Return Type: " << ast::TypeToString(funcDecNode->GetReturnType());
     
     // Write arguments.
-    for (size_t index=0; index < arguments.size(); ++index)
+    for (auto & argument : arguments)
     {
-        strStream << "| Arg: " << ast::TypeToString(arguments[index].GetType()) << " " << arguments[index].GetName() ;
+        strStream << "| Arg: " << ast::TypeToString(argument.GetType()) << " " << argument.GetName() ;
     }
     
     strStream   << "}\"];" << std::endl;

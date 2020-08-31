@@ -38,37 +38,37 @@
 namespace scc
 {
 
-    #pragma mark - Class JITEngine
+#pragma mark - Class JITEngine
 
-    // Machine code execution engine.
-    // NOTE: JITEngine must keep minimum data during it's life cycle to minimize memory usage.
-    class JITEngine : public SCModule
-    {
-    public:
-        // Constructor.
-        JITEngine(std::unique_ptr<llvm::Module> module);
+// Machine code execution engine.
+// NOTE: JITEngine must keep minimum data during it's life cycle to minimize memory usage.
+class JITEngine final : public SCModule
+{
+public:
+    // Constructor.
+    explicit JITEngine(std::unique_ptr<llvm::Module> module);
 
-        // Destructor.
-        virtual ~JITEngine();
-        
-        // Get function pointer.
-        void * GetFunctionPtr(std::string name);
+    // Destructor.
+    ~JITEngine() final;
 
-        // Run function.
-        llvm::GenericValue RunFunction(std::string funcName, std::vector<llvm::GenericValue> & args);
+    // Get function pointer.
+    void * GetFunctionPtr(std::string name) final;
 
-        // Reset and initialize global variables.
-        void Reset();
+    // Run function.
+    llvm::GenericValue RunFunction(const std::string& funcName, std::vector<llvm::GenericValue> & args);
 
-        // Optimize IR code.
-        void OptimizeIR();
+    // Reset and initialize global variables.
+    void Reset() final;
 
-    protected:
-        // Pointer to program module object.
-        llvm::Module *  m_module;
+    // Optimize IR code.
+    void OptimizeIR();
 
-        // Execution engine.
-        llvm::ExecutionEngine * m_executionEngine;
-    };
+protected:
+    // Pointer to program module object.
+    llvm::Module *  m_module{nullptr};
+
+    // Execution engine.
+    llvm::ExecutionEngine * m_executionEngine{nullptr};
+};
 
 }

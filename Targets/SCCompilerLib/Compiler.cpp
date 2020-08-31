@@ -80,7 +80,7 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
 {
     // Error listener for parser.
     ParserErrorListener  parserErrorListener;
-    SCModule * scModule = nullptr;
+    SCModule * scModule{nullptr};
     
     try
     {
@@ -126,7 +126,7 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
 
         // PASS: Create scope tree and define symbols by visiting AST nodes.
         //       After this pass, each ast node and symbols will have access to their related scope node (symbol table).
-        SymbolDefPass  symDefPass;
+        SymbolDefPass  symDefPass{};
         auto scopeTree = symDefPass.CreateScopeTree(ast);
 
         // PASS: Perform semantic analysis by visiting AST nodes.

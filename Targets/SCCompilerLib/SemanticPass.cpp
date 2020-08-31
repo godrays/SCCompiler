@@ -427,8 +427,6 @@ Type SemanticPass::VisitAssignment(ast::NodeAssignment * node)
 
 Type SemanticPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node)
 {
-    auto conversionType = node->GetConversionType();
-    
     Visit(node->GetChild(0));
     
     return node->GetConversionType();
@@ -437,13 +435,12 @@ Type SemanticPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion *
 
 Type SemanticPass::VisitLogicalOP(ast::NodeLogicalOP * node)
 {
-    auto childCount = node->ChildCount();
     auto nodeType = node->GetNodeType();
 
     // Not Operator requires only a single expression so it requires special treatment.
     if (nodeType == ast::NodeType::kNodeTypeLogicalNotOP)
     {
-        assert(childCount == 1);
+        assert(node->ChildCount() == 1);
         return Visit(node->GetChild(0));
     }
 
