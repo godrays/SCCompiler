@@ -2,7 +2,7 @@
 //  Symbols.cpp
 //
 //  Created by Arkin Terli on 4/15/18.
-//  Copyright © 2018 Arkin Terli. All rights reserved.
+//  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #include "Symbols.hpp"

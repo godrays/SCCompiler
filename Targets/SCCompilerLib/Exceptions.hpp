@@ -2,7 +2,7 @@
 //  Exceptions.hpp
 //
 //  Created by Arkin Terli on 4/16/18.
-//  Copyright © 2018 Arkin Terli. All rights reserved.
+//  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once

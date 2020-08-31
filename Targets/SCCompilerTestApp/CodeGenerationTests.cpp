@@ -2,7 +2,7 @@
 //  CodeGenerationTests.cpp
 //
 //  Created by Arkin Terli on 5/8/18.
-//  Copyright © 2018 Arkin Terli. All rights reserved.
+//  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #include <iostream>
