@@ -6,13 +6,14 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
-#include <iostream>
 #include <string>
 
 #include <catch.hpp>
 
 #include <Compiler.hpp>
+
 #include "TestUtils.hpp"
+
 
 using namespace scc;
 

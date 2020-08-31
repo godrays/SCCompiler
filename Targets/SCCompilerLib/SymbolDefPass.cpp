@@ -5,12 +5,14 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+#include "SymbolDefPass.hpp"
+
 #include <sstream>
 
 #include "AST.hpp"
-#include "Symbols.hpp"
-#include "SymbolDefPass.hpp"
 #include "Exceptions.hpp"
+#include "Symbols.hpp"
+
 
 using namespace scc;
 

@@ -8,6 +8,10 @@
 
 #pragma once
 
+#include "AST.hpp"
+#include "Types.hpp"
+
+
 namespace scc
 {
 

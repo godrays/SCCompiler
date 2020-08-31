@@ -9,8 +9,8 @@
 
 #include <string>
 
-#include "SCModule.hpp"
 #include "SCCompiler.hpp"
+#include "SCModule.hpp"
 
 
 namespace scc

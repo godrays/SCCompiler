@@ -5,8 +5,10 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
-#include "Compiler.hpp"
 #include "SCCompiler.hpp"
+
+#include "Compiler.hpp"
+
 
 using namespace scc;
 

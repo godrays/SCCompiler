@@ -8,8 +8,8 @@
 #pragma once
 
 #include <cassert>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "Types.hpp"
 

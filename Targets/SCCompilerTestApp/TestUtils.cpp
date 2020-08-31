@@ -6,7 +6,9 @@
 //
 
 #include <iostream>
+
 #include <catch.hpp>
+#include <utility>
 
 #include "TestUtils.hpp"
 
@@ -16,7 +18,7 @@ bool TestCode(std::string sourceCode, scc::SCCompileResult expectedCompileResult
     scc::Compiler compiler;
     scc::SCCompileResult compileResult;
 
-    auto scModule = compiler.CompileFromMemory(sourceCode, compileResult);
+    auto scModule = compiler.CompileFromMemory(std::move(sourceCode), compileResult);
 
     // Assert if compiler result is not expected.
     if ((acceptExpectedCompileResult && (compileResult != expectedCompileResult)) ||

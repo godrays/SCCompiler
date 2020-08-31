@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "AST.hpp"
+
 
 namespace scc
 {

@@ -5,11 +5,13 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+#include "ASTVisualizer.hpp"
+
 #include <cassert>
 #include <sstream>
 
 #include "AST.hpp"
-#include "ASTVisualizer.hpp"
+
 
 using namespace scc;
 

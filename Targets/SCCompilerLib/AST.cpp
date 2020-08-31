@@ -5,10 +5,11 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+#include "AST.hpp"
+
 #include <cassert>
 #include <utility>
 
-#include "AST.hpp"
 
 using namespace scc;
 

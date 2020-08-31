@@ -5,25 +5,22 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+#include "Compiler.hpp"
+
 #include <string>
-#include <iostream>
 #include <istream>
-#include <sstream>
 
-#include "antlr4-runtime.h"
-#include "Parser/SCCompilerLexer.h"
-#include "Parser/SCCompilerParser.h"
+#include <antlr4-runtime.h>
+#include <Parser/SCCompilerLexer.h>
+#include <Parser/SCCompilerParser.h>
 
-#include "Symbols.hpp"
-#include "AST.hpp"
-#include "ASTVisualizer.hpp"
 #include "ASTGenerator.hpp"
-#include "SymbolDefPass.hpp"
-#include "SemanticPass.hpp"
 #include "CodeGenPass.hpp"
 #include "Exceptions.hpp"
 #include "JITEngine.hpp"
-#include "Compiler.hpp"
+#include "SemanticPass.hpp"
+#include "SymbolDefPass.hpp"
+
 
 using namespace antlr4;
 

@@ -5,8 +5,10 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
-#include <cassert>
 #include "Types.hpp"
+
+#include <cassert>
+
 
 using namespace scc;
 

@@ -5,17 +5,16 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+#include "CodeGenPass.hpp"
+
 #include <cassert>
 #include <stack>
-#include <unordered_map>
 #include <string>
 
-#include "Types.hpp"
-#include "Symbols.hpp"
 #include "AST.hpp"
-#include "Exceptions.hpp"
 #include "JITEngine.hpp"
-#include "CodeGenPass.hpp"
+#include "Symbols.hpp"
+#include "Types.hpp"
 
 using namespace scc;
 

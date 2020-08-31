@@ -5,13 +5,15 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+#include "SemanticPass.hpp"
+
 #include <cassert>
 #include <sstream>
 
-#include "Symbols.hpp"
 #include "AST.hpp"
-#include "SemanticPass.hpp"
 #include "Exceptions.hpp"
+#include "Symbols.hpp"
+
 
 using namespace scc;
 

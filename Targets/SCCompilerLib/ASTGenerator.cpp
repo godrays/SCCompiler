@@ -5,10 +5,11 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+#include "ASTGenerator.hpp"
+
 #include <cassert>
 
 #include "AST.hpp"
-#include "ASTGenerator.hpp"
 
 using namespace scc;
 

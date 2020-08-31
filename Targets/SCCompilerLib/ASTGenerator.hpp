@@ -9,8 +9,8 @@
 
 #include <stack>
 
-#include "Types.hpp"
 #include "Parser/SCCompilerBaseVisitor.h"
+#include "Types.hpp"
 
 
 namespace scc
