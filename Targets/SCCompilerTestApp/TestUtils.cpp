@@ -6,9 +6,9 @@
 //
 
 #include <iostream>
-
-#include <catch.hpp>
 #include <utility>
+
+#include <catch2/catch.hpp>
 
 #include "TestUtils.hpp"
 

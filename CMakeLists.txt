@@ -21,7 +21,7 @@ set(CMAKE_CXX_FLAGS_ASAN "${CMAKE_CXX_FLAGS} -g -O1 -fsanitize=address -fno-omit
 set(CMAKE_CXX_FLAGS_TSAN "${CMAKE_CXX_FLAGS} -g -O2 -fsanitize=thread -fPIE")
 
 include_directories(Targets/SCCompilerLib)
-include_directories(Externals/catch2/single_include/catch2)
+include_directories(Externals/Catch2/2.12.4/single_include)
 include_directories(Externals/ANTLR/4.8/installed/include/antlr4-runtime)
 include_directories(Externals/LLVM/6.0.0/installed/include)
 
