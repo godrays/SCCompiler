@@ -18,6 +18,6 @@ add_custom_command(
 
 # Copy shared dynamic libraries to binary folder
 file(COPY
-        ${CMAKE_SOURCE_DIR}/Externals/ANTLR/4.8/installed/lib/libantlr4-runtime.4.8.dylib
+        ${CMAKE_SOURCE_DIR}/Externals/ANTLR/4.8/installed/lib/${ANTLR4_LIB}
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
         )

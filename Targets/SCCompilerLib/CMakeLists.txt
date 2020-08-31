@@ -30,6 +30,7 @@ target_link_libraries(SCCompilerLib PRIVATE
         pthread
         edit
         curses
+        dl
         m
         LLVMLTO
         LLVMPasses
