@@ -34,7 +34,7 @@ class ParserErrorListener : public antlr4::BaseErrorListener
 {
 public:
     void syntaxError(Recognizer *recognizer, Token * offendingSymbol, size_t line, size_t charPositionInLine,
-      const std::string &msg, std::exception_ptr e) override final
+      const std::string &msg, std::exception_ptr e) final
     {
         std::stringstream strStream;
         strStream << "Syntax Error - line " << line << ": " << charPositionInLine << " " << msg;

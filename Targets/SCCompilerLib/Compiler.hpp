@@ -23,13 +23,13 @@ namespace scc
     public:
 
         // Compiles Simple C Source code from file.
-        SCModule * CompileFromFile(std::string filename, SCCompileResult & compileResult) override final;
+        SCModule * CompileFromFile(std::string filename, SCCompileResult & compileResult) final;
 
         // Compiles Simple C Source code from memory.
-        SCModule * CompileFromMemory(std::string sourceCode, SCCompileResult & compileResult) override final;
+        SCModule * CompileFromMemory(std::string sourceCode, SCCompileResult & compileResult) final;
 
         // Returns compile error message.
-        std::string GetErrorMessage() override final  { return m_errorMessage; }
+        std::string GetErrorMessage() final  { return m_errorMessage; }
 
     protected:
         // Compiles Simple C Source code.
