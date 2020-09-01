@@ -26,7 +26,7 @@ class FuncArgSymbol;
 #pragma mark - Enum SymbolType
 
 // Symbol category.
-enum SymbolCategory : uint32_t
+enum class SymbolCategory
 {
     kSymbolCategoryUnknown,
     kSymbolCategoryType,
@@ -148,7 +148,7 @@ private:
 #pragma mark - Enum ScopeCategory
 
 // Scope category.
-enum ScopeCategory : uint32_t
+enum class ScopeCategory
 {
     kScopeCategoryUnknown,
     kScopeCategoryGlobal,
@@ -158,7 +158,7 @@ enum ScopeCategory : uint32_t
 };
 
 
-#pragma mark - Enum ScopeNode
+#pragma mark - Class ScopeNode
 
 // Scoped symbol table node to build tree of symbol tables.
 // Every node in the tree is considered a scope and has a symbol table.

@@ -26,7 +26,7 @@ namespace ast
 #pragma mark - Enum NodeType
 
 // Node types for AST tree.
-enum NodeType : uint32_t
+enum class NodeType
 {
     kNodeTypeUnknown,
     kNodeTypeProgram,
@@ -151,7 +151,7 @@ protected:
     void DeleteChilds();
 
     // Node Type
-    NodeType    m_nodeType{kNodeTypeUnknown};
+    NodeType    m_nodeType{NodeType::kNodeTypeUnknown};
 
     // Points parent node.
     Node *   m_parent{nullptr};

@@ -327,7 +327,7 @@ ScopeNode * ast::Node::GetScope()
 
 ast::NodeProgram::NodeProgram()
 {
-    m_nodeType = kNodeTypeProgram;
+    m_nodeType = NodeType::kNodeTypeProgram;
 }
 
 
@@ -339,7 +339,8 @@ ast::NodeProgram::~NodeProgram()
 
 #pragma mark - NodeVarDeclaration Implementation
 
-ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) : ast::Node(kNodeTypeVariableDeclaration)
+ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) :
+    ast::Node(NodeType::kNodeTypeVariableDeclaration)
 {
     m_varType = type;
     m_varName = std::move(varName);
@@ -366,7 +367,8 @@ std::string ast::NodeVarDeclaration::GetVarName()
 
 #pragma mark - NodeFuncDeclaration Implementation
 
-ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) : ast::Node(kNodeTypeFunctionDeclaration)
+ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) :
+    ast::Node(NodeType::kNodeTypeFunctionDeclaration)
 {
     m_returnType = returnType;
     m_funcName = std::move(funcName);
@@ -405,7 +407,7 @@ std::vector<ast::FuncArg> ast::NodeFuncDeclaration::GetArguments()
 
 #pragma mark - NodeIfStatement Implementation
 
-ast::NodeIfStatement::NodeIfStatement() : ast::Node(kNodeTypeIfStatement)
+ast::NodeIfStatement::NodeIfStatement() : ast::Node(NodeType::kNodeTypeIfStatement)
 {
 
 }
@@ -419,7 +421,7 @@ ast::NodeIfStatement::~NodeIfStatement()
 
 #pragma mark - NodeForStatement Implementation
 
-ast::NodeForStatement::NodeForStatement() : ast::Node(kNodeTypeForStatement)
+ast::NodeForStatement::NodeForStatement() : ast::Node(NodeType::kNodeTypeForStatement)
 {
 
 }
@@ -447,7 +449,7 @@ ast::NodeFor::~NodeFor()
 
 #pragma mark - NodeWhileStatement Implementation
 
-ast::NodeWhileStatement::NodeWhileStatement() : ast::Node(kNodeTypeWhileStatement)
+ast::NodeWhileStatement::NodeWhileStatement() : ast::Node(NodeType::kNodeTypeWhileStatement)
 {
 
 }
@@ -461,7 +463,7 @@ ast::NodeWhileStatement::~NodeWhileStatement()
 
 #pragma mark - NodeDoWhileStatement Implementation
 
-ast::NodeDoWhileStatement::NodeDoWhileStatement() : ast::Node(kNodeTypeDoWhileStatement)
+ast::NodeDoWhileStatement::NodeDoWhileStatement() : ast::Node(NodeType::kNodeTypeDoWhileStatement)
 {
 
 }
@@ -475,7 +477,7 @@ ast::NodeDoWhileStatement::~NodeDoWhileStatement()
 
 #pragma mark - NodeReturnStatement Implementation
 
-ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(kNodeTypeReturnStatement)
+ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(NodeType::kNodeTypeReturnStatement)
 {
 
 }
@@ -489,7 +491,7 @@ ast::NodeReturnStatement::~NodeReturnStatement()
 
 #pragma mark - NodeContinue Implementation
 
-ast::NodeContinue::NodeContinue() : ast::Node(kNodeTypeContinue)
+ast::NodeContinue::NodeContinue() : ast::Node(NodeType::kNodeTypeContinue)
 {
 
 }
@@ -503,7 +505,7 @@ ast::NodeContinue::~NodeContinue()
 
 #pragma mark - NodeBreak Implementation
 
-ast::NodeBreak::NodeBreak() : ast::Node(kNodeTypeBreak)
+ast::NodeBreak::NodeBreak() : ast::Node(NodeType::kNodeTypeBreak)
 {
 
 }
@@ -517,7 +519,7 @@ ast::NodeBreak::~NodeBreak()
 
 #pragma mark - NodeFuncCall Implementation
 
-ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(kNodeTypeFuncCall)
+ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(NodeType::kNodeTypeFuncCall)
 {
     m_funcName = std::move(funcName);
 }
@@ -537,7 +539,7 @@ std::string ast::NodeFuncCall::GetFuncName()
 
 ast::NodeBlock::NodeBlock()
 {
-    m_nodeType = kNodeTypeBlock;
+    m_nodeType = NodeType::kNodeTypeBlock;
 }
 
 
@@ -550,7 +552,7 @@ ast::NodeBlock::~NodeBlock()
 
 #pragma mark - NodeAssignment Implementation
 
-ast::NodeAssignment::NodeAssignment() : Node(kNodeTypeAssignment)
+ast::NodeAssignment::NodeAssignment() : Node(NodeType::kNodeTypeAssignment)
 {
 
 }
@@ -565,7 +567,7 @@ ast::NodeAssignment::~NodeAssignment()
 #pragma mark - NodeExplicitTypeConversion Implementation
 
 ast::NodeExplicitTypeConversion::NodeExplicitTypeConversion(Type conversionType) :
-    Node(kNodeTypeExplicitTypeConversion),
+    Node(NodeType::kNodeTypeExplicitTypeConversion),
     m_conversionType(conversionType)
 {
 

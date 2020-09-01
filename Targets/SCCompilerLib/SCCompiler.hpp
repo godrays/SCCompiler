@@ -15,7 +15,7 @@ namespace scc
 
 #pragma mark - Enum SCCompileResult.
 
-enum SCCompileResult : uint32_t
+enum class SCCompileResult
 {
     kSCCompileResultOk,
     kSCCompileResultSyntaxError,

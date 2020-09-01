@@ -16,7 +16,7 @@ int main(int , const char **)
     
     auto scModule = compiler->CompileFromFile("SCCompilerTestCode.src", compileResult);
 
-    if (scc::kSCCompileResultOk != compileResult)
+    if (scc::SCCompileResult::kSCCompileResultOk != compileResult)
     {
         std::cerr << compiler->GetErrorMessage() << std::endl;
         return -1;
