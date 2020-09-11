@@ -24,6 +24,7 @@ add_library(SCCompilerLib
         Parser/SCCompilerVisitor.cpp
         )
 
+# Run installed/./llvm-config --libs to dump list of libs to include here and keep the original order of the libs.
 target_link_libraries(SCCompilerLib PRIVATE
         antlr4-runtime_s
         z
@@ -32,59 +33,86 @@ target_link_libraries(SCCompilerLib PRIVATE
         curses
         dl
         m
+        LLVMXRay
+        LLVMWindowsManifest
+        LLVMTableGen
+        LLVMSymbolize
+        LLVMDebugInfoPDB
+        LLVMOrcJIT
+        LLVMOrcError
+        LLVMJITLink
+        LLVMObjectYAML
+        LLVMMCA
         LLVMLTO
         LLVMPasses
         LLVMObjCARCOpts
-        LLVMMIRParser
-        LLVMSymbolize
-        LLVMDebugInfoPDB
-        LLVMDebugInfoDWARF
-        LLVMCoverage
-        LLVMTableGen
+        LLVMLineEditor
+        LLVMLibDriver
+        LLVMInterpreter
+        LLVMFuzzMutate
+        LLVMFrontendOpenMP
+        LLVMMCJIT
+        LLVMExecutionEngine
+        LLVMRuntimeDyld
+        LLVMDWARFLinker
         LLVMDlltoolDriver
-        LLVMOrcJIT
+        LLVMOption
+        LLVMDebugInfoGSYM
+        LLVMCoverage
+        LLVMCoroutines
         LLVMXCoreDisassembler
         LLVMXCoreCodeGen
         LLVMXCoreDesc
         LLVMXCoreInfo
-        LLVMXCoreAsmPrinter
+        LLVMX86Disassembler
+        LLVMX86AsmParser
+        LLVMX86CodeGen
+        LLVMX86Desc
+        LLVMX86Utils
+        LLVMX86Info
+        LLVMWebAssemblyDisassembler
+        LLVMWebAssemblyCodeGen
+        LLVMWebAssemblyDesc
+        LLVMWebAssemblyAsmParser
+        LLVMWebAssemblyInfo
         LLVMSystemZDisassembler
         LLVMSystemZCodeGen
         LLVMSystemZAsmParser
         LLVMSystemZDesc
         LLVMSystemZInfo
-        LLVMSystemZAsmPrinter
         LLVMSparcDisassembler
         LLVMSparcCodeGen
         LLVMSparcAsmParser
         LLVMSparcDesc
         LLVMSparcInfo
-        LLVMSparcAsmPrinter
+        LLVMRISCVDisassembler
+        LLVMRISCVCodeGen
+        LLVMRISCVAsmParser
+        LLVMRISCVDesc
+        LLVMRISCVUtils
+        LLVMRISCVInfo
         LLVMPowerPCDisassembler
         LLVMPowerPCCodeGen
         LLVMPowerPCAsmParser
         LLVMPowerPCDesc
         LLVMPowerPCInfo
-        LLVMPowerPCAsmPrinter
         LLVMNVPTXCodeGen
         LLVMNVPTXDesc
         LLVMNVPTXInfo
-        LLVMNVPTXAsmPrinter
+        LLVMMSP430Disassembler
         LLVMMSP430CodeGen
+        LLVMMSP430AsmParser
         LLVMMSP430Desc
         LLVMMSP430Info
-        LLVMMSP430AsmPrinter
         LLVMMipsDisassembler
         LLVMMipsCodeGen
         LLVMMipsAsmParser
         LLVMMipsDesc
         LLVMMipsInfo
-        LLVMMipsAsmPrinter
         LLVMLanaiDisassembler
         LLVMLanaiCodeGen
         LLVMLanaiAsmParser
         LLVMLanaiDesc
-        LLVMLanaiAsmPrinter
         LLVMLanaiInfo
         LLVMHexagonDisassembler
         LLVMHexagonCodeGen
@@ -96,72 +124,57 @@ target_link_libraries(SCCompilerLib PRIVATE
         LLVMBPFAsmParser
         LLVMBPFDesc
         LLVMBPFInfo
-        LLVMBPFAsmPrinter
         LLVMARMDisassembler
         LLVMARMCodeGen
         LLVMARMAsmParser
         LLVMARMDesc
-        LLVMARMInfo
-        LLVMARMAsmPrinter
         LLVMARMUtils
+        LLVMARMInfo
         LLVMAMDGPUDisassembler
         LLVMAMDGPUCodeGen
-        LLVMAMDGPUAsmParser
-        LLVMAMDGPUDesc
-        LLVMAMDGPUInfo
-        LLVMAMDGPUAsmPrinter
-        LLVMAMDGPUUtils
-        LLVMAArch64Disassembler
-        LLVMAArch64CodeGen
-        LLVMAArch64AsmParser
-        LLVMAArch64Desc
-        LLVMAArch64Info
-        LLVMAArch64AsmPrinter
-        LLVMAArch64Utils
-        LLVMObjectYAML
-        LLVMLibDriver
-        LLVMOption
-        LLVMWindowsManifest
-        LLVMFuzzMutate
-        LLVMX86Disassembler
-        LLVMX86AsmParser
-        LLVMX86CodeGen
-        LLVMGlobalISel
-        LLVMSelectionDAG
-        LLVMAsmPrinter
-        LLVMDebugInfoCodeView
-        LLVMDebugInfoMSF
-        LLVMX86Desc
-        LLVMMCDisassembler
-        LLVMX86Info
-        LLVMX86AsmPrinter
-        LLVMX86Utils
-        LLVMMCJIT
-        LLVMLineEditor
-        LLVMInterpreter
-        LLVMExecutionEngine
-        LLVMRuntimeDyld
-        LLVMCodeGen
-        LLVMTarget
-        LLVMCoroutines
+        LLVMMIRParser
         LLVMipo
         LLVMInstrumentation
         LLVMVectorize
-        LLVMScalarOpts
         LLVMLinker
         LLVMIRReader
         LLVMAsmParser
+        LLVMAMDGPUAsmParser
+        LLVMAMDGPUDesc
+        LLVMAMDGPUUtils
+        LLVMAMDGPUInfo
+        LLVMAArch64Disassembler
+        LLVMMCDisassembler
+        LLVMAArch64CodeGen
+        LLVMCFGuard
+        LLVMGlobalISel
+        LLVMSelectionDAG
+        LLVMAsmPrinter
+        LLVMDebugInfoDWARF
+        LLVMCodeGen
+        LLVMTarget
+        LLVMScalarOpts
         LLVMInstCombine
+        LLVMAggressiveInstCombine
         LLVMTransformUtils
         LLVMBitWriter
         LLVMAnalysis
         LLVMProfileData
         LLVMObject
-        LLVMMCParser
-        LLVMMC
+        LLVMTextAPI
         LLVMBitReader
         LLVMCore
+        LLVMRemarks
+        LLVMBitstreamReader
+        LLVMAArch64AsmParser
+        LLVMMCParser
+        LLVMAArch64Desc
+        LLVMMC
+        LLVMDebugInfoCodeView
+        LLVMDebugInfoMSF
         LLVMBinaryFormat
+        LLVMAArch64Utils
+        LLVMAArch64Info
         LLVMSupport
         LLVMDemangle
         )

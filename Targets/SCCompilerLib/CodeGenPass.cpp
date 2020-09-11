@@ -1319,7 +1319,7 @@ llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name, scc::
     m_module->getOrInsertGlobal(name, CreateBaseType(type));
     auto gVar = m_module->getNamedGlobal(name);
     gVar->setLinkage(llvm::GlobalValue::CommonLinkage);
-    gVar->setAlignment(4);
+    gVar->setAlignment(llvm::MaybeAlign(sizeof(void*)));
     gVar->setInitializer(CreateConstant(type, "0"));
 
     return gVar;

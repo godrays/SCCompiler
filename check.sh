@@ -60,9 +60,16 @@ function reportCodeCoverage()
     cd build-$1-product
     rm -rf *.profraw
     rm -rf *.prodata
-    # TODO: Linux and Windows needs to be supported.
-    LLVM_PROFDATA_EXEC=`xcrun -find llvm-profdata`                      ;checkReturn
-    LLVM_COV_EXEC=`xcrun -find llvm-cov`                                ;checkReturn
+
+    # TODO: Windows needs to be supported.
+    if [ $os_type == "Mac" ]; then
+        LLVM_PROFDATA_EXEC=`xcrun -find llvm-profdata`        ;checkReturn
+        LLVM_COV_EXEC=`xcrun -find llvm-cov`                  ;checkReturn
+    else
+        LLVM_PROFDATA_EXEC=llvm-profdata-9
+        LLVM_COV_EXEC=llvm-cov-9
+    fi
+
     LLVM_PROFILE_FILE="$2.profraw" ./$2                                 ;checkReturn
     $LLVM_PROFDATA_EXEC merge -sparse $2.profraw -o default.profdata    ;checkReturn
     $LLVM_COV_EXEC show ./$2 -instr-profile=default.profdata -ignore-filename-regex=Externals/* -format=html -tab-size=4 >> DetailedCodeCoverageReport.html ;checkReturn
