@@ -10,7 +10,6 @@
 #include <list>
 #include <vector>
 
-#include <llvm/IR/CFG.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/MCJIT.h>
