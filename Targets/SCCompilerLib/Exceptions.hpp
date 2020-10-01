@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <string>
 #include <exception>
-#include <utility>
+#include <sstream>
+#include <string>
 
 
 namespace scc
@@ -20,15 +20,18 @@ namespace scc
 class CompileErrorException : public std::exception
 {
 public:
-    explicit CompileErrorException(std::string message) : m_message(std::move(message)) { }
-
-    const char * what() const noexcept final
+    template<typename ...Args>
+    explicit CompileErrorException(Args &&... args)
     {
-        return m_message.c_str();
+        std::ostringstream  os;
+        (os << ... <<  std::forward<Args>(args));
+        m_message = os.str();
     }
 
+    const char* what() const noexcept final;
+
 private:
-    std::string  m_message;
+    std::string     m_message;
 };
 
 
@@ -37,15 +40,18 @@ private:
 class SemanticErrorException : public std::exception
 {
 public:
-    explicit SemanticErrorException(std::string message) : m_message(std::move(message)) { }
-
-    const char * what() const noexcept final
+    template<typename ...Args>
+    explicit SemanticErrorException(Args &&... args)
     {
-        return m_message.c_str();
+        std::ostringstream  os;
+        (os << ... <<  std::forward<Args>(args));
+        m_message = os.str();
     }
 
+    const char* what() const noexcept final;
+
 private:
-    std::string  m_message;
+    std::string     m_message;
 };
 
 }

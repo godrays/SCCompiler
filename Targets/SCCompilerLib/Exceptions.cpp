@@ -6,3 +6,21 @@
 //
 
 #include "Exceptions.hpp"
+
+namespace scc
+{
+
+
+const char * CompileErrorException::what() const noexcept
+{
+    return m_message.c_str();
+}
+
+
+const char * SemanticErrorException::what() const noexcept
+{
+    return m_message.c_str();
+}
+
+
+}

@@ -13,6 +13,7 @@
 #include "AST.hpp"
 #include "Exceptions.hpp"
 #include "Symbols.hpp"
+#include "Utils.hpp"
 
 
 using namespace scc;
@@ -178,12 +179,8 @@ void SemanticPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
         // Rule: right expression (initializer) type must match.
         auto rightExprType = Visit(node->GetChild(0));
         
-        if (node->GetVarType() != rightExprType)
-        {
-            std::stringstream   message;
-            message << "Line: " << node->GetChild(0)->GetSourceCodeLine() << " - Assignment type mismatch." << std::endl;
-            throw SemanticErrorException(message.str());
-        }
+        throw_if(node->GetVarType() != rightExprType,
+                 SemanticErrorException("Line: ", node->GetChild(0)->GetSourceCodeLine(), " - Assignment type mismatch."));
 
         return;
     }
@@ -205,13 +202,9 @@ void SemanticPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     {
         // This search could be done faster by marking function declaration nodes when
         // visiting return statement nodes. Must keep AST nodes as simple as possible.
-        if (node->FindClosestChildNode(ast::NodeType::kNodeTypeReturnStatement) == nullptr)
-        {
-            std::stringstream   message;
-            message << "Line: " << node->GetSourceCodeLine() << " - " << node->GetFuncName()
-                    << " must have at least one return statement." << std::endl;
-            throw SemanticErrorException(message.str());
-        }
+        throw_if(node->FindClosestChildNode(ast::NodeType::kNodeTypeReturnStatement) == nullptr,
+                 SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - ", node->GetFuncName(),
+                                        " must have at least one return statement."));
     }
 
     // Visit childs
@@ -242,12 +235,9 @@ void SemanticPass::VisitForStatement(ast::NodeForStatement * node)
     assert(node->ChildCount() == 4);
     
     auto forConditionNode = node->GetChild(1);
-    if (forConditionNode->ChildCount() > 0 && Visit(forConditionNode->GetChild(0)) != Type::kTypeBool)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - For comparison type mismatch." << std::endl;
-        throw SemanticErrorException(message.str());
-    }
+    throw_if(forConditionNode->ChildCount() > 0 && Visit(forConditionNode->GetChild(0)) != Type::kTypeBool,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - For comparison type mismatch."));
+
     // Visit childs
     VisitChilds(node);
 }
@@ -259,12 +249,8 @@ void SemanticPass::VisitWhileStatement(ast::NodeWhileStatement * node)
     assert(node->ChildCount() == 2);
     
     auto conditionNode = node->GetChild(0);
-    if (Visit(conditionNode) != Type::kTypeBool)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - While comparison type mismatch." << std::endl;
-        throw SemanticErrorException(message.str());
-    }
+    throw_if(Visit(conditionNode) != Type::kTypeBool,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - While comparison type mismatch."));
 
     // Visit body statement childs.
     auto bodyNode = node->GetChild(1);
@@ -278,12 +264,8 @@ void SemanticPass::VisitDoWhileStatement(ast::NodeDoWhileStatement * node)
     assert(node->ChildCount() == 2);
     
     auto conditionNode = node->GetChild(1);
-    if (Visit(conditionNode) != Type::kTypeBool)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Do While comparison type mismatch." << std::endl;
-        throw SemanticErrorException(message.str());
-    }
+    throw_if(Visit(conditionNode) != Type::kTypeBool,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Do While comparison type mismatch."));
 
     // Visit body statement childs.
     auto bodyNode = node->GetChild(1);
@@ -303,36 +285,24 @@ void SemanticPass::VisitReturnStatement(ast::NodeReturnStatement * node)
     auto funcSymbol = scope->ResolveSymbol(funcDeclNode->GetFuncName());
     
     // Rule: Void function should not return a value.
-    if (funcSymbol->GetType() == Type::kTypeVoid && node->ChildCount() == 1)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Void function "
-                << funcSymbol->GetName() << " shoud not return a value." << std::endl;
-        throw SemanticErrorException(message.str());
-    }
-    else
+    throw_if(funcSymbol->GetType() == Type::kTypeVoid && node->ChildCount() == 1,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Void function ", funcSymbol->GetName(),
+                                    " should not return a value."));
+
     // Rule: Non-Void function should return a value.
-    if (funcSymbol->GetType() != Type::kTypeVoid && node->ChildCount() == 0)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Non-void function "
-                << funcSymbol->GetName() << " shoud return a value." << std::endl;
-        throw SemanticErrorException(message.str());
-    }
-    
+    throw_if(funcSymbol->GetType() != Type::kTypeVoid && node->ChildCount() == 0,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Non-void function ", funcSymbol->GetName(),
+                                    " should return a value."));
+
     // Rule: Return value type should match function return type.
     if (node->ChildCount() == 1)
     {
         auto returnExpr = node->GetChild(0);
         auto returnExprType = Visit(returnExpr);
 
-        if (funcSymbol->GetType() != returnExprType)
-        {
-            std::stringstream   message;
-            message << "Line: " << returnExpr->GetSourceCodeLine() << " - Return value type does not match "
-                    << funcSymbol->GetName() << " return type." << std::endl;
-            throw SemanticErrorException(message.str());
-        }
+        throw_if(funcSymbol->GetType() != returnExprType,
+                 SemanticErrorException("Line: ", returnExpr->GetSourceCodeLine(), " - Return value type does not match ",
+                                        funcSymbol->GetName(), " return type."));
     }
 }
 
@@ -342,12 +312,8 @@ void SemanticPass::VisitContinue(ast::NodeContinue * node)
     auto loopNode = node->FindClosestParentNode({ast::NodeType::kNodeTypeForStatement,
                                                  ast::NodeType::kNodeTypeWhileStatement});
     
-    if (loopNode == nullptr)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - 'continue' statement is allowed only in loops." << std::endl;
-        throw SemanticErrorException(message.str());
-    }
+    throw_if(loopNode == nullptr,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - 'continue' statement is allowed only in loops."));
     
     assert(node->ChildCount() == 0 && "continue statement node must have zero child!");
 }
@@ -358,13 +324,9 @@ void SemanticPass::VisitBreak(ast::NodeBreak * node)
     auto loopNode = node->FindClosestParentNode({ast::NodeType::kNodeTypeForStatement,
                                                  ast::NodeType::kNodeTypeWhileStatement});
 
-    if (loopNode == nullptr)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - 'break' statement is allowed only in loops." << std::endl;
-        throw SemanticErrorException(message.str());
-    }
-    
+    throw_if(loopNode == nullptr,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - 'break' statement is allowed only in loops."));
+
     assert(node->ChildCount() == 0 && "break statement node must have zero child!");
 }
 
@@ -378,12 +340,9 @@ Type SemanticPass::VisitFunctionCall(ast::NodeFuncCall * node)
 
     // Each node child is one parameter of function call.
     // Rule: Number of parameters declared and number of parameters used must match.
-    if (node->ChildCount() != symbol->ArgumentCount())
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - No matching function to call: " << node->GetFuncName() << std::endl;
-        throw SemanticErrorException(message.str());
-    }
+    throw_if(node->ChildCount() != symbol->ArgumentCount(),
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - No matching function to call: ",
+                                    node->GetFuncName()));
 
     // Rule: Function argument type must match with the expression (parameter) type.
     //       All parameters passed to a function are expressions.
@@ -394,12 +353,9 @@ Type SemanticPass::VisitFunctionCall(ast::NodeFuncCall * node)
         // Function argument is declared when func is declaration.
         auto argumentType = symbol->GetArgumentSymbol(index)->GetType();
 
-        if (paramExprType != argumentType)
-        {
-            std::stringstream   message;
-            message << "Line: " << node->GetSourceCodeLine() << " - No matching function to call: " << node->GetFuncName() << std::endl;
-            throw SemanticErrorException( message.str());
-        }
+        throw_if(paramExprType != argumentType,
+                 SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - No matching function to call: ",
+                                        node->GetFuncName()));
     }
 
     return funcReturnType;
@@ -416,12 +372,8 @@ Type SemanticPass::VisitAssignment(ast::NodeAssignment * node)
     auto leftOperandType = Visit(node->GetChild(0));
     auto rightOperandType = Visit(node->GetChild(1));
     
-    if (leftOperandType != rightOperandType)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Assignment type mismatch." << std::endl;
-        throw SemanticErrorException( message.str());
-    }
+    throw_if(leftOperandType != rightOperandType,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Assignment type mismatch."));
 
     return leftOperandType;
 }
@@ -450,12 +402,8 @@ Type SemanticPass::VisitLogicalOP(ast::NodeLogicalOP * node)
     auto leftOperandType  = Visit(node->GetChild(0));
     auto rightOperandType = Visit(node->GetChild(1));
     
-    if (leftOperandType != rightOperandType)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Logical operation type mismatch." << std::endl;
-        throw SemanticErrorException( message.str());
-    }
+    throw_if (leftOperandType != rightOperandType,
+              SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Logical operation type mismatch."));
 
     return leftOperandType;
 }
@@ -465,19 +413,11 @@ Type SemanticPass::VisitPrefixAOP(ast::NodePrefixAOP * node)
 {
     auto rightOperandType = Visit(node->GetChild(0));
     
-    if (node->GetChild(0)->GetNodeType() != ast::NodeType::kNodeTypeLiteralID)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Prefix arithmetic operation is not allowed." << std::endl;
-        throw SemanticErrorException( message.str());
-    }
+    throw_if(node->GetChild(0)->GetNodeType() != ast::NodeType::kNodeTypeLiteralID,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Prefix arithmetic operation is not allowed."));
 
-    if (rightOperandType != Type::kTypeFloat && rightOperandType != Type::kTypeInt)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Arithmetic operation type mismatch." << std::endl;
-        throw SemanticErrorException( message.str());
-    }
+    throw_if(rightOperandType != Type::kTypeFloat && rightOperandType != Type::kTypeInt,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Arithmetic operation type mismatch."));
 
     return rightOperandType;
 }
@@ -492,13 +432,9 @@ Type SemanticPass::VisitAOP(ast::NodeAOP * node)
     // Rule: Left and right expression type must match.
     auto leftOperandType = Visit(node->GetChild(0));
     auto rightOperandType = Visit(node->GetChild(1));
-    
-    if (leftOperandType != rightOperandType)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Arithmetic operation type mismatch." << std::endl;
-        throw SemanticErrorException( message.str());
-    }
+
+    throw_if(leftOperandType != rightOperandType,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Arithmetic operation type mismatch."));
 
     return leftOperandType;
 }
@@ -552,13 +488,8 @@ Type SemanticPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
 
     auto rightOperandType = Visit(node->GetChild(0));
     
-    if (rightOperandType != Type::kTypeFloat &&
-        rightOperandType != Type::kTypeInt)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Unary operation type mismatch." << std::endl;
-        throw SemanticErrorException( message.str());
-    }
+    throw_if(rightOperandType != Type::kTypeFloat && rightOperandType != Type::kTypeInt,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Unary operation type mismatch."));
 
     // Return type of right expr value.
     return rightOperandType;
@@ -575,12 +506,8 @@ Type SemanticPass::VisitCompOP(ast::NodeCompOP * node)
     auto leftOperandType = Visit(node->GetChild(0));
     auto rightOperandType = Visit(node->GetChild(1));
     
-    if (leftOperandType != rightOperandType)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Comparison operation type mismatch." << std::endl;
-        throw SemanticErrorException( message.str());
-    }
+    throw_if(leftOperandType != rightOperandType,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Comparison operation type mismatch."));
 
     // Comparison result type is always bool type.
     return Type::kTypeBool;

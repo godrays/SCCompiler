@@ -12,6 +12,7 @@
 #include "AST.hpp"
 #include "Exceptions.hpp"
 #include "Symbols.hpp"
+#include "Utils.hpp"
 
 
 using namespace scc;
@@ -137,13 +138,9 @@ void SymbolDefPass::SymbolDefPass::VisitVariableDeclaration(ast::NodeVarDeclarat
     auto symbolType = node->GetVarType();
 
     // Symbol redefinition is not allowed.
-    if (m_currentScope->IsDefined(symbolName))
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Redefinition of a symbol: " <<  symbolName << std::endl;
-        throw SemanticErrorException(message.str());
-    }
-    
+    throw_if(m_currentScope->IsDefined(symbolName),
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Redefinition of a symbol: ", symbolName));
+
     auto symbol = new VariableSymbol(symbolName, symbolType);
     symbol->SetScope(m_currentScope);
     // Define new symbol.
@@ -161,13 +158,9 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
     auto funcSymbolType = node->GetReturnType();
 
     // Symbol redefinition is not allowed.
-    if (m_currentScope->IsDefined(funcSymbolName))
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Redefinition of a symbol: " <<  funcSymbolName << std::endl;
-        throw SemanticErrorException(message.str());
-    }
-    
+    throw_if(m_currentScope->IsDefined(funcSymbolName),
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Redefinition of a symbol: ", funcSymbolName));
+
     auto funcSymbol = new FunctionSymbol(funcSymbolName, funcSymbolType);
     funcSymbol->SetScope(m_currentScope);
     // Define function symbol.
@@ -185,12 +178,8 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
         auto argType = argument.GetType();
 
         // Symbol redefinition is not allowed.
-        if (m_currentScope->IsDefined(argName))
-        {
-            std::stringstream   message;
-            message << "Line: " << node->GetSourceCodeLine() << " - Redefinition of a symbol: " << argName << std::endl;
-            throw SemanticErrorException(message.str());
-        }
+        throw_if(m_currentScope->IsDefined(argName),
+                 SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Redefinition of a symbol: ", argName));
 
         auto argSymbol = new FuncArgSymbol(argName, argType);
         argSymbol->SetScope(m_currentScope);
@@ -243,12 +232,9 @@ void SymbolDefPass::VisitFunctionCall(ast::NodeFuncCall * node)
     // Rule: Function name must resolve (must defined).
     auto scope = node->GetScope();
     auto symbol = static_cast<FunctionSymbol *>(scope->ResolveSymbol(node->GetFuncName()));
-    if (!symbol)
-    {
-        std::stringstream   message;
-        message << "Line: " << node->GetSourceCodeLine() << " - Use of undeclared identifier: " << node->GetFuncName() << std::endl;
-        throw SemanticErrorException(message.str());
-    }
+    throw_if(!symbol,
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Use of undeclared identifier: ",
+                                    node->GetFuncName()));
 
     VisitChilds(node);
 }
@@ -269,12 +255,9 @@ void SymbolDefPass::VisitLiteral(ast::NodeLiteral * node)
             // Rule: Resolve variable name. It has to be defined before it's used.
             auto scope = node->GetScope();
             auto symbol = scope->ResolveSymbol(node->GetValue());
-            if (!symbol)
-            {
-                std::stringstream   message;
-                message << "Line: " << node->GetSourceCodeLine() << " - Use of undeclared identifier: " << node->GetValue() << std::endl;
-                throw SemanticErrorException(message.str());
-            }
+            throw_if(!symbol,
+                     SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Use of undeclared identifier: ",
+                                            node->GetValue()));
         }
         break;
         

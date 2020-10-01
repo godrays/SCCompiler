@@ -17,6 +17,7 @@
 #include <llvm/Transforms/IPO/PassManagerBuilder.h>
 
 #include "Exceptions.hpp"
+#include "Utils.hpp"
 
 
 using namespace scc;
@@ -40,12 +41,8 @@ JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
 
     std::string error;
     m_executionEngine = llvm::EngineBuilder(std::move(module)).setEngineKind(llvm::EngineKind::Kind::JIT).setErrorStr(&error).create();
-    if (m_executionEngine == nullptr)
-    {
-        std::stringstream   message;
-        message << "Could not create ExecutionEngine: " << error << std::endl;
-        throw CompileErrorException(message.str());
-    }
+    throw_if(m_executionEngine == nullptr,
+             CompileErrorException("Could not create ExecutionEngine: ", error));
 
     // Ensure the module is fully processed and is usable.
     // This method has no effect for the interpeter.
