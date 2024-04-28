@@ -33,150 +33,19 @@ target_link_libraries(SCCompilerLib PRIVATE
         curses
         dl
         m
-        LLVMXRay
-        LLVMWindowsManifest
-        LLVMTableGen
-        LLVMSymbolize
-        LLVMDebugInfoPDB
-        LLVMOrcJIT
-        LLVMOrcError
-        LLVMJITLink
-        LLVMObjectYAML
-        LLVMMCA
-        LLVMLTO
-        LLVMPasses
-        LLVMObjCARCOpts
-        LLVMLineEditor
-        LLVMLibDriver
-        LLVMInterpreter
-        LLVMFuzzMutate
-        LLVMFrontendOpenMP
-        LLVMMCJIT
-        LLVMExecutionEngine
-        LLVMRuntimeDyld
-        LLVMDWARFLinker
-        LLVMDlltoolDriver
-        LLVMOption
-        LLVMDebugInfoGSYM
-        LLVMCoverage
-        LLVMCoroutines
-        LLVMXCoreDisassembler
-        LLVMXCoreCodeGen
-        LLVMXCoreDesc
-        LLVMXCoreInfo
-        LLVMX86Disassembler
-        LLVMX86AsmParser
-        LLVMX86CodeGen
-        LLVMX86Desc
-        LLVMX86Utils
-        LLVMX86Info
-        LLVMWebAssemblyDisassembler
-        LLVMWebAssemblyCodeGen
-        LLVMWebAssemblyDesc
-        LLVMWebAssemblyAsmParser
-        LLVMWebAssemblyInfo
-        LLVMSystemZDisassembler
-        LLVMSystemZCodeGen
-        LLVMSystemZAsmParser
-        LLVMSystemZDesc
-        LLVMSystemZInfo
-        LLVMSparcDisassembler
-        LLVMSparcCodeGen
-        LLVMSparcAsmParser
-        LLVMSparcDesc
-        LLVMSparcInfo
-        LLVMRISCVDisassembler
-        LLVMRISCVCodeGen
-        LLVMRISCVAsmParser
-        LLVMRISCVDesc
-        LLVMRISCVUtils
-        LLVMRISCVInfo
-        LLVMPowerPCDisassembler
-        LLVMPowerPCCodeGen
-        LLVMPowerPCAsmParser
-        LLVMPowerPCDesc
-        LLVMPowerPCInfo
-        LLVMNVPTXCodeGen
-        LLVMNVPTXDesc
-        LLVMNVPTXInfo
-        LLVMMSP430Disassembler
-        LLVMMSP430CodeGen
-        LLVMMSP430AsmParser
-        LLVMMSP430Desc
-        LLVMMSP430Info
-        LLVMMipsDisassembler
-        LLVMMipsCodeGen
-        LLVMMipsAsmParser
-        LLVMMipsDesc
-        LLVMMipsInfo
-        LLVMLanaiDisassembler
-        LLVMLanaiCodeGen
-        LLVMLanaiAsmParser
-        LLVMLanaiDesc
-        LLVMLanaiInfo
-        LLVMHexagonDisassembler
-        LLVMHexagonCodeGen
-        LLVMHexagonAsmParser
-        LLVMHexagonDesc
-        LLVMHexagonInfo
-        LLVMBPFDisassembler
-        LLVMBPFCodeGen
-        LLVMBPFAsmParser
-        LLVMBPFDesc
-        LLVMBPFInfo
-        LLVMARMDisassembler
-        LLVMARMCodeGen
-        LLVMARMAsmParser
-        LLVMARMDesc
-        LLVMARMUtils
-        LLVMARMInfo
-        LLVMAMDGPUDisassembler
-        LLVMAMDGPUCodeGen
-        LLVMMIRParser
-        LLVMipo
-        LLVMInstrumentation
-        LLVMVectorize
-        LLVMLinker
-        LLVMIRReader
-        LLVMAsmParser
-        LLVMAMDGPUAsmParser
-        LLVMAMDGPUDesc
-        LLVMAMDGPUUtils
-        LLVMAMDGPUInfo
-        LLVMAArch64Disassembler
-        LLVMMCDisassembler
-        LLVMAArch64CodeGen
-        LLVMCFGuard
-        LLVMGlobalISel
-        LLVMSelectionDAG
-        LLVMAsmPrinter
-        LLVMDebugInfoDWARF
-        LLVMCodeGen
-        LLVMTarget
-        LLVMScalarOpts
-        LLVMInstCombine
-        LLVMAggressiveInstCombine
-        LLVMTransformUtils
-        LLVMBitWriter
-        LLVMAnalysis
-        LLVMProfileData
-        LLVMObject
-        LLVMTextAPI
-        LLVMBitReader
-        LLVMCore
-        LLVMRemarks
-        LLVMBitstreamReader
-        LLVMAArch64AsmParser
-        LLVMMCParser
-        LLVMAArch64Desc
-        LLVMMC
-        LLVMDebugInfoCodeView
-        LLVMDebugInfoMSF
-        LLVMBinaryFormat
-        LLVMAArch64Utils
-        LLVMAArch64Info
-        LLVMSupport
-        LLVMDemangle
+        LLVMWindowsManifest LLVMXRay LLVMLibDriver LLVMDlltoolDriver LLVMCoverage LLVMLineEditor LLVMX86Disassembler
+        LLVMX86AsmParser LLVMX86CodeGen LLVMX86Desc LLVMX86Info LLVMARMDisassembler LLVMARMAsmParser LLVMARMCodeGen
+        LLVMARMDesc LLVMARMUtils LLVMARMInfo LLVMAArch64Disassembler LLVMAArch64AsmParser LLVMAArch64CodeGen
+        LLVMAArch64Desc LLVMAArch64Utils LLVMAArch64Info LLVMOrcJIT LLVMMCJIT LLVMJITLink LLVMOrcTargetProcess
+        LLVMOrcShared LLVMInterpreter LLVMExecutionEngine LLVMRuntimeDyld LLVMSymbolize LLVMDebugInfoPDB
+        LLVMDebugInfoGSYM LLVMOption LLVMObjectYAML LLVMMCA LLVMMCDisassembler LLVMLTO LLVMPasses LLVMCFGuard
+        LLVMCoroutines LLVMObjCARCOpts LLVMHelloNew LLVMipo LLVMVectorize LLVMLinker LLVMInstrumentation
+        LLVMFrontendOpenMP LLVMFrontendOpenACC LLVMExtensions LLVMDWARFLinker LLVMGlobalISel LLVMMIRParser
+        LLVMAsmPrinter LLVMDebugInfoDWARF LLVMSelectionDAG LLVMCodeGen LLVMIRReader LLVMAsmParser LLVMInterfaceStub
+        LLVMFileCheck LLVMFuzzMutate LLVMTarget LLVMScalarOpts LLVMInstCombine LLVMAggressiveInstCombine
+        LLVMTransformUtils LLVMBitWriter LLVMAnalysis LLVMProfileData LLVMObject LLVMTextAPI LLVMMCParser LLVMMC
+        LLVMDebugInfoCodeView LLVMDebugInfoMSF LLVMBitReader LLVMCore LLVMRemarks LLVMBitstreamReader LLVMBinaryFormat
+        LLVMTableGen LLVMSupport LLVMDemangle
         )
 
 # Note: files in Output section needs to be generated in target binary. Otherwise, it will generate files in every build run.

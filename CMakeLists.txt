@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.24)
 
 project(SCCompiler)
 
 # set(CMAKE_VERBOSE_MAKEFILE on)
 
-set(CMAKE_CONFIGURATION_TYPES "CCov;ASan;TSan" CACHE STRING "" FORCE)
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release;CCov;ASan;TSan" CACHE STRING "" FORCE)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -20,13 +20,17 @@ set(CMAKE_CXX_FLAGS_CCOV "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage
 set(CMAKE_CXX_FLAGS_ASAN "${CMAKE_CXX_FLAGS} -g -O1 -fsanitize=address -fno-omit-frame-pointer")
 set(CMAKE_CXX_FLAGS_TSAN "${CMAKE_CXX_FLAGS} -g -O2 -fsanitize=thread -fPIE")
 
-include_directories(Targets/SCCompilerLib)
-include_directories(Externals/Catch2/2.12.4/single_include)
-include_directories(Externals/ANTLR/4.8/installed/include/antlr4-runtime)
-include_directories(Externals/LLVM/10.0.0/installed/include)
+set(CATCH2_VERSION 2.12.4)
+set(ANTLR_VERSION 4.8)
+set(LLVM_VERSION 12.0.1)
 
-link_directories(Externals/ANTLR/4.8/installed/lib)
-link_directories(Externals/LLVM/10.0.0/installed/lib)
+include_directories(Targets/SCCompilerLib)
+include_directories(Externals/catch2/${CATCH2_VERSION}/single_include)
+include_directories(Externals/ANTLR/${ANTLR_VERSION}/installed/include/antlr4-runtime)
+include_directories(Externals/llvm/${LLVM_VERSION}/llvm/installed/include)
+
+link_directories(Externals/ANTLR/${ANTLR_VERSION}/installed/lib)
+link_directories(Externals/llvm/${LLVM_VERSION}/llvm/installed/lib)
 
 add_subdirectory(Targets/SCCompilerLib)
 add_subdirectory(Targets/SCCompilerApp)

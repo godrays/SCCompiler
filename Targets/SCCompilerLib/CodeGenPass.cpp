@@ -768,7 +768,10 @@ llvm::Value * CodeGenPass::VisitFunctionCall(ast::NodeFuncCall * node)
     auto func = static_cast<SymbolProperty *>(funcSymbol->GetProperty())->GetValue();
     assert(func != nullptr);
 
-    return m_irBuilder->CreateCall(func, args);
+    auto funcPtr = llvm::dyn_cast<llvm::Function>(func);
+    assert(funcPtr != nullptr);
+
+    return m_irBuilder->CreateCall(funcPtr, args);
 }
 
 
@@ -1432,9 +1435,6 @@ std::string CodeGenPass::DebugLLVMTypeAsString(llvm::Type::TypeID typeID) const
 
         case llvm::Type::PointerTyID:     ///< 15: Pointers
         return "PointerTyID";
-
-        case llvm::Type::VectorTyID:      ///< 16: SIMD 'packed' format, or other vector type
-        return "VectorTyID";
 
         default:
         assert("Unknown llvm typeID");
