@@ -8,7 +8,7 @@ lib_name=llvm
 lib_version=12.0.1
 lib_file=llvm-project-$lib_version.src.tar.xz
 lib_url=https://github.com/llvm/llvm-project/releases/download/llvmorg-$lib_version/$lib_file
-logical_core_count=$(if [[ $(uname) == "Darwin" ]]; then sysctl -n hw.ncpu; else nproc --all; fi)
+logical_core_count=$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)
 
 pushd .
 

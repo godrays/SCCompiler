@@ -3,23 +3,7 @@
 buildScript=build.sh
 currentDir=$PWD
 export ASAN_OPTIONS=detect_container_overflow=0
-
-# Define osType
-unameOut="$(uname -s)"
-case "${unameOut}" in
-    Linux*)     os_type=Linux;;
-    Darwin*)    os_type=Mac;;
-    CYGWIN*)    os_type=Win;;
-    MINGW*)     os_type=Win;;
-    *)          os_type="UNKNOWN:${unameOut}"
-esac
-
-if [ $os_type == "Mac" ]; then
-    logical_core_count=`sysctl -n hw.ncpu`
-else
-    logical_core_count=`nproc --all`
-fi
-
+logical_core_count=$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)
 
 function echoColor
 {

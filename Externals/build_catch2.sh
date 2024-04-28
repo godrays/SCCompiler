@@ -7,7 +7,7 @@
 lib_name=catch2
 lib_version=2.12.4
 lib_url=https://github.com/catchorg/Catch2.git
-logical_core_count=$(if [[ $(uname) == "Darwin" ]]; then sysctl -n hw.ncpu; else nproc --all; fi)
+logical_core_count=$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)
 
 pushd .
 
