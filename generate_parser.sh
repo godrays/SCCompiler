@@ -1,3 +1,6 @@
-GRAMMAR_FILE=SCCompiler.g4
+ANTLR_VERSION=4.7.1
+GRAMMAR_DIR=./Targets/SCCompilerLib/Parser
+GRAMMAR_FILE=$GRAMMAR_DIR/SCCompiler.g4
 
-java -jar "Externals/ANTLR/4.8/tool/antlr-4.8-complete.jar" -Dlanguage=Cpp -visitor ./Targets/SCCompilerLib/Parser/$GRAMMAR_FILE
+echo Parser files will be generated in: $GRAMMAR_DIR
+java -jar "Externals/antlr/$ANTLR_VERSION/bin/antlr-$ANTLR_VERSION-complete.jar" -Dlanguage=Cpp -visitor $GRAMMAR_FILE
