@@ -12,7 +12,7 @@ grammar SCCompiler;
 // Parser Rules
 // ----------------------------------------------------------
 
-// Parser grammer begin rule name must be "program".
+// Parser grammar begin rule name must be "program".
 
 program
     :   (varDecl ';' | functionDecl)+ EOF
