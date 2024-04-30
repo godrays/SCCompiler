@@ -45,13 +45,12 @@ function reportCodeCoverage()
     rm -rf *.profraw
     rm -rf *.prodata
 
-    # TODO: Windows needs to be supported.
-    if [ $os_type == "Mac" ]; then
+    # TODO: Linux and Windows needs to be supported.
+    if [ "$(uname)" == "Darwin" ]; then
         LLVM_PROFDATA_EXEC=`xcrun -find llvm-profdata`        ;checkReturn
         LLVM_COV_EXEC=`xcrun -find llvm-cov`                  ;checkReturn
     else
-        LLVM_PROFDATA_EXEC=llvm-profdata-9
-        LLVM_COV_EXEC=llvm-cov-9
+        echo "Only macOS is supported for the check operation. Please add support for new OSes in the check.sh file."
     fi
 
     LLVM_PROFILE_FILE="$2.profraw" ./$2                                 ;checkReturn
