@@ -1,10 +1,10 @@
 ANTLR_VERSION=4.7.1
-PROJECT_PATH=`echo $PWD | sed 's/\(Compiler\).*/\1/g'`
+PROJECT_PATH=`echo $PWD`
 GRAMMAR_NAME=SCCompiler
 GRAMMAR_PATH=$PROJECT_PATH/Targets/SCCompilerLib/Parser
 GRAMMAR_FILE=$GRAMMAR_NAME.g4
 INPUT_FILE=$1
-JAR_FILE=$PROJECT_PATH/Externals/ANTLR/$ANTLR_VERSION/bin/antlr-$ANTLR_VERSION-complete.jar
+JAR_FILE=$PROJECT_PATH/Externals/antlr/$ANTLR_VERSION/bin/antlr-$ANTLR_VERSION-complete.jar
 PARSER_FIRST_RULE_NAME=program
 
 # Remove all folder if there is
