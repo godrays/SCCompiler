@@ -1,5 +1,5 @@
 
-// Generated from ./Common/SCCompilerLib/Parser/SCCompilerLib.g4 by ANTLR 4.7.1
+// Generated from ./Targets/SCCompilerLib/Parser/SCCompiler.g4 by ANTLR 4.13.1
 
 
 #include "SCCompilerListener.h"
@@ -9,26 +9,189 @@
 
 
 using namespace antlrcpp;
+
 using namespace antlr4;
 
-SCCompilerParser::SCCompilerParser(TokenStream *input) : Parser(input) {
-  _interpreter = new atn::ParserATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
+namespace {
+
+struct SCCompilerParserStaticData final {
+  SCCompilerParserStaticData(std::vector<std::string> ruleNames,
+                        std::vector<std::string> literalNames,
+                        std::vector<std::string> symbolicNames)
+      : ruleNames(std::move(ruleNames)), literalNames(std::move(literalNames)),
+        symbolicNames(std::move(symbolicNames)),
+        vocabulary(this->literalNames, this->symbolicNames) {}
+
+  SCCompilerParserStaticData(const SCCompilerParserStaticData&) = delete;
+  SCCompilerParserStaticData(SCCompilerParserStaticData&&) = delete;
+  SCCompilerParserStaticData& operator=(const SCCompilerParserStaticData&) = delete;
+  SCCompilerParserStaticData& operator=(SCCompilerParserStaticData&&) = delete;
+
+  std::vector<antlr4::dfa::DFA> decisionToDFA;
+  antlr4::atn::PredictionContextCache sharedContextCache;
+  const std::vector<std::string> ruleNames;
+  const std::vector<std::string> literalNames;
+  const std::vector<std::string> symbolicNames;
+  const antlr4::dfa::Vocabulary vocabulary;
+  antlr4::atn::SerializedATNView serializedATN;
+  std::unique_ptr<antlr4::atn::ATN> atn;
+};
+
+::antlr4::internal::OnceFlag sccompilerParserOnceFlag;
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+static thread_local
+#endif
+SCCompilerParserStaticData *sccompilerParserStaticData = nullptr;
+
+void sccompilerParserInitialize() {
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+  if (sccompilerParserStaticData != nullptr) {
+    return;
+  }
+#else
+  assert(sccompilerParserStaticData == nullptr);
+#endif
+  auto staticData = std::make_unique<SCCompilerParserStaticData>(
+    std::vector<std::string>{
+      "program", "varDecl", "varInit", "type", "functionDecl", "formalParameters", 
+      "formalParameter", "block", "stat", "expr", "exprList", "assignment", 
+      "forStatement", "forVarDecl", "forCondition", "forIncrements", "forInc"
+    },
+    std::vector<std::string>{
+      "", "';'", "','", "'='", "'float'", "'int'", "'void'", "'bool'", "'('", 
+      "')'", "'{'", "'}'", "'if'", "'else'", "'while'", "'do'", "'return'", 
+      "'continue'", "'break'", "'++'", "'--'", "'-'", "'+'", "'!'", "'*'", 
+      "'/'", "'<'", "'<='", "'>'", "'>='", "'=='", "'!='", "'&&'", "'||'", 
+      "'for'"
+    },
+    std::vector<std::string>{
+      "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
+      "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
+      "", "BOOL", "INT", "FLOAT", "ID", "WS", "LINECOMMENT", "BLOCKCOMMENT"
+    }
+  );
+  static const int32_t serializedATNSegment[] = {
+  	4,1,41,232,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
+  	14,2,15,7,15,2,16,7,16,1,0,1,0,1,0,1,0,4,0,39,8,0,11,0,12,0,40,1,0,1,
+  	0,1,1,1,1,1,1,1,1,5,1,49,8,1,10,1,12,1,52,9,1,1,2,1,2,1,2,3,2,57,8,2,
+  	1,3,1,3,1,4,1,4,1,4,1,4,3,4,65,8,4,1,4,1,4,1,4,5,4,70,8,4,10,4,12,4,73,
+  	9,4,1,4,1,4,1,5,1,5,1,5,5,5,80,8,5,10,5,12,5,83,9,5,1,6,1,6,1,6,1,7,1,
+  	7,5,7,90,8,7,10,7,12,7,93,9,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,
+  	1,8,1,8,1,8,3,8,108,8,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,
+  	8,1,8,1,8,1,8,1,8,1,8,3,8,127,8,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,
+  	1,8,1,8,3,8,140,8,8,1,9,1,9,1,9,1,9,3,9,146,8,9,1,9,1,9,1,9,1,9,1,9,1,
+  	9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,3,9,165,8,9,1,9,1,9,1,9,
+  	1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,5,9,185,8,
+  	9,10,9,12,9,188,9,9,1,10,1,10,1,10,5,10,193,8,10,10,10,12,10,196,9,10,
+  	1,11,1,11,1,11,1,11,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,
+  	1,13,3,13,213,8,13,1,14,3,14,216,8,14,1,15,1,15,1,15,5,15,221,8,15,10,
+  	15,12,15,224,9,15,3,15,226,8,15,1,16,1,16,3,16,230,8,16,1,16,0,1,18,17,
+  	0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,0,8,1,0,4,7,2,0,4,5,7,7,
+  	1,0,19,20,1,0,21,22,1,0,35,38,1,0,24,25,1,0,26,29,1,0,30,31,253,0,38,
+  	1,0,0,0,2,44,1,0,0,0,4,53,1,0,0,0,6,58,1,0,0,0,8,60,1,0,0,0,10,76,1,0,
+  	0,0,12,84,1,0,0,0,14,87,1,0,0,0,16,139,1,0,0,0,18,164,1,0,0,0,20,189,
+  	1,0,0,0,22,197,1,0,0,0,24,201,1,0,0,0,26,212,1,0,0,0,28,215,1,0,0,0,30,
+  	225,1,0,0,0,32,229,1,0,0,0,34,35,3,2,1,0,35,36,5,1,0,0,36,39,1,0,0,0,
+  	37,39,3,8,4,0,38,34,1,0,0,0,38,37,1,0,0,0,39,40,1,0,0,0,40,38,1,0,0,0,
+  	40,41,1,0,0,0,41,42,1,0,0,0,42,43,5,0,0,1,43,1,1,0,0,0,44,45,3,6,3,0,
+  	45,50,3,4,2,0,46,47,5,2,0,0,47,49,3,4,2,0,48,46,1,0,0,0,49,52,1,0,0,0,
+  	50,48,1,0,0,0,50,51,1,0,0,0,51,3,1,0,0,0,52,50,1,0,0,0,53,56,5,38,0,0,
+  	54,55,5,3,0,0,55,57,3,18,9,0,56,54,1,0,0,0,56,57,1,0,0,0,57,5,1,0,0,0,
+  	58,59,7,0,0,0,59,7,1,0,0,0,60,61,3,6,3,0,61,62,5,38,0,0,62,64,5,8,0,0,
+  	63,65,3,10,5,0,64,63,1,0,0,0,64,65,1,0,0,0,65,66,1,0,0,0,66,67,5,9,0,
+  	0,67,71,5,10,0,0,68,70,3,16,8,0,69,68,1,0,0,0,70,73,1,0,0,0,71,69,1,0,
+  	0,0,71,72,1,0,0,0,72,74,1,0,0,0,73,71,1,0,0,0,74,75,5,11,0,0,75,9,1,0,
+  	0,0,76,81,3,12,6,0,77,78,5,2,0,0,78,80,3,12,6,0,79,77,1,0,0,0,80,83,1,
+  	0,0,0,81,79,1,0,0,0,81,82,1,0,0,0,82,11,1,0,0,0,83,81,1,0,0,0,84,85,3,
+  	6,3,0,85,86,5,38,0,0,86,13,1,0,0,0,87,91,5,10,0,0,88,90,3,16,8,0,89,88,
+  	1,0,0,0,90,93,1,0,0,0,91,89,1,0,0,0,91,92,1,0,0,0,92,94,1,0,0,0,93,91,
+  	1,0,0,0,94,95,5,11,0,0,95,15,1,0,0,0,96,140,3,14,7,0,97,98,3,2,1,0,98,
+  	99,5,1,0,0,99,140,1,0,0,0,100,101,5,12,0,0,101,102,5,8,0,0,102,103,3,
+  	18,9,0,103,104,5,9,0,0,104,107,3,16,8,0,105,106,5,13,0,0,106,108,3,16,
+  	8,0,107,105,1,0,0,0,107,108,1,0,0,0,108,140,1,0,0,0,109,140,3,24,12,0,
+  	110,111,5,14,0,0,111,112,5,8,0,0,112,113,3,18,9,0,113,114,5,9,0,0,114,
+  	115,3,16,8,0,115,140,1,0,0,0,116,117,5,15,0,0,117,118,3,16,8,0,118,119,
+  	5,14,0,0,119,120,5,8,0,0,120,121,3,18,9,0,121,122,5,9,0,0,122,123,5,1,
+  	0,0,123,140,1,0,0,0,124,126,5,16,0,0,125,127,3,18,9,0,126,125,1,0,0,0,
+  	126,127,1,0,0,0,127,128,1,0,0,0,128,140,5,1,0,0,129,130,5,17,0,0,130,
+  	140,5,1,0,0,131,132,5,18,0,0,132,140,5,1,0,0,133,134,3,22,11,0,134,135,
+  	5,1,0,0,135,140,1,0,0,0,136,137,3,18,9,0,137,138,5,1,0,0,138,140,1,0,
+  	0,0,139,96,1,0,0,0,139,97,1,0,0,0,139,100,1,0,0,0,139,109,1,0,0,0,139,
+  	110,1,0,0,0,139,116,1,0,0,0,139,124,1,0,0,0,139,129,1,0,0,0,139,131,1,
+  	0,0,0,139,133,1,0,0,0,139,136,1,0,0,0,140,17,1,0,0,0,141,142,6,9,-1,0,
+  	142,143,5,38,0,0,143,145,5,8,0,0,144,146,3,20,10,0,145,144,1,0,0,0,145,
+  	146,1,0,0,0,146,147,1,0,0,0,147,165,5,9,0,0,148,149,7,1,0,0,149,150,5,
+  	8,0,0,150,151,3,18,9,0,151,152,5,9,0,0,152,165,1,0,0,0,153,154,7,2,0,
+  	0,154,165,5,38,0,0,155,156,7,3,0,0,156,165,3,18,9,10,157,158,5,23,0,0,
+  	158,165,3,18,9,9,159,165,7,4,0,0,160,161,5,8,0,0,161,162,3,18,9,0,162,
+  	163,5,9,0,0,163,165,1,0,0,0,164,141,1,0,0,0,164,148,1,0,0,0,164,153,1,
+  	0,0,0,164,155,1,0,0,0,164,157,1,0,0,0,164,159,1,0,0,0,164,160,1,0,0,0,
+  	165,186,1,0,0,0,166,167,10,8,0,0,167,168,7,5,0,0,168,185,3,18,9,9,169,
+  	170,10,7,0,0,170,171,7,3,0,0,171,185,3,18,9,8,172,173,10,6,0,0,173,174,
+  	7,6,0,0,174,185,3,18,9,7,175,176,10,5,0,0,176,177,7,7,0,0,177,185,3,18,
+  	9,6,178,179,10,4,0,0,179,180,5,32,0,0,180,185,3,18,9,5,181,182,10,3,0,
+  	0,182,183,5,33,0,0,183,185,3,18,9,4,184,166,1,0,0,0,184,169,1,0,0,0,184,
+  	172,1,0,0,0,184,175,1,0,0,0,184,178,1,0,0,0,184,181,1,0,0,0,185,188,1,
+  	0,0,0,186,184,1,0,0,0,186,187,1,0,0,0,187,19,1,0,0,0,188,186,1,0,0,0,
+  	189,194,3,18,9,0,190,191,5,2,0,0,191,193,3,18,9,0,192,190,1,0,0,0,193,
+  	196,1,0,0,0,194,192,1,0,0,0,194,195,1,0,0,0,195,21,1,0,0,0,196,194,1,
+  	0,0,0,197,198,3,18,9,0,198,199,5,3,0,0,199,200,3,18,9,0,200,23,1,0,0,
+  	0,201,202,5,34,0,0,202,203,5,8,0,0,203,204,3,26,13,0,204,205,5,1,0,0,
+  	205,206,3,28,14,0,206,207,5,1,0,0,207,208,3,30,15,0,208,209,5,9,0,0,209,
+  	210,3,16,8,0,210,25,1,0,0,0,211,213,3,2,1,0,212,211,1,0,0,0,212,213,1,
+  	0,0,0,213,27,1,0,0,0,214,216,3,18,9,0,215,214,1,0,0,0,215,216,1,0,0,0,
+  	216,29,1,0,0,0,217,222,3,32,16,0,218,219,5,2,0,0,219,221,3,32,16,0,220,
+  	218,1,0,0,0,221,224,1,0,0,0,222,220,1,0,0,0,222,223,1,0,0,0,223,226,1,
+  	0,0,0,224,222,1,0,0,0,225,217,1,0,0,0,225,226,1,0,0,0,226,31,1,0,0,0,
+  	227,230,3,18,9,0,228,230,3,22,11,0,229,227,1,0,0,0,229,228,1,0,0,0,230,
+  	33,1,0,0,0,21,38,40,50,56,64,71,81,91,107,126,139,145,164,184,186,194,
+  	212,215,222,225,229
+  };
+  staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
+
+  antlr4::atn::ATNDeserializer deserializer;
+  staticData->atn = deserializer.deserialize(staticData->serializedATN);
+
+  const size_t count = staticData->atn->getNumberOfDecisions();
+  staticData->decisionToDFA.reserve(count);
+  for (size_t i = 0; i < count; i++) { 
+    staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
+  }
+  sccompilerParserStaticData = staticData.release();
+}
+
+}
+
+SCCompilerParser::SCCompilerParser(TokenStream *input) : SCCompilerParser(input, antlr4::atn::ParserATNSimulatorOptions()) {}
+
+SCCompilerParser::SCCompilerParser(TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options) : Parser(input) {
+  SCCompilerParser::initialize();
+  _interpreter = new atn::ParserATNSimulator(this, *sccompilerParserStaticData->atn, sccompilerParserStaticData->decisionToDFA, sccompilerParserStaticData->sharedContextCache, options);
 }
 
 SCCompilerParser::~SCCompilerParser() {
   delete _interpreter;
 }
 
+const atn::ATN& SCCompilerParser::getATN() const {
+  return *sccompilerParserStaticData->atn;
+}
+
 std::string SCCompilerParser::getGrammarFileName() const {
-  return "SCCompilerLib.g4";
+  return "SCCompiler.g4";
 }
 
 const std::vector<std::string>& SCCompilerParser::getRuleNames() const {
-  return _ruleNames;
+  return sccompilerParserStaticData->ruleNames;
 }
 
-dfa::Vocabulary& SCCompilerParser::getVocabulary() const {
-  return _vocabulary;
+const dfa::Vocabulary& SCCompilerParser::getVocabulary() const {
+  return sccompilerParserStaticData->vocabulary;
+}
+
+antlr4::atn::SerializedATNView SCCompilerParser::getSerializedATN() const {
+  return sccompilerParserStaticData->serializedATN;
 }
 
 
@@ -76,7 +239,7 @@ void SCCompilerParser::ProgramContext::exitRule(tree::ParseTreeListener *listene
 }
 
 
-antlrcpp::Any SCCompilerParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitProgram(this);
   else
@@ -88,7 +251,11 @@ SCCompilerParser::ProgramContext* SCCompilerParser::program() {
   enterRule(_localctx, 0, SCCompilerParser::RuleProgram);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -114,15 +281,14 @@ SCCompilerParser::ProgramContext* SCCompilerParser::program() {
         break;
       }
 
+      default:
+        break;
       }
       setState(40); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-      | (1ULL << SCCompilerParser::T__4)
-      | (1ULL << SCCompilerParser::T__5)
-      | (1ULL << SCCompilerParser::T__6))) != 0));
+      ((1ULL << _la) & 240) != 0));
     setState(42);
     match(SCCompilerParser::EOF);
    
@@ -172,7 +338,7 @@ void SCCompilerParser::VarDeclContext::exitRule(tree::ParseTreeListener *listene
 }
 
 
-antlrcpp::Any SCCompilerParser::VarDeclContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::VarDeclContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitVarDecl(this);
   else
@@ -184,7 +350,11 @@ SCCompilerParser::VarDeclContext* SCCompilerParser::varDecl() {
   enterRule(_localctx, 2, SCCompilerParser::RuleVarDecl);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -248,7 +418,7 @@ void SCCompilerParser::VarInitContext::exitRule(tree::ParseTreeListener *listene
 }
 
 
-antlrcpp::Any SCCompilerParser::VarInitContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::VarInitContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitVarInit(this);
   else
@@ -260,7 +430,11 @@ SCCompilerParser::VarInitContext* SCCompilerParser::varInit() {
   enterRule(_localctx, 4, SCCompilerParser::RuleVarInit);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -312,7 +486,7 @@ void SCCompilerParser::TypeContext::exitRule(tree::ParseTreeListener *listener) 
 }
 
 
-antlrcpp::Any SCCompilerParser::TypeContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::TypeContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitType(this);
   else
@@ -324,7 +498,11 @@ SCCompilerParser::TypeContext* SCCompilerParser::type() {
   enterRule(_localctx, 6, SCCompilerParser::RuleType);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -332,10 +510,7 @@ SCCompilerParser::TypeContext* SCCompilerParser::type() {
     setState(58);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-      | (1ULL << SCCompilerParser::T__4)
-      | (1ULL << SCCompilerParser::T__5)
-      | (1ULL << SCCompilerParser::T__6))) != 0))) {
+      ((1ULL << _la) & 240) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -403,7 +578,7 @@ void SCCompilerParser::FuncDeclarationContext::exitRule(tree::ParseTreeListener 
     parserListener->exitFuncDeclaration(this);
 }
 
-antlrcpp::Any SCCompilerParser::FuncDeclarationContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::FuncDeclarationContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitFuncDeclaration(this);
   else
@@ -414,11 +589,15 @@ SCCompilerParser::FunctionDeclContext* SCCompilerParser::functionDecl() {
   enterRule(_localctx, 8, SCCompilerParser::RuleFunctionDecl);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    _localctx = dynamic_cast<FunctionDeclContext *>(_tracker.createInstance<SCCompilerParser::FuncDeclarationContext>(_localctx));
+    _localctx = _tracker.createInstance<SCCompilerParser::FuncDeclarationContext>(_localctx);
     enterOuterAlt(_localctx, 1);
     setState(60);
     type();
@@ -431,10 +610,7 @@ SCCompilerParser::FunctionDeclContext* SCCompilerParser::functionDecl() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-      | (1ULL << SCCompilerParser::T__4)
-      | (1ULL << SCCompilerParser::T__5)
-      | (1ULL << SCCompilerParser::T__6))) != 0)) {
+      ((1ULL << _la) & 240) != 0)) {
       setState(63);
       formalParameters();
     }
@@ -446,28 +622,7 @@ SCCompilerParser::FunctionDeclContext* SCCompilerParser::functionDecl() {
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-      | (1ULL << SCCompilerParser::T__4)
-      | (1ULL << SCCompilerParser::T__5)
-      | (1ULL << SCCompilerParser::T__6)
-      | (1ULL << SCCompilerParser::T__7)
-      | (1ULL << SCCompilerParser::T__9)
-      | (1ULL << SCCompilerParser::T__11)
-      | (1ULL << SCCompilerParser::T__13)
-      | (1ULL << SCCompilerParser::T__14)
-      | (1ULL << SCCompilerParser::T__15)
-      | (1ULL << SCCompilerParser::T__16)
-      | (1ULL << SCCompilerParser::T__17)
-      | (1ULL << SCCompilerParser::T__18)
-      | (1ULL << SCCompilerParser::T__19)
-      | (1ULL << SCCompilerParser::T__20)
-      | (1ULL << SCCompilerParser::T__21)
-      | (1ULL << SCCompilerParser::T__22)
-      | (1ULL << SCCompilerParser::T__33)
-      | (1ULL << SCCompilerParser::BOOL)
-      | (1ULL << SCCompilerParser::INT)
-      | (1ULL << SCCompilerParser::FLOAT)
-      | (1ULL << SCCompilerParser::ID))) != 0)) {
+      ((1ULL << _la) & 532592711152) != 0)) {
       setState(68);
       stat();
       setState(73);
@@ -519,7 +674,7 @@ void SCCompilerParser::FormalParametersContext::exitRule(tree::ParseTreeListener
 }
 
 
-antlrcpp::Any SCCompilerParser::FormalParametersContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::FormalParametersContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitFormalParameters(this);
   else
@@ -531,7 +686,11 @@ SCCompilerParser::FormalParametersContext* SCCompilerParser::formalParameters() 
   enterRule(_localctx, 10, SCCompilerParser::RuleFormalParameters);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -599,7 +758,7 @@ void SCCompilerParser::FuncArgDeclarationContext::exitRule(tree::ParseTreeListen
     parserListener->exitFuncArgDeclaration(this);
 }
 
-antlrcpp::Any SCCompilerParser::FuncArgDeclarationContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::FuncArgDeclarationContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitFuncArgDeclaration(this);
   else
@@ -609,11 +768,15 @@ SCCompilerParser::FormalParameterContext* SCCompilerParser::formalParameter() {
   FormalParameterContext *_localctx = _tracker.createInstance<FormalParameterContext>(_ctx, getState());
   enterRule(_localctx, 12, SCCompilerParser::RuleFormalParameter);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
-    _localctx = dynamic_cast<FormalParameterContext *>(_tracker.createInstance<SCCompilerParser::FuncArgDeclarationContext>(_localctx));
+    _localctx = _tracker.createInstance<SCCompilerParser::FuncArgDeclarationContext>(_localctx);
     enterOuterAlt(_localctx, 1);
     setState(84);
     type();
@@ -662,7 +825,7 @@ void SCCompilerParser::BlockContext::exitRule(tree::ParseTreeListener *listener)
 }
 
 
-antlrcpp::Any SCCompilerParser::BlockContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::BlockContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitBlock(this);
   else
@@ -674,7 +837,11 @@ SCCompilerParser::BlockContext* SCCompilerParser::block() {
   enterRule(_localctx, 14, SCCompilerParser::RuleBlock);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -685,28 +852,7 @@ SCCompilerParser::BlockContext* SCCompilerParser::block() {
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-      | (1ULL << SCCompilerParser::T__4)
-      | (1ULL << SCCompilerParser::T__5)
-      | (1ULL << SCCompilerParser::T__6)
-      | (1ULL << SCCompilerParser::T__7)
-      | (1ULL << SCCompilerParser::T__9)
-      | (1ULL << SCCompilerParser::T__11)
-      | (1ULL << SCCompilerParser::T__13)
-      | (1ULL << SCCompilerParser::T__14)
-      | (1ULL << SCCompilerParser::T__15)
-      | (1ULL << SCCompilerParser::T__16)
-      | (1ULL << SCCompilerParser::T__17)
-      | (1ULL << SCCompilerParser::T__18)
-      | (1ULL << SCCompilerParser::T__19)
-      | (1ULL << SCCompilerParser::T__20)
-      | (1ULL << SCCompilerParser::T__21)
-      | (1ULL << SCCompilerParser::T__22)
-      | (1ULL << SCCompilerParser::T__33)
-      | (1ULL << SCCompilerParser::BOOL)
-      | (1ULL << SCCompilerParser::INT)
-      | (1ULL << SCCompilerParser::FLOAT)
-      | (1ULL << SCCompilerParser::ID))) != 0)) {
+      ((1ULL << _la) & 532592711152) != 0)) {
       setState(88);
       stat();
       setState(93);
@@ -768,7 +914,7 @@ void SCCompilerParser::IfStatementContext::exitRule(tree::ParseTreeListener *lis
     parserListener->exitIfStatement(this);
 }
 
-antlrcpp::Any SCCompilerParser::IfStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::IfStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitIfStatement(this);
   else
@@ -797,7 +943,7 @@ void SCCompilerParser::IgnoreContext::exitRule(tree::ParseTreeListener *listener
     parserListener->exitIgnore(this);
 }
 
-antlrcpp::Any SCCompilerParser::IgnoreContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::IgnoreContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitIgnore(this);
   else
@@ -822,7 +968,7 @@ void SCCompilerParser::ReturnStatementContext::exitRule(tree::ParseTreeListener 
     parserListener->exitReturnStatement(this);
 }
 
-antlrcpp::Any SCCompilerParser::ReturnStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ReturnStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitReturnStatement(this);
   else
@@ -843,7 +989,7 @@ void SCCompilerParser::BreakContext::exitRule(tree::ParseTreeListener *listener)
     parserListener->exitBreak(this);
 }
 
-antlrcpp::Any SCCompilerParser::BreakContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::BreakContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitBreak(this);
   else
@@ -868,7 +1014,7 @@ void SCCompilerParser::FuncCallStatementContext::exitRule(tree::ParseTreeListene
     parserListener->exitFuncCallStatement(this);
 }
 
-antlrcpp::Any SCCompilerParser::FuncCallStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::FuncCallStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitFuncCallStatement(this);
   else
@@ -893,7 +1039,7 @@ void SCCompilerParser::BlockStatementContext::exitRule(tree::ParseTreeListener *
     parserListener->exitBlockStatement(this);
 }
 
-antlrcpp::Any SCCompilerParser::BlockStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::BlockStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitBlockStatement(this);
   else
@@ -922,7 +1068,7 @@ void SCCompilerParser::WhileStatementContext::exitRule(tree::ParseTreeListener *
     parserListener->exitWhileStatement(this);
 }
 
-antlrcpp::Any SCCompilerParser::WhileStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::WhileStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitWhileStatement(this);
   else
@@ -943,7 +1089,7 @@ void SCCompilerParser::ContinueContext::exitRule(tree::ParseTreeListener *listen
     parserListener->exitContinue(this);
 }
 
-antlrcpp::Any SCCompilerParser::ContinueContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ContinueContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitContinue(this);
   else
@@ -972,7 +1118,7 @@ void SCCompilerParser::DoWhileStatementContext::exitRule(tree::ParseTreeListener
     parserListener->exitDoWhileStatement(this);
 }
 
-antlrcpp::Any SCCompilerParser::DoWhileStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::DoWhileStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitDoWhileStatement(this);
   else
@@ -997,7 +1143,7 @@ void SCCompilerParser::VarDeclStatementContext::exitRule(tree::ParseTreeListener
     parserListener->exitVarDeclStatement(this);
 }
 
-antlrcpp::Any SCCompilerParser::VarDeclStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::VarDeclStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitVarDeclStatement(this);
   else
@@ -1008,7 +1154,11 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
   enterRule(_localctx, 16, SCCompilerParser::RuleStat);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -1016,7 +1166,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 10, _ctx)) {
     case 1: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::BlockStatementContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::BlockStatementContext>(_localctx);
       enterOuterAlt(_localctx, 1);
       setState(96);
       block();
@@ -1024,7 +1174,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     }
 
     case 2: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::VarDeclStatementContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::VarDeclStatementContext>(_localctx);
       enterOuterAlt(_localctx, 2);
       setState(97);
       varDecl();
@@ -1034,7 +1184,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     }
 
     case 3: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::IfStatementContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::IfStatementContext>(_localctx);
       enterOuterAlt(_localctx, 3);
       setState(100);
       match(SCCompilerParser::T__11);
@@ -1058,12 +1208,14 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
         break;
       }
 
+      default:
+        break;
       }
       break;
     }
 
     case 4: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::IgnoreContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::IgnoreContext>(_localctx);
       enterOuterAlt(_localctx, 4);
       setState(109);
       forStatement();
@@ -1071,7 +1223,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     }
 
     case 5: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::WhileStatementContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::WhileStatementContext>(_localctx);
       enterOuterAlt(_localctx, 5);
       setState(110);
       match(SCCompilerParser::T__13);
@@ -1087,7 +1239,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     }
 
     case 6: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::DoWhileStatementContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::DoWhileStatementContext>(_localctx);
       enterOuterAlt(_localctx, 6);
       setState(116);
       match(SCCompilerParser::T__14);
@@ -1107,7 +1259,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     }
 
     case 7: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::ReturnStatementContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::ReturnStatementContext>(_localctx);
       enterOuterAlt(_localctx, 7);
       setState(124);
       match(SCCompilerParser::T__15);
@@ -1116,19 +1268,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-        | (1ULL << SCCompilerParser::T__4)
-        | (1ULL << SCCompilerParser::T__6)
-        | (1ULL << SCCompilerParser::T__7)
-        | (1ULL << SCCompilerParser::T__18)
-        | (1ULL << SCCompilerParser::T__19)
-        | (1ULL << SCCompilerParser::T__20)
-        | (1ULL << SCCompilerParser::T__21)
-        | (1ULL << SCCompilerParser::T__22)
-        | (1ULL << SCCompilerParser::BOOL)
-        | (1ULL << SCCompilerParser::INT)
-        | (1ULL << SCCompilerParser::FLOAT)
-        | (1ULL << SCCompilerParser::ID))) != 0)) {
+        ((1ULL << _la) & 515412328880) != 0)) {
         setState(125);
         expr(0);
       }
@@ -1138,7 +1278,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     }
 
     case 8: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::ContinueContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::ContinueContext>(_localctx);
       enterOuterAlt(_localctx, 8);
       setState(129);
       match(SCCompilerParser::T__16);
@@ -1148,7 +1288,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     }
 
     case 9: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::BreakContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::BreakContext>(_localctx);
       enterOuterAlt(_localctx, 9);
       setState(131);
       match(SCCompilerParser::T__17);
@@ -1158,7 +1298,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     }
 
     case 10: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::IgnoreContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::IgnoreContext>(_localctx);
       enterOuterAlt(_localctx, 10);
       setState(133);
       assignment();
@@ -1168,7 +1308,7 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
     }
 
     case 11: {
-      _localctx = dynamic_cast<StatContext *>(_tracker.createInstance<SCCompilerParser::FuncCallStatementContext>(_localctx));
+      _localctx = _tracker.createInstance<SCCompilerParser::FuncCallStatementContext>(_localctx);
       enterOuterAlt(_localctx, 11);
       setState(136);
       expr(0);
@@ -1177,6 +1317,8 @@ SCCompilerParser::StatContext* SCCompilerParser::stat() {
       break;
     }
 
+    default:
+      break;
     }
    
   }
@@ -1223,7 +1365,7 @@ void SCCompilerParser::ExplicitTypeConversionContext::exitRule(tree::ParseTreeLi
     parserListener->exitExplicitTypeConversion(this);
 }
 
-antlrcpp::Any SCCompilerParser::ExplicitTypeConversionContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ExplicitTypeConversionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitExplicitTypeConversion(this);
   else
@@ -1231,8 +1373,8 @@ antlrcpp::Any SCCompilerParser::ExplicitTypeConversionContext::accept(tree::Pars
 }
 //----------------- PrefixAOPExprContext ------------------------------------------------------------------
 
-SCCompilerParser::ExprContext* SCCompilerParser::PrefixAOPExprContext::expr() {
-  return getRuleContext<SCCompilerParser::ExprContext>(0);
+tree::TerminalNode* SCCompilerParser::PrefixAOPExprContext::ID() {
+  return getToken(SCCompilerParser::ID, 0);
 }
 
 SCCompilerParser::PrefixAOPExprContext::PrefixAOPExprContext(ExprContext *ctx) { copyFrom(ctx); }
@@ -1248,7 +1390,7 @@ void SCCompilerParser::PrefixAOPExprContext::exitRule(tree::ParseTreeListener *l
     parserListener->exitPrefixAOPExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::PrefixAOPExprContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::PrefixAOPExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitPrefixAOPExpr(this);
   else
@@ -1273,7 +1415,7 @@ void SCCompilerParser::ParenthesisExprContext::exitRule(tree::ParseTreeListener 
     parserListener->exitParenthesisExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::ParenthesisExprContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ParenthesisExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitParenthesisExpr(this);
   else
@@ -1298,7 +1440,7 @@ void SCCompilerParser::LogicalNotOPExprContext::exitRule(tree::ParseTreeListener
     parserListener->exitLogicalNotOPExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::LogicalNotOPExprContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::LogicalNotOPExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitLogicalNotOPExpr(this);
   else
@@ -1335,7 +1477,7 @@ void SCCompilerParser::LiteralExprContext::exitRule(tree::ParseTreeListener *lis
     parserListener->exitLiteralExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::LiteralExprContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::LiteralExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitLiteralExpr(this);
   else
@@ -1364,7 +1506,7 @@ void SCCompilerParser::CompExprContext::exitRule(tree::ParseTreeListener *listen
     parserListener->exitCompExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::CompExprContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::CompExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitCompExpr(this);
   else
@@ -1393,7 +1535,7 @@ void SCCompilerParser::AOPExprContext::exitRule(tree::ParseTreeListener *listene
     parserListener->exitAOPExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::AOPExprContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::AOPExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitAOPExpr(this);
   else
@@ -1418,7 +1560,7 @@ void SCCompilerParser::UnaryExprContext::exitRule(tree::ParseTreeListener *liste
     parserListener->exitUnaryExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::UnaryExprContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::UnaryExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitUnaryExpr(this);
   else
@@ -1447,7 +1589,7 @@ void SCCompilerParser::LogicalOPExprContext::exitRule(tree::ParseTreeListener *l
     parserListener->exitLogicalOPExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::LogicalOPExprContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::LogicalOPExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitLogicalOPExpr(this);
   else
@@ -1476,7 +1618,7 @@ void SCCompilerParser::FuncCallExprContext::exitRule(tree::ParseTreeListener *li
     parserListener->exitFuncCallExpr(this);
 }
 
-antlrcpp::Any SCCompilerParser::FuncCallExprContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::FuncCallExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitFuncCallExpr(this);
   else
@@ -1492,12 +1634,17 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
   size_t parentState = getState();
   SCCompilerParser::ExprContext *_localctx = _tracker.createInstance<ExprContext>(_ctx, parentState);
   SCCompilerParser::ExprContext *previousContext = _localctx;
+  (void)previousContext; // Silence compiler, in case the context is not used by generated code.
   size_t startState = 18;
   enterRecursionRule(_localctx, 18, SCCompilerParser::RuleExpr, precedence);
 
     size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     unrollRecursionContexts(parentContext);
   });
   try {
@@ -1520,19 +1667,7 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-        | (1ULL << SCCompilerParser::T__4)
-        | (1ULL << SCCompilerParser::T__6)
-        | (1ULL << SCCompilerParser::T__7)
-        | (1ULL << SCCompilerParser::T__18)
-        | (1ULL << SCCompilerParser::T__19)
-        | (1ULL << SCCompilerParser::T__20)
-        | (1ULL << SCCompilerParser::T__21)
-        | (1ULL << SCCompilerParser::T__22)
-        | (1ULL << SCCompilerParser::BOOL)
-        | (1ULL << SCCompilerParser::INT)
-        | (1ULL << SCCompilerParser::FLOAT)
-        | (1ULL << SCCompilerParser::ID))) != 0)) {
+        ((1ULL << _la) & 515412328880) != 0)) {
         setState(144);
         exprList();
       }
@@ -1548,9 +1683,7 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
       setState(148);
       _la = _input->LA(1);
       if (!((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-        | (1ULL << SCCompilerParser::T__4)
-        | (1ULL << SCCompilerParser::T__6))) != 0))) {
+        ((1ULL << _la) & 176) != 0))) {
       _errHandler->recoverInline(this);
       }
       else {
@@ -1582,7 +1715,7 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
         consume();
       }
       setState(154);
-      expr(11);
+      match(SCCompilerParser::ID);
       break;
     }
 
@@ -1624,10 +1757,7 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
       setState(159);
       _la = _input->LA(1);
       if (!((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & ((1ULL << SCCompilerParser::BOOL)
-        | (1ULL << SCCompilerParser::INT)
-        | (1ULL << SCCompilerParser::FLOAT)
-        | (1ULL << SCCompilerParser::ID))) != 0))) {
+        ((1ULL << _la) & 515396075520) != 0))) {
       _errHandler->recoverInline(this);
       }
       else {
@@ -1650,6 +1780,8 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
       break;
     }
 
+    default:
+      break;
     }
     _ctx->stop = _input->LT(-1);
     setState(186);
@@ -1719,10 +1851,7 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
           setState(173);
           _la = _input->LA(1);
           if (!((((_la & ~ 0x3fULL) == 0) &&
-            ((1ULL << _la) & ((1ULL << SCCompilerParser::T__25)
-            | (1ULL << SCCompilerParser::T__26)
-            | (1ULL << SCCompilerParser::T__27)
-            | (1ULL << SCCompilerParser::T__28))) != 0))) {
+            ((1ULL << _la) & 1006632960) != 0))) {
           _errHandler->recoverInline(this);
           }
           else {
@@ -1785,6 +1914,8 @@ SCCompilerParser::ExprContext* SCCompilerParser::expr(int precedence) {
           break;
         }
 
+        default:
+          break;
         } 
       }
       setState(188);
@@ -1832,7 +1963,7 @@ void SCCompilerParser::ExprListContext::exitRule(tree::ParseTreeListener *listen
 }
 
 
-antlrcpp::Any SCCompilerParser::ExprListContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ExprListContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitExprList(this);
   else
@@ -1844,7 +1975,11 @@ SCCompilerParser::ExprListContext* SCCompilerParser::exprList() {
   enterRule(_localctx, 20, SCCompilerParser::RuleExprList);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -1906,7 +2041,7 @@ void SCCompilerParser::AssignmentContext::exitRule(tree::ParseTreeListener *list
 }
 
 
-antlrcpp::Any SCCompilerParser::AssignmentContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::AssignmentContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitAssignment(this);
   else
@@ -1917,7 +2052,11 @@ SCCompilerParser::AssignmentContext* SCCompilerParser::assignment() {
   AssignmentContext *_localctx = _tracker.createInstance<AssignmentContext>(_ctx, getState());
   enterRule(_localctx, 22, SCCompilerParser::RuleAssignment);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -1979,7 +2118,7 @@ void SCCompilerParser::ForStatementContext::exitRule(tree::ParseTreeListener *li
 }
 
 
-antlrcpp::Any SCCompilerParser::ForStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ForStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitForStatement(this);
   else
@@ -1990,7 +2129,11 @@ SCCompilerParser::ForStatementContext* SCCompilerParser::forStatement() {
   ForStatementContext *_localctx = _tracker.createInstance<ForStatementContext>(_ctx, getState());
   enterRule(_localctx, 24, SCCompilerParser::RuleForStatement);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -2052,7 +2195,7 @@ void SCCompilerParser::ForVarDeclContext::exitRule(tree::ParseTreeListener *list
 }
 
 
-antlrcpp::Any SCCompilerParser::ForVarDeclContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ForVarDeclContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitForVarDecl(this);
   else
@@ -2064,7 +2207,11 @@ SCCompilerParser::ForVarDeclContext* SCCompilerParser::forVarDecl() {
   enterRule(_localctx, 26, SCCompilerParser::RuleForVarDecl);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -2074,10 +2221,7 @@ SCCompilerParser::ForVarDeclContext* SCCompilerParser::forVarDecl() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-      | (1ULL << SCCompilerParser::T__4)
-      | (1ULL << SCCompilerParser::T__5)
-      | (1ULL << SCCompilerParser::T__6))) != 0)) {
+      ((1ULL << _la) & 240) != 0)) {
       setState(211);
       varDecl();
     }
@@ -2120,7 +2264,7 @@ void SCCompilerParser::ForConditionContext::exitRule(tree::ParseTreeListener *li
 }
 
 
-antlrcpp::Any SCCompilerParser::ForConditionContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ForConditionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitForCondition(this);
   else
@@ -2132,7 +2276,11 @@ SCCompilerParser::ForConditionContext* SCCompilerParser::forCondition() {
   enterRule(_localctx, 28, SCCompilerParser::RuleForCondition);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -2142,19 +2290,7 @@ SCCompilerParser::ForConditionContext* SCCompilerParser::forCondition() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-      | (1ULL << SCCompilerParser::T__4)
-      | (1ULL << SCCompilerParser::T__6)
-      | (1ULL << SCCompilerParser::T__7)
-      | (1ULL << SCCompilerParser::T__18)
-      | (1ULL << SCCompilerParser::T__19)
-      | (1ULL << SCCompilerParser::T__20)
-      | (1ULL << SCCompilerParser::T__21)
-      | (1ULL << SCCompilerParser::T__22)
-      | (1ULL << SCCompilerParser::BOOL)
-      | (1ULL << SCCompilerParser::INT)
-      | (1ULL << SCCompilerParser::FLOAT)
-      | (1ULL << SCCompilerParser::ID))) != 0)) {
+      ((1ULL << _la) & 515412328880) != 0)) {
       setState(214);
       expr(0);
     }
@@ -2201,7 +2337,7 @@ void SCCompilerParser::ForIncrementsContext::exitRule(tree::ParseTreeListener *l
 }
 
 
-antlrcpp::Any SCCompilerParser::ForIncrementsContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ForIncrementsContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitForIncrements(this);
   else
@@ -2213,7 +2349,11 @@ SCCompilerParser::ForIncrementsContext* SCCompilerParser::forIncrements() {
   enterRule(_localctx, 30, SCCompilerParser::RuleForIncrements);
   size_t _la = 0;
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -2223,19 +2363,7 @@ SCCompilerParser::ForIncrementsContext* SCCompilerParser::forIncrements() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << SCCompilerParser::T__3)
-      | (1ULL << SCCompilerParser::T__4)
-      | (1ULL << SCCompilerParser::T__6)
-      | (1ULL << SCCompilerParser::T__7)
-      | (1ULL << SCCompilerParser::T__18)
-      | (1ULL << SCCompilerParser::T__19)
-      | (1ULL << SCCompilerParser::T__20)
-      | (1ULL << SCCompilerParser::T__21)
-      | (1ULL << SCCompilerParser::T__22)
-      | (1ULL << SCCompilerParser::BOOL)
-      | (1ULL << SCCompilerParser::INT)
-      | (1ULL << SCCompilerParser::FLOAT)
-      | (1ULL << SCCompilerParser::ID))) != 0)) {
+      ((1ULL << _la) & 515412328880) != 0)) {
       setState(217);
       forInc();
       setState(222);
@@ -2294,7 +2422,7 @@ void SCCompilerParser::ForIncContext::exitRule(tree::ParseTreeListener *listener
 }
 
 
-antlrcpp::Any SCCompilerParser::ForIncContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any SCCompilerParser::ForIncContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SCCompilerVisitor*>(visitor))
     return parserVisitor->visitForInc(this);
   else
@@ -2305,7 +2433,11 @@ SCCompilerParser::ForIncContext* SCCompilerParser::forInc() {
   ForIncContext *_localctx = _tracker.createInstance<ForIncContext>(_ctx, getState());
   enterRule(_localctx, 32, SCCompilerParser::RuleForInc);
 
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
   auto onExit = finally([=] {
+#endif
     exitRule();
   });
   try {
@@ -2326,6 +2458,8 @@ SCCompilerParser::ForIncContext* SCCompilerParser::forInc() {
       break;
     }
 
+    default:
+      break;
     }
    
   }
@@ -2340,7 +2474,7 @@ SCCompilerParser::ForIncContext* SCCompilerParser::forInc() {
 
 bool SCCompilerParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
   switch (ruleIndex) {
-    case 9: return exprSempred(dynamic_cast<ExprContext *>(context), predicateIndex);
+    case 9: return exprSempred(antlrcpp::downCast<ExprContext *>(context), predicateIndex);
 
   default:
     break;
@@ -2363,222 +2497,10 @@ bool SCCompilerParser::exprSempred(ExprContext *_localctx, size_t predicateIndex
   return true;
 }
 
-// Static vars and initialization.
-std::vector<dfa::DFA> SCCompilerParser::_decisionToDFA;
-atn::PredictionContextCache SCCompilerParser::_sharedContextCache;
-
-// We own the ATN which in turn owns the ATN states.
-atn::ATN SCCompilerParser::_atn;
-std::vector<uint16_t> SCCompilerParser::_serializedATN;
-
-std::vector<std::string> SCCompilerParser::_ruleNames = {
-  "program", "varDecl", "varInit", "type", "functionDecl", "formalParameters", 
-  "formalParameter", "block", "stat", "expr", "exprList", "assignment", 
-  "forStatement", "forVarDecl", "forCondition", "forIncrements", "forInc"
-};
-
-std::vector<std::string> SCCompilerParser::_literalNames = {
-  "", "';'", "','", "'='", "'float'", "'int'", "'void'", "'bool'", "'('", 
-  "')'", "'{'", "'}'", "'if'", "'else'", "'while'", "'do'", "'return'", 
-  "'continue'", "'break'", "'++'", "'--'", "'-'", "'+'", "'!'", "'*'", "'/'", 
-  "'<'", "'<='", "'>'", "'>='", "'=='", "'!='", "'&&'", "'||'", "'for'"
-};
-
-std::vector<std::string> SCCompilerParser::_symbolicNames = {
-  "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
-  "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "BOOL", 
-  "INT", "FLOAT", "ID", "WS", "LINECOMMENT", "BLOCKCOMMENT"
-};
-
-dfa::Vocabulary SCCompilerParser::_vocabulary(_literalNames, _symbolicNames);
-
-std::vector<std::string> SCCompilerParser::_tokenNames;
-
-SCCompilerParser::Initializer::Initializer() {
-	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
-		std::string name = _vocabulary.getLiteralName(i);
-		if (name.empty()) {
-			name = _vocabulary.getSymbolicName(i);
-		}
-
-		if (name.empty()) {
-			_tokenNames.push_back("<INVALID>");
-		} else {
-      _tokenNames.push_back(name);
-    }
-	}
-
-  _serializedATN = {
-    0x3, 0x608b, 0xa72a, 0x8133, 0xb9ed, 0x417c, 0x3be7, 0x7786, 0x5964, 
-    0x3, 0x2b, 0xea, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 0x9, 
-    0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x4, 0x7, 0x9, 0x7, 0x4, 
-    0x8, 0x9, 0x8, 0x4, 0x9, 0x9, 0x9, 0x4, 0xa, 0x9, 0xa, 0x4, 0xb, 0x9, 
-    0xb, 0x4, 0xc, 0x9, 0xc, 0x4, 0xd, 0x9, 0xd, 0x4, 0xe, 0x9, 0xe, 0x4, 
-    0xf, 0x9, 0xf, 0x4, 0x10, 0x9, 0x10, 0x4, 0x11, 0x9, 0x11, 0x4, 0x12, 
-    0x9, 0x12, 0x3, 0x2, 0x3, 0x2, 0x3, 0x2, 0x3, 0x2, 0x6, 0x2, 0x29, 0xa, 
-    0x2, 0xd, 0x2, 0xe, 0x2, 0x2a, 0x3, 0x2, 0x3, 0x2, 0x3, 0x3, 0x3, 0x3, 
-    0x3, 0x3, 0x3, 0x3, 0x7, 0x3, 0x33, 0xa, 0x3, 0xc, 0x3, 0xe, 0x3, 0x36, 
-    0xb, 0x3, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x5, 0x4, 0x3b, 0xa, 0x4, 0x3, 
-    0x5, 0x3, 0x5, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x5, 0x6, 0x43, 
-    0xa, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x7, 0x6, 0x48, 0xa, 0x6, 0xc, 
-    0x6, 0xe, 0x6, 0x4b, 0xb, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x7, 0x3, 0x7, 
-    0x3, 0x7, 0x7, 0x7, 0x52, 0xa, 0x7, 0xc, 0x7, 0xe, 0x7, 0x55, 0xb, 0x7, 
-    0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x9, 0x3, 0x9, 0x7, 0x9, 0x5c, 0xa, 
-    0x9, 0xc, 0x9, 0xe, 0x9, 0x5f, 0xb, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0xa, 
-    0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 
-    0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x5, 0xa, 0x6e, 0xa, 0xa, 0x3, 0xa, 0x3, 
-    0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 
-    0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 
-    0xa, 0x3, 0xa, 0x5, 0xa, 0x81, 0xa, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 
-    0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 
-    0x3, 0xa, 0x5, 0xa, 0x8e, 0xa, 0xa, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 
-    0xb, 0x5, 0xb, 0x94, 0xa, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 
-    0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 
-    0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x5, 0xb, 
-    0xa7, 0xa, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 
-    0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 
-    0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x7, 0xb, 0xbb, 
-    0xa, 0xb, 0xc, 0xb, 0xe, 0xb, 0xbe, 0xb, 0xb, 0x3, 0xc, 0x3, 0xc, 0x3, 
-    0xc, 0x7, 0xc, 0xc3, 0xa, 0xc, 0xc, 0xc, 0xe, 0xc, 0xc6, 0xb, 0xc, 0x3, 
-    0xd, 0x3, 0xd, 0x3, 0xd, 0x3, 0xd, 0x3, 0xe, 0x3, 0xe, 0x3, 0xe, 0x3, 
-    0xe, 0x3, 0xe, 0x3, 0xe, 0x3, 0xe, 0x3, 0xe, 0x3, 0xe, 0x3, 0xe, 0x3, 
-    0xf, 0x5, 0xf, 0xd7, 0xa, 0xf, 0x3, 0x10, 0x5, 0x10, 0xda, 0xa, 0x10, 
-    0x3, 0x11, 0x3, 0x11, 0x3, 0x11, 0x7, 0x11, 0xdf, 0xa, 0x11, 0xc, 0x11, 
-    0xe, 0x11, 0xe2, 0xb, 0x11, 0x5, 0x11, 0xe4, 0xa, 0x11, 0x3, 0x12, 0x3, 
-    0x12, 0x5, 0x12, 0xe8, 0xa, 0x12, 0x3, 0x12, 0x2, 0x3, 0x14, 0x13, 0x2, 
-    0x4, 0x6, 0x8, 0xa, 0xc, 0xe, 0x10, 0x12, 0x14, 0x16, 0x18, 0x1a, 0x1c, 
-    0x1e, 0x20, 0x22, 0x2, 0xa, 0x3, 0x2, 0x6, 0x9, 0x4, 0x2, 0x6, 0x7, 
-    0x9, 0x9, 0x3, 0x2, 0x15, 0x16, 0x3, 0x2, 0x17, 0x18, 0x3, 0x2, 0x25, 
-    0x28, 0x3, 0x2, 0x1a, 0x1b, 0x3, 0x2, 0x1c, 0x1f, 0x3, 0x2, 0x20, 0x21, 
-    0x2, 0xff, 0x2, 0x28, 0x3, 0x2, 0x2, 0x2, 0x4, 0x2e, 0x3, 0x2, 0x2, 
-    0x2, 0x6, 0x37, 0x3, 0x2, 0x2, 0x2, 0x8, 0x3c, 0x3, 0x2, 0x2, 0x2, 0xa, 
-    0x3e, 0x3, 0x2, 0x2, 0x2, 0xc, 0x4e, 0x3, 0x2, 0x2, 0x2, 0xe, 0x56, 
-    0x3, 0x2, 0x2, 0x2, 0x10, 0x59, 0x3, 0x2, 0x2, 0x2, 0x12, 0x8d, 0x3, 
-    0x2, 0x2, 0x2, 0x14, 0xa6, 0x3, 0x2, 0x2, 0x2, 0x16, 0xbf, 0x3, 0x2, 
-    0x2, 0x2, 0x18, 0xc7, 0x3, 0x2, 0x2, 0x2, 0x1a, 0xcb, 0x3, 0x2, 0x2, 
-    0x2, 0x1c, 0xd6, 0x3, 0x2, 0x2, 0x2, 0x1e, 0xd9, 0x3, 0x2, 0x2, 0x2, 
-    0x20, 0xe3, 0x3, 0x2, 0x2, 0x2, 0x22, 0xe7, 0x3, 0x2, 0x2, 0x2, 0x24, 
-    0x25, 0x5, 0x4, 0x3, 0x2, 0x25, 0x26, 0x7, 0x3, 0x2, 0x2, 0x26, 0x29, 
-    0x3, 0x2, 0x2, 0x2, 0x27, 0x29, 0x5, 0xa, 0x6, 0x2, 0x28, 0x24, 0x3, 
-    0x2, 0x2, 0x2, 0x28, 0x27, 0x3, 0x2, 0x2, 0x2, 0x29, 0x2a, 0x3, 0x2, 
-    0x2, 0x2, 0x2a, 0x28, 0x3, 0x2, 0x2, 0x2, 0x2a, 0x2b, 0x3, 0x2, 0x2, 
-    0x2, 0x2b, 0x2c, 0x3, 0x2, 0x2, 0x2, 0x2c, 0x2d, 0x7, 0x2, 0x2, 0x3, 
-    0x2d, 0x3, 0x3, 0x2, 0x2, 0x2, 0x2e, 0x2f, 0x5, 0x8, 0x5, 0x2, 0x2f, 
-    0x34, 0x5, 0x6, 0x4, 0x2, 0x30, 0x31, 0x7, 0x4, 0x2, 0x2, 0x31, 0x33, 
-    0x5, 0x6, 0x4, 0x2, 0x32, 0x30, 0x3, 0x2, 0x2, 0x2, 0x33, 0x36, 0x3, 
-    0x2, 0x2, 0x2, 0x34, 0x32, 0x3, 0x2, 0x2, 0x2, 0x34, 0x35, 0x3, 0x2, 
-    0x2, 0x2, 0x35, 0x5, 0x3, 0x2, 0x2, 0x2, 0x36, 0x34, 0x3, 0x2, 0x2, 
-    0x2, 0x37, 0x3a, 0x7, 0x28, 0x2, 0x2, 0x38, 0x39, 0x7, 0x5, 0x2, 0x2, 
-    0x39, 0x3b, 0x5, 0x14, 0xb, 0x2, 0x3a, 0x38, 0x3, 0x2, 0x2, 0x2, 0x3a, 
-    0x3b, 0x3, 0x2, 0x2, 0x2, 0x3b, 0x7, 0x3, 0x2, 0x2, 0x2, 0x3c, 0x3d, 
-    0x9, 0x2, 0x2, 0x2, 0x3d, 0x9, 0x3, 0x2, 0x2, 0x2, 0x3e, 0x3f, 0x5, 
-    0x8, 0x5, 0x2, 0x3f, 0x40, 0x7, 0x28, 0x2, 0x2, 0x40, 0x42, 0x7, 0xa, 
-    0x2, 0x2, 0x41, 0x43, 0x5, 0xc, 0x7, 0x2, 0x42, 0x41, 0x3, 0x2, 0x2, 
-    0x2, 0x42, 0x43, 0x3, 0x2, 0x2, 0x2, 0x43, 0x44, 0x3, 0x2, 0x2, 0x2, 
-    0x44, 0x45, 0x7, 0xb, 0x2, 0x2, 0x45, 0x49, 0x7, 0xc, 0x2, 0x2, 0x46, 
-    0x48, 0x5, 0x12, 0xa, 0x2, 0x47, 0x46, 0x3, 0x2, 0x2, 0x2, 0x48, 0x4b, 
-    0x3, 0x2, 0x2, 0x2, 0x49, 0x47, 0x3, 0x2, 0x2, 0x2, 0x49, 0x4a, 0x3, 
-    0x2, 0x2, 0x2, 0x4a, 0x4c, 0x3, 0x2, 0x2, 0x2, 0x4b, 0x49, 0x3, 0x2, 
-    0x2, 0x2, 0x4c, 0x4d, 0x7, 0xd, 0x2, 0x2, 0x4d, 0xb, 0x3, 0x2, 0x2, 
-    0x2, 0x4e, 0x53, 0x5, 0xe, 0x8, 0x2, 0x4f, 0x50, 0x7, 0x4, 0x2, 0x2, 
-    0x50, 0x52, 0x5, 0xe, 0x8, 0x2, 0x51, 0x4f, 0x3, 0x2, 0x2, 0x2, 0x52, 
-    0x55, 0x3, 0x2, 0x2, 0x2, 0x53, 0x51, 0x3, 0x2, 0x2, 0x2, 0x53, 0x54, 
-    0x3, 0x2, 0x2, 0x2, 0x54, 0xd, 0x3, 0x2, 0x2, 0x2, 0x55, 0x53, 0x3, 
-    0x2, 0x2, 0x2, 0x56, 0x57, 0x5, 0x8, 0x5, 0x2, 0x57, 0x58, 0x7, 0x28, 
-    0x2, 0x2, 0x58, 0xf, 0x3, 0x2, 0x2, 0x2, 0x59, 0x5d, 0x7, 0xc, 0x2, 
-    0x2, 0x5a, 0x5c, 0x5, 0x12, 0xa, 0x2, 0x5b, 0x5a, 0x3, 0x2, 0x2, 0x2, 
-    0x5c, 0x5f, 0x3, 0x2, 0x2, 0x2, 0x5d, 0x5b, 0x3, 0x2, 0x2, 0x2, 0x5d, 
-    0x5e, 0x3, 0x2, 0x2, 0x2, 0x5e, 0x60, 0x3, 0x2, 0x2, 0x2, 0x5f, 0x5d, 
-    0x3, 0x2, 0x2, 0x2, 0x60, 0x61, 0x7, 0xd, 0x2, 0x2, 0x61, 0x11, 0x3, 
-    0x2, 0x2, 0x2, 0x62, 0x8e, 0x5, 0x10, 0x9, 0x2, 0x63, 0x64, 0x5, 0x4, 
-    0x3, 0x2, 0x64, 0x65, 0x7, 0x3, 0x2, 0x2, 0x65, 0x8e, 0x3, 0x2, 0x2, 
-    0x2, 0x66, 0x67, 0x7, 0xe, 0x2, 0x2, 0x67, 0x68, 0x7, 0xa, 0x2, 0x2, 
-    0x68, 0x69, 0x5, 0x14, 0xb, 0x2, 0x69, 0x6a, 0x7, 0xb, 0x2, 0x2, 0x6a, 
-    0x6d, 0x5, 0x12, 0xa, 0x2, 0x6b, 0x6c, 0x7, 0xf, 0x2, 0x2, 0x6c, 0x6e, 
-    0x5, 0x12, 0xa, 0x2, 0x6d, 0x6b, 0x3, 0x2, 0x2, 0x2, 0x6d, 0x6e, 0x3, 
-    0x2, 0x2, 0x2, 0x6e, 0x8e, 0x3, 0x2, 0x2, 0x2, 0x6f, 0x8e, 0x5, 0x1a, 
-    0xe, 0x2, 0x70, 0x71, 0x7, 0x10, 0x2, 0x2, 0x71, 0x72, 0x7, 0xa, 0x2, 
-    0x2, 0x72, 0x73, 0x5, 0x14, 0xb, 0x2, 0x73, 0x74, 0x7, 0xb, 0x2, 0x2, 
-    0x74, 0x75, 0x5, 0x12, 0xa, 0x2, 0x75, 0x8e, 0x3, 0x2, 0x2, 0x2, 0x76, 
-    0x77, 0x7, 0x11, 0x2, 0x2, 0x77, 0x78, 0x5, 0x12, 0xa, 0x2, 0x78, 0x79, 
-    0x7, 0x10, 0x2, 0x2, 0x79, 0x7a, 0x7, 0xa, 0x2, 0x2, 0x7a, 0x7b, 0x5, 
-    0x14, 0xb, 0x2, 0x7b, 0x7c, 0x7, 0xb, 0x2, 0x2, 0x7c, 0x7d, 0x7, 0x3, 
-    0x2, 0x2, 0x7d, 0x8e, 0x3, 0x2, 0x2, 0x2, 0x7e, 0x80, 0x7, 0x12, 0x2, 
-    0x2, 0x7f, 0x81, 0x5, 0x14, 0xb, 0x2, 0x80, 0x7f, 0x3, 0x2, 0x2, 0x2, 
-    0x80, 0x81, 0x3, 0x2, 0x2, 0x2, 0x81, 0x82, 0x3, 0x2, 0x2, 0x2, 0x82, 
-    0x8e, 0x7, 0x3, 0x2, 0x2, 0x83, 0x84, 0x7, 0x13, 0x2, 0x2, 0x84, 0x8e, 
-    0x7, 0x3, 0x2, 0x2, 0x85, 0x86, 0x7, 0x14, 0x2, 0x2, 0x86, 0x8e, 0x7, 
-    0x3, 0x2, 0x2, 0x87, 0x88, 0x5, 0x18, 0xd, 0x2, 0x88, 0x89, 0x7, 0x3, 
-    0x2, 0x2, 0x89, 0x8e, 0x3, 0x2, 0x2, 0x2, 0x8a, 0x8b, 0x5, 0x14, 0xb, 
-    0x2, 0x8b, 0x8c, 0x7, 0x3, 0x2, 0x2, 0x8c, 0x8e, 0x3, 0x2, 0x2, 0x2, 
-    0x8d, 0x62, 0x3, 0x2, 0x2, 0x2, 0x8d, 0x63, 0x3, 0x2, 0x2, 0x2, 0x8d, 
-    0x66, 0x3, 0x2, 0x2, 0x2, 0x8d, 0x6f, 0x3, 0x2, 0x2, 0x2, 0x8d, 0x70, 
-    0x3, 0x2, 0x2, 0x2, 0x8d, 0x76, 0x3, 0x2, 0x2, 0x2, 0x8d, 0x7e, 0x3, 
-    0x2, 0x2, 0x2, 0x8d, 0x83, 0x3, 0x2, 0x2, 0x2, 0x8d, 0x85, 0x3, 0x2, 
-    0x2, 0x2, 0x8d, 0x87, 0x3, 0x2, 0x2, 0x2, 0x8d, 0x8a, 0x3, 0x2, 0x2, 
-    0x2, 0x8e, 0x13, 0x3, 0x2, 0x2, 0x2, 0x8f, 0x90, 0x8, 0xb, 0x1, 0x2, 
-    0x90, 0x91, 0x7, 0x28, 0x2, 0x2, 0x91, 0x93, 0x7, 0xa, 0x2, 0x2, 0x92, 
-    0x94, 0x5, 0x16, 0xc, 0x2, 0x93, 0x92, 0x3, 0x2, 0x2, 0x2, 0x93, 0x94, 
-    0x3, 0x2, 0x2, 0x2, 0x94, 0x95, 0x3, 0x2, 0x2, 0x2, 0x95, 0xa7, 0x7, 
-    0xb, 0x2, 0x2, 0x96, 0x97, 0x9, 0x3, 0x2, 0x2, 0x97, 0x98, 0x7, 0xa, 
-    0x2, 0x2, 0x98, 0x99, 0x5, 0x14, 0xb, 0x2, 0x99, 0x9a, 0x7, 0xb, 0x2, 
-    0x2, 0x9a, 0xa7, 0x3, 0x2, 0x2, 0x2, 0x9b, 0x9c, 0x9, 0x4, 0x2, 0x2, 
-    0x9c, 0xa7, 0x5, 0x14, 0xb, 0xd, 0x9d, 0x9e, 0x9, 0x5, 0x2, 0x2, 0x9e, 
-    0xa7, 0x5, 0x14, 0xb, 0xc, 0x9f, 0xa0, 0x7, 0x19, 0x2, 0x2, 0xa0, 0xa7, 
-    0x5, 0x14, 0xb, 0xb, 0xa1, 0xa7, 0x9, 0x6, 0x2, 0x2, 0xa2, 0xa3, 0x7, 
-    0xa, 0x2, 0x2, 0xa3, 0xa4, 0x5, 0x14, 0xb, 0x2, 0xa4, 0xa5, 0x7, 0xb, 
-    0x2, 0x2, 0xa5, 0xa7, 0x3, 0x2, 0x2, 0x2, 0xa6, 0x8f, 0x3, 0x2, 0x2, 
-    0x2, 0xa6, 0x96, 0x3, 0x2, 0x2, 0x2, 0xa6, 0x9b, 0x3, 0x2, 0x2, 0x2, 
-    0xa6, 0x9d, 0x3, 0x2, 0x2, 0x2, 0xa6, 0x9f, 0x3, 0x2, 0x2, 0x2, 0xa6, 
-    0xa1, 0x3, 0x2, 0x2, 0x2, 0xa6, 0xa2, 0x3, 0x2, 0x2, 0x2, 0xa7, 0xbc, 
-    0x3, 0x2, 0x2, 0x2, 0xa8, 0xa9, 0xc, 0xa, 0x2, 0x2, 0xa9, 0xaa, 0x9, 
-    0x7, 0x2, 0x2, 0xaa, 0xbb, 0x5, 0x14, 0xb, 0xb, 0xab, 0xac, 0xc, 0x9, 
-    0x2, 0x2, 0xac, 0xad, 0x9, 0x5, 0x2, 0x2, 0xad, 0xbb, 0x5, 0x14, 0xb, 
-    0xa, 0xae, 0xaf, 0xc, 0x8, 0x2, 0x2, 0xaf, 0xb0, 0x9, 0x8, 0x2, 0x2, 
-    0xb0, 0xbb, 0x5, 0x14, 0xb, 0x9, 0xb1, 0xb2, 0xc, 0x7, 0x2, 0x2, 0xb2, 
-    0xb3, 0x9, 0x9, 0x2, 0x2, 0xb3, 0xbb, 0x5, 0x14, 0xb, 0x8, 0xb4, 0xb5, 
-    0xc, 0x6, 0x2, 0x2, 0xb5, 0xb6, 0x7, 0x22, 0x2, 0x2, 0xb6, 0xbb, 0x5, 
-    0x14, 0xb, 0x7, 0xb7, 0xb8, 0xc, 0x5, 0x2, 0x2, 0xb8, 0xb9, 0x7, 0x23, 
-    0x2, 0x2, 0xb9, 0xbb, 0x5, 0x14, 0xb, 0x6, 0xba, 0xa8, 0x3, 0x2, 0x2, 
-    0x2, 0xba, 0xab, 0x3, 0x2, 0x2, 0x2, 0xba, 0xae, 0x3, 0x2, 0x2, 0x2, 
-    0xba, 0xb1, 0x3, 0x2, 0x2, 0x2, 0xba, 0xb4, 0x3, 0x2, 0x2, 0x2, 0xba, 
-    0xb7, 0x3, 0x2, 0x2, 0x2, 0xbb, 0xbe, 0x3, 0x2, 0x2, 0x2, 0xbc, 0xba, 
-    0x3, 0x2, 0x2, 0x2, 0xbc, 0xbd, 0x3, 0x2, 0x2, 0x2, 0xbd, 0x15, 0x3, 
-    0x2, 0x2, 0x2, 0xbe, 0xbc, 0x3, 0x2, 0x2, 0x2, 0xbf, 0xc4, 0x5, 0x14, 
-    0xb, 0x2, 0xc0, 0xc1, 0x7, 0x4, 0x2, 0x2, 0xc1, 0xc3, 0x5, 0x14, 0xb, 
-    0x2, 0xc2, 0xc0, 0x3, 0x2, 0x2, 0x2, 0xc3, 0xc6, 0x3, 0x2, 0x2, 0x2, 
-    0xc4, 0xc2, 0x3, 0x2, 0x2, 0x2, 0xc4, 0xc5, 0x3, 0x2, 0x2, 0x2, 0xc5, 
-    0x17, 0x3, 0x2, 0x2, 0x2, 0xc6, 0xc4, 0x3, 0x2, 0x2, 0x2, 0xc7, 0xc8, 
-    0x5, 0x14, 0xb, 0x2, 0xc8, 0xc9, 0x7, 0x5, 0x2, 0x2, 0xc9, 0xca, 0x5, 
-    0x14, 0xb, 0x2, 0xca, 0x19, 0x3, 0x2, 0x2, 0x2, 0xcb, 0xcc, 0x7, 0x24, 
-    0x2, 0x2, 0xcc, 0xcd, 0x7, 0xa, 0x2, 0x2, 0xcd, 0xce, 0x5, 0x1c, 0xf, 
-    0x2, 0xce, 0xcf, 0x7, 0x3, 0x2, 0x2, 0xcf, 0xd0, 0x5, 0x1e, 0x10, 0x2, 
-    0xd0, 0xd1, 0x7, 0x3, 0x2, 0x2, 0xd1, 0xd2, 0x5, 0x20, 0x11, 0x2, 0xd2, 
-    0xd3, 0x7, 0xb, 0x2, 0x2, 0xd3, 0xd4, 0x5, 0x12, 0xa, 0x2, 0xd4, 0x1b, 
-    0x3, 0x2, 0x2, 0x2, 0xd5, 0xd7, 0x5, 0x4, 0x3, 0x2, 0xd6, 0xd5, 0x3, 
-    0x2, 0x2, 0x2, 0xd6, 0xd7, 0x3, 0x2, 0x2, 0x2, 0xd7, 0x1d, 0x3, 0x2, 
-    0x2, 0x2, 0xd8, 0xda, 0x5, 0x14, 0xb, 0x2, 0xd9, 0xd8, 0x3, 0x2, 0x2, 
-    0x2, 0xd9, 0xda, 0x3, 0x2, 0x2, 0x2, 0xda, 0x1f, 0x3, 0x2, 0x2, 0x2, 
-    0xdb, 0xe0, 0x5, 0x22, 0x12, 0x2, 0xdc, 0xdd, 0x7, 0x4, 0x2, 0x2, 0xdd, 
-    0xdf, 0x5, 0x22, 0x12, 0x2, 0xde, 0xdc, 0x3, 0x2, 0x2, 0x2, 0xdf, 0xe2, 
-    0x3, 0x2, 0x2, 0x2, 0xe0, 0xde, 0x3, 0x2, 0x2, 0x2, 0xe0, 0xe1, 0x3, 
-    0x2, 0x2, 0x2, 0xe1, 0xe4, 0x3, 0x2, 0x2, 0x2, 0xe2, 0xe0, 0x3, 0x2, 
-    0x2, 0x2, 0xe3, 0xdb, 0x3, 0x2, 0x2, 0x2, 0xe3, 0xe4, 0x3, 0x2, 0x2, 
-    0x2, 0xe4, 0x21, 0x3, 0x2, 0x2, 0x2, 0xe5, 0xe8, 0x5, 0x14, 0xb, 0x2, 
-    0xe6, 0xe8, 0x5, 0x18, 0xd, 0x2, 0xe7, 0xe5, 0x3, 0x2, 0x2, 0x2, 0xe7, 
-    0xe6, 0x3, 0x2, 0x2, 0x2, 0xe8, 0x23, 0x3, 0x2, 0x2, 0x2, 0x17, 0x28, 
-    0x2a, 0x34, 0x3a, 0x42, 0x49, 0x53, 0x5d, 0x6d, 0x80, 0x8d, 0x93, 0xa6, 
-    0xba, 0xbc, 0xc4, 0xd6, 0xd9, 0xe0, 0xe3, 0xe7, 
-  };
-
-  atn::ATNDeserializer deserializer;
-  _atn = deserializer.deserialize(_serializedATN);
-
-  size_t count = _atn.getNumberOfDecisions();
-  _decisionToDFA.reserve(count);
-  for (size_t i = 0; i < count; i++) { 
-    _decisionToDFA.emplace_back(_atn.getDecisionState(i), i);
-  }
+void SCCompilerParser::initialize() {
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+  sccompilerParserInitialize();
+#else
+  ::antlr4::internal::call_once(sccompilerParserOnceFlag, sccompilerParserInitialize);
+#endif
 }
-
-SCCompilerParser::Initializer SCCompilerParser::_init;

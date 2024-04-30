@@ -4,7 +4,7 @@ project(SCCompiler)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;CCov;ASan;TSan" CACHE STRING "" FORCE)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Set default build type as Release
 if(NOT CMAKE_BUILD_TYPE)
@@ -19,7 +19,7 @@ set(CMAKE_CXX_FLAGS_ASAN "${CMAKE_CXX_FLAGS} -g -O1 -fsanitize=address -fno-omit
 set(CMAKE_CXX_FLAGS_TSAN "${CMAKE_CXX_FLAGS} -g -O2 -fsanitize=thread -fPIE")
 
 set(CATCH2_VERSION 2.12.4)
-set(ANTLR_VERSION 4.7.1)
+set(ANTLR_VERSION 4.13.1)
 set(LLVM_VERSION 12.0.1)
 
 include_directories(Targets/SCCompilerLib)

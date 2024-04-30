@@ -1,5 +1,5 @@
 
-// Generated from ./Common/SCCompilerLib/Parser/SCCompilerLib.g4 by ANTLR 4.7.1
+// Generated from ./Targets/SCCompilerLib/Parser/SCCompiler.g4 by ANTLR 4.13.1
 
 #pragma once
 
@@ -19,75 +19,75 @@ public:
   /**
    * Visit parse trees produced by SCCompilerParser.
    */
-    virtual antlrcpp::Any visitProgram(SCCompilerParser::ProgramContext *context) = 0;
+    virtual std::any visitProgram(SCCompilerParser::ProgramContext *context) = 0;
 
-    virtual antlrcpp::Any visitVarDecl(SCCompilerParser::VarDeclContext *context) = 0;
+    virtual std::any visitVarDecl(SCCompilerParser::VarDeclContext *context) = 0;
 
-    virtual antlrcpp::Any visitVarInit(SCCompilerParser::VarInitContext *context) = 0;
+    virtual std::any visitVarInit(SCCompilerParser::VarInitContext *context) = 0;
 
-    virtual antlrcpp::Any visitType(SCCompilerParser::TypeContext *context) = 0;
+    virtual std::any visitType(SCCompilerParser::TypeContext *context) = 0;
 
-    virtual antlrcpp::Any visitFuncDeclaration(SCCompilerParser::FuncDeclarationContext *context) = 0;
+    virtual std::any visitFuncDeclaration(SCCompilerParser::FuncDeclarationContext *context) = 0;
 
-    virtual antlrcpp::Any visitFormalParameters(SCCompilerParser::FormalParametersContext *context) = 0;
+    virtual std::any visitFormalParameters(SCCompilerParser::FormalParametersContext *context) = 0;
 
-    virtual antlrcpp::Any visitFuncArgDeclaration(SCCompilerParser::FuncArgDeclarationContext *context) = 0;
+    virtual std::any visitFuncArgDeclaration(SCCompilerParser::FuncArgDeclarationContext *context) = 0;
 
-    virtual antlrcpp::Any visitBlock(SCCompilerParser::BlockContext *context) = 0;
+    virtual std::any visitBlock(SCCompilerParser::BlockContext *context) = 0;
 
-    virtual antlrcpp::Any visitBlockStatement(SCCompilerParser::BlockStatementContext *context) = 0;
+    virtual std::any visitBlockStatement(SCCompilerParser::BlockStatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitVarDeclStatement(SCCompilerParser::VarDeclStatementContext *context) = 0;
+    virtual std::any visitVarDeclStatement(SCCompilerParser::VarDeclStatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitIfStatement(SCCompilerParser::IfStatementContext *context) = 0;
+    virtual std::any visitIfStatement(SCCompilerParser::IfStatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitIgnore(SCCompilerParser::IgnoreContext *context) = 0;
+    virtual std::any visitIgnore(SCCompilerParser::IgnoreContext *context) = 0;
 
-    virtual antlrcpp::Any visitWhileStatement(SCCompilerParser::WhileStatementContext *context) = 0;
+    virtual std::any visitWhileStatement(SCCompilerParser::WhileStatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitDoWhileStatement(SCCompilerParser::DoWhileStatementContext *context) = 0;
+    virtual std::any visitDoWhileStatement(SCCompilerParser::DoWhileStatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitReturnStatement(SCCompilerParser::ReturnStatementContext *context) = 0;
+    virtual std::any visitReturnStatement(SCCompilerParser::ReturnStatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitContinue(SCCompilerParser::ContinueContext *context) = 0;
+    virtual std::any visitContinue(SCCompilerParser::ContinueContext *context) = 0;
 
-    virtual antlrcpp::Any visitBreak(SCCompilerParser::BreakContext *context) = 0;
+    virtual std::any visitBreak(SCCompilerParser::BreakContext *context) = 0;
 
-    virtual antlrcpp::Any visitFuncCallStatement(SCCompilerParser::FuncCallStatementContext *context) = 0;
+    virtual std::any visitFuncCallStatement(SCCompilerParser::FuncCallStatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *context) = 0;
+    virtual std::any visitExplicitTypeConversion(SCCompilerParser::ExplicitTypeConversionContext *context) = 0;
 
-    virtual antlrcpp::Any visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext *context) = 0;
+    virtual std::any visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *context) = 0;
+    virtual std::any visitParenthesisExpr(SCCompilerParser::ParenthesisExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *context) = 0;
+    virtual std::any visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitLiteralExpr(SCCompilerParser::LiteralExprContext *context) = 0;
+    virtual std::any visitLiteralExpr(SCCompilerParser::LiteralExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitCompExpr(SCCompilerParser::CompExprContext *context) = 0;
+    virtual std::any visitCompExpr(SCCompilerParser::CompExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitAOPExpr(SCCompilerParser::AOPExprContext *context) = 0;
+    virtual std::any visitAOPExpr(SCCompilerParser::AOPExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitUnaryExpr(SCCompilerParser::UnaryExprContext *context) = 0;
+    virtual std::any visitUnaryExpr(SCCompilerParser::UnaryExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *context) = 0;
+    virtual std::any visitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *context) = 0;
+    virtual std::any visitFuncCallExpr(SCCompilerParser::FuncCallExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitExprList(SCCompilerParser::ExprListContext *context) = 0;
+    virtual std::any visitExprList(SCCompilerParser::ExprListContext *context) = 0;
 
-    virtual antlrcpp::Any visitAssignment(SCCompilerParser::AssignmentContext *context) = 0;
+    virtual std::any visitAssignment(SCCompilerParser::AssignmentContext *context) = 0;
 
-    virtual antlrcpp::Any visitForStatement(SCCompilerParser::ForStatementContext *context) = 0;
+    virtual std::any visitForStatement(SCCompilerParser::ForStatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitForVarDecl(SCCompilerParser::ForVarDeclContext *context) = 0;
+    virtual std::any visitForVarDecl(SCCompilerParser::ForVarDeclContext *context) = 0;
 
-    virtual antlrcpp::Any visitForCondition(SCCompilerParser::ForConditionContext *context) = 0;
+    virtual std::any visitForCondition(SCCompilerParser::ForConditionContext *context) = 0;
 
-    virtual antlrcpp::Any visitForIncrements(SCCompilerParser::ForIncrementsContext *context) = 0;
+    virtual std::any visitForIncrements(SCCompilerParser::ForIncrementsContext *context) = 0;
 
-    virtual antlrcpp::Any visitForInc(SCCompilerParser::ForIncContext *context) = 0;
+    virtual std::any visitForInc(SCCompilerParser::ForIncContext *context) = 0;
 
 
 };

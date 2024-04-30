@@ -5,7 +5,7 @@
 #
 
 lib_name=antlr
-lib_version=4.7.1
+lib_version=4.13.1
 lib_url=https://github.com/antlr/antlr4.git
 logical_core_count=$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)
 

@@ -558,7 +558,7 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
     // Push new parent node into stack. It becomes new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
     // Pop current parent node since we are leaving the method.
@@ -572,13 +572,13 @@ antlrcpp::Any ASTGenerator::visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprCo
 {
     ast::NodeType nodeType = ast::NodeType::kNodeTypeUnknown;
     assert(ctx->children.size() == 2);
-    std::string  prefixAOP = ctx->children[0]->getText();
+    std::string  prefixAOP = ctx->getStart()->getText();
 
     if (prefixAOP == "++") nodeType = ast::NodeType::kNodeTypePrefixIncAOP;
     else if (prefixAOP == "--") nodeType = ast::NodeType::kNodeTypePrefixDecAOP;
     else assert(false && "Unknown prefix arithmetic operator.");
 
-    // Create new AST Node.
+    // Create new AST Node: '++' or '--'
     auto newNode = new ast::NodePrefixAOP(nodeType);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
@@ -591,9 +591,29 @@ antlrcpp::Any ASTGenerator::visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprCo
     // Push new parent node into stack. It becomes new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Create new AST Node: ID
+    auto IDToken = ctx->getStop();
+    std::string  ID = IDToken->getText();
+    auto newNodeID = new ast::NodeLiteral(ast::NodeType::kNodeTypeLiteralID, ID);
+    newNodeID->SetSourceCodeLine(IDToken->getLine());
+
+    // Set parent node. Parent node is the top element in the currentNode Stack.
+    newNodeID->SetParent(m_currentNodeStack.top());
+
+    // Add yourself as child to parent node.
+    m_currentNodeStack.top()->AddChild(newNodeID);
+
+    // Push new parent node into stack. It becomes new parent node for child visits.
+    m_currentNodeStack.push(newNodeID);
+
+    // Visit parser tree child.
+    // NOTE: We don't expect a child node, but we still call for the conventions.
+    // ANTLR4 used to visit visitLiteralExpr() when we called visitChildren(), but it looks like newer versions
+    // do not visit visitLiteralExpr() as a child. Handling Prefix and ID token in this call to fix the issue.
     auto visitResult = visitChildren(ctx);
 
+    // Pop current parent node since we are leaving the method.
+    m_currentNodeStack.pop();
     // Pop current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
