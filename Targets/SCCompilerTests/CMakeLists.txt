@@ -2,7 +2,7 @@
 #  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 #
 
-add_executable(SCCompilerTestApp
+add_executable(SCCompilerTests
         main.cpp
         SyntaxTests.cpp
         SemanticTests.cpp
@@ -10,4 +10,4 @@ add_executable(SCCompilerTestApp
         TestUtils.cpp
         )
 
-target_link_libraries(SCCompilerTestApp PRIVATE SCCompilerLib)
+target_link_libraries(SCCompilerTests PRIVATE SCCompilerLib)

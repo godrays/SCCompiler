@@ -32,8 +32,8 @@ link_directories(Externals/antlr/${ANTLR_VERSION}/runtime/Cpp/installed/lib)
 link_directories(Externals/llvm/${LLVM_VERSION}/llvm/installed/lib)
 
 add_subdirectory(Targets/SCCompilerLib)
-add_subdirectory(Targets/SCCompilerApp)
-add_subdirectory(Targets/SCCompilerTestApp)
+add_subdirectory(Targets/SCCompilerTests)
+add_subdirectory(Targets/SCCompilerExamples/SCCompilerApp)
 
-install(TARGETS SCCompilerApp SCCompilerTestApp DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES Targets/SCCompilerApp/SCCompilerTestCode.src DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(TARGETS SCCompilerApp SCCompilerTests DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES Targets/SCCompilerExamples/SCCompilerApp/SCCompilerTestCode.src DESTINATION ${CMAKE_INSTALL_PREFIX})

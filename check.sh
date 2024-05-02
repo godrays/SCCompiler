@@ -33,7 +33,7 @@ function runTests()
     echoColor 32 "Running tests in build-$1-product."
     cd build-$1-product
     ./SCCompilerApp       ;checkReturn
-    ./SCCompilerTestApp   ;checkReturn
+    ./SCCompilerTests     ;checkReturn
     cd $currentDir
     echo ""
 }
@@ -75,4 +75,4 @@ runTests asan
 runTests tsan
 
 # Report test code coverage
-reportCodeCoverage ccov SCCompilerTestApp
+reportCodeCoverage ccov SCCompilerTests
