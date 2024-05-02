@@ -8,10 +8,12 @@ add_executable(SCCompilerApp
 
 target_link_libraries(SCCompilerApp PRIVATE SCCompilerLib)
 
-# Post build command to copy resources in every single build step
-add_custom_command(
-        TARGET SCCompilerApp POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-                ${CMAKE_CURRENT_SOURCE_DIR}/SCCompilerTestCode.src
-                ${CMAKE_CURRENT_BINARY_DIR}/SCCompilerTestCode.src
-        )
+# Custom target to copy resources always if the resource is different
+add_custom_target(CopyResources ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_SOURCE_DIR}/SCCompilerTestCode.src
+        ${CMAKE_CURRENT_BINARY_DIR}/SCCompilerTestCode.src
+)
+
+# Add dependency to ensure CopyResources is executed before SCCompilerApp
+add_dependencies(SCCompilerApp CopyResources)
