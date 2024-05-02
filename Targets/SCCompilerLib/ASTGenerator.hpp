@@ -16,7 +16,7 @@
 namespace scc
 {
 
-// Fordward declaration
+// Forward declaration
 namespace ast
 {
     class Node;
@@ -87,6 +87,8 @@ public:
     antlrcpp::Any  visitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *ctx) final;
 
 protected:
+    void  PushNodeToStack(ast::Node* node);
+
     ast::Node *   m_rootNode{nullptr};
     std::stack<ast::Node *>  m_currentNodeStack;
 };
