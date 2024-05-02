@@ -1,19 +1,20 @@
 //
-//  main.cpp
-//
 //  Created by Arkin Terli on 3/31/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+// Project includes
+#include "SCCompiler.hpp"
+// External includes
+// System includes
 #include <iostream>
 
-#include "SCCompiler.hpp"
 
 int main(int , const char **)
 {
     auto compiler = scc::SCCompiler::Create();
     scc::SCCompileResult  compileResult;
-    
+
     auto scModule = compiler->CompileFromFile("SCCompilerTestCode.src", compileResult);
 
     if (scc::SCCompileResult::kSCCompileResultOk != compileResult)
@@ -22,12 +23,15 @@ int main(int , const char **)
         return -1;
     }
 
-    // We no longer need compiler. We just need SCModule, compiled module.
+    // We no longer need compiler since SCModule holds compiled machine code.
     delete compiler;
 
-    using FuncMain = int (*)(int);
-    auto mainFunc = reinterpret_cast<FuncMain>(scModule->GetFunctionPtr("main"));
-    std::cout << mainFunc(10) << std::endl;
+    // SCModule holds compiled machine code. Let's bind to the compiled main function.
+    using mainFuncType = int (*)(int);
+    auto mainFunc = reinterpret_cast<mainFuncType>(scModule->GetFunctionPtr("main"));
+
+    // Call the main function, which is the machine code in memory, directly.
+    std::cout << "fib(10) = " << mainFunc(10) << std::endl;
 
     delete scModule;
 
