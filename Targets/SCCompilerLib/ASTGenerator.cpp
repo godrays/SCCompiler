@@ -1,15 +1,15 @@
 //
-//  ASTGenerator.cpp
-//
 //  Created by Arkin Terli on 4/11/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+// Project includes
 #include "ASTGenerator.hpp"
-
+#include "AST.hpp"
+// External includes
+// System includes
 #include <cassert>
 
-#include "AST.hpp"
 
 using namespace scc;
 
@@ -32,13 +32,13 @@ antlrcpp::Any ASTGenerator::visitProgram(SCCompilerParser::ProgramContext *ctx)
 {
     m_rootNode = new ast::NodeProgram();
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(m_rootNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
     
     return visitResult;
@@ -62,24 +62,24 @@ antlrcpp::Any ASTGenerator::visitVarDecl(SCCompilerParser::VarDeclContext *ctx)
         auto newNode = new ast::NodeVarDeclaration(type, varName);
         newNode->SetSourceCodeLine(child->getStart()->getLine());
 
-        // Set parent node. Parent node is the top element in the currentNode Stack.
+        // Set the parent node. The parent node is the top element in the currentNode stack.
         newNode->SetParent(m_currentNodeStack.top());
 
-        // Add yourself as child to parent node.
+        // Add yourself as a child to the parent node.
         m_currentNodeStack.top()->AddChild(newNode);
 
-        // Push new parent node into stack. It becomes new parent node for child visits.
+        // Push a new parent node onto the stack. It becomes the new parent node for child visits.
         m_currentNodeStack.push(newNode);
 
         // Visit parser tree children.
         visitChildren(child);
 
-        // Pop current parent node since we are leaving the method.
+        // Pop the current parent node since we are leaving the method.
         m_currentNodeStack.pop();
     }
 
-    // Since we visit multiple child from this node, we have no result to return from child nodes.
-    // Also any return value is not used.
+    // Since we visit multiple children from this node, we have no result to return from child nodes.
+    // Also, any return value is not used.
     return nullptr;
 }
 
@@ -93,19 +93,19 @@ antlrcpp::Any ASTGenerator::visitFuncDeclaration(SCCompilerParser::FuncDeclarati
     auto newNode = new ast::NodeFuncDeclaration(funcReturnType, funcName);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -117,7 +117,7 @@ antlrcpp::Any ASTGenerator::visitFuncArgDeclaration(SCCompilerParser::FuncArgDec
     Type   argType = ASTGenerator::ToASTType(ctx->type()->getText());
     std::string argName = ctx->ID()->getText();
 
-    // Parent node has to be function declaration node. Top of Node stack is definitely FuncDeclaratinNode.
+    // The parent node has to be a function declaration node. The top of the Node stack is definitely a FuncDeclarationNode.
     auto parentNode = dynamic_cast<ast::NodeFuncDeclaration*>(m_currentNodeStack.top());
     assert(parentNode != nullptr);
 
@@ -132,19 +132,19 @@ antlrcpp::Any ASTGenerator::visitBlock(SCCompilerParser::BlockContext *ctx)
     // Create new AST Node.
     auto newNode = new ast::NodeBlock();
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -157,19 +157,19 @@ antlrcpp::Any ASTGenerator::visitIfStatement(SCCompilerParser::IfStatementContex
     auto newNode = new ast::NodeIfStatement();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -182,19 +182,19 @@ antlrcpp::Any ASTGenerator::visitForStatement(SCCompilerParser::ForStatementCont
     auto newNode = new ast::NodeForStatement();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -207,19 +207,19 @@ antlrcpp::Any  ASTGenerator::visitForVarDecl(SCCompilerParser::ForVarDeclContext
     auto newNode = new ast::NodeFor(ast::NodeType::kNodeTypeForVarDecl);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -232,19 +232,19 @@ antlrcpp::Any  ASTGenerator::visitForCondition(SCCompilerParser::ForConditionCon
     auto newNode = new ast::NodeFor(ast::NodeType::kNodeTypeForCondition);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -257,19 +257,19 @@ antlrcpp::Any  ASTGenerator::visitForIncrements(SCCompilerParser::ForIncrementsC
     auto newNode = new ast::NodeFor(ast::NodeType::kNodeTypeForIncrement);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -282,19 +282,19 @@ antlrcpp::Any ASTGenerator::visitWhileStatement(SCCompilerParser::WhileStatement
     auto newNode = new ast::NodeWhileStatement();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -307,19 +307,19 @@ antlrcpp::Any ASTGenerator::visitDoWhileStatement(SCCompilerParser::DoWhileState
     auto newNode = new ast::NodeDoWhileStatement();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -332,19 +332,19 @@ antlrcpp::Any ASTGenerator::visitReturnStatement(SCCompilerParser::ReturnStateme
     auto newNode = new ast::NodeReturnStatement();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -357,19 +357,19 @@ antlrcpp::Any ASTGenerator::visitContinue(SCCompilerParser::ContinueContext *ctx
     auto newNode = new ast::NodeContinue();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -382,19 +382,19 @@ antlrcpp::Any ASTGenerator::visitBreak(SCCompilerParser::BreakContext *ctx)
     auto newNode = new ast::NodeBreak();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -407,19 +407,19 @@ antlrcpp::Any ASTGenerator::visitAssignment(SCCompilerParser::AssignmentContext 
     auto newNode = new ast::NodeAssignment();
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -431,27 +431,27 @@ antlrcpp::Any ASTGenerator::visitExplicitTypeConversion(SCCompilerParser::Explic
     Type conversionType = Type::kTypeUnknown;
     auto strConvType = ctx->getStart()->getText();
     
-    if (strConvType == "float") conversionType = Type::kTypeFloat;
-    else if (strConvType == "int") conversionType = Type::kTypeInt;
+    if (strConvType == "float")     conversionType = Type::kTypeFloat;
+    else if (strConvType == "int")  conversionType = Type::kTypeInt;
     else if (strConvType == "bool") conversionType = Type::kTypeBool;
 
     // Create new AST Node.
     auto newNode = new ast::NodeExplicitTypeConversion(conversionType);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -464,19 +464,19 @@ antlrcpp::Any ASTGenerator::visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOP
     auto newNode = new ast::NodeLogicalOP(ast::NodeType::kNodeTypeLogicalNotOP);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -497,19 +497,19 @@ antlrcpp::Any ASTGenerator::visitLogicalOPExpr(SCCompilerParser::LogicalOPExprCo
     auto newNode = new ast::NodeLogicalOP(nodeType);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -549,19 +549,19 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
     auto newNode = new ast::NodeLiteral(nodeType, value);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -574,7 +574,7 @@ antlrcpp::Any ASTGenerator::visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprCo
     assert(ctx->children.size() == 2);
     std::string  prefixAOP = ctx->getStart()->getText();
 
-    if (prefixAOP == "++") nodeType = ast::NodeType::kNodeTypePrefixIncAOP;
+    if (prefixAOP == "++")      nodeType = ast::NodeType::kNodeTypePrefixIncAOP;
     else if (prefixAOP == "--") nodeType = ast::NodeType::kNodeTypePrefixDecAOP;
     else assert(false && "Unknown prefix arithmetic operator.");
 
@@ -582,13 +582,13 @@ antlrcpp::Any ASTGenerator::visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprCo
     auto newNode = new ast::NodePrefixAOP(nodeType);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
     // Create new AST Node: ID
@@ -597,13 +597,13 @@ antlrcpp::Any ASTGenerator::visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprCo
     auto newNodeID = new ast::NodeLiteral(ast::NodeType::kNodeTypeLiteralID, ID);
     newNodeID->SetSourceCodeLine(IDToken->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNodeID->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNodeID);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNodeID);
 
     // Visit parser tree child.
@@ -612,9 +612,9 @@ antlrcpp::Any ASTGenerator::visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprCo
     // do not visit visitLiteralExpr() as a child. Handling Prefix and ID token in this call to fix the issue.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -627,7 +627,7 @@ antlrcpp::Any ASTGenerator::visitAOPExpr(SCCompilerParser::AOPExprContext *ctx)
     assert(ctx->children.size() == 3);
     std::string  aop = ctx->children[1]->getText(); // Second child is arithmetic operator in the expression.
 
-    if (aop == "*") nodeType = ast::NodeType::kNodeTypeAOPMul;
+    if (aop == "*")      nodeType = ast::NodeType::kNodeTypeAOPMul;
     else if (aop == "/") nodeType = ast::NodeType::kNodeTypeAOPDiv;
     else if (aop == "+") nodeType = ast::NodeType::kNodeTypeAOPAdd;
     else if (aop == "-") nodeType = ast::NodeType::kNodeTypeAOPSub;
@@ -637,19 +637,19 @@ antlrcpp::Any ASTGenerator::visitAOPExpr(SCCompilerParser::AOPExprContext *ctx)
     auto newNode = new ast::NodeAOP(nodeType);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -664,19 +664,19 @@ antlrcpp::Any ASTGenerator::visitFuncCallExpr(SCCompilerParser::FuncCallExprCont
     auto newNode = new ast::NodeFuncCall(funcName);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -697,19 +697,19 @@ antlrcpp::Any  ASTGenerator::visitUnaryExpr(SCCompilerParser::UnaryExprContext *
     auto newNode = new ast::NodeUnaryOP(nodeType);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;
@@ -722,31 +722,31 @@ antlrcpp::Any ASTGenerator::visitCompExpr(SCCompilerParser::CompExprContext *ctx
     assert(ctx->children.size() == 3);
     std::string  compOP = ctx->children[1]->getText(); // Second child is comparison operator in the expression.
 
-    if (compOP == "==") nodeType = ast::NodeType::kNodeTypeCompOPEQ;
+    if (compOP == "==")      nodeType = ast::NodeType::kNodeTypeCompOPEQ;
     else if (compOP == "!=") nodeType = ast::NodeType::kNodeTypeCompOPNEQ;
     else if (compOP == "<=") nodeType = ast::NodeType::kNodeTypeCompOPLE;
     else if (compOP == ">=") nodeType = ast::NodeType::kNodeTypeCompOPGE;
-    else if (compOP == "<") nodeType = ast::NodeType::kNodeTypeCompOPL;
-    else if (compOP == ">") nodeType = ast::NodeType::kNodeTypeCompOPG;
+    else if (compOP == "<")  nodeType = ast::NodeType::kNodeTypeCompOPL;
+    else if (compOP == ">")  nodeType = ast::NodeType::kNodeTypeCompOPG;
     else assert(false && "Unknown arithmetic operator.");
 
     // Create new AST Node.
     auto newNode = new ast::NodeCompOP(nodeType);
     newNode->SetSourceCodeLine(ctx->getStart()->getLine());
 
-    // Set parent node. Parent node is the top element in the currentNode Stack.
+    // Set the parent node. The parent node is the top element in the currentNode stack.
     newNode->SetParent(m_currentNodeStack.top());
 
-    // Add yourself as child to parent node.
+    // Add yourself as a child to the parent node.
     m_currentNodeStack.top()->AddChild(newNode);
 
-    // Push new parent node into stack. It becomes new parent node for child visits.
+    // Push a new parent node onto the stack. It becomes the new parent node for child visits.
     m_currentNodeStack.push(newNode);
 
-    // Visit parser tree childrens.
+    // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
 
-    // Pop current parent node since we are leaving the method.
+    // Pop the current parent node since we are leaving the method.
     m_currentNodeStack.pop();
 
     return visitResult;

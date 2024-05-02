@@ -1,18 +1,17 @@
 //
-//  SymbolDefPass.cpp
-//
 //  Created by Arkin Terli on 4/15/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+// Project includes
 #include "SymbolDefPass.hpp"
-
-#include <sstream>
-
 #include "AST.hpp"
 #include "Exceptions.hpp"
 #include "Symbols.hpp"
 #include "Utils.hpp"
+// External includes
+// System includes
+#include <sstream>
 
 
 using namespace scc;
@@ -25,7 +24,7 @@ ScopeNode * SymbolDefPass::CreateScopeTree(ast::Node * node)
     auto scopeTreeHead = new ScopeNode(ScopeCategory::kScopeCategoryGlobal, nullptr);
     m_currentScope = scopeTreeHead;
 
-    // Add Built-In Types. They have no type definition.
+    // Add Built-In Types. They have no type definitions.
     auto typeSymbol = new BuiltInTypeSymbol("float");
     typeSymbol->SetScope(m_currentScope);
     m_currentScope->InsertSymbol(typeSymbol);
@@ -51,7 +50,7 @@ ScopeNode * SymbolDefPass::CreateScopeTree(ast::Node * node)
 
 void SymbolDefPass::Visit(ast::Node * node)
 {
-    // Set current scope for the node before visiting.
+    // Sets the current scope for the node before visiting.
     node->SetScope(m_currentScope);
 
     switch(node->GetNodeType())
@@ -112,7 +111,7 @@ void SymbolDefPass::Visit(ast::Node * node)
         case ast::NodeType::kNodeTypeLiteralFloat:
         case ast::NodeType::kNodeTypeLiteralInt32:
         case ast::NodeType::kNodeTypeLiteralBool:
-            VisitChilds(node);
+            VisitChildren(node);
             break;
             
         default:
@@ -122,7 +121,7 @@ void SymbolDefPass::Visit(ast::Node * node)
 }
 
 
-void SymbolDefPass::VisitChilds(ast::Node * node)
+void SymbolDefPass::VisitChildren(ast::Node * node)
 {
     // Visit node children.
     for (size_t index=0; index<node->ChildCount(); ++index)
@@ -145,8 +144,8 @@ void SymbolDefPass::SymbolDefPass::VisitVariableDeclaration(ast::NodeVarDeclarat
     symbol->SetScope(m_currentScope);
     // Define new symbol.
     m_currentScope->InsertSymbol(symbol);
-    
-    VisitChilds(node);
+
+    VisitChildren(node);
 }
 
 
@@ -163,14 +162,14 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
 
     auto funcSymbol = new FunctionSymbol(funcSymbolName, funcSymbolType);
     funcSymbol->SetScope(m_currentScope);
-    // Define function symbol.
+    // Define the function symbol.
     m_currentScope->InsertSymbol(funcSymbol);
 
-    // CREATE NEW SCOPE FOR FUNCTION
-    
+    // CREATE A NEW SCOPE FOR THE FUNCTION
+
     m_currentScope = new ScopeNode(ScopeCategory::kScopeCategoryFunction, m_currentScope);
 
-    // Add function arguments to function scope.
+    // Add function arguments to the function scope.
     auto arguments = node->GetArguments();
     for (auto & argument : arguments)
     {
@@ -183,60 +182,60 @@ void SymbolDefPass::SymbolDefPass::VisitFunctionDeclaration(ast::NodeFuncDeclara
 
         auto argSymbol = new FuncArgSymbol(argName, argType);
         argSymbol->SetScope(m_currentScope);
-        // Define new symbol.
+        // Define the new symbol.
         m_currentScope->InsertSymbol(argSymbol);
 
-        // Add argument symbol to function symbol to track arguments.
+        // Add the argument symbol to the function symbol to track arguments.
         funcSymbol->AddArgumentSymbol(argSymbol);
     }
 
-    // Visit function childs
-    VisitChilds(node);
+    // Visit the function's children
+    VisitChildren(node);
 
-    // LEAVE SCOPE OF FUNCTION
-    
-    m_currentScope = m_currentScope->GeEnclosingScope();
+    // LEAVE THE SCOPE OF THE FUNCTION
+
+    m_currentScope = m_currentScope->GetEnclosingScope();
 }
 
 
 void SymbolDefPass::VisitForStatement(ast::NodeForStatement * node)
 {
-    // CREATE NEW SCOPE FOR FOR
-    
+    // CREATE A NEW SCOPE FOR THE 'FOR' STATEMENT
+
     m_currentScope = new ScopeNode(ScopeCategory::kScopeCategoryFor, m_currentScope);
 
-    // Visit function childs
-    VisitChilds(node);
+    // Visit the children
+    VisitChildren(node);
 
-    // LEAVE SCOPE OF FUNCTION
-    
-    m_currentScope = m_currentScope->GeEnclosingScope();
+    // LEAVE THE SCOPE OF THE 'FOR' STATEMENT
+
+    m_currentScope = m_currentScope->GetEnclosingScope();
 }
 
 
 void SymbolDefPass::SymbolDefPass::VisitBlock(ast::NodeBlock * node)
 {
-    // CREATE NEW SCOPE FOR FUNCTION
+    // CREATE A NEW SCOPE FOR THE 'BLOCK'
     m_currentScope = new ScopeNode(ScopeCategory::kScopeCategoryBlock, m_currentScope);
 
-    // Visit function childs
-    VisitChilds(node);
+    // Visit the children
+    VisitChildren(node);
 
-    // LEAVE SCOPE OF FUNCTION
-    m_currentScope = m_currentScope->GeEnclosingScope();
+    // LEAVE THE SCOPE OF THE 'BLOCK'
+    m_currentScope = m_currentScope->GetEnclosingScope();
 }
 
 
 void SymbolDefPass::VisitFunctionCall(ast::NodeFuncCall * node)
 {
-    // Rule: Function name must resolve (must defined).
+    // Rule: The function name must be resolved (must be defined).
     auto scope = node->GetScope();
     auto symbol = static_cast<FunctionSymbol *>(scope->ResolveSymbol(node->GetFuncName()));
     throw_if(!symbol,
-             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Use of undeclared identifier: ",
+             SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Use of an undeclared identifier: ",
                                     node->GetFuncName()));
 
-    VisitChilds(node);
+    VisitChildren(node);
 }
 
 
@@ -249,18 +248,18 @@ void SymbolDefPass::VisitLiteral(ast::NodeLiteral * node)
         case ast::NodeType::kNodeTypeLiteralBool:
         // Nothing to do with other literal types.
         break;
-        
+
         case ast::NodeType::kNodeTypeLiteralID:
         {
-            // Rule: Resolve variable name. It has to be defined before it's used.
+            // Rule: Resolve the variable name. It has to be defined before it is used.
             auto scope = node->GetScope();
             auto symbol = scope->ResolveSymbol(node->GetValue());
             throw_if(!symbol,
-                     SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Use of undeclared identifier: ",
+                     SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Use of an undeclared identifier: ",
                                             node->GetValue()));
         }
         break;
-        
+
         default:
             assert(false && "Unknown node type in SemanticPass::VisitLiteral");
         break;

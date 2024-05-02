@@ -1,17 +1,17 @@
 //
-//  AST.hpp
-//
 //  Created by Arkin Terli on 4/10/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
+// Project includes
+#include "Types.hpp"
+// External includes
+// System includes
 #include <cassert>
 #include <string>
 #include <vector>
-
-#include "Types.hpp"
 
 
 namespace scc
@@ -89,7 +89,7 @@ protected:
     // Stores argument type.
     Type   m_type;
 
-    // Stores argumen name.
+    // Stores argument name.
     std::string   m_name;
 };
 
@@ -108,7 +108,7 @@ public:
     // Adds child node.
     void    AddChild(Node * childNode);
 
-    // Returns childs' count.
+    // Returns children's count.
     size_t  ChildCount();
 
     // Returns child at given index.
@@ -138,17 +138,17 @@ public:
     // Get source code line.
     size_t  GetSourceCodeLine() const;
 
-    // Finds the closest parent node with given type in path from current node to tree root node.
+    // Finds the closest parent node with the given type in the path from the current node to the tree root node.
     Node * FindClosestParentNode(const std::vector<NodeType> & nodeType);
 
-    // Finds the closest child node with given type in path from current node to childs.
+    // Finds the closest child node with the given type in the path from the current node to its children.
     Node * FindClosestChildNode(NodeType nodeType);
 
 protected:
     explicit Node(NodeType nodeType);
 
     // Delete all child nodes.
-    void DeleteChilds();
+    void DeleteChildren();
 
     // Node Type
     NodeType    m_nodeType{NodeType::kNodeTypeUnknown};
@@ -157,9 +157,9 @@ protected:
     Node *   m_parent{nullptr};
 
     // Stores child nodes.
-    std::vector<Node *>   m_childs;
+    std::vector<Node *>   m_children;
 
-    // Pointer to the scope. Each AST node should know which scope are they in.
+    // Pointer to the scope. Each AST node should know which scope it is in.
     ScopeNode *     m_scope{nullptr};
 
     // Source code line of the node.

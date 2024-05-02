@@ -1,18 +1,18 @@
 //
-//  Symbols.hpp
-//
 //  Created by Arkin Terli on 4/15/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
+// Project includes
+#include "Types.hpp"
+// External includes
+// System includes
 #include <cassert>
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-#include "Types.hpp"
 
 
 namespace scc
@@ -131,13 +131,13 @@ public:
     // Constructor.
     FunctionSymbol(std::string name, Type type);
 
-    // Add function argument symbol.
+    // Adds a function argument symbol.
     void AddArgumentSymbol(FuncArgSymbol * argSymbol);
 
-    // Return argument count.
+    // Returns the argument count.
     size_t ArgumentCount();
 
-    // Return function argument symbol at index.
+    // Returns the function argument symbol at the given index.
     FuncArgSymbol * GetArgumentSymbol(size_t index);
 
 private:
@@ -160,7 +160,7 @@ enum class ScopeCategory
 
 #pragma mark - Class ScopeNode
 
-// Scoped symbol table node to build tree of symbol tables.
+// Scoped symbol table node to build a tree of symbol tables.
 // Every node in the tree is considered a scope and has a symbol table.
 class ScopeNode
 {
@@ -168,25 +168,25 @@ public:
     // Constructor.
     ScopeNode(ScopeCategory category, ScopeNode * enclosingScope);
 
-    // Destructor
+    // Destructor.
     ~ScopeNode();
 
     // Get scope category.
     ScopeCategory GetCategory();
 
-    // Add child scope node.
+    // Add a child scope node.
     void AddChild(ScopeNode * childNode);
 
-    // Returns enclosing scope (child node of this node).
-    ScopeNode *  GeEnclosingScope();
+    // Returns the enclosing scope (parent node of this node).
+    ScopeNode * GetEnclosingScope();
 
-    // Returns true if symbol is defined in this scope. Otherwise, false.
+    // Returns true if the symbol is defined in this scope. Otherwise, false.
     bool  IsDefined(const std::string& symbolName);
 
-    // Insert symbol.
+    // Insert a symbol.
     void  InsertSymbol(Symbol *  symbolNode);
 
-    // Resolve symbol between current scope and global scope (root node).
+    // Resolve a symbol between the current scope and the global scope (root node).
     Symbol *  ResolveSymbol(const std::string& symbolName);
 
 protected:
@@ -199,8 +199,8 @@ protected:
     // Enclosing scope that covers this scope.
     ScopeNode *   m_enclosingScope;
 
-    // Stores child scope nodes. We only needs this for deleting scope node tree.
-    std::vector<ScopeNode *>    m_childs;
+    // Stores child scope nodes. We only need this for deleting the scope node tree.
+    std::vector<ScopeNode *>    m_children;
 };
 
 }

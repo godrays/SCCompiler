@@ -1,12 +1,12 @@
 //
-//  Symbols.cpp
-//
 //  Created by Arkin Terli on 4/15/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+// Project includes
 #include "Symbols.hpp"
-
+// External includes
+// System includes
 #include <utility>
 
 
@@ -123,10 +123,10 @@ ScopeNode::ScopeNode(ScopeCategory category, ScopeNode * enclosingScope) :
     m_category(category),
     m_enclosingScope(enclosingScope)
 {
-    // In scope tree, child is always connect itself to parent.
-    // Because of that, child should add itself to parents childs list.
-    // In fact, parent never needs to know it's childs since childs points to parent due to nature of the scope tree.
-    // But we want parent node knows it's child since we need to delete child nodes when we delete scope node root node.
+    // In the scope tree, a child is always connected to its parent.
+    // Because of that, the child should add itself to the parent's children list.
+    // In fact, the parent never needs to know its children since children point to the parent due to the nature of the scope tree.
+    // However, we want the parent node to know its children since we need to delete child nodes when we delete the scope node root node.
 
     if (enclosingScope != nullptr)
     {
@@ -148,13 +148,13 @@ ScopeNode::~ScopeNode()
     // Clear symbol table.
     m_symbolTable.clear();
 
-    // Delete all childs.
-    for (auto child : m_childs)
+    // Delete all children.
+    for (auto child : m_children)
     {
         delete child;
     }
 
-    m_childs.clear();
+    m_children.clear();
 }
 
 
@@ -166,36 +166,36 @@ ScopeCategory ScopeNode::GetCategory()
 
 bool ScopeNode::IsDefined(const std::string & symbolName)
 {
-    // Return true if the symbol is exist. Othersie, false.
+    // Return true if the symbol exists. Otherwise, false.
     return  m_symbolTable.find(symbolName) != m_symbolTable.end();
 }
 
 
 void  ScopeNode::InsertSymbol(Symbol *  symbol)
 {
-    // No duplicate symbol is allowed. Program should check before adding new symbol.
+    // No duplicate symbol is allowed. The program should check before adding a new symbol.
     assert(m_symbolTable.find(symbol->GetName()) == m_symbolTable.end());
 
-    // Add symbol to the symbol table. We basically, define a new symbol in this scope.
+    // Add the symbol to the symbol table. We are basically defining a new symbol in this scope.
     m_symbolTable[symbol->GetName()] = symbol;
 
-    // Set scope for the symbol. Each symbol should know which scope are they in.
+    // Set the scope for the symbol. Each symbol should know which scope they are in.
     symbol->SetScope(this);
 }
 
 
 Symbol *  ScopeNode::ResolveSymbol(const std::string & symbolName)
 {
-    // Check if symbol is available in symbol table.
+    // Check if the symbol is available in the symbol table.
     auto pair = m_symbolTable.find(symbolName);
 
-    // Return if the symbol is exist.
+    // Return if the symbol exists.
     if ( pair != m_symbolTable.end())
     {
         return pair->second;
     }
 
-    // If can't find in this scope then check enclosing scopes.
+    // If it can't be found in this scope, then check the enclosing scopes.
     if ( m_enclosingScope != nullptr )
     {
         return m_enclosingScope->ResolveSymbol(symbolName);
@@ -205,14 +205,13 @@ Symbol *  ScopeNode::ResolveSymbol(const std::string & symbolName)
     return nullptr;
 }
 
-
 void ScopeNode::AddChild(ScopeNode * childNode)
 {
-    m_childs.emplace_back(childNode);
+    m_children.emplace_back(childNode);
 }
 
 
-ScopeNode *  ScopeNode::GeEnclosingScope()
+ScopeNode *  ScopeNode::GetEnclosingScope()
 {
     return m_enclosingScope;
 }

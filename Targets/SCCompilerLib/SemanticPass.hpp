@@ -1,15 +1,15 @@
 //
-//  SemanticPass.hpp
-//
 //  Created by Arkin Terli on 4/16/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
-
 #pragma once
 
+// Project includes
 #include "AST.hpp"
 #include "Types.hpp"
+// External includes
+// System includes
 
 
 namespace scc
@@ -46,14 +46,14 @@ namespace ast
 class  SemanticPass
 {
 public:
-    // Perform semantic analysis on nodes AST.
+    // Perform semantic analysis.
     void SemanticCheck(ast::Node * node);
 
 private:
-    // Visits all node childs.
-    void VisitChilds(ast::Node * node);
+    // Visits all node children.
+    void VisitChildren(ast::Node * node);
 
-    // Visits nodes to create scopes and define symbols.
+    // Visit nodes to create scopes and define symbols.
     Type Visit(ast::Node * node);
 
     void VisitProgram(ast::NodeProgram * node);

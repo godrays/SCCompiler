@@ -1,23 +1,21 @@
 //
-//  JITEngine.cpp
-//
 //  Created by Arkin Terli on 5/5/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+// Project includes
 #include "JITEngine.hpp"
-
-#include <memory>
-#include <sstream>
-
+#include "Exceptions.hpp"
+#include "Utils.hpp"
+// External includes
 #include <llvm/Analysis/TargetTransformInfo.h>
 #include <llvm/Bitcode/BitcodeWriterPass.h>
 #include <llvm/IR/LegacyPassManager.h>
 #include <llvm/LinkAllPasses.h>
 #include <llvm/Transforms/IPO/PassManagerBuilder.h>
-
-#include "Exceptions.hpp"
-#include "Utils.hpp"
+// System includes
+#include <memory>
+#include <sstream>
 
 
 using namespace scc;
@@ -27,7 +25,7 @@ using namespace scc;
 
 JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
 {
-    // Setup the host target and ensure that the target libraries are linked.
+    // Set up the host target and ensure that the target libraries are linked.
     llvm::InitializeNativeTarget();
     llvm::InitializeNativeTargetAsmPrinter();
     llvm::InitializeNativeTargetAsmParser();
@@ -45,7 +43,7 @@ JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
              CompileErrorException("Could not create ExecutionEngine: ", error));
 
     // Ensure the module is fully processed and is usable.
-    // This method has no effect for the interpeter.
+    // This method has no effect for the interpreter.
     m_executionEngine->finalizeObject();
 }
 
@@ -53,13 +51,13 @@ JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
 JITEngine::~JITEngine()
 {
     delete m_executionEngine;
-    //TODO: llvm::llvm_shutdown(); needs to be called per process one time only.
+    //TODO: llvm::llvm_shutdown(); needs to be called per process only one time.
 }
 
 
 void * JITEngine::GetFunctionPtr(std::string name)
 {
-    // OLD WAY : auto funcPtr = m_executionEngine->getPointerToFunction(m_module->getFunction(name));
+    // OLD WAY: auto funcPtr = m_executionEngine->getPointerToFunction(m_module->getFunction(name));
     void * funcPtr = reinterpret_cast<void *>(m_executionEngine->getFunctionAddress(name));
     assert(funcPtr != nullptr);
     return funcPtr;
@@ -95,10 +93,10 @@ void JITEngine::OptimizeIR()
     std::unique_ptr<llvm::legacy::FunctionPassManager> FPasses;
     FPasses = std::make_unique<llvm::legacy::FunctionPassManager>(m_module);
     FPasses->add(createTargetTransformInfoWrapperPass(llvm::TargetIRAnalysis()));
-    // Verify that input is correct
+    // Verify that the input is correct.
     FPasses->add(llvm::createVerifierPass());
-    
-    // Add Optimization Passes
+
+    // Add Optimization Passes.
     unsigned int OptLevel = 3;
     unsigned int SizeLevel = 0;
 
@@ -121,10 +119,9 @@ void JITEngine::OptimizeIR()
         FPasses->doFinalization();
     }
 
-    // Check that the module is well formed on completion of optimization.
+    // Check that the module is well-formed on completion of optimization.
     Passes.add(llvm::createVerifierPass());
 
-    // Now that we have all of the passes ready, run them.
+    // Now that we have all the passes ready, run them.
     Passes.run(*m_module);
 }
-

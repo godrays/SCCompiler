@@ -7,6 +7,9 @@
 
 #pragma once
 
+// Project includes
+// External includes
+// System includes
 #include <fstream>
 
 
@@ -25,17 +28,17 @@ namespace ast
 class  ASTVisualizer
 {
 public:
-    // Contructor.
+    // Constructor.
     ASTVisualizer() = default;
 
     // Destructor.
     virtual ~ASTVisualizer() = default;
 
-    // Genearates DOT file from AST tree and outputs to a file.
+    // Generates DOT file from AST tree and outputs to a file.
     void GenerateDOTFile(ast::Node * node, const std::string& filename);
 
 protected:
-    // Visits node to genearte Graphviz DOT file for visualization.
+    // Visits node to generate Graphviz DOT file for visualization.
     void Visit(ast::Node * node);
 
     // Output string for a node

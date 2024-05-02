@@ -1,16 +1,16 @@
 //
-//  ASTGenerator.hpp
-//
 //  Created by Arkin Terli on 4/11/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
-#include <stack>
-
+// Project includes
 #include "Parser/SCCompilerBaseVisitor.h"
 #include "Types.hpp"
+// External includes
+// System includes
+#include <stack>
 
 
 namespace scc
@@ -25,7 +25,7 @@ namespace ast
 class  ASTGenerator final : public SCCompilerBaseVisitor
 {
 public:
-    // Contructor.
+    // Constructor.
     ASTGenerator() = default;
 
     // Destructor.

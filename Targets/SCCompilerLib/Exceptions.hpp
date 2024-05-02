@@ -1,12 +1,13 @@
 //
-//  Exceptions.hpp
-//
 //  Created by Arkin Terli on 4/16/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
+// Project includes
+// External includes
+// System includes
 #include <exception>
 #include <sstream>
 #include <string>

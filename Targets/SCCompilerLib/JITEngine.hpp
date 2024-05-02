@@ -1,16 +1,13 @@
 //
-//  JITEngine.hpp
-//
 //  Created by Arkin Terli on 5/5/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
-#include <unordered_map>
-#include <stack>
-#include <string>
-
+// Project includes
+#include "SCModule.hpp"
+// External includes
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Analysis/Passes.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
@@ -31,8 +28,10 @@
 #include <llvm/Support/ManagedStatic.h>
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Support/raw_ostream.h>
-
-#include "SCModule.hpp"
+// System includes
+#include <unordered_map>
+#include <stack>
+#include <string>
 
 
 namespace scc
@@ -41,7 +40,7 @@ namespace scc
 #pragma mark - Class JITEngine
 
 // Machine code execution engine.
-// NOTE: JITEngine must keep minimum data during it's life cycle to minimize memory usage.
+// NOTE: JITEngine must keep minimum data during its life cycle to minimize memory usage.
 class JITEngine final : public SCModule
 {
 public:

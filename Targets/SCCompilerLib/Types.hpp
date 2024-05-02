@@ -1,12 +1,13 @@
 //
-//  Types.hpp
-//
 //  Created by Arkin Terli on 4/18/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
+// Project includes
+// External includes
+// System includes
 #include <iostream>
 
 
@@ -16,7 +17,7 @@ namespace scc
 #pragma mark - Enum Type.
 
 // Types.
-// Note: Changes to this enum requires change in promotion table.
+// Note: Changes to this enum require changes in the promotion table.
 enum Type : uint32_t
 {
     kTypeUnknown     = 0,
@@ -30,15 +31,15 @@ enum Type : uint32_t
 
 #pragma mark - Class TypeChecker.
 
-// Implements static helper methods for type system.
+// Implements static helper methods for the type system.
 class TypeChecker
 {
 public:
-    // Promote types if possible.
+    // Promotes types if possible.
     static Type Promote(Type type1, Type type2);
 
 protected:
-    // Protected constructor disallows allocation of this object.
+    // The protected constructor disallows allocation of this object.
     TypeChecker() = default;
 
 private:

@@ -1,16 +1,15 @@
 //
-//  ASTVisualizer.cpp
-//
 //  Created by Arkin Terli on 4/13/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+// Project includes
 #include "ASTVisualizer.hpp"
-
+#include "AST.hpp"
+// External includes
+// System includes
 #include <cassert>
 #include <sstream>
-
-#include "AST.hpp"
 
 
 using namespace scc;
@@ -29,7 +28,7 @@ void ASTVisualizer::GenerateDOTFile(ast::Node * node, const std::string & filena
                  << "\tnode [shape = record,height=.05];"
                  << std::endl;
 
-    // Visit each node and output node deteils to file.
+    // Visit each node and output node details to file.
     Visit(node);
 
     // Complete the dot configuration.
@@ -42,7 +41,7 @@ void ASTVisualizer::GenerateDOTFile(ast::Node * node, const std::string & filena
 
 void ASTVisualizer::Visit(ast::Node * node)
 {
-    // Output node specific data to dot file.
+    // Output node-specific data to dot file.
     switch(node->GetNodeType())
     {
         case ast::NodeType::kNodeTypeProgram:

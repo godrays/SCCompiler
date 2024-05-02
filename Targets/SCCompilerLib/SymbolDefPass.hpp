@@ -1,22 +1,23 @@
 //
-//  SymbolDefPass.hpp
-//
 //  Created by Arkin Terli on 4/15/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
+// Project includes
 #include "AST.hpp"
+// External includes
+// System includes
 
 
 namespace scc
 {
 
-// Fordward declaration.
+// Forward declaration.
 class ScopeNode;
 
-// Fordward declaration.
+// Forward declaration.
 namespace ast
 {
     class Node;
@@ -31,7 +32,7 @@ namespace ast
 class  SymbolDefPass
 {
 public:
-    // Constructor.
+    // Default constructor.
     SymbolDefPass() = default;
 
     // Creates a scope tree and defines symbols based on the AST nodes.
@@ -41,8 +42,8 @@ private:
     // Visits nodes to create scopes and define symbols.
     void Visit(ast::Node * node);
 
-    // Visits node childs.
-    void VisitChilds(ast::Node * node);
+    // Visits node's children.
+    void VisitChildren(ast::Node * node);
 
     void VisitVariableDeclaration(ast::NodeVarDeclaration * node);
 
@@ -57,7 +58,7 @@ private:
     void VisitLiteral(ast::NodeLiteral * node);
 
 private:
-    // Stores current scope.
+    // Stores the current scope.
     ScopeNode *  m_currentScope{nullptr};
 };
 

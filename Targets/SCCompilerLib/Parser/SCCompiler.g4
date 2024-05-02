@@ -47,7 +47,7 @@ block
     ;
 
 
-// Anything that can make up a meaningful line or lines (If, While etc) are called statement.
+// Anything that can make up a meaningful line or lines (if, while, etc.) is called a statement.
 
 stat
     :   block                                                   #BlockStatement
@@ -63,13 +63,13 @@ stat
     |   expr ';'                                                #FuncCallStatement
     ;
 
-// Expressions are part of statements. Anything that can be reduced to a value is called expression.
+// Expressions are parts of statements. Anything that can be reduced to a value is called an expression.
 
 expr
-    :   ID '(' exprList? ')'                        #FuncCallExpr           // Func call like f(), f(x), f(1,2)
+    :   ID '(' exprList? ')'                        #FuncCallExpr
     |   ('float' | 'int' | 'bool') '(' expr ')'     #ExplicitTypeConversion
-//    |   ID '[' expr ']'                           #ArrayIndexExpr         // Array index like a[i]
-    |   ('++'|'--') ID                              #PrefixAOPExpr          // Prefix Increment/Decrement Operator
+//    |   ID '[' expr ']'                           #ArrayIndexExpr
+    |   ('++'|'--') ID                              #PrefixAOPExpr
     |   ('-' | '+') expr                            #UnaryExpr
     |   '!' expr                                    #LogicalNotOPExpr
     |   expr ('*'|'/') expr                         #AOPExpr

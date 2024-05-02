@@ -48,7 +48,7 @@ target_link_libraries(SCCompilerLib PRIVATE
         LLVMTableGen LLVMSupport LLVMDemangle
         )
 
-# Note: files in Output section needs to be generated in target binary. Otherwise, it will generate files in every build run.
+# Note: Files in the Output section need to be generated in the target binary. Otherwise, it will generate files in every build run.
 #add_custom_command(
 #        OUTPUT Parser/SCCompilerBaseListener.cpp Parser/SCCompilerBaseVisitor.cpp Parser/SCCompilerLexer.cpp Parser/SCCompilerListener.cpp Parser/SCCompilerParser.cpp Parser/SCCompilerVisitor.cpp
 #        COMMAND "java -jar \"Externals/ANTLR/4.7.1/Tool/antlr-4.7.1-complete.jar\" -Dlanguage=Cpp -visitor ./Targets/SCCompilerLib/Parser/SCCompiler.g4"

@@ -1,20 +1,19 @@
 //
-//  CodeGenPass.cpp
-//
 //  Created by Arkin Terli on 4/22/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+// Project includes
 #include "CodeGenPass.hpp"
-
-#include <cassert>
-#include <stack>
-#include <string>
-
 #include "AST.hpp"
 #include "JITEngine.hpp"
 #include "Symbols.hpp"
 #include "Types.hpp"
+// External includes
+// System includes
+#include <cassert>
+#include <string>
+
 
 using namespace scc;
 
@@ -168,7 +167,7 @@ JITEngine * CodeGenPass::GenerateCode(ast::Node * node)
 }
 
 
-void CodeGenPass::VisitChilds(ast::Node * node)
+void CodeGenPass::VisitChildren(ast::Node * node)
 {
     // Visit node children.
     for (size_t index=0; index<node->ChildCount(); ++index)
@@ -208,7 +207,7 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
 
         case ast::NodeType::kNodeTypeForVarDecl:
         case ast::NodeType::kNodeTypeForIncrement:
-            VisitChilds(node);
+            VisitChildren(node);
             break;
 
         case ast::NodeType::kNodeTypeWhileStatement:
@@ -303,8 +302,7 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
 
 void CodeGenPass::VisitProgram(ast::NodeProgram * node)
 {
-    // Visit childs
-    VisitChilds(node);
+    VisitChildren(node);
 }
 
 
@@ -314,60 +312,59 @@ void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
     auto varName = node->GetVarName();
     assert(childCount < 2);
 
-    // Create global variable if variable is in global scope.
+    // Create a global variable if the variable is in the global scope.
     if (node->GetScope()->GetCategory() == ScopeCategory::kScopeCategoryGlobal)
     {
         auto globalVar = CreateGlobalVariable(varName, node->GetVarType());
         node->GetScope()->ResolveSymbol(varName)->SetProperty(new SymbolProperty(globalVar));
 
-        // Generate initialization code in internal initialization function.
+        // Generate initialization code in the internal initialization function.
         if (childCount == 1)
         {
-            // Save current function.
+            // Save the current function.
             auto prevFunc = m_currentFunction;
-            // Save current block
+            // Save the current block.
             auto prevBlock = m_irBuilder->GetInsertBlock();
 
             m_currentFunction = m_initFunction;
 
-            // Set instruction generation pos to initialization function.
+            // Set the instruction generation position to the initialization function.
             m_irBuilder->SetInsertPoint(m_initFunctionBlock);
 
-            // Generate code for right expression and get assignment value.
+            // Generate code for the right expression and get the assignment value.
             auto rightExprValue = Visit(node->GetChild(0));
 
-            // Save last used initializer function's basic block. If there is another
+            // Save the last used initializer function's basic block. If there is another
             // global variable, it will start from this block to generate code.
             m_initFunctionBlock = m_irBuilder->GetInsertBlock();
 
-            // We load value from rightExprValue address and store at globalVar address.
+            // We load the value from the rightExprValue address and store it at the globalVar address.
             m_irBuilder->CreateStore(LoadIfPointerType(rightExprValue), globalVar);
 
-            // Restore saved block (Intruction generation point).
+            // Restore the saved block (instruction generation point).
             m_irBuilder->SetInsertPoint(prevBlock);
-            // Restore saved function.
+            // Restore the saved function.
             m_currentFunction = prevFunc;
         }
     }
     else
     {
-        // Create stack allocated local variable.
+        // Create a stack-allocated local variable.
         auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(node->GetVarType()), nullptr, varName);
-        // Set symbol property to save new llvm variable object. Save related llvm objects in symbol object.
-        // We save llvm object because everytime this variable is used, we need to access to it's llvm object.
+        // Set the symbol property to save the new LLVM variable object. Save related LLVM objects in the symbol object.
+        // We save the LLVM object because every time this variable is used, we need to access its LLVM object.
         node->GetScope()->ResolveSymbol(varName)->SetProperty(new SymbolProperty(localVar));
 
-        // If node has child then it needs to be evaluated and assigned to the new variable.
+        // If the node has a child, then it needs to be evaluated and assigned to the new variable.
         if (childCount == 1)
         {
-            // Generate code for right expression and get assignment value.
+            // Generate code for the right expression and get the assignment value.
             auto rightExprValue = Visit(node->GetChild(0));
-            // We load value from rightExprValue address and store at localVar address.
+            // We load the value from the rightExprValue address and store it at the localVar address.
             m_irBuilder->CreateStore(LoadIfPointerType(rightExprValue), localVar);
         }
     }
 }
-
 
 void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 {
@@ -408,11 +405,10 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
         funcArgSymbol->SetProperty(new SymbolProperty(localFuncArgVar));
     }
 
-    // Visit childs.
-    VisitChilds(node);
+    VisitChildren(node);
 
-    // It's possible final nasic block may not have an return instruction.
-    // Note: This is a workaround solution until return path analysis is done in semantic pass.
+    // It's possible that the final basic block may not have a return instruction.
+    // Note: This is a workaround solution until return path analysis is done in the semantic pass.
     if (m_irBuilder->GetInsertBlock()->getTerminator() == nullptr)
     {
         if (funcReturnType == scc::Type::kTypeVoid)
@@ -437,12 +433,11 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 
 void CodeGenPass::VisitBlock(ast::NodeBlock * node)
 {
-    // Visit childs
-    VisitChilds(node);
+    VisitChildren(node);
 }
 
 
-void CodeGenPass::VisitIfStatement(ast::NodeIfStatement * node)
+void CodeGenPass::VisitIfStatement(ast::NodeIfStatement* node)
 {
     //auto prevBlock = m_irBuilder->GetInsertBlock();
 
@@ -450,38 +445,38 @@ void CodeGenPass::VisitIfStatement(ast::NodeIfStatement * node)
     auto thenNode = node->GetChild(1);
     auto elseNode = node->ChildCount() == 3 ? node->GetChild(2) : nullptr;
 
-    // Generate code for condition Expression.
+    // Generate code for the condition expression.
     auto conditionValue = LoadIfPointerType(Visit(condNode));
 
     // Generate blocks.
-    auto thenBlock  = CreateBasicBlock(m_currentFunction, "if.then");
-    auto elseBlock  = CreateBasicBlock(m_currentFunction, "if.else");
+    auto thenBlock = CreateBasicBlock(m_currentFunction, "if.then");
+    auto elseBlock = CreateBasicBlock(m_currentFunction, "if.else");
     auto continueBlock = CreateBasicBlock(m_currentFunction, "if.cont");
     m_irBuilder->CreateCondBr(conditionValue, thenBlock, elseBlock);
 
-    // Generate code for then statement.
+    // Generate code for the then statement.
     m_irBuilder->SetInsertPoint(thenBlock);
     Visit(thenNode);
     m_irBuilder->CreateBr(continueBlock);
 
     m_irBuilder->SetInsertPoint(elseBlock);
-    // Generate code only if there is else statement.
+    // Generate code only if there is an else statement.
     if (elseNode != nullptr)
     {
         Visit(elseNode);
     }
-    // Even there is no else block, we create else block to make flow work properly.
-    // Empty else block will be eliminated by code optimizer.
+    // Even if there is no else block, we create an else block to make the flow work properly.
+    // The empty else block will be eliminated by the code optimizer.
     m_irBuilder->CreateBr(continueBlock);
 
-    // New code generation should start in continue block.
+    // New code generation should start in the continue block.
     m_irBuilder->SetInsertPoint(continueBlock);
 }
 
 
 void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
 {
-    // There has to be min 4 childs. ForVarDec, ForCondition, ForIncrements and ForCodeBlock
+    // There have to be at least 4 children: ForVarDec, ForCondition, ForIncrements, and ForCodeBlock
     assert(node->ChildCount() == 4);
 
     // for ( varDecl ; forCondition ; forIncrements ) forBody
@@ -491,13 +486,13 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
     auto forBodyNode    = node->GetChild(3);
 
     // Create basic blocks for loop construction.
-    // Note: The reason we have extra block (for.body) is that LLVM has a strict rule that every basic block
-    //       has to end with a terminator (ret, br etc..) instruction and each block can have only one terminator.
+    // Note: The reason we have an extra block (for.body) is that LLVM has a strict rule that every basic block
+    //       has to end with a terminator (ret, br etc.) instruction, and each block can have only one terminator.
     /*
         for.cmp:
             <condition comparison>
             br for.body or for.exit
-     
+
         for.body:
             <for body instructions>
             br for.inc
@@ -505,7 +500,7 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
         for.Inc:
             <for increment instructions>
             br for.cmp
-     
+
         for.exit:
             <...>
     */
@@ -514,16 +509,16 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
     auto forIncBlock  = CreateBasicBlock(m_currentFunction, "for.inc");
     auto forExitBlock = CreateBasicBlock(m_currentFunction, "for.exit");
 
-    // Push BasicBlocks into the stack for this node. We may need these blocks create branch
-    // for continue, break, return etc statements to create brach to jump to this nodes blocks
+    // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
+    // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
     m_nodeBBStack.Push(new NodeBasicBlocks(node, forCondBlock, forBodyBlock, forIncBlock, forExitBlock));
 
-    // Generate code for variable declarations in current block.
-    VisitChilds(forVarDeclNode);
+    // Generate code for variable declarations in the current block.
+    VisitChildren(forVarDeclNode);
     m_irBuilder->CreateBr(forCondBlock);
-    
-    // Generate code for.cmp
+
+    // Generate code for 'for.cmp'
 
     m_irBuilder->SetInsertPoint(forCondBlock);
 
@@ -534,38 +529,38 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
     }
     else
     {
-        // If there is no condition then jump to body.
+        // If there is no condition, then jump to the body.
         m_irBuilder->CreateBr(forBodyBlock);
     }
 
-    // Generate code for.body
+    // Generate code for 'for.body'
     m_irBuilder->SetInsertPoint(forBodyBlock);
     Visit(forBodyNode);
     m_irBuilder->CreateBr(forIncBlock);
 
-    // Generate code for.Inc
+    // Generate code for 'for.Inc'
 
     m_irBuilder->SetInsertPoint(forIncBlock);
 
     if (forIncsNode->ChildCount() > 0)
     {
-        VisitChilds(forIncsNode);
+        VisitChildren(forIncsNode);
     }
-    
+
     m_irBuilder->CreateBr(forCondBlock);
 
-    // Set the code geneartion block to for.exit
+    // Set the code generation block to for.exit
 
     m_irBuilder->SetInsertPoint(forExitBlock);
-    
-    // Pop BasiBlock info from stack.
+
+    // Pop BasicBlock info from the stack.
     m_nodeBBStack.PopAndDelete();
 }
 
 
 void CodeGenPass::VisitWhileStatement(ast::NodeWhileStatement * node)
 {
-    // There has to be 2 childs. expr and body.
+    // There have to be 2 children: expr and body.
     assert(node->ChildCount() == 2);
 
     // while ( condition ) body
@@ -573,17 +568,17 @@ void CodeGenPass::VisitWhileStatement(ast::NodeWhileStatement * node)
     auto bodyNode = node->GetChild(1);
 
     // Create basic blocks for while loop construction.
-    // Note: The reason we have extra block (while.body) is that LLVM has a strict rule that every basic block
-    //       has to end with a terminator (ret, br etc..) instruction and each block can have only one terminator.
+    // Note: The reason we have an extra block (while.body) is that LLVM has a strict rule that every basic block
+    //       has to end with a terminator (ret, br etc.) instruction, and each block can have only one terminator.
     /*
         while.cmp:
             <condition comparison>
             br while.body or while.exit
-     
+
         while.body:
             <body instructions>
             br while.cmp
-     
+
         while.exit:
             <...>
     */
@@ -591,37 +586,37 @@ void CodeGenPass::VisitWhileStatement(ast::NodeWhileStatement * node)
     auto bodyBlock = CreateBasicBlock(m_currentFunction, "while.body");
     auto exitBlock = CreateBasicBlock(m_currentFunction, "while.exit");
 
-    // Push BasicBlocks into the stack for this node. We may need these blocks create branch
-    // for continue, break, return etc statements to create brach to jump to this nodes blocks
+    // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
+    // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
     m_nodeBBStack.Push(new NodeBasicBlocks(node, condBlock, bodyBlock, nullptr, exitBlock));
 
-    // Jump from current block to condition block.
+    // Jump from the current block to the condition block.
     m_irBuilder->CreateBr(condBlock);
-    
-    // Generate code while.cmp
+
+    // Generate code for while.cmp
 
     m_irBuilder->SetInsertPoint(condBlock);
 
     auto condValue = LoadIfPointerType(Visit(condNode));
     m_irBuilder->CreateCondBr(condValue, bodyBlock, exitBlock);
 
-    // Generate code while.body
+    // Generate code for while.body
     m_irBuilder->SetInsertPoint(bodyBlock);
     Visit(bodyNode);
     m_irBuilder->CreateBr(condBlock);
 
-    // Set the code geneartion block to for.exit
+    // Set the code generation block to while.exit
     m_irBuilder->SetInsertPoint(exitBlock);
-    
-    // Pop BasiBlock info from stack.
+
+    // Pop BasicBlock info from the stack.
     m_nodeBBStack.PopAndDelete();
 }
 
 
 void CodeGenPass::VisitDoWhileStatement(ast::NodeDoWhileStatement * node)
 {
-    // There has to be 2 childs. expr and body.
+    // There have to be 2 children: expr and body.
     assert(node->ChildCount() == 2);
 
     // do body while ( condition )
@@ -629,8 +624,8 @@ void CodeGenPass::VisitDoWhileStatement(ast::NodeDoWhileStatement * node)
     auto condNode = node->GetChild(1);
 
     // Create basic blocks for do while loop construction.
-    // Note: The reason we have extra block (do_while.body) is that LLVM has a strict rule that every basic block
-    //       has to end with a terminator (ret, br etc..) instruction and each block can have only one terminator.
+    // Note: The reason we have an extra block (do_while.body) is that LLVM has a strict rule that every basic block
+    //       has to end with a terminator (ret, br etc.) instruction, and each block can have only one terminator.
     /*
         do_while.body:
             <body instructions>
@@ -647,38 +642,38 @@ void CodeGenPass::VisitDoWhileStatement(ast::NodeDoWhileStatement * node)
     auto bodyBlock = CreateBasicBlock(m_currentFunction, "do_while.body");
     auto exitBlock = CreateBasicBlock(m_currentFunction, "do_while.exit");
 
-    // Push BasicBlocks into the stack for this node. We may need these blocks create branch
-    // for continue, break, return etc statements to create brach to jump to this nodes blocks
+    // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
+    // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
     m_nodeBBStack.Push(new NodeBasicBlocks(node, condBlock, bodyBlock, nullptr, exitBlock));
 
-    // Jump from current block to condition block.
+    // Jump from the current block to the body block.
     m_irBuilder->CreateBr(bodyBlock);
-    
-    // Generate code while.body
+
+    // Generate code for 'do_while.body'
 
     m_irBuilder->SetInsertPoint(bodyBlock);
     Visit(bodyNode);
     m_irBuilder->CreateBr(condBlock);
 
-    // Generate code do_while.cmp
+    // Generate code for 'do_while.cmp'
 
     m_irBuilder->SetInsertPoint(condBlock);
 
     auto condValue = LoadIfPointerType(Visit(condNode));
     m_irBuilder->CreateCondBr(condValue, bodyBlock, exitBlock);
 
-    // Set the code geneartion block to for.exit
+    // Set the code generation block to do_while.exit
     m_irBuilder->SetInsertPoint(exitBlock);
-    
-    // Pop BasiBlock info from stack.
+
+    // Pop BasicBlock info from the stack.
     m_nodeBBStack.PopAndDelete();
 }
 
 
 void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
 {
-    // If there is no child then return void. Function return type is void.
+    // If there is no child, then return void. The function return type is void.
     if (node->ChildCount() == 0)
     {
         m_irBuilder->CreateRetVoid();
@@ -689,8 +684,8 @@ void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
         auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
         m_irBuilder->CreateRet(exprValue);
     }
-    // Any instruction after a terminator instruction (ret, br, switch, ...) won't be executed.
-    // Creating a new block and generating all unreachable code in then optimizer can eliminate it.
+    // Any instructions after a terminator instruction (ret, br, switch, ...) won't be executed.
+    // Creating a new block and generating all unreachable code in it allows the optimizer to eliminate it.
     auto unreachableBlock = CreateBasicBlock(m_currentFunction, "unreachable");
     m_irBuilder->SetInsertPoint(unreachableBlock);
 }
@@ -719,7 +714,7 @@ void CodeGenPass::VisitContinue(ast::NodeContinue * node)
         break;
     }
 
-    // Create new basic blcok for unreachable instructions after coming continue statement.
+    // Create a new basic block for unreachable instructions after the current continue statement.
     auto unreachableBasicBlock = CreateBasicBlock(m_currentFunction, "unreachable");
     m_irBuilder->SetInsertPoint(unreachableBasicBlock);
 }
@@ -745,7 +740,7 @@ void CodeGenPass::VisitBreak(ast::NodeBreak * node)
         break;
     }
 
-    // Create new basic blcok for unreachable instructions after coming break statement.
+    // Create a new basic block for unreachable instructions after the current continue statement.
     auto unreachableBasicBlock = CreateBasicBlock(m_currentFunction, "unreachable");
     m_irBuilder->SetInsertPoint(unreachableBasicBlock);
 }
@@ -777,28 +772,28 @@ llvm::Value * CodeGenPass::VisitFunctionCall(ast::NodeFuncCall * node)
 
 void CodeGenPass::VisitAssignment(ast::NodeAssignment * node)
 {
-    // Get variable llvm value
+    // Get the variable's LLVM value
     auto variable = Visit(node->GetChild(0));
 
-    // Generate code for right expression and get assignment value.
+    // Generate code for the right expression and get the assignment value.
     auto rightExprValue = Visit(node->GetChild(1));
 
     //std::cout << "VarTypeID:" << DebugLLVMTypeAsString(variable->getType()->getTypeID()) << std::endl;
     //std::cout << "BRightTypeID:" << DebugLLVMTypeAsString(rightExprValue->getType()->getTypeID()) << std::endl;
     //std::cout << "ARightTypeID:" << DebugLLVMTypeAsString(LoadIfPointerType(rightExprValue)->getType()->getTypeID()) << std::endl;
 
-    // We load value from rightExprValue address and store at localVar address.
+    // We load the value from the rightExprValue address and store it at the variable address.
     m_irBuilder->CreateStore(LoadIfPointerType(rightExprValue), variable);
 }
 
 
 llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node)
 {
-    // Generate code for expression.
+    // Generate code for the expression.
     auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
     llvm::Value * convertedValue{nullptr};
-    
-    // Convert exprValue from Float To (int or bool)
+
+    // Convert exprValue from Float to (int or bool)
     if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::FloatTyID)
     {
         switch (node->GetConversionType())
@@ -822,7 +817,7 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
         }
     }
 
-    // Convert exprValue from Int To (float or bool)
+    // Convert exprValue from Int to (float or bool)
     if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID &&
         exprValue->getType()->getPrimitiveSizeInBits() == 32)
     {
@@ -847,7 +842,7 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
         }
     }
 
-    // Convert exprValue from Bool To (float or Int)
+    // Convert exprValue from Bool to (float or Int)
     if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID &&
         exprValue->getType()->getPrimitiveSizeInBits() == 1)
     {
@@ -873,7 +868,6 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
             break;
         }
     }
-
 
     return convertedValue;
 }
@@ -967,17 +961,17 @@ llvm::Value * CodeGenPass::VisitLogicalOrOP(ast::NodeLogicalOP * node)
 
 llvm::Value * CodeGenPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
 {
-    // Generate code for right expression.
+    // Generate code for the right expression.
     auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
     llvm::Value * negatedValue{nullptr};
 
-    // Nothing to do for '+' unary operation. Just return expr value.
+    // Nothing to do for '+' unary operation. Just return the expr value.
     if (node->GetNodeType() == ast::NodeType::kNodeTypeUOPPlus)
     {
         return exprValue;
     }
 
-    // Negate value based on type. After semantic pass, only allowed types should reach to this point.
+    // Negate the value based on its type. After the semantic pass, only allowed types should reach this point.
     switch (exprValue->getType()->getTypeID())
     {
         case llvm::Type::TypeID::FloatTyID:
@@ -1001,7 +995,7 @@ llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
 {
     llvm::Value * resultValue{nullptr};
 
-    // Visit always return pointer to value so we need to load to get value from pointed address.
+    // Visit always returns a pointer to the value, so we need to load it to get the value from the pointed address.
     auto leftOperandValue = LoadIfPointerType(Visit(node->GetChild(0)));
     auto rightOperandValue = LoadIfPointerType(Visit(node->GetChild(1)));
 
@@ -1087,7 +1081,7 @@ llvm::Value * CodeGenPass::VisitPrefixAOP(ast::NodePrefixAOP * node)
 {
     llvm::Value * resultValue{nullptr};
 
-    // Visit always return pointer to value so we need to load to get value from pointed address.
+    // Visit always returns a pointer to the value, so we need to load it to get the value from the pointed address.
     auto operandVar = Visit(node->GetChild(0));
     auto operandValue = LoadIfPointerType(operandVar);
 
@@ -1124,7 +1118,7 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 {
     llvm::Value * resultValue{nullptr};
 
-    // Visit always return pointer to value so we need to load to get value from pointed address.
+    // Visit always returns a pointer to the value, so we need to load it to get the value from the pointed address.
     auto leftOperandValue = LoadIfPointerType(Visit(node->GetChild(0)));
     auto rightOperandValue = LoadIfPointerType(Visit(node->GetChild(1)));
 
@@ -1174,7 +1168,6 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 }
 
 
-
 llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
 {
     llvm::Value * literalValue{nullptr};
@@ -1183,46 +1176,46 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
     {
         case ast::NodeType::kNodeTypeLiteralFloat:
         {
-            // We create temp local variable and assign constant value.
+            // We create a temp local variable and assign a constant value.
             auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeFloat), nullptr, "_ci");
-            // Since we store constant, we don't need to load value from an address.
+            // Since we store a constant, we don't need to load the value from an address.
             m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeFloat, node->GetValue()), localVar);
-            // Returns pointer to local variable.
+            // Returns a pointer to the local variable.
             literalValue = localVar;
         }
         break;
-        
+
         case ast::NodeType::kNodeTypeLiteralInt32:
         {
-            // We create temp local variable and assign constant value.
+            // We create a temp local variable and assign a constant value.
             auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeInt), nullptr, "_cf");
-            // Since we store constant, we don't need to load value from an address.
+            // Since we store a constant, we don't need to load the value from an address.
             m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeInt, node->GetValue()), localVar);
-            // Returns pointer to local variable.
+            // Returns a pointer to the local variable.
             literalValue = localVar;
         }
         break;
-        
+
         case ast::NodeType::kNodeTypeLiteralBool:
         {
-            // We create temp local variable and assign constant value.
+            // We create a temp local variable and assign a constant value.
             auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeBool), nullptr, "_cb");
-            // Since we store constant, we don't need to load value from an address.
+            // Since we store a constant, we don't need to load the value from an address.
             m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeBool, node->GetValue()), localVar);
-            // Returns pointer to local variable.
+            // Returns a pointer to the local variable.
             literalValue = localVar;
         }
         break;
-        
+
         case ast::NodeType::kNodeTypeLiteralID:
         {
-            // Return llvm value object of the variable, which is stored as symbol property in symbol object.
-            // llvm object is referring to variable pointer. Needs to be loaded to access to value of the variable.
+            // Returns the llvm value object of the variable, which is stored as a symbol property in the symbol object.
+            // The llvm object is referring to the variable pointer. It needs to be loaded to access the value of the variable.
             auto symbol = node->GetScope()->ResolveSymbol(node->GetValue());
             literalValue = static_cast<SymbolProperty *>(symbol->GetProperty())->GetValue();
         }
         break;
-        
+
         default:
             assert(false && "Unknown node type.");
         break;
@@ -1234,26 +1227,26 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
 
 void CodeGenPass::CreateInternalInitializerFunction()
 {
-    // Save current block.
+    // Save the current block.
     llvm::BasicBlock *  prevBlock = m_irBuilder->GetInsertBlock();
 
-    // No argument is required.
+    // No arguments are required.
     std::vector<llvm::Type *> argTypes;
 
-    // Create initializer function.
+    // Create the initializer function.
     m_initFunction = CreateFunc(*m_irBuilder, Type::kTypeVoid, "__initGlobalVariables__", argTypes);
 
-    // Create basic block for function.
+    // Create a basic block for the function.
     m_initFunctionBlock = CreateBasicBlock(m_initFunction, "entry");
-    
-    // Restore previous block.
+
+    // Restore the previous block.
     m_irBuilder->SetInsertPoint(prevBlock);
 }
 
 
 void CodeGenPass::FinalizeInternalInitializerFunction()
 {
-    // Finalize global variable initialization code.
+    // Finalize the global variable initialization code.
     auto prevBlock = m_irBuilder->GetInsertBlock();
     m_irBuilder->SetInsertPoint(m_initFunctionBlock);
     m_irBuilder->CreateRetVoid();
@@ -1335,7 +1328,7 @@ llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
                                          std::vector<llvm::Type *> & argTypes)
 {
     auto funcType = llvm::FunctionType::get(CreateBaseType(returnType), argTypes, false);
-    // ExternalLinkage enumeration member means that the function can be referred from other modules.
+    // The ExternalLinkage enumeration member means that the function can be referred to from other modules.
     auto func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name, m_module.get());
 
     return func;

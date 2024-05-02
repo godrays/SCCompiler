@@ -1,13 +1,14 @@
 //
-//  SCCompilerLib.hpp
-//
 //  Created by Arkin Terli on 5/11/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
+// Project includes
 #include "SCModule.hpp"
+// External includes
+// System includes
 
 
 namespace scc

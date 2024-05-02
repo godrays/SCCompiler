@@ -1,12 +1,13 @@
 //
-//  SCModule.hpp
-//
 //  Created by Arkin Terli on 5/11/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
+// Project includes
+// External includes
+// System includes
 #include <string>
 
 
@@ -21,7 +22,7 @@ public:
     // Destructor.
     virtual ~SCModule() = 0;
 
-    // Returns pointer of a function.
+    // Returns a pointer of a function.
     virtual void * GetFunctionPtr(std::string name) = 0;
 
     // Reset and initialize global variables.

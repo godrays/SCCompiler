@@ -1,15 +1,14 @@
 //
-//  CodeGenPass.hpp
-//
 //  Created by Arkin Terli on 4/22/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
 #pragma once
 
-#include <list>
-#include <vector>
-
+// Project includes
+#include "AST.hpp"
+#include "Symbols.hpp"
+// External includes
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/MCJIT.h>
@@ -29,9 +28,9 @@
 #include <llvm/Support/ManagedStatic.h>
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Support/raw_ostream.h>
-
-#include "AST.hpp"
-#include "Symbols.hpp"
+// System includes
+#include <list>
+#include <vector>
 
 
 namespace scc
@@ -142,7 +141,7 @@ public:
     NodeBasicBlocks * GetOneOfThese(const std::vector<ast::NodeType> & nodeTypes);
 
 protected:
-    // Node BsaicBlock Stack. Using vector here to implement stack behavior since
+    // Node BasicBlock Stack. Using vector here to implement stack behavior since
     // std::stack implementation doesn't support iteration on its elements.
     std::vector<NodeBasicBlocks *>  m_nodeBBStack;
 };
@@ -159,12 +158,12 @@ public:
     // Destructor.
     virtual ~CodeGenPass();
 
-    // Perform semantic analysis on nodes AST.
+    // Performs semantic analysis on the AST nodes.
     JITEngine * GenerateCode(ast::Node * node);
 
 private:
-    // Visits all node childs.
-    void VisitChilds(ast::Node * node);
+    // Visits all node children.
+    void VisitChildren(ast::Node * node);
 
     // Visits nodes to create scopes and define symbols.
     llvm::Value * Visit(ast::Node * node);
@@ -214,56 +213,56 @@ private:
     llvm::Value * VisitLiteral(ast::NodeLiteral * node);
 
 private:
-    // Create internal initializer function.
+    // Creates an internal initializer function.
     void CreateInternalInitializerFunction();
 
-    // Finalize internal initializer function.
+    // Finalizes the internal initializer function.
     void FinalizeInternalInitializerFunction();
 
-    // Creates LLVM base type. (float, int, bool etc..)
+    // Creates an LLVM base type (float, int, bool, etc.).
     llvm::Type * CreateBaseType(scc::Type type);
 
-    // Creates LLVM constant value.
+    // Creates an LLVM constant value.
     llvm::Constant * CreateConstant(scc::Type type, const std::string & value);
 
-    // Creates new global variable.
+    // Creates a new global variable.
     llvm::GlobalVariable * CreateGlobalVariable(std::string name, scc::Type);
 
-    // Create function.
+    // Creates a function.
     llvm::Function * CreateFunc(llvm::IRBuilder <> &Builder, scc::Type returnType, const std::string& Name, std::vector<llvm::Type *> & argTypes);
 
-    // Create basic block.
+    // Creates a basic block.
     llvm::BasicBlock * CreateBasicBlock(llvm::Function * func, const std::string& name);
 
-    // Loads if value is pointer type.
+    // Loads the value if it is a pointer type.
     llvm::Value * LoadIfPointerType(llvm::Value * value);
 
-    // Dumps LLVM IR of the module.
+    // Dumps the LLVM IR of the module.
     void DumpIRCode() const;
 
-    // Convert llvm type to string.
+    // Converts an LLVM type to a string.
     std::string DebugLLVMTypeAsString(llvm::Type::TypeID typeID) const;
 
-    // Delete unreachable blocks in function basic block list.
+    // Deletes unreachable blocks in the function's basic block list.
     void DeleteUnreachableBasicBlocks(llvm::Function * function);
 
 protected:
-    // Stores entire code.
+    // Stores the entire code.
     std::unique_ptr<llvm::Module>  m_module;
 
-    // LLVM context. NOTE: We need LLVMContext per-thread context.
+    // LLVM context. NOTE: We need an LLVMContext per-thread context.
     llvm::LLVMContext * m_context{nullptr};
 
-    // Pointer to current LLVM Function.
+    // Pointer to the current LLVM Function.
     llvm::Function *  m_currentFunction{nullptr};
 
     // Initializer function for global variables.
     llvm::Function *  m_initFunction{nullptr};
 
-    // Initializer function last used basic block.
+    // Last used basic block in the initializer function.
     llvm::BasicBlock *  m_initFunctionBlock{nullptr};
 
-    // IR builder stack
+    // IR builder stack.
     llvm::IRBuilder<> * m_irBuilder{nullptr};
 
     // Stores LLVM BasicBlocks.

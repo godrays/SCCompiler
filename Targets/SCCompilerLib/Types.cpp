@@ -1,12 +1,12 @@
 //
-//  Types.cpp
-//
 //  Created by Arkin Terli on 4/18/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+// Project includes
 #include "Types.hpp"
-
+// External includes
+// System includes
 #include <cassert>
 
 

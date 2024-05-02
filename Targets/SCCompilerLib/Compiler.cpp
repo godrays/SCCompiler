@@ -1,25 +1,23 @@
 //
-//  Compiler.cpp
-//
 //  Created by Arkin Terli on 4/10/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
+// Project includes
 #include "Compiler.hpp"
-
-#include <string>
-#include <istream>
-
-#include <antlr4-runtime.h>
-#include <Parser/SCCompilerLexer.h>
-#include <Parser/SCCompilerParser.h>
-
 #include "ASTGenerator.hpp"
 #include "CodeGenPass.hpp"
 #include "Exceptions.hpp"
 #include "JITEngine.hpp"
 #include "SemanticPass.hpp"
 #include "SymbolDefPass.hpp"
+#include <Parser/SCCompilerLexer.h>
+#include <Parser/SCCompilerParser.h>
+// External includes
+#include <antlr4-runtime.h>
+// System includes
+#include <string>
+#include <istream>
 
 
 using namespace antlr4;
@@ -75,31 +73,31 @@ scc::SCModule * scc::Compiler::CompileFromMemory(std::string sourceCode, scc::SC
 
 scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompileResult & compileResult)
 {
-    // Error listener for parser.
+    // Error listener for the parser.
     ParserErrorListener  parserErrorListener;
     SCModule * scModule{nullptr};
-    
+
     try
     {
         ANTLRInputStream    input(sourceStream);
 
-        // Do lexical analysis and generate tokens.
+        // Perform lexical analysis and generate tokens.
         SCCompilerLexer   lexer(&input);
-        // Remove default error listener and add ParserErrorListener.
+        // Remove the default error listener and add ParserErrorListener.
         lexer.removeErrorListeners();
         lexer.addErrorListener(&parserErrorListener);
-        
+
         // Create a stream of tokens.
         CommonTokenStream   tokenStream(&lexer);
 
-        // Parse token stream, which is syntax analysis.
-        // Parser makes sure tokens are in right order while generating a parser tree (AST).
+        // Parse the token stream, which is syntax analysis.
+        // The parser makes sure tokens are in the right order while generating a parser tree (AST).
         SCCompilerParser parser(&tokenStream);
-        // Remove default error listener and add ParserErrorListener.
+        // Remove the default error listener and add ParserErrorListener.
         parser.removeErrorListeners();
         parser.addErrorListener(&parserErrorListener);
 
-        // Generate tree by calling the first parser rule in grammar.
+        // Generate a tree by calling the first parser rule in the grammar.
         tree::ParseTree *  parseTree = parser.program();
 
         // Stop if there is a syntax error.
@@ -110,28 +108,28 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
             return nullptr;
         }
 
-        // Generate AST from Parse Tree.
+        // Generate an AST from the Parse Tree.
         ASTGenerator astGenVisitor;
         astGenVisitor.visit(parseTree);
         auto ast = astGenVisitor.GetAST();
 
         // DEBUG ONLY -----------------
-        // Generate Graphviz DOT file to visualize AST.
-        //ASTVisualizer   astVisualizer;
+        // Generate a Graphviz DOT file to visualize the AST.
+        //ASTVisualizer astVisualizer;
         //astVisualizer.GenerateDOTFile(ast, "ast.dot");
         // DEBUG ONLY -----------------
 
-        // PASS: Create scope tree and define symbols by visiting AST nodes.
-        //       After this pass, each ast node and symbols will have access to their related scope node (symbol table).
+        // PASS: Create a scope tree and define symbols by visiting AST nodes.
+        //       After this pass, each AST node and symbol will have access to its related scope node (symbol table).
         SymbolDefPass  symDefPass{};
         auto scopeTree = symDefPass.CreateScopeTree(ast);
 
         // PASS: Perform semantic analysis by visiting AST nodes.
-        //       Semantic anaylsis: Resolving Symbols, Typecheking, Type Promotion, Semantic Validation.
+        //       Semantic analysis: Resolving Symbols, Type checking, Type Promotion, Semantic Validation.
         SemanticPass  semanticAnalysisPass;
         semanticAnalysisPass.SemanticCheck(ast);
 
-        // PASS: Perform code generation by visiting AST nodes and create program execution module: SCModule.
+        // PASS: Perform code generation by visiting AST nodes and create a program execution module: SCModule.
         CodeGenPass codeGenerationPass;
         scModule = codeGenerationPass.GenerateCode(ast);
 
@@ -166,4 +164,3 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
     compileResult = scc::SCCompileResult::kSCCompileResultOk;
     return scModule;
 }
-
