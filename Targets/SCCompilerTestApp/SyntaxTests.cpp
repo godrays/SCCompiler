@@ -19,6 +19,9 @@ TEST_CASE("SyntaxTests", "[SyntaxTests]")
 {
     REQUIRE(TestCode(R"(
     int i;
+    int _i;
+    int i_;
+    int i_12_;
     )", SCCompileResult::kSCCompileResultOk, true));
 
     REQUIRE(TestCode(R"(
@@ -224,8 +227,8 @@ TEST_CASE("SyntaxTests", "[SyntaxTests]")
 
     REQUIRE(TestCode(R"(
     float f;
-    float f1 = 1.0;
-    float func16() { return f; return f1; }
+    float f1_ = 1.0;
+    float func16() { return f; return f1_; }
     )", SCCompileResult::kSCCompileResultOk, true));
 
     REQUIRE(TestCode(R"(
@@ -238,8 +241,8 @@ TEST_CASE("SyntaxTests", "[SyntaxTests]")
 
     REQUIRE(TestCode(R"(
     /* Call function in function */
-    bool  func14(bool bArg)  { bool b = bArg; return b; }
-    void  func18() { func14(false); }
+    bool  _func_14_(bool bArg)  { bool b = bArg; return b; }
+    void  func18() { _func_14_(false); }
     )", SCCompileResult::kSCCompileResultOk, true));
 
     REQUIRE(TestCode(R"(

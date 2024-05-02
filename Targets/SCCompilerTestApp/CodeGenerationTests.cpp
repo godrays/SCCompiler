@@ -593,7 +593,7 @@ TEST_CASE("CodeGenerationWhileStatementTests", "[CodeGenerationTests]")
     int Test7(int a)   { int i=0; while (i<5) { a=i; i=i+1; if (true) { continue; } a=-1; } return a; }
     int Test8(int a)   { int i=0; while (i<5) { a=i; i=i+1; break; a=-1; } return a; }
     int Test9(int a)   { int i=0; while (i<5) { a=i; if (i==2){ break; } a=-1; i=i+1; } return a; }
-    int Test10(int a)  { int i=0; while (i<5) { a=i; i=i+1; int j=0; while(j<5) { j=j+1; break; a=-1; } } return a; }
+    int _Test_10_(int a)  { int i=0; while (i<5) { a=i; i=i+1; int j=0; while(j<5) { j=j+1; break; a=-1; } } return a; }
     )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
@@ -626,7 +626,7 @@ TEST_CASE("CodeGenerationWhileStatementTests", "[CodeGenerationTests]")
     REQUIRE(Test9(5) == 2);
 
     using FuncTest10 = int (*)(int);
-    auto Test10 = reinterpret_cast<FuncTest10>(scModule->GetFunctionPtr("Test10"));
+    auto Test10 = reinterpret_cast<FuncTest10>(scModule->GetFunctionPtr("_Test_10_"));
     REQUIRE(Test10(5) == 4);
 
     delete scModule;

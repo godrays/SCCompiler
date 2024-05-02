@@ -121,13 +121,15 @@ BOOL
     :   ('true' | 'false')
     ;
 
-fragment
-DIGIT
+fragment UNDERSCORE
+    :   '_'
+    ;
+
+fragment DIGIT
     :   [0-9]
     ;
 
-fragment
-LETTER
+fragment LETTER
     :   [a-zA-Z]
     ;
 
@@ -141,7 +143,7 @@ FLOAT
     ;
 
 ID
-    :   LETTER (LETTER | [0-9])*
+    :   UNDERSCORE* LETTER (LETTER | [0-9] | UNDERSCORE)*
     ;
 
 WS
