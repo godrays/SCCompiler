@@ -389,24 +389,24 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
     switch (ctx->getStart()->getType())
     {
         case SCCompilerParser::ID:
-        nodeType = ast::NodeType::kNodeTypeLiteralID;
-        break;
+            nodeType = ast::NodeType::kNodeTypeLiteralID;
+            break;
 
         case SCCompilerParser::FLOAT:
-        nodeType =ast::NodeType::kNodeTypeLiteralFloat;
-        break;
+            nodeType =ast::NodeType::kNodeTypeLiteralFloat;
+            break;
 
         case SCCompilerParser::INT:
-        nodeType =ast::NodeType::kNodeTypeLiteralInt32;
-        break;
+            nodeType =ast::NodeType::kNodeTypeLiteralInt32;
+            break;
 
         case SCCompilerParser::BOOL:
-        nodeType =ast::NodeType::kNodeTypeLiteralBool;
-        break;
+            nodeType =ast::NodeType::kNodeTypeLiteralBool;
+            break;
 
         default:
-        assert(false && "Unknown literal type.");
-        break;
+            assert(false && "Unknown literal type.");
+            break;
     }
 
     // Create new AST Node.

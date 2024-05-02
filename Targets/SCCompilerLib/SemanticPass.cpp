@@ -438,30 +438,30 @@ Type SemanticPass::VisitLiteral(ast::NodeLiteral * node)
     switch (node->GetNodeType())
     {
         case ast::NodeType::kNodeTypeLiteralFloat:
-        literalType = Type::kTypeFloat;
-        break;
+            literalType = Type::kTypeFloat;
+            break;
 
         case ast::NodeType::kNodeTypeLiteralInt32:
-        literalType = Type::kTypeInt;
-        break;
+            literalType = Type::kTypeInt;
+            break;
 
         case ast::NodeType::kNodeTypeLiteralBool:
-        literalType = Type::kTypeBool;
-        break;
+            literalType = Type::kTypeBool;
+            break;
 
         case ast::NodeType::kNodeTypeLiteralID:
-        {
-            // Rule: Resolve the variable name. It has to be defined before it's used.
-            auto scope = node->GetScope();
-            auto symbol = scope->ResolveSymbol(node->GetValue());
-            assert(symbol && "Use of an undeclared identifier");
-            literalType = symbol->GetType();
-        }
-        break;
+            {
+                // Rule: Resolve the variable name. It has to be defined before it's used.
+                auto scope = node->GetScope();
+                auto symbol = scope->ResolveSymbol(node->GetValue());
+                assert(symbol && "Use of an undeclared identifier");
+                literalType = symbol->GetType();
+            }
+            break;
 
         default:
             assert(false && "Unknown node type in SemanticPass::VisitLiteral");
-        break;
+            break;
     }
 
     // This node should have no children.

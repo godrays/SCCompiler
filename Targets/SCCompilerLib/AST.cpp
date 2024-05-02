@@ -114,156 +114,156 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
     switch (nodeType)
     {
         case ast::NodeType::kNodeTypeProgram:
-        typeInString = "tNodeTypeProgram";
-        break;
+            typeInString = "tNodeTypeProgram";
+            break;
 
         case ast::NodeType::kNodeTypeAOPAdd:
-        typeInString = "tNodeTypeAOPAdd";
-        break;
+            typeInString = "tNodeTypeAOPAdd";
+            break;
 
         case ast::NodeType::kNodeTypeAOPDiv:
-        typeInString = "tNodeTypeAOPDiv";
-        break;
+            typeInString = "tNodeTypeAOPDiv";
+            break;
 
         case ast::NodeType::kNodeTypeAOPMul:
-        typeInString = "tNodeTypeAOPMul";
-        break;
+            typeInString = "tNodeTypeAOPMul";
+            break;
 
         case ast::NodeType::kNodeTypeAOPSub:
-        typeInString = "tNodeTypeAOPSub";
-        break;
+            typeInString = "tNodeTypeAOPSub";
+            break;
 
         case ast::NodeType::kNodeTypeAssignment:
-        typeInString = "tNodeTypeAssignment";
-        break;
+            typeInString = "tNodeTypeAssignment";
+            break;
 
         case ast::NodeType::kNodeTypeBlock:
-        typeInString = "tNodeTypeBlock";
-        break;
+            typeInString = "tNodeTypeBlock";
+            break;
 
         case ast::NodeType::kNodeTypeFuncCall:
-        typeInString = "tNodeTypeFuncCall";
-        break;
+            typeInString = "tNodeTypeFuncCall";
+            break;
 
         case ast::NodeType::kNodeTypeFunctionDeclaration:
-        typeInString = "tNodeTypeFunctionDeclaration";
-        break;
+            typeInString = "tNodeTypeFunctionDeclaration";
+            break;
 
         case ast::NodeType::kNodeTypeIfStatement:
-        typeInString = "tNodeTypeIfStatement";
-        break;
+            typeInString = "tNodeTypeIfStatement";
+            break;
 
         case ast::NodeType::kNodeTypeForStatement:
-        typeInString = "tNodeTypeForStatement";
-        break;
+            typeInString = "tNodeTypeForStatement";
+            break;
 
         case ast::NodeType::kNodeTypeForVarDecl:
-        typeInString = "kNodeTypeForVarDecl";
-        break;
+            typeInString = "kNodeTypeForVarDecl";
+            break;
 
         case ast::NodeType::kNodeTypeForCondition:
-        typeInString = "kNodeTypeForCondition";
-        break;
+            typeInString = "kNodeTypeForCondition";
+            break;
 
         case ast::NodeType::kNodeTypeForIncrement:
-        typeInString = "kNodeTypeForIncrement";
-        break;
+            typeInString = "kNodeTypeForIncrement";
+            break;
 
         case ast::NodeType::kNodeTypeWhileStatement:
-        typeInString = "tNodeTypeWhileStatement";
-        break;
+            typeInString = "tNodeTypeWhileStatement";
+            break;
 
         case ast::NodeType::kNodeTypeDoWhileStatement:
-        typeInString = "tNodeTypeDoWhileStatement";
-        break;
+            typeInString = "tNodeTypeDoWhileStatement";
+            break;
 
         case ast::NodeType::kNodeTypeLiteralBool:
-        typeInString = "tNodeTypeLiteralBool";
-        break;
+            typeInString = "tNodeTypeLiteralBool";
+            break;
 
         case ast::NodeType::kNodeTypeLiteralFloat:
-        typeInString = "tNodeTypeLiteralFloat";
-        break;
+            typeInString = "tNodeTypeLiteralFloat";
+            break;
 
         case ast::NodeType::kNodeTypeLiteralID:
-        typeInString = "tNodeTypeLiteralID";
-        break;
+            typeInString = "tNodeTypeLiteralID";
+            break;
 
         case ast::NodeType::kNodeTypeLiteralInt32:
-        typeInString = "tNodeTypeLiteralInt32";
-        break;
+            typeInString = "tNodeTypeLiteralInt32";
+            break;
 
         case ast::NodeType::kNodeTypeReturnStatement:
-        typeInString = "tNodeTypeReturnStatement";
-        break;
+            typeInString = "tNodeTypeReturnStatement";
+            break;
 
         case ast::NodeType::kNodeTypeContinue:
-        typeInString = "kNodeTypeContinue";
-        break;
+            typeInString = "kNodeTypeContinue";
+            break;
 
         case ast::NodeType::kNodeTypeBreak:
-        typeInString = "kNodeTypeBreak";
-        break;
+            typeInString = "kNodeTypeBreak";
+            break;
 
         case ast::NodeType::kNodeTypeUnknown:
-        typeInString = "tNodeTypeReturnStatement";
-        break;
+            typeInString = "tNodeTypeReturnStatement";
+            break;
 
         case ast::NodeType::kNodeTypeVariableDeclaration:
-        typeInString = "tNodeTypeVariableDeclaration";
-        break;
+            typeInString = "tNodeTypeVariableDeclaration";
+            break;
 
         case ast::NodeType::kNodeTypeExplicitTypeConversion:
-        typeInString = "kNodeTypeExplicitTypeConversion";
-        break;
+            typeInString = "kNodeTypeExplicitTypeConversion";
+            break;
 
         case ast::NodeType::kNodeTypeLogicalNotOP:
-        typeInString = "kNodeTypeLogicalNotOP";
-        break;
+            typeInString = "kNodeTypeLogicalNotOP";
+            break;
 
         case ast::NodeType::kNodeTypeLogicalAndOP:
-        typeInString = "kNodeTypeLogicalAndOP";
-        break;
+            typeInString = "kNodeTypeLogicalAndOP";
+            break;
 
         case ast::NodeType::kNodeTypeLogicalOrOP:
-        typeInString = "kNodeTypeLogicalOrOP";
-        break;
+            typeInString = "kNodeTypeLogicalOrOP";
+            break;
 
         case ast::NodeType::kNodeTypeUOPPlus:
-        typeInString = "kNodeTypeUOPPlus";
-        break;
+            typeInString = "kNodeTypeUOPPlus";
+            break;
 
         case ast::NodeType::kNodeTypeUOPMinus:
-        typeInString = "kNodeTypeUOPMinus";
-        break;
+            typeInString = "kNodeTypeUOPMinus";
+            break;
 
         case ast::NodeType::kNodeTypeCompOPEQ:
-        typeInString = "kNodeTypeCompOPEQ";
-        break;
+            typeInString = "kNodeTypeCompOPEQ";
+            break;
 
         case ast::NodeType::kNodeTypeCompOPNEQ:
-        typeInString = "kNodeTypeCompOPNEQ";
-        break;
+            typeInString = "kNodeTypeCompOPNEQ";
+            break;
 
         case ast::NodeType::kNodeTypeCompOPLE:
-        typeInString = "kNodeTypeCompOPLE";
-        break;
+            typeInString = "kNodeTypeCompOPLE";
+            break;
 
         case ast::NodeType::kNodeTypeCompOPGE:
-        typeInString = "kNodeTypeCompOPGE";
-        break;
+            typeInString = "kNodeTypeCompOPGE";
+            break;
 
         case ast::NodeType::kNodeTypeCompOPL:
-        typeInString = "kNodeTypeCompOPL";
-        break;
+            typeInString = "kNodeTypeCompOPL";
+            break;
 
         case ast::NodeType::kNodeTypeCompOPG:
-        typeInString = "kNodeTypeCompOPG";
-        break;
+            typeInString = "kNodeTypeCompOPG";
+            break;
 
         default:
-        assert(false && "Unknown node type in Node::GetNodeTypeInString()");
-        break;
+            assert(false && "Unknown node type in Node::GetNodeTypeInString()");
+            break;
     }
 
     return typeInString;
@@ -701,23 +701,19 @@ std::string ast::TypeToString(Type type)
     {
         case kTypeFloat:
             return "float";
-        break;
 
         case kTypeInt:
             return "int";
-        break;
 
         case kTypeBool:
             return "bool";
-        break;
 
         case kTypeVoid:
             return "void";
-        break;
 
         default:
             assert(false && "Unknown type in TypeToString()");
-        break;
+            break;
     }
     
     return "Unknown";

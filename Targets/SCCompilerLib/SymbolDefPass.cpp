@@ -246,23 +246,23 @@ void SymbolDefPass::VisitLiteral(ast::NodeLiteral * node)
         case ast::NodeType::kNodeTypeLiteralFloat:
         case ast::NodeType::kNodeTypeLiteralInt32:
         case ast::NodeType::kNodeTypeLiteralBool:
-        // Nothing to do with other literal types.
-        break;
+            // Nothing to do with other literal types.
+            break;
 
         case ast::NodeType::kNodeTypeLiteralID:
-        {
-            // Rule: Resolve the variable name. It has to be defined before it is used.
-            auto scope = node->GetScope();
-            auto symbol = scope->ResolveSymbol(node->GetValue());
-            throw_if(!symbol,
-                     SemanticErrorException("Line: ", node->GetSourceCodeLine(), " - Use of an undeclared identifier: ",
-                                            node->GetValue()));
-        }
-        break;
+            {
+                // Rule: Resolve the variable name. It has to be defined before it is used.
+                auto scope = node->GetScope();
+                auto symbol = scope->ResolveSymbol(node->GetValue());
+                throw_if(!symbol,
+                         SemanticErrorException("Line: ", node->GetSourceCodeLine(),
+                                                " - Use of an undeclared identifier: ", node->GetValue()));
+            }
+            break;
 
         default:
             assert(false && "Unknown node type in SemanticPass::VisitLiteral");
-        break;
+            break;
     }
 
     // This node should have no children.

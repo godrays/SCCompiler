@@ -701,17 +701,17 @@ void CodeGenPass::VisitContinue(ast::NodeContinue * node)
     switch (nodeBasicBlocks->GetNode()->GetNodeType())
     {
         case ast::NodeType::kNodeTypeForStatement:
-        m_irBuilder->CreateBr(nodeBasicBlocks->GetIncrementBasicBlock());
-        break;
+            m_irBuilder->CreateBr(nodeBasicBlocks->GetIncrementBasicBlock());
+            break;
 
         case ast::NodeType::kNodeTypeWhileStatement:
         case ast::NodeType::kNodeTypeDoWhileStatement:
-        m_irBuilder->CreateBr(nodeBasicBlocks->GetConditionBasicBlock());
-        break;
+            m_irBuilder->CreateBr(nodeBasicBlocks->GetConditionBasicBlock());
+            break;
 
         default:
-        assert(false && "Unhandled node type!");
-        break;
+            assert(false && "Unhandled node type!");
+            break;
     }
 
     // Create a new basic block for unreachable instructions after the current continue statement.
@@ -732,12 +732,12 @@ void CodeGenPass::VisitBreak(ast::NodeBreak * node)
         case ast::NodeType::kNodeTypeForStatement:
         case ast::NodeType::kNodeTypeWhileStatement:
         case ast::NodeType::kNodeTypeDoWhileStatement:
-        m_irBuilder->CreateBr(nodeBasicBlocks->GetExitBasicBlock());
-        break;
+            m_irBuilder->CreateBr(nodeBasicBlocks->GetExitBasicBlock());
+            break;
 
         default:
-        assert(false && "Unhandled node type!");
-        break;
+            assert(false && "Unhandled node type!");
+            break;
     }
 
     // Create a new basic block for unreachable instructions after the current continue statement.
@@ -799,21 +799,21 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
         switch (node->GetConversionType())
         {
             case Type::kTypeInt:
-            convertedValue = m_irBuilder->CreateFPToSI(exprValue, CreateBaseType(Type::kTypeInt));
-            break;
+                convertedValue = m_irBuilder->CreateFPToSI(exprValue, CreateBaseType(Type::kTypeInt));
+                break;
 
             case Type::kTypeBool:
-            convertedValue = m_irBuilder->CreateFCmpUNE(exprValue, CreateConstant(scc::Type::kTypeFloat, "0"));
-            break;
+                convertedValue = m_irBuilder->CreateFCmpUNE(exprValue, CreateConstant(scc::Type::kTypeFloat, "0"));
+                break;
 
             case Type::kTypeFloat:
-            // No need to do any conversion.
-            convertedValue = exprValue;
-            break;
+                // No need to do any conversion.
+                convertedValue = exprValue;
+                break;
 
             default:
-            assert(false && "Unhandled conversion type.");
-            break;
+                assert(false && "Unhandled conversion type.");
+                break;
         }
     }
 
@@ -824,21 +824,21 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
         switch (node->GetConversionType())
         {
             case Type::kTypeFloat:
-            convertedValue = m_irBuilder->CreateSIToFP(exprValue, CreateBaseType(Type::kTypeFloat));
-            break;
+                convertedValue = m_irBuilder->CreateSIToFP(exprValue, CreateBaseType(Type::kTypeFloat));
+                break;
 
             case Type::kTypeBool:
-            convertedValue = m_irBuilder->CreateICmpNE(exprValue, CreateConstant(scc::Type::kTypeInt, "0"));
-            break;
+                convertedValue = m_irBuilder->CreateICmpNE(exprValue, CreateConstant(scc::Type::kTypeInt, "0"));
+                break;
 
             case Type::kTypeInt:
-            // No need to do any conversion.
-            convertedValue = exprValue;
-            break;
+                // No need to do any conversion.
+                convertedValue = exprValue;
+                break;
 
             default:
-            assert(false && "Unhandled conversion type.");
-            break;
+                assert(false && "Unhandled conversion type.");
+                break;
         }
     }
 
@@ -849,23 +849,23 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
         switch (node->GetConversionType())
         {
             case Type::kTypeFloat:
-            convertedValue = m_irBuilder->CreateUIToFP(exprValue, CreateBaseType(Type::kTypeFloat));
-            break;
+                convertedValue = m_irBuilder->CreateUIToFP(exprValue, CreateBaseType(Type::kTypeFloat));
+                break;
 
             case Type::kTypeInt:
-            {
-                convertedValue = m_irBuilder->CreateZExt(exprValue, CreateBaseType(scc::Type::kTypeInt));
-            }
-            break;
+                {
+                    convertedValue = m_irBuilder->CreateZExt(exprValue, CreateBaseType(scc::Type::kTypeInt));
+                }
+                break;
 
             case Type::kTypeBool:
-            // No need to do any conversion.
-            convertedValue = exprValue;
-            break;
+                // No need to do any conversion.
+                convertedValue = exprValue;
+                break;
 
             default:
-            assert(false && "Unhandled conversion type.");
-            break;
+                assert(false && "Unhandled conversion type.");
+                break;
         }
     }
 
@@ -976,15 +976,15 @@ llvm::Value * CodeGenPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
     {
         case llvm::Type::TypeID::FloatTyID:
             negatedValue = m_irBuilder->CreateFMul(CreateConstant(scc::Type::kTypeFloat, "-1"), exprValue, "negtmp");
-        break;
+            break;
 
         case llvm::Type::TypeID::IntegerTyID:
             negatedValue = m_irBuilder->CreateMul(CreateConstant(scc::Type::kTypeInt, "-1"), exprValue, "negtmp");
-        break;
+            break;
 
         default:
-        assert(false && "Unhandled type for unary operation.");
-        break;
+            assert(false && "Unhandled type for unary operation.");
+            break;
     }
     
     return negatedValue;
@@ -1008,31 +1008,31 @@ llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
         {
             case ast::NodeType::kNodeTypeCompOPEQ:
                 resultValue = m_irBuilder->CreateFCmpOEQ(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPNEQ:
                 resultValue = m_irBuilder->CreateFCmpONE(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPLE:
                 resultValue = m_irBuilder->CreateFCmpOLE(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPGE:
                 resultValue = m_irBuilder->CreateFCmpOGE(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPL:
                 resultValue = m_irBuilder->CreateFCmpOLT(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPG:
                 resultValue = m_irBuilder->CreateFCmpOGT(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             default:
                 assert(false && "Unknown comparison node type.");
-            break;
+                break;
         }
     }
     else if (leftOpTypeID == llvm::Type::IntegerTyID)
@@ -1041,31 +1041,31 @@ llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
         {
             case ast::NodeType::kNodeTypeCompOPEQ:
                 resultValue = m_irBuilder->CreateICmpEQ(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPNEQ:
                 resultValue = m_irBuilder->CreateICmpNE(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPLE:
                 resultValue = m_irBuilder->CreateICmpSLE(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPGE:
                 resultValue = m_irBuilder->CreateICmpSGE(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPL:
                 resultValue = m_irBuilder->CreateICmpSLT(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             case ast::NodeType::kNodeTypeCompOPG:
                 resultValue = m_irBuilder->CreateICmpSGT(leftOperandValue, rightOperandValue);
-            break;
+                break;
 
             default:
                 assert(false && "Unknown comparison node type.");
-            break;
+                break;
         }
     }
     else
@@ -1094,18 +1094,18 @@ llvm::Value * CodeGenPass::VisitPrefixAOP(ast::NodePrefixAOP * node)
                 resultValue = m_irBuilder->CreateFAdd(operandValue, CreateConstant(Type::kTypeFloat, "1.0"), "faddtmp");
             else
                 resultValue = m_irBuilder->CreateAdd(operandValue, CreateConstant(Type::kTypeInt, "1"), "addtmp");
-        break;
+            break;
 
         case ast::NodeType::kNodeTypePrefixDecAOP:
             if (opTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFSub(operandValue, CreateConstant(Type::kTypeFloat, "1.0"), "fsubtmp");
             else
                 resultValue = m_irBuilder->CreateSub(operandValue, CreateConstant(Type::kTypeInt, "1"), "subtmp");
-        break;
+            break;
 
         default:
             assert(false && "Unknown node type");
-        break;
+            break;
     }
 
     m_irBuilder->CreateStore(resultValue, operandVar);
@@ -1136,32 +1136,32 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
                 resultValue = m_irBuilder->CreateFMul(leftOperandValue, rightOperandValue, "fmultmp");
             else
                 resultValue = m_irBuilder->CreateMul(leftOperandValue, rightOperandValue, "multmp");
-        break;
+            break;
 
         case ast::NodeType::kNodeTypeAOPDiv:
             if (leftOpTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFDiv(leftOperandValue, rightOperandValue, "fdivtmp");
             else
                 resultValue = m_irBuilder->CreateSDiv(leftOperandValue, rightOperandValue, "sdivtmp");
-        break;
+            break;
 
         case ast::NodeType::kNodeTypeAOPAdd:
             if (leftOpTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFAdd(leftOperandValue, rightOperandValue, "faddtmp");
             else
                 resultValue = m_irBuilder->CreateAdd(leftOperandValue, rightOperandValue, "addtmp");
-        break;
+            break;
 
         case ast::NodeType::kNodeTypeAOPSub:
             if (leftOpTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFSub(leftOperandValue, rightOperandValue, "fsubtmp");
             else
                 resultValue = m_irBuilder->CreateSub(leftOperandValue, rightOperandValue, "subtmp");
-        break;
+            break;
 
         default:
             assert(false && "Unknown node type");
-        break;
+            break;
     }
 
     return resultValue;
@@ -1175,50 +1175,50 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
     switch (node->GetNodeType())
     {
         case ast::NodeType::kNodeTypeLiteralFloat:
-        {
-            // We create a temp local variable and assign a constant value.
-            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeFloat), nullptr, "_ci");
-            // Since we store a constant, we don't need to load the value from an address.
-            m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeFloat, node->GetValue()), localVar);
-            // Returns a pointer to the local variable.
-            literalValue = localVar;
-        }
-        break;
+            {
+                // We create a temp local variable and assign a constant value.
+                auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeFloat), nullptr, "_ci");
+                // Since we store a constant, we don't need to load the value from an address.
+                m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeFloat, node->GetValue()), localVar);
+                // Returns a pointer to the local variable.
+                literalValue = localVar;
+            }
+            break;
 
         case ast::NodeType::kNodeTypeLiteralInt32:
-        {
-            // We create a temp local variable and assign a constant value.
-            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeInt), nullptr, "_cf");
-            // Since we store a constant, we don't need to load the value from an address.
-            m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeInt, node->GetValue()), localVar);
-            // Returns a pointer to the local variable.
-            literalValue = localVar;
-        }
-        break;
+            {
+                // We create a temp local variable and assign a constant value.
+                auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeInt), nullptr, "_cf");
+                // Since we store a constant, we don't need to load the value from an address.
+                m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeInt, node->GetValue()), localVar);
+                // Returns a pointer to the local variable.
+                literalValue = localVar;
+            }
+            break;
 
         case ast::NodeType::kNodeTypeLiteralBool:
-        {
-            // We create a temp local variable and assign a constant value.
-            auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeBool), nullptr, "_cb");
-            // Since we store a constant, we don't need to load the value from an address.
-            m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeBool, node->GetValue()), localVar);
-            // Returns a pointer to the local variable.
-            literalValue = localVar;
-        }
-        break;
+            {
+                // We create a temp local variable and assign a constant value.
+                auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeBool), nullptr, "_cb");
+                // Since we store a constant, we don't need to load the value from an address.
+                m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeBool, node->GetValue()), localVar);
+                // Returns a pointer to the local variable.
+                literalValue = localVar;
+            }
+            break;
 
         case ast::NodeType::kNodeTypeLiteralID:
-        {
-            // Returns the llvm value object of the variable, which is stored as a symbol property in the symbol object.
-            // The llvm object is referring to the variable pointer. It needs to be loaded to access the value of the variable.
-            auto symbol = node->GetScope()->ResolveSymbol(node->GetValue());
-            literalValue = static_cast<SymbolProperty *>(symbol->GetProperty())->GetValue();
-        }
-        break;
+            {
+                // Returns the llvm value object of the variable, which is stored as a symbol property in the symbol object.
+                // The llvm object is referring to the variable pointer. It needs to be loaded to access the value of the variable.
+                auto symbol = node->GetScope()->ResolveSymbol(node->GetValue());
+                literalValue = static_cast<SymbolProperty *>(symbol->GetProperty())->GetValue();
+            }
+            break;
 
         default:
             assert(false && "Unknown node type.");
-        break;
+            break;
     }
 
     return literalValue;
@@ -1260,23 +1260,23 @@ llvm::Type * CodeGenPass::CreateBaseType(scc::Type type)
     {
         case scc::Type::kTypeInt:
             return m_irBuilder->getInt32Ty();
-        break;
+            break;
 
         case scc::Type::kTypeFloat:
             return m_irBuilder->getFloatTy();
-        break;
+            break;
 
         case scc::Type::kTypeVoid:
             return m_irBuilder->getVoidTy();
-        break;
+            break;
 
         case scc::Type::kTypeBool:
             return m_irBuilder->getInt1Ty();
-        break;
+            break;
 
         default:
             assert(false && "Unknown type.");
-        break;
+            break;
     }
 
     return nullptr;
@@ -1291,15 +1291,12 @@ llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string &
     {
         case scc::Type::kTypeInt:
             return llvm::ConstantInt::get(*m_context, llvm::APInt(32, uint32_t(atoi(value.c_str())), true));
-            break;
 
         case scc::Type::kTypeFloat:
             return llvm::ConstantFP::get(*m_context, llvm::APFloat(float(atof(value.c_str()))));
-            break;
 
         case scc::Type::kTypeBool:
             return llvm::ConstantInt::get(*m_context, llvm::APInt(1, value == "true" ? 1 : 0, false));
-            break;
 
         default:
             assert(false && "Unknown type.");
@@ -1380,57 +1377,57 @@ std::string CodeGenPass::DebugLLVMTypeAsString(llvm::Type::TypeID typeID) const
     switch (typeID)
     {
         case llvm::Type::VoidTyID:        ///<  0: type with no size
-        return "VoidTyID";
+            return "VoidTyID";
 
         case llvm::Type::HalfTyID:        ///<  1: 16-bit floating point type
-        return "HalfTyID";
+            return "HalfTyID";
 
         case llvm::Type::FloatTyID:       ///<  2: 32-bit floating point type
-        return "FloatTyID";
+            return "FloatTyID";
 
         case llvm::Type::DoubleTyID:      ///<  3: 64-bit floating point type
-        return "DoubleTyID";
+            return "DoubleTyID";
 
         case llvm::Type::X86_FP80TyID:    ///<  4: 80-bit floating point type (X87)
-        return "X86_FP80TyID";
+            return "X86_FP80TyID";
 
         case llvm::Type::FP128TyID:       ///<  5: 128-bit floating point type (112-bit mantissa)
-        return "FP128TyID";
+            return "FP128TyID";
 
         case llvm::Type::PPC_FP128TyID:   ///<  6: 128-bit floating point type (two 64-bits, PowerPC)
-        return "PPC_FP128TyID";
+            return "PPC_FP128TyID";
 
         case llvm::Type::LabelTyID:       ///<  7: Labels
-        return "LabelTyID";
+            return "LabelTyID";
 
         case llvm::Type::MetadataTyID:    ///<  8: Metadata
-        return "MetadataTyID";
+            return "MetadataTyID";
 
         case llvm::Type::X86_MMXTyID:     ///<  9: MMX vectors (64 bits, X86 specific)
-        return "X86_MMXTyID";
+            return "X86_MMXTyID";
 
         case llvm::Type::TokenTyID:       ///< 10: Tokens
-        return "TokenTyID";
+            return "TokenTyID";
 
         // Derived types... see DerivedTypes.h file.
         // Make sure FirstDerivedTyID stays up to date!
         case llvm::Type::IntegerTyID:     ///< 11: Arbitrary bit width integers
-        return "IntegerTyID";
+            return "IntegerTyID";
 
         case llvm::Type::FunctionTyID:    ///< 12: Functions
-        return "FunctionTyID";
+            return "FunctionTyID";
 
         case llvm::Type::StructTyID:      ///< 13: Structures
-        return "StructTyID";
+            return "StructTyID";
 
         case llvm::Type::ArrayTyID:       ///< 14: Arrays
-        return "ArrayTyID";
+            return "ArrayTyID";
 
         case llvm::Type::PointerTyID:     ///< 15: Pointers
-        return "PointerTyID";
+            return "PointerTyID";
 
         default:
-        assert("Unknown llvm typeID");
-        break;
+            assert("Unknown llvm typeID");
+            break;
     }
 }
