@@ -1,16 +1,15 @@
 //
-//  CodeGenerationTests.cpp
-//
 //  Created by Arkin Terli on 5/8/18.
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
-#include <limits>
-#include <string>
-
-#include <catch2/catch.hpp>
-
+// Project includes
 #include <Compiler.hpp>
+// External includes
+#include <catch2/catch.hpp>
+// System includes
+#include <string>
+#include <limits>
 
 
 using namespace scc;
@@ -21,20 +20,22 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    /* Float Conversions */                            \
-    bool  FloatToBool(float f)   { return bool(f);  }  \
-    int   FloatToInt(float f)    { return int(f);   }  \
-    float FloatToFloat(float f)  { return float(f); }  \
-    /* Int Conversions */                              \
-    bool  IntToBool(int i)       { return bool(i);  }  \
-    int   IntToInt(int i)        { return int(i);   }  \
-    float IntToFloat(int i)      { return float(i); }  \
-    /* Bool Conversions */                             \
-    bool  BoolToBool(bool b)     { return bool(b);  }  \
-    int   BoolToInt(bool b)      { return int(b);   }  \
-    float BoolToFloat(bool b)    { return float(b); }  \
-    ";
+    std::string testCode = R"(
+    /* Float Conversions */
+    bool  FloatToBool(float f)   { return bool(f);  }
+    int   FloatToInt(float f)    { return int(f);   }
+    float FloatToFloat(float f)  { return float(f); }
+
+    /* Int Conversions */
+    bool  IntToBool(int i)       { return bool(i);  }
+    int   IntToInt(int i)        { return int(i);   }
+    float IntToFloat(int i)      { return float(i); }
+
+    /* Bool Conversions */
+    bool  BoolToBool(bool b)     { return bool(b);  }
+    int   BoolToInt(bool b)      { return int(b);   }
+    float BoolToFloat(bool b)    { return float(b); }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     SECTION("Should compile without an issue.")
@@ -158,12 +159,12 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    float NegFloat(float f) { return -f;  }       \
-    float PosFloat(float f) { return +f;  }       \
-    int   NegInt(int i)     { return -i;  }       \
-    int   PosInt(int i)     { return +i;  }       \
-    ";
+    std::string testCode = R"(
+    float NegFloat(float f) { return -f; }
+    float PosFloat(float f) { return +f; }
+    int   NegInt(int i)     { return -i; }
+    int   PosInt(int i)     { return +i; }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     SECTION("Should compile without an issue.")
@@ -237,14 +238,14 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    bool FloatCmpEQ(float a, float b)  { return a == b;  }       \
-    bool FloatCmpNEQ(float a, float b) { return a != b;  }       \
-    bool FloatCmpLE(float a, float b)  { return a <= b;  }       \
-    bool FloatCmpGE(float a, float b)  { return a >= b;  }       \
-    bool FloatCmpL(float a, float b)   { return a < b;  }        \
-    bool FloatCmpG(float a, float b)   { return a > b;  }        \
-    ";
+    std::string testCode = R"(
+    bool FloatCmpEQ(float a, float b)  { return a == b;  }
+    bool FloatCmpNEQ(float a, float b) { return a != b;  }
+    bool FloatCmpLE(float a, float b)  { return a <= b;  }
+    bool FloatCmpGE(float a, float b)  { return a >= b;  }
+    bool FloatCmpL(float a, float b)   { return a < b;   }
+    bool FloatCmpG(float a, float b)   { return a > b;   }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     SECTION("Should compile without an issue.")
@@ -330,12 +331,12 @@ TEST_CASE("CodeGenerationIfStatementTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    int IfTest1(bool b1) { int a=-1; if (b1) { return 1; } return a; }                                                  \n\
-    int IfTest2(bool b1, bool b2) { int a=-1; if (b1) { return 1; } else { if (b2) { return 2; } a = 3; } return a; }   \n\
-    int IfTest3(bool b1) { int a=-1; if (b1) { } else { } return a; }                                                   \n\
-    int IfTest4(bool b1) { int a=-1; if (b1) { a=1; } else { a=2; } return a; }                                         \n\
-    ";
+    std::string testCode = R"(
+    int IfTest1(bool b1) { int a=-1; if (b1) { return 1; } return a; }
+    int IfTest2(bool b1, bool b2) { int a=-1; if (b1) { return 1; } else { if (b2) { return 2; } a = 3; } return a; }
+    int IfTest3(bool b1) { int a=-1; if (b1) { } else { } return a; }
+    int IfTest4(bool b1) { int a=-1; if (b1) { a=1; } else { a=2; } return a; }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
@@ -371,11 +372,11 @@ TEST_CASE("CodeGenerationLogicalNotOPTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    bool FloatNot(float f) { return bool(!f); }         \n\
-    bool IntNot(int i)     { return bool(!i); }         \n\
-    bool BoolNot(bool b)   { return !b; }               \n\
-    ";
+    std::string testCode = R"(
+    bool FloatNot(float f) { return bool(!f); }
+    bool IntNot(int i)     { return bool(!i); }
+    bool BoolNot(bool b)   { return !b;       }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
@@ -422,13 +423,13 @@ TEST_CASE("CodeGenerationLogicalOPTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    bool AndTest1(bool a, bool b)  { return a && b; }                \n\
-    bool AndTest2(bool a, bool b, bool c) { return a && b && c; }    \n\
-    bool OrTest1(bool a, bool b)   { return a || b; }                \n\
-    bool OrTest2(bool a, bool b, bool c)  { return a || b || c; }    \n\
-    bool AndOrTest1(bool a, bool b, bool c, bool d) { return a && b || c && d; }    \n\
-    ";
+    std::string testCode = R"(
+    bool AndTest1(bool a, bool b)                    { return a && b;           }
+    bool AndTest2(bool a, bool b, bool c)            { return a && b && c;      }
+    bool OrTest1(bool a, bool b)                     { return a || b;           }
+    bool OrTest2(bool a, bool b, bool c)             { return a || b || c;      }
+    bool AndOrTest1(bool a, bool b, bool c, bool d)  { return a && b || c && d; }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
@@ -483,18 +484,18 @@ TEST_CASE("CodeGenerationRecursiveCallTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    int counter = 0;                                                                            \n\
-    int GetCounter() { return counter; }                                                        \n\
-    void RecursiveCall(int i) { if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; } }   \n\
-    int Fibonacci(int n) { if (n == 0) return n; else if (n == 1) return n; return Fibonacci(n-1) + Fibonacci(n-2); }   \n\
-    ";
+    std::string testCode = R"(
+    int counter = 0;
+    int GetCounter()          { return counter; }
+    void RecursiveCall(int i) { if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; } }
+    int Fibonacci(int n)      { if (n == 0) return n; else if (n == 1) return n; return Fibonacci(n-1) + Fibonacci(n-2); }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
     REQUIRE(scModule != nullptr);
 
-    // Recursice function call tests.
+    // Recursive function call tests.
     using FuncRecursiveCall = void (*)(int);
     auto RecursiveCall = reinterpret_cast<FuncRecursiveCall>(scModule->GetFunctionPtr("RecursiveCall"));
 
@@ -518,18 +519,18 @@ TEST_CASE("CodeGenerationForStatementTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    int Test1(int a)   { for (int i=0; i<5; i=i+1) { a = i; } return a; }                    \n\
-    int Test2(int a)   { for (int i=0,j=1; i<5; i=i+1, j=j+1) { a = j; } return a; }         \n\
-    int Test3(int a, bool b)   { for (; b; ) { a = a+1; b=false; } return a; }               \n\
-    int Test4(int a)   { for (int i=0; i<5; i=i+1) a = i; return a; }                        \n\
-    int Test5(int a, bool b)   { for (; b; ) a = a+1; return a; }                            \n\
-    int Test6(int a)   { for (int i=0; i<5; i=i+1) { a=i; continue; a=-1; } return a; }      \n\
-    int Test7(int a)   { for (int i=0; i<5; i=i+1) { a=i; if (true){ continue; } a=-1; } return a; }   \n\
-    int Test8(int a)   { for (int i=0; i<5; i=i+1) { a=i; break; a=-1; } return a; }                   \n\
-    int Test9(int a)   { for (int i=0; i<5; i=i+1) { a=i; if (i==2){ break; } a=-1; } return a; }      \n\
-    int Test10(int a)  { for (int i=0; i<5; i=i+1) { a=i; for (int j=0; j<5; j=j+1) { break; a=-1; } } return a; }    \n\
-    ";
+    std::string testCode = R"(
+    int Test1(int a)   { for (int i=0; i<5; i=i+1) { a = i; } return a; }
+    int Test2(int a)   { for (int i=0,j=1; i<5; i=i+1, j=j+1) { a = j; } return a; }
+    int Test3(int a, bool b)   { for (; b; ) { a = a+1; b=false; } return a; }
+    int Test4(int a)   { for (int i=0; i<5; i=i+1) a = i; return a; }
+    int Test5(int a, bool b)   { for (; b; ) a = a+1; return a; }
+    int Test6(int a)   { for (int i=0; i<5; i=i+1) { a=i; continue; a=-1; } return a; }
+    int Test7(int a)   { for (int i=0; i<5; i=i+1) { a=i; if (true){ continue; } a=-1; } return a; }
+    int Test8(int a)   { for (int i=0; i<5; i=i+1) { a=i; break; a=-1; } return a; }
+    int Test9(int a)   { for (int i=0; i<5; i=i+1) { a=i; if (i==2){ break; } a=-1; } return a; }
+    int Test10(int a)  { for (int i=0; i<5; i=i+1) { a=i; for (int j=0; j<5; j=j+1) { break; a=-1; } } return a; }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
@@ -585,15 +586,15 @@ TEST_CASE("CodeGenerationWhileStatementTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    int Test1(int a)   { int i=0; while (i<5) { a = i;  i=i+1; } return a; }                 \n\
-    int Test3(int a, bool b)   { while (b) { a = a+1; b=false; } return a; }                 \n\
-    int Test6(int a)   { int i=0; while (i<5) { a=i; i=i+1; continue; a=-1; } return a; }    \n\
-    int Test7(int a)   { int i=0; while (i<5) { a=i; i=i+1; if (true) { continue; } a=-1; } return a; }   \n\
-    int Test8(int a)   { int i=0; while (i<5) { a=i; i=i+1; break; a=-1; } return a; }                    \n\
-    int Test9(int a)   { int i=0; while (i<5) { a=i; if (i==2){ break; } a=-1; i=i+1; } return a; }       \n\
-    int Test10(int a)  { int i=0; while (i<5) { a=i; i=i+1; int j=0; while(j<5) { j=j+1; break; a=-1; } } return a; }  \n\
-    ";
+    std::string testCode = R"(
+    int Test1(int a)   { int i=0; while (i<5) { a = i;  i=i+1; } return a; }
+    int Test3(int a, bool b)   { while (b) { a = a+1; b=false; } return a; }
+    int Test6(int a)   { int i=0; while (i<5) { a=i; i=i+1; continue; a=-1; } return a; }
+    int Test7(int a)   { int i=0; while (i<5) { a=i; i=i+1; if (true) { continue; } a=-1; } return a; }
+    int Test8(int a)   { int i=0; while (i<5) { a=i; i=i+1; break; a=-1; } return a; }
+    int Test9(int a)   { int i=0; while (i<5) { a=i; if (i==2){ break; } a=-1; i=i+1; } return a; }
+    int Test10(int a)  { int i=0; while (i<5) { a=i; i=i+1; int j=0; while(j<5) { j=j+1; break; a=-1; } } return a; }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
@@ -637,15 +638,15 @@ TEST_CASE("CodeGenerationDoWhileStatementTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    int Test1(int a)   { int i=0; do { a = i;  i=i+1; } while (i<5); return a; }                 \n\
-    int Test2(int a, bool b)   { do { a = a+1; b=false; } while (b); return a; }                 \n\
-    int Test3(int a)   { int i=0; do { a=i; i=i+1; continue; a=-1; } while (i<5); return a; }    \n\
-    int Test4(int a)   { int i=0; do { a=i; i=i+1; if (true) { continue; } a=-1; } while (i<5); return a; }   \n\
-    int Test5(int a)   { int i=0; do { a=i; i=i+1; break; a=-1; } while (i<5); return a; }                    \n\
-    int Test6(int a)   { int i=0; do { a=i; if (i==2){ break; } a=-1; i=i+1; } while (i<5); return a; }       \n\
-    int Test7(int a)   { int i=0; do { a=i; i=i+1; int j=0; do { j=j+1; break; a=-1; } while (j<5); } while (i<5); return a; }  \n\
-    ";
+    std::string testCode = R"(
+    int Test1(int a)   { int i=0; do { a = i;  i=i+1; } while (i<5); return a; }
+    int Test2(int a, bool b)   { do { a = a+1; b=false; } while (b); return a; }
+    int Test3(int a)   { int i=0; do { a=i; i=i+1; continue; a=-1; } while (i<5); return a; }
+    int Test4(int a)   { int i=0; do { a=i; i=i+1; if (true) { continue; } a=-1; } while (i<5); return a; }
+    int Test5(int a)   { int i=0; do { a=i; i=i+1; break; a=-1; } while (i<5); return a; }
+    int Test6(int a)   { int i=0; do { a=i; if (i==2){ break; } a=-1; i=i+1; } while (i<5); return a; }
+    int Test7(int a)   { int i=0; do { a=i; i=i+1; int j=0; do { j=j+1; break; a=-1; } while (j<5); } while (i<5); return a; }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
@@ -689,10 +690,10 @@ TEST_CASE("CodeGenerationPrefixAOPTests", "[CodeGenerationTests]")
     Compiler compiler;
     SCCompileResult compileResult;
 
-    std::string testCode = "\
-    int Test1(int a)  { return ++a; }        \n\
-    int Test2(int a)  { return --a; }        \n\
-    ";
+    std::string testCode = R"(
+    int Test1(int a)  { return ++a; }
+    int Test2(int a)  { return --a; }
+    )";
     auto scModule = compiler.CompileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
