@@ -2,7 +2,7 @@
 #  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 #
 
-add_library(SCCompilerLib
+add_library(SCCompilerLib STATIC
         AST.cpp
         ASTGenerator.cpp
         ASTVisualizer.cpp
@@ -25,7 +25,7 @@ add_library(SCCompilerLib
         )
 
 # Run installed/./llvm-config --libs to dump list of libs to include here and keep the original order of the libs.
-target_link_libraries(SCCompilerLib PRIVATE
+target_link_libraries(SCCompilerLib PUBLIC
         antlr4-runtime_s
         z
         pthread
@@ -54,3 +54,6 @@ target_link_libraries(SCCompilerLib PRIVATE
 #        COMMAND "java -jar \"Externals/ANTLR/4.7.1/Tool/antlr-4.7.1-complete.jar\" -Dlanguage=Cpp -visitor ./Targets/SCCompilerLib/Parser/SCCompiler.g4"
 #        DEPENDS SCCompiler.g4
 #        )
+
+install(FILES Compiler.hpp SCModule.hpp DESTINATION include)
+install(TARGETS SCCompilerLib ARCHIVE DESTINATION lib)

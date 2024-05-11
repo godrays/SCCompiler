@@ -10,7 +10,7 @@ function showHelp()
     echo "    ./build.sh <build_type> <build_dir> <install_dir> <cpu_cores> [<build_options>...]"
     echo ""
     echo "Example:"
-    echo "    ./build.sh release build-release \$(pwd)/build-release-product 8"
+    echo "    ./build.sh release build-rel \$(pwd)/product-rel 8"
     echo ""
     echo "Options:"
     echo "    build_type       Valid build types: release, debug, ccov, asan, tsan"
@@ -36,10 +36,12 @@ function main()
 {
     checkBuildType $1
     pushd .
+    rm -rf $2 $3
     mkdir $2
     cd $2
 
-    cmake .. -DCMAKE_BUILD_TYPE=$1 -DCMAKE_INSTALL_PREFIX=$3 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15}
+    cmake .. -DCMAKE_BUILD_TYPE=$1 -DSCCOMPILER_BUILD_TESTS=ON -DSCCOMPILER_BUILD_EXAMPLES=ON  \
+             -DCMAKE_INSTALL_PREFIX=$3 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15}
     cmake --build . --target all -- -j $4
     cmake --build . --target install -- -j $4
 

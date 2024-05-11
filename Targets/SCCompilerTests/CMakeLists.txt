@@ -11,3 +11,5 @@ add_executable(SCCompilerTests
         )
 
 target_link_libraries(SCCompilerTests PRIVATE SCCompilerLib)
+
+install(TARGETS SCCompilerTests DESTINATION ${CMAKE_INSTALL_PREFIX})
