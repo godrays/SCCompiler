@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+#  Copyright © 2018-Present, Arkin Terli. All rights reserved.
+#
 
 function showHelp()
 {

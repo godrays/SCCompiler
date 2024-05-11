@@ -1,3 +1,7 @@
+#
+#  Copyright © 2018-Present, Arkin Terli. All rights reserved.
+#
+
 cmake_minimum_required(VERSION 3.24)
 
 project(SCCompiler)

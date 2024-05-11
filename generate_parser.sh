@@ -1,3 +1,8 @@
+#!/bin/bash
+#
+#  Copyright © 2018-Present, Arkin Terli. All rights reserved.
+#
+
 ANTLR_VERSION=4.13.1
 GRAMMAR_DIR=./Targets/SCCompilerLib/Parser
 GRAMMAR_FILE=$GRAMMAR_DIR/SCCompiler.g4
