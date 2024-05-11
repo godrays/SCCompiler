@@ -2,7 +2,12 @@
 #  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 #
 
-add_library(SCCompilerLib STATIC
+set(SCCOMPILER_LIB_TYPE SHARED)
+if (SCCOMPILER_BUILD_STATIC)
+    set(SCCOMPILER_LIB_TYPE STATIC)
+endif()
+
+add_library(SCCompilerLib ${SCCOMPILER_LIB_TYPE}
         AST.cpp
         ASTGenerator.cpp
         ASTVisualizer.cpp
@@ -24,8 +29,8 @@ add_library(SCCompilerLib STATIC
         Parser/SCCompilerVisitor.cpp
         )
 
-# Run installed/./llvm-config --libs to dump list of libs to include here and keep the original order of the libs.
-target_link_libraries(SCCompilerLib PUBLIC
+# Run llvm/installed/bin/llvm-config --libs to dump list of libs to include here and keep the original order of the libs.
+target_link_libraries(SCCompilerLib PRIVATE
         antlr4-runtime_s
         z
         pthread

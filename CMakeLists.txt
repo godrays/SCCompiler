@@ -6,6 +6,7 @@ project(SCCompiler)
 
 option(SCCOMPILER_BUILD_TESTS    "Build SCCompiler test application"     OFF)
 option(SCCOMPILER_BUILD_EXAMPLES "Build SCCompiler example applications" OFF)
+option(SCCOMPILER_BUILD_STATIC   "Build static SCCompilerLib library"    OFF)
 
 # Set compiler configurations
 
@@ -48,4 +49,8 @@ endif ()
 
 if (SCCOMPILER_BUILD_EXAMPLES)
     add_subdirectory(Targets/SCCompilerExamples/SCCompilerApp)
+endif ()
+
+if (NOT SCCOMPILER_BUILD_STATIC AND (SCCOMPILER_BUILD_TESTS OR SCCOMPILER_BUILD_EXAMPLES))
+    install(TARGETS SCCompilerLib DESTINATION ${CMAKE_INSTALL_PREFIX})
 endif ()
