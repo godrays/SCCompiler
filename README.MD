@@ -199,7 +199,7 @@ The SCCompiler is designed and developed by Arkin Terli. If you find SCCompiler 
 @software{SCCompiler2018,
    author = {Arkin Terli},
    title = {{SCCompiler}: Simple C JIT Compiler},
-   url = {https://gitlab.com/arkin/sccompiler},
+   url = {https://github.com/godrays/sccompiler},
    version = {0.0.0},
    year = {2018},
 }
