@@ -104,7 +104,7 @@ The following steps are necessary to understand and add a new language feature.
 
 3. A vital step is to ensure your language grammar is constructed as expected. The following script will generate a temporary Java parser and use your source code to parse and visualize the parsed tree:
    ```bash
-   $ ./show_ptree.sh example.src
+   python show_ptree.py build-release Targets/SCCompilerLib/Parser/SCCompiler.g4 example.src
    ```
 
 4. If everything is OK, update your C++ parser source code files so that the parser knows how to parse the new feature:
