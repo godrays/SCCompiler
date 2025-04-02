@@ -149,23 +149,7 @@ Currently, it has been built and tested on `macOS Sonoma` with no issues.
 
 ---
 
-### Step 1: Install Third-Party Dependencies.
-
-This step will install dependencies. Assuming XCode and MacPorts is already installed.
-
-```bash
-sudo port install ossp-uuid pkgconfig graphviz
-```
-
-Install JAVA SE SDK.
-
-```bash
-https://www.oracle.com/technetwork/java/javase/downloads/index.html
-```
-
----
-
-### Step 2: Build Targets
+### Step 1: Build Targets
 
 This step will build all binaries and deploy into a specific folder. Assuming you are in the root folder of the project.
 
@@ -176,6 +160,22 @@ python build.py build release build-release product-rel
 After a successful build, all target binaries will be deployed into the product-rel folder.
 
 Note: Run the build.py file without parameters to see all options.
+
+---
+
+### Step 2: Install Development Specific Dependencies (Optional).
+
+This step will install dependencies, and it's necessary only if you want to work on the project. Feel free to skip this step if you want to use the SCCompiler as an external library in your project. Assuming XCode and MacPorts is already installed.
+
+```bash
+sudo port install ossp-uuid pkgconfig graphviz
+```
+
+Install JAVA SE SDK.
+
+```bash
+https://www.oracle.com/technetwork/java/javase/downloads/index.html
+```
 
 
 # Citing 
