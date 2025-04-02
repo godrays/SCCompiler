@@ -36,12 +36,7 @@ add_dependencies(${TARGET_NAME} antlr4_cpp antlr4_tool llvm_cpp)
 # Run llvm/installed/bin/llvm-config --libs to dump list of libs to include here and keep the original order of the libs.
 target_link_libraries(${TARGET_NAME} PRIVATE
         antlr4-runtime
-        z
-        pthread
-        edit
         curses
-        dl
-        m
         LLVMWindowsManifest LLVMXRay LLVMLibDriver LLVMDlltoolDriver LLVMCoverage LLVMLineEditor LLVMX86Disassembler
         LLVMX86AsmParser LLVMX86CodeGen LLVMX86Desc LLVMX86Info LLVMARMDisassembler LLVMARMAsmParser LLVMARMCodeGen
         LLVMARMDesc LLVMARMUtils LLVMARMInfo LLVMAArch64Disassembler LLVMAArch64AsmParser LLVMAArch64CodeGen

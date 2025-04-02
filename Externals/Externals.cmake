@@ -179,6 +179,7 @@ add_external_git_project(
                             -DLLVM_INCLUDE_TESTS=OFF
                             -DLLVM_INCLUDE_BENCHMARKS=OFF
                             -DLLVM_INCLUDE_DOCS=OFF
+                            -DLLVM_ENABLE_ZLIB=OFF
         SOURCE_SUBDIR       llvm
         EXTERNALS_BIN_DIR   ${EXTERNALS_BINARY_DIR}
         BUILD_TYPE          Release
