@@ -109,7 +109,7 @@ The following steps are necessary to understand and add a new language feature.
 
 4. If everything is OK, update your C++ parser source code files so that the parser knows how to parse the new feature:
    ```bash
-   $ ./generate_parser.sh <cmake-build-dir>
+   python generate_parser.py <cmake-build-dir>
    ```
 
 Now you should see that some files under the `Targets/SCCompilerLib/Parser` folder have been updated.
