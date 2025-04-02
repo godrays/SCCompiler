@@ -12,10 +12,29 @@
 
 int main(int , const char **)
 {
-    auto compiler = scc::SCCompiler::Create();
+    const std::string sourceCode =
+    R"(
+        // Returns fibonacci number
+        int fib(int n)
+        {
+            if (n <= 1)
+                return n;
+
+            return fib(n-1) + fib(n-2);
+        }
+
+        int main(int a)
+        {
+            return fib(a);
+        }
+    )";
+
+    // Create the compiler.
+    const auto compiler = scc::SCCompiler::Create();
     scc::SCCompileResult  compileResult;
 
-    auto scModule = compiler->CompileFromFile("SCCompilerTestCode.src", compileResult);
+    // Compile the source code from memory.
+    const auto scModule = compiler->CompileFromMemory(sourceCode, compileResult);
 
     if (scc::SCCompileResult::kSCCompileResultOk != compileResult)
     {
@@ -28,7 +47,7 @@ int main(int , const char **)
 
     // SCModule holds compiled machine code. Let's bind to the compiled main function.
     using mainFuncType = int (*)(int);
-    auto mainFunc = reinterpret_cast<mainFuncType>(scModule->GetFunctionPtr("main"));
+    const auto mainFunc = reinterpret_cast<mainFuncType>(scModule->GetFunctionPtr("main"));
 
     // Call the main function, which is the machine code in memory, directly.
     std::cout << "fib(10) = " << mainFunc(10) << std::endl;

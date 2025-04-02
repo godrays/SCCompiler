@@ -36,7 +36,7 @@ Let's go through the code step by step:
 int main()
 {
     // An example source code to compile in memory.
-    std::string srcCode = R"(
+    const std::string sourceCode = R"(
         // Returns fibonacci number
         int fib(int n)
         {
@@ -53,11 +53,11 @@ int main()
     )";
 
     // Create the compiler.
-    auto compiler = scc::SCCompiler::Create();
+    const auto compiler = scc::SCCompiler::Create();
+    scc::SCCompileResult  compileResult;
 
     // Compile the source code from memory.
-    scc::SCCompileResult  compileResult;
-    auto scModule = compiler->CompileFromMemory(srcCode, compileResult);
+    const auto scModule = compiler->CompileFromMemory(sourceCode, compileResult);
     if (scc::SCCompileResult::kSCCompileResultOk != compileResult)
     {
         std::cerr << compiler->GetErrorMessage() << std::endl;
@@ -69,7 +69,7 @@ int main()
 
     // SCModule holds compiled machine code. Let's bind to the compiled main function.
     using mainFuncType = int (*)(int);
-    auto mainFunc = reinterpret_cast<mainFuncType>(scModule->GetFunctionPtr("main"));
+    const auto mainFunc = reinterpret_cast<mainFuncType>(scModule->GetFunctionPtr("main"));
 
     // Call the main function, which is the machine code in memory, directly.
     std::cout << "fib(10) = " << mainFunc(10) << std::endl;
@@ -109,7 +109,7 @@ The following steps are necessary to understand and add a new language feature.
 
 4. If everything is OK, update your C++ parser source code files so that the parser knows how to parse the new feature:
    ```bash
-   $ ./generate_parser.sh
+   $ ./generate_parser.sh <cmake-build-dir>
    ```
 
 Now you should see that some files under the `Targets/SCCompilerLib/Parser` folder have been updated.
@@ -165,30 +165,17 @@ https://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 ---
 
-### Step 2: Build Externals
-
-This step will build external libraries.
-
-```bash
-cd Externals
-./build_antlr.sh
-./build_catch2.sh
-./build_llvm.sh
-```
-
----
-
-### Step 3: Build Targets
+### Step 2: Build Targets
 
 This step will build all binaries and deploy into a specific folder. Assuming you are in the root folder of the project.
 
 ```bash
-./build.sh release build-release $(pwd)/product-rel 8
+python build.py build release build-release product-rel
 ```
 
 After a successful build, all target binaries will be deployed into the product-rel folder.
 
-Note: Run the build.sh file without parameters to see all options.
+Note: Run the build.py file without parameters to see all options.
 
 
 # Citing 

@@ -2,12 +2,14 @@
 #  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 #
 
+set(TARGET_NAME SCCompilerLib)
+
 set(SCCOMPILER_LIB_TYPE SHARED)
 if (SCCOMPILER_BUILD_STATIC)
     set(SCCOMPILER_LIB_TYPE STATIC)
 endif()
 
-add_library(SCCompilerLib ${SCCOMPILER_LIB_TYPE}
+add_library(${TARGET_NAME} ${SCCOMPILER_LIB_TYPE}
         AST.cpp
         ASTGenerator.cpp
         ASTVisualizer.cpp
@@ -29,9 +31,11 @@ add_library(SCCompilerLib ${SCCOMPILER_LIB_TYPE}
         Parser/SCCompilerVisitor.cpp
         )
 
+add_dependencies(${TARGET_NAME} antlr4_cpp antlr4_tool llvm_cpp)
+
 # Run llvm/installed/bin/llvm-config --libs to dump list of libs to include here and keep the original order of the libs.
-target_link_libraries(SCCompilerLib PRIVATE
-        antlr4-runtime_s
+target_link_libraries(${TARGET_NAME} PRIVATE
+        antlr4-runtime
         z
         pthread
         edit
@@ -54,4 +58,4 @@ target_link_libraries(SCCompilerLib PRIVATE
         )
 
 install(FILES SCCompiler.hpp SCModule.hpp DESTINATION include)
-install(TARGETS SCCompilerLib ARCHIVE DESTINATION lib)
+install(TARGETS ${TARGET_NAME} ARCHIVE DESTINATION lib)
