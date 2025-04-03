@@ -112,6 +112,15 @@ set(EXTERNAL_COMMON_CMAKE_ARGS
         -Wno-dev
 )
 
+if(MSVC)
+    list(APPEND EXTERNAL_COMMON_CMAKE_ARGS
+            -DCMAKE_C_FLAGS_DEBUG=/MT
+            -DCMAKE_C_FLAGS_RELEASE=/MT
+            -DCMAKE_CXX_FLAGS_DEBUG=/MT
+            -DCMAKE_CXX_FLAGS_RELEASE=/MT
+    )
+endif()
+
 # ---------------------------------------------------------------------------------
 # CLEAN EXTERNALS TARGET (Cleans only the external projects)
 # ---------------------------------------------------------------------------------
@@ -128,7 +137,8 @@ add_custom_target(clean_externals
 add_external_git_project(
         NAME                antlr4_cpp
         GIT_REPOSITORY      https://github.com/antlr/antlr4.git
-        GIT_TAG             ${EXTERNAL_ANTLR4_VERSION}
+        # TODO: Temporarily set to dev branch until recent fixes are released for Windows.
+        GIT_TAG             dev     # ${EXTERNAL_ANTLR4_VERSION} # Temporarily set to dev branch to get recent fixes for MSVC.
         CMAKE_ARGS          ${EXTERNAL_COMMON_CMAKE_ARGS}
                             -DBUILD_SHARED_LIBS=OFF
                             -DCMAKE_SHARED_LIBRARY_SUFFIX_CXX=.xxx

@@ -145,7 +145,7 @@ Last but not least, you have to add tests under `Targets/SCCompilerTests` that c
 
 Follow these steps to build the project and make it deployment-ready.
 
-Currently, it has been built and tested on `macOS Sonoma` with no issues.
+Currently, it has been built and tested on `macOS Sonoma` and Windows 10 (MSVC) with no issues.
 
 ---
 

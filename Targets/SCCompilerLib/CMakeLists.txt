@@ -33,10 +33,16 @@ add_library(${TARGET_NAME} ${SCCOMPILER_LIB_TYPE}
 
 add_dependencies(${TARGET_NAME} antlr4_cpp antlr4_tool llvm_cpp)
 
+target_compile_definitions(${TARGET_NAME} PUBLIC ANTLR4CPP_STATIC)
+
+if(MSVC)
+    target_link_libraries(${TARGET_NAME} PRIVATE antlr4-runtime-static)
+else()
+    target_link_libraries(${TARGET_NAME} PRIVATE antlr4-runtime)
+endif()
+
 # Run llvm/installed/bin/llvm-config --libs to dump list of libs to include here and keep the original order of the libs.
 target_link_libraries(${TARGET_NAME} PRIVATE
-        antlr4-runtime
-        curses
         LLVMWindowsManifest LLVMXRay LLVMLibDriver LLVMDlltoolDriver LLVMCoverage LLVMLineEditor LLVMX86Disassembler
         LLVMX86AsmParser LLVMX86CodeGen LLVMX86Desc LLVMX86Info LLVMARMDisassembler LLVMARMAsmParser LLVMARMCodeGen
         LLVMARMDesc LLVMARMUtils LLVMARMInfo LLVMAArch64Disassembler LLVMAArch64AsmParser LLVMAArch64CodeGen
