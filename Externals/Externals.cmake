@@ -180,6 +180,11 @@ add_external_git_project(
                             -DLLVM_INCLUDE_BENCHMARKS=OFF
                             -DLLVM_INCLUDE_DOCS=OFF
                             -DLLVM_ENABLE_ZLIB=OFF
+                            -DLLVM_ENABLE_TERMINFO=OFF
+                            -DLLVM_ENABLE_LIBXML2=OFF
+                            -DLLVM_ENABLE_LIBEDIT=OFF
+                            -DLLVM_ENABLE_LIBPFM=OFF
+                            -DLLVM_STATIC_CXX_STDLIB=ON
         SOURCE_SUBDIR       llvm
         EXTERNALS_BIN_DIR   ${EXTERNALS_BINARY_DIR}
         BUILD_TYPE          Release
