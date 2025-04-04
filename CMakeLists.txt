@@ -36,7 +36,11 @@ set(CMAKE_CXX_STANDARD 20)
 if(MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
-    set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded)
+
+    # Use MultiThreaded (/MT) by default if not set.
+    if (CMAKE_MSVC_RUNTIME_LIBRARY STREQUAL "")
+        set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded)
+    endif()
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-unused-parameter -Wno-unused-but-set-variable -Wno-integer-overflow")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-bitwise-instead-of-logical -Wno-return-type")
