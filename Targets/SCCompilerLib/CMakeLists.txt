@@ -4,9 +4,12 @@
 
 set(TARGET_NAME SCCompilerLib)
 
-set(SCCOMPILER_LIB_TYPE SHARED)
 if (SCCOMPILER_BUILD_STATIC)
     set(SCCOMPILER_LIB_TYPE STATIC)
+else()
+    set(SCCOMPILER_LIB_TYPE SHARED)
+    # Reduce the need for explicit dllexport markup, even in C++ classes on Windows.
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif()
 
 add_library(${TARGET_NAME} ${SCCOMPILER_LIB_TYPE}
