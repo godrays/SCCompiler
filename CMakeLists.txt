@@ -38,7 +38,7 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
 
     # Use MultiThreaded (/MT) by default if not set.
-    if (CMAKE_MSVC_RUNTIME_LIBRARY STREQUAL "")
+    if ("${CMAKE_MSVC_RUNTIME_LIBRARY}" STREQUAL "")
         set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded)
     endif()
 else()
