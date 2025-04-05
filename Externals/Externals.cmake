@@ -115,14 +115,11 @@ set(EXTERNAL_COMMON_CMAKE_ARGS
 if(MSVC)
     if("${CMAKE_MSVC_RUNTIME_LIBRARY}" STREQUAL "MultiThreaded")
         set(EXTERNALS_MSVC_RUNTIME_LIBRARY /MT)
-    elseif("${CMAKE_MSVC_RUNTIME_LIBRARY}" STREQUAL "MultiThreadedDebug")
-        set(EXTERNALS_MSVC_RUNTIME_LIBRARY /MTd)
+        set(ANTLR4_WITH_STATIC_CRT ON)
     elseif("${CMAKE_MSVC_RUNTIME_LIBRARY}" STREQUAL "MultiThreadedDLL")
         set(EXTERNALS_MSVC_RUNTIME_LIBRARY /MD)
-    elseif("${CMAKE_MSVC_RUNTIME_LIBRARY}" STREQUAL "MultiThreadedDebugDLL")
-        set(EXTERNALS_MSVC_RUNTIME_LIBRARY /MDd)
     else()
-        message(FATAL_ERROR "CMAKE_MSVC_RUNTIME_LIBRARY value: '${CMAKE_MSVC_RUNTIME_LIBRARY}' is not valid.")
+        message(FATAL_ERROR "CMAKE_MSVC_RUNTIME_LIBRARY value: '${CMAKE_MSVC_RUNTIME_LIBRARY}' is not supported.")
     endif()
 
     list(APPEND EXTERNAL_COMMON_CMAKE_ARGS
@@ -155,6 +152,7 @@ add_external_git_project(
         CMAKE_ARGS          ${EXTERNAL_COMMON_CMAKE_ARGS}
                             -DBUILD_SHARED_LIBS=OFF
                             -DCMAKE_SHARED_LIBRARY_SUFFIX_CXX=.xxx
+                            -DWITH_STATIC_CRT=${ANTLR4_WITH_STATIC_CRT}
         SOURCE_SUBDIR       runtime/Cpp
         EXTERNALS_BIN_DIR   ${EXTERNALS_BINARY_DIR}
         BUILD_TYPE          Release
