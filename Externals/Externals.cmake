@@ -16,7 +16,7 @@ include(ExternalProject)
 # Builds and installs external git projects.
 function(add_external_git_project)
     set(options)
-    set(oneValueArgs NAME GIT_REPOSITORY GIT_TAG GIT_SHALLOW SOURCE_SUBDIR EXTERNALS_BIN_DIR BUILD_TYPE)
+    set(oneValueArgs NAME URL GIT_REPOSITORY GIT_TAG GIT_SHALLOW SOURCE_SUBDIR EXTERNALS_BIN_DIR BUILD_TYPE)
     set(multiValueArgs CMAKE_ARGS)
     cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -30,6 +30,7 @@ function(add_external_git_project)
 
     ExternalProject_Add(
             ${ARG_NAME}
+            URL             ${ARG_URL}
             GIT_REPOSITORY  ${ARG_GIT_REPOSITORY}
             GIT_TAG         ${ARG_GIT_TAG}
             GIT_SHALLOW     ${ARG_GIT_SHALLOW}
