@@ -13,8 +13,6 @@
 using namespace scc;
 
 
-#pragma mark - Type Checker Implementations.
-
 Type TypeChecker::m_typePromotionTable[kTypeMax][kTypeMax] =
 {
                            // kTypeUnknown, kTypeFloat,   kTypeInt,     kTypeBool,    kTypeVoid

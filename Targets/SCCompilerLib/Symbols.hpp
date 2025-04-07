@@ -23,8 +23,6 @@ class ScopeNode;
 class FuncArgSymbol;
 
 
-#pragma mark - Enum SymbolType
-
 // Symbol category.
 enum class SymbolCategory
 {
@@ -36,8 +34,6 @@ enum class SymbolCategory
 };
 
 
-#pragma mark - Class BaseSymbolProperty
-
 class SymbolPropertyBase
 {
 public:
@@ -45,8 +41,6 @@ public:
     virtual ~SymbolPropertyBase() = default;
 };
 
-
-#pragma mark - Class Symbol
 
 class Symbol
 {
@@ -93,8 +87,6 @@ protected:
 };
 
 
-#pragma mark - Class BuiltInTypeSymbol
-
 class BuiltInTypeSymbol : public Symbol
 {
 public:
@@ -102,8 +94,6 @@ public:
     explicit BuiltInTypeSymbol(std::string name);
 };
 
-
-#pragma mark - Class VariableSymbol
 
 class VariableSymbol : public Symbol
 {
@@ -113,8 +103,6 @@ public:
 };
 
 
-#pragma mark - Class FuncArgSymbol
-
 class FuncArgSymbol : public Symbol
 {
 public:
@@ -122,8 +110,6 @@ public:
     FuncArgSymbol(std::string name, Type type);
 };
 
-
-#pragma mark - Class FunctionSymbol
 
 class FunctionSymbol : public Symbol
 {
@@ -145,8 +131,6 @@ private:
 };
 
 
-#pragma mark - Enum ScopeCategory
-
 // Scope category.
 enum class ScopeCategory
 {
@@ -157,8 +141,6 @@ enum class ScopeCategory
     kScopeCategoryBlock,
 };
 
-
-#pragma mark - Class ScopeNode
 
 // Scoped symbol table node to build a tree of symbol tables.
 // Every node in the tree is considered a scope and has a symbol table.

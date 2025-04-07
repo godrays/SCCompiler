@@ -12,8 +12,6 @@
 using namespace scc;
 
 
-#pragma mark - SCModule Implementations.
-
 SCModule::~SCModule()
 {
     // Abstract classes with pure virtual functions do not implement methods, but the destructor has to be implemented.

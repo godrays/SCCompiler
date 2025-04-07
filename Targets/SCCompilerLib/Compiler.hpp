@@ -16,8 +16,6 @@
 namespace scc
 {
 
-#pragma mark - Class Compiler.
-
 class Compiler : public SCCompiler
 {
 public:

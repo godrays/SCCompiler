@@ -14,8 +14,6 @@
 namespace scc
 {
 
-#pragma mark - Enum Type.
-
 // Types.
 // Note: Changes to this enum require changes in the promotion table.
 enum Type : uint32_t
@@ -28,8 +26,6 @@ enum Type : uint32_t
     kTypeMax         = 5,
 };
 
-
-#pragma mark - Class TypeChecker.
 
 // Implements static helper methods for the type system.
 class TypeChecker

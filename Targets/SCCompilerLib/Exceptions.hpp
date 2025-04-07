@@ -16,8 +16,6 @@
 namespace scc
 {
 
-#pragma mark - Class CompileErrorException.
-
 class CompileErrorException : public std::exception
 {
 public:
@@ -35,8 +33,6 @@ private:
     std::string     m_message;
 };
 
-
-#pragma mark - Class SemanticErrorException.
 
 class SemanticErrorException : public std::exception
 {

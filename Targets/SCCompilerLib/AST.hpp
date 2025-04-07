@@ -23,8 +23,6 @@ class ScopeNode;
 namespace ast
 {
 
-#pragma mark - Enum NodeType
-
 // Node types for AST tree.
 enum class NodeType
 {
@@ -70,8 +68,6 @@ enum class NodeType
 };
 
 
-#pragma mark - Class FuncArg
-
 // Class for function argument.
 class FuncArg
 {
@@ -93,8 +89,6 @@ protected:
     std::string   m_name;
 };
 
-
-#pragma mark - Class Node
 
 class Node
 {
@@ -167,8 +161,6 @@ protected:
 };
 
 
-#pragma mark - Class NodeProgram
-
 class NodeProgram : public Node
 {
 public:
@@ -179,8 +171,6 @@ public:
     ~NodeProgram() override;
 };
 
-
-#pragma mark - Class NodeVarDeclaration
 
 class NodeVarDeclaration : public Node
 {
@@ -202,8 +192,6 @@ protected:
     std::string  m_varName;
 };
 
-
-#pragma mark - Class NodeFuncDeclaration
 
 class NodeFuncDeclaration : public Node
 {
@@ -233,8 +221,6 @@ protected:
 };
 
 
-#pragma mark - Class NodeIfStatement
-
 class NodeIfStatement : public Node
 {
 public:
@@ -245,8 +231,6 @@ public:
     ~NodeIfStatement() override;
 };
 
-
-#pragma mark - Class NodeForStatement
 
 class NodeForStatement : public Node
 {
@@ -259,8 +243,6 @@ public:
 };
 
 
-#pragma mark - Class NodeFor
-
 class NodeFor : public Node
 {
 public:
@@ -271,8 +253,6 @@ public:
     ~NodeFor() override;
 };
 
-
-#pragma mark - Class NodeWhileStatement
 
 class NodeWhileStatement : public Node
 {
@@ -285,8 +265,6 @@ public:
 };
 
 
-#pragma mark - Class NodeDoWhileStatement
-
 class NodeDoWhileStatement : public Node
 {
 public:
@@ -297,8 +275,6 @@ public:
     ~NodeDoWhileStatement() override;
 };
 
-
-#pragma mark - Class NodeReturnStatement
 
 class NodeReturnStatement : public Node
 {
@@ -311,8 +287,6 @@ public:
 };
 
 
-#pragma mark - Class NodeContinue
-
 class NodeContinue : public Node
 {
 public:
@@ -324,8 +298,6 @@ public:
 };
 
 
-#pragma mark - Class NodeBreak
-
 class NodeBreak : public Node
 {
 public:
@@ -336,8 +308,6 @@ public:
     ~NodeBreak() override;
 };
 
-
-#pragma mark - Class NodeFuncCall
 
 class NodeFuncCall : public Node
 {
@@ -356,8 +326,6 @@ protected:
 };
 
 
-#pragma mark - Class NodeBlock
-
 class NodeBlock : public Node
 {
 public:
@@ -369,8 +337,6 @@ public:
 };
 
 
-#pragma mark - Class NodeAssignment
-
 class NodeAssignment : public Node
 {
 public:
@@ -381,8 +347,6 @@ public:
     ~NodeAssignment() override;
 };
 
-
-#pragma mark - Class NodeExplicitTypeConversion
 
 class NodeExplicitTypeConversion : public Node
 {
@@ -402,8 +366,6 @@ protected:
 };
 
 
-#pragma mark - Class NodeLogicalOP
-
 class NodeLogicalOP : public Node
 {
 public:
@@ -414,8 +376,6 @@ public:
     ~NodeLogicalOP() override;
 };
 
-
-#pragma mark - Class NodeUnaryOP
 
 class NodeUnaryOP : public Node
 {
@@ -428,8 +388,6 @@ public:
 };
 
 
-#pragma mark - Class NodeCompOP
-
 class NodeCompOP : public Node
 {
 public:
@@ -440,8 +398,6 @@ public:
     ~NodeCompOP() override;
 };
 
-
-#pragma mark - Class NodePrefixAOP
 
 class NodePrefixAOP : public Node
 {
@@ -454,8 +410,6 @@ public:
 };
 
 
-#pragma mark - Class NodeAOP
-
 class NodeAOP : public Node
 {
 public:
@@ -466,8 +420,6 @@ public:
     ~NodeAOP() override;
 };
 
-
-#pragma mark - Class NodeLiteral
 
 class NodeLiteral : public Node
 {
@@ -486,8 +438,6 @@ protected:
     std::string m_value;
 };
 
-
-#pragma mark - Function TypeToString
 
 std::string TypeToString(Type type);
 

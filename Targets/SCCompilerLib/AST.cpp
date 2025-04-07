@@ -14,8 +14,6 @@
 using namespace scc;
 
 
-#pragma mark - FuncArg Implementation
-
 ast::FuncArg::FuncArg(Type type, std::string name) : m_type(type), m_name(std::move(name))
 {
 
@@ -32,9 +30,6 @@ std::string ast::FuncArg::GetName()
 {
     return m_name;
 }
-
-
-#pragma mark - Node Implementation
 
 
 ast::Node::Node(NodeType nodeType) : m_nodeType(nodeType)
@@ -323,8 +318,6 @@ ScopeNode * ast::Node::GetScope()
 }
 
 
-#pragma mark - NodeProgram Implementation
-
 ast::NodeProgram::NodeProgram()
 {
     m_nodeType = NodeType::kNodeTypeProgram;
@@ -336,8 +329,6 @@ ast::NodeProgram::~NodeProgram()
     DeleteChildren();
 }
 
-
-#pragma mark - NodeVarDeclaration Implementation
 
 ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) :
     ast::Node(NodeType::kNodeTypeVariableDeclaration)
@@ -364,8 +355,6 @@ std::string ast::NodeVarDeclaration::GetVarName()
     return m_varName;
 }
 
-
-#pragma mark - NodeFuncDeclaration Implementation
 
 ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) :
     ast::Node(NodeType::kNodeTypeFunctionDeclaration)
@@ -405,8 +394,6 @@ std::vector<ast::FuncArg> ast::NodeFuncDeclaration::GetArguments()
 }
 
 
-#pragma mark - NodeIfStatement Implementation
-
 ast::NodeIfStatement::NodeIfStatement() : ast::Node(NodeType::kNodeTypeIfStatement)
 {
 
@@ -418,8 +405,6 @@ ast::NodeIfStatement::~NodeIfStatement()
     DeleteChildren();
 }
 
-
-#pragma mark - NodeForStatement Implementation
 
 ast::NodeForStatement::NodeForStatement() : ast::Node(NodeType::kNodeTypeForStatement)
 {
@@ -433,8 +418,6 @@ ast::NodeForStatement::~NodeForStatement()
 }
 
 
-#pragma mark - NodeFor Implementation
-
 ast::NodeFor::NodeFor(ast::NodeType nodeType) : Node(nodeType)
 {
 
@@ -446,8 +429,6 @@ ast::NodeFor::~NodeFor()
     DeleteChildren();
 }
 
-
-#pragma mark - NodeWhileStatement Implementation
 
 ast::NodeWhileStatement::NodeWhileStatement() : ast::Node(NodeType::kNodeTypeWhileStatement)
 {
@@ -461,8 +442,6 @@ ast::NodeWhileStatement::~NodeWhileStatement()
 }
 
 
-#pragma mark - NodeDoWhileStatement Implementation
-
 ast::NodeDoWhileStatement::NodeDoWhileStatement() : ast::Node(NodeType::kNodeTypeDoWhileStatement)
 {
 
@@ -474,8 +453,6 @@ ast::NodeDoWhileStatement::~NodeDoWhileStatement()
     DeleteChildren();
 }
 
-
-#pragma mark - NodeReturnStatement Implementation
 
 ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(NodeType::kNodeTypeReturnStatement)
 {
@@ -489,8 +466,6 @@ ast::NodeReturnStatement::~NodeReturnStatement()
 }
 
 
-#pragma mark - NodeContinue Implementation
-
 ast::NodeContinue::NodeContinue() : ast::Node(NodeType::kNodeTypeContinue)
 {
 
@@ -503,8 +478,6 @@ ast::NodeContinue::~NodeContinue()
 }
 
 
-#pragma mark - NodeBreak Implementation
-
 ast::NodeBreak::NodeBreak() : ast::Node(NodeType::kNodeTypeBreak)
 {
 
@@ -516,8 +489,6 @@ ast::NodeBreak::~NodeBreak()
     DeleteChildren();
 }
 
-
-#pragma mark - NodeFuncCall Implementation
 
 ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(NodeType::kNodeTypeFuncCall)
 {
@@ -535,8 +506,6 @@ std::string ast::NodeFuncCall::GetFuncName()
 }
 
 
-#pragma mark - NodeBlock Implementation
-
 ast::NodeBlock::NodeBlock()
 {
     m_nodeType = NodeType::kNodeTypeBlock;
@@ -550,8 +519,6 @@ ast::NodeBlock::~NodeBlock()
 }
 
 
-#pragma mark - NodeAssignment Implementation
-
 ast::NodeAssignment::NodeAssignment() : Node(NodeType::kNodeTypeAssignment)
 {
 
@@ -563,8 +530,6 @@ ast::NodeAssignment::~NodeAssignment()
     DeleteChildren();
 }
 
-
-#pragma mark - NodeExplicitTypeConversion Implementation
 
 ast::NodeExplicitTypeConversion::NodeExplicitTypeConversion(Type conversionType) :
     Node(NodeType::kNodeTypeExplicitTypeConversion),
@@ -586,8 +551,6 @@ ast::NodeExplicitTypeConversion::~NodeExplicitTypeConversion()
 }
 
 
-#pragma mark - NodeLogicalOP Implementation
-
 ast::NodeLogicalOP::NodeLogicalOP(ast::NodeType nodeType) : Node(nodeType)
 {
     assert(nodeType == ast::NodeType::kNodeTypeLogicalNotOP
@@ -602,8 +565,6 @@ ast::NodeLogicalOP::~NodeLogicalOP()
 }
 
 
-#pragma mark - NodeUnaryOP Implementation
-
 ast::NodeUnaryOP::NodeUnaryOP(NodeType nodeType) : Node(nodeType)
 {
     assert(nodeType == ast::NodeType::kNodeTypeUOPPlus
@@ -616,8 +577,6 @@ ast::NodeUnaryOP::~NodeUnaryOP()
     DeleteChildren();
 }
 
-
-#pragma mark - NodeCompOP Implementation
 
 ast::NodeCompOP::NodeCompOP(ast::NodeType nodeType) : ast::Node(nodeType)
 {
@@ -636,8 +595,6 @@ ast::NodeCompOP::~NodeCompOP()
 }
 
 
-#pragma mark - NodeAOP Implementation
-
 ast::NodeAOP::NodeAOP(ast::NodeType nodeType) : ast::Node(nodeType)
 {
     assert(nodeType == ast::NodeType::kNodeTypeAOPMul
@@ -653,8 +610,6 @@ ast::NodeAOP::~NodeAOP()
 }
 
 
-#pragma mark - NodePrefixAOP Implementation
-
 ast::NodePrefixAOP::NodePrefixAOP(ast::NodeType nodeType) : ast::Node(nodeType)
 {
     assert(nodeType == ast::NodeType::kNodeTypePrefixIncAOP
@@ -667,8 +622,6 @@ ast::NodePrefixAOP::~NodePrefixAOP()
     DeleteChildren();
 }
 
-
-#pragma mark - NodeLiteral Implementation
 
 ast::NodeLiteral::NodeLiteral(ast::NodeType nodeType, std::string value) :
     ast::Node(nodeType),
@@ -692,8 +645,6 @@ std::string ast::NodeLiteral::GetValue()
     return m_value;
 }
 
-
-#pragma mark - TypeToString Implementation
 
 std::string ast::TypeToString(Type type)
 {

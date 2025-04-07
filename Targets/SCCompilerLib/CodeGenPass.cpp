@@ -18,8 +18,6 @@
 using namespace scc;
 
 
-#pragma mark - SymbolProperty Implementations.
-
 SymbolProperty::SymbolProperty(llvm::Value * value) :
     m_value(value)
 {
@@ -32,8 +30,6 @@ llvm::Value * SymbolProperty::GetValue()
     return m_value;
 }
 
-
-#pragma mark - NodeBasicBlocks Implementations.
 
 NodeBasicBlocks::NodeBasicBlocks(ast::Node * node,
                 llvm::BasicBlock * conditionBasicBlock,
@@ -84,8 +80,6 @@ llvm::BasicBlock * NodeBasicBlocks::GetExitBasicBlock()
 }
 
 
-#pragma mark - NodeBasicBlocksStack Implementations.
-
 NodeBasicBlocksStack::~NodeBasicBlocksStack()
 {
     assert(m_nodeBBStack.empty() && "Stack size has to be zero.");
@@ -135,9 +129,6 @@ NodeBasicBlocks * NodeBasicBlocksStack::GetOneOfThese(const std::vector<ast::Nod
 
     return nullptr;
 }
-
-
-#pragma mark - CodeGenPass Implementations.
 
 
 CodeGenPass::~CodeGenPass()

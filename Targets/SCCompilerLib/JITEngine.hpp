@@ -37,8 +37,6 @@
 namespace scc
 {
 
-#pragma mark - Class JITEngine
-
 // Machine code execution engine.
 // NOTE: JITEngine must keep minimum data during its life cycle to minimize memory usage.
 class JITEngine final : public SCModule

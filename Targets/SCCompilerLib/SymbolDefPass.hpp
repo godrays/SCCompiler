@@ -27,8 +27,6 @@ namespace ast
 }
 
 
-#pragma mark - Class SymbolDefPass
-
 class  SymbolDefPass
 {
 public:

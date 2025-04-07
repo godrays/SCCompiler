@@ -17,8 +17,6 @@
 using namespace scc;
 
 
-#pragma mark - SemanticPass Implementations.
-
 void SemanticPass::SemanticCheck(ast::Node * node)
 {
     // Do symbol resolution, type checking, type promotion and validation.

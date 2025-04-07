@@ -17,8 +17,6 @@
 using namespace scc;
 
 
-#pragma mark - SymbolefPass Implementations.
-
 ScopeNode * SymbolDefPass::CreateScopeTree(ast::Node * node)
 {
     auto scopeTreeHead = new ScopeNode(ScopeCategory::kScopeCategoryGlobal, nullptr);

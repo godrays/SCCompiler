@@ -23,8 +23,6 @@
 using namespace antlr4;
 
 
-#pragma mark - Class ParserErrorListener.
-
 class ParserErrorListener : public antlr4::BaseErrorListener
 {
 public:
@@ -42,8 +40,6 @@ private:
     std::string  m_message;
 };
 
-
-#pragma mark - Compiler Implementations.
 
 scc::SCModule * scc::Compiler::CompileFromFile(std::string filename, scc::SCCompileResult & compileResult)
 {

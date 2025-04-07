@@ -14,8 +14,6 @@
 using namespace scc;
 
 
-#pragma mark - ASTVisualizer Implementations.
-
 Type ASTGenerator::ToASTType(const std::string & type)
 {
     if (type == "float")     return Type::kTypeFloat;

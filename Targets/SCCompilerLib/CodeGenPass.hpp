@@ -60,8 +60,6 @@ namespace ast
 class JITEngine;
 
 
-#pragma mark - Class SymbolProperty
-
 class SymbolProperty : public SymbolPropertyBase
 {
 public:
@@ -77,8 +75,6 @@ protected:
     llvm::Value *  m_value;
 };
 
-
-#pragma mark - Class NodeBasicBlocks
 
 class NodeBasicBlocks final
 {
@@ -123,8 +119,6 @@ protected:
 };
 
 
-#pragma mark - Class NodeBasicBlocksStack
-
 class NodeBasicBlocksStack final
 {
 public:
@@ -146,8 +140,6 @@ protected:
     std::vector<NodeBasicBlocks *>  m_nodeBBStack;
 };
 
-
-#pragma mark - Class CodeGenPass
 
 class  CodeGenPass
 {

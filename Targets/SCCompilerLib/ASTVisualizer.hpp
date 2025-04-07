@@ -23,8 +23,6 @@ namespace ast
 }
 
 
-#pragma mark - Class ASTVisualizer
-
 class  ASTVisualizer
 {
 public:

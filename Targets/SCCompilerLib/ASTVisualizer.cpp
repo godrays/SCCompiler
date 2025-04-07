@@ -15,8 +15,6 @@
 using namespace scc;
 
 
-#pragma mark - ASTVisualizer Implementations.
-
 void ASTVisualizer::GenerateDOTFile(ast::Node * node, const std::string & filename)
 {
     // Open dot file.

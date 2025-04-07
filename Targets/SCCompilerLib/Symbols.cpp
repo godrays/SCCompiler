@@ -13,8 +13,6 @@
 using namespace scc;
 
 
-#pragma mark - Symbol Implementations.
-
 Symbol::Symbol(std::string name, SymbolCategory category, Type type) :
     m_name(std::move(name)),
     m_category(category),
@@ -64,16 +62,12 @@ void Symbol::SetProperty(SymbolPropertyBase * property)
 }
 
 
-#pragma mark - Class BuiltInTypeSymbol
-
 BuiltInTypeSymbol::BuiltInTypeSymbol(std::string name) :
     Symbol(std::move(name), SymbolCategory::kSymbolCategoryType, Type::kTypeUnknown)
 {
 
 }
 
-
-#pragma mark - Class VariableSymbol
 
 VariableSymbol::VariableSymbol(std::string name, Type type) :
     Symbol(std::move(name), SymbolCategory::kSymbolCategoryVariable, type)
@@ -82,16 +76,12 @@ VariableSymbol::VariableSymbol(std::string name, Type type) :
 }
 
 
-#pragma mark - Class FuncArgSymbol
-
 FuncArgSymbol::FuncArgSymbol(std::string name, Type type) :
     Symbol(std::move(name), SymbolCategory::kSymbolCategoryFunctionArgument, type)
 {
 
 }
 
-
-#pragma mark - Class FunctionSymbol
 
 FunctionSymbol::FunctionSymbol(std::string name, Type type) :
     Symbol(std::move(name), SymbolCategory::kSymbolCategoryFunction, type)
@@ -116,8 +106,6 @@ FuncArgSymbol * FunctionSymbol::GetArgumentSymbol(size_t index)
     return m_argumentSymbols[index];
 }
 
-
-#pragma mark - ScopeNode Implementations.
 
 ScopeNode::ScopeNode(ScopeCategory category, ScopeNode * enclosingScope) :
     m_category(category),

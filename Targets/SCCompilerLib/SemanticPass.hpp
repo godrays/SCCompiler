@@ -41,8 +41,6 @@ namespace ast
 }
 
 
-#pragma mark - Class SemanticPass
-
 class  SemanticPass
 {
 public:

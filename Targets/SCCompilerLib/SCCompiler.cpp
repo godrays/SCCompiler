@@ -13,8 +13,6 @@
 using namespace scc;
 
 
-#pragma mark - SCCompiler Implementations.
-
 SCCompiler * SCCompiler::Create()
 {
     return new Compiler();

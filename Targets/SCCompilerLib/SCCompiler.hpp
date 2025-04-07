@@ -14,8 +14,6 @@
 namespace scc
 {
 
-#pragma mark - Enum SCCompileResult.
-
 enum class SCCompileResult
 {
     kSCCompileResultOk,
@@ -24,8 +22,6 @@ enum class SCCompileResult
     kSCCompileResultCompileError,
 };
 
-
-#pragma mark - Class SCCompiler.
 
 class SCCompiler
 {

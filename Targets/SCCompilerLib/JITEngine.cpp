@@ -21,8 +21,6 @@
 using namespace scc;
 
 
-#pragma mark - JITEngine Implementations
-
 JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
 {
     // Set up the host target and ensure that the target libraries are linked.

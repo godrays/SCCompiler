@@ -14,8 +14,6 @@
 namespace scc
 {
 
-#pragma mark - Class SCModule.
-
 class SCModule
 {
 public:
