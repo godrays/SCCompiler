@@ -58,7 +58,7 @@ int main()
 
     // Compile the source code from memory.
     const auto scModule = compiler->CompileFromMemory(sourceCode, compileResult);
-    if (scc::SCCompileResult::kSCCompileResultOk != compileResult)
+    if (scc::SCCompileResult::kOk != compileResult)
     {
         std::cerr << compiler->GetErrorMessage() << std::endl;
         return -1;

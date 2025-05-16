@@ -108,152 +108,152 @@ std::string ast::Node::getNodeTypeInString(ast::NodeType nodeType)
 
     switch (nodeType)
     {
-        case ast::NodeType::kNodeTypeProgram:
+        case ast::NodeType::kProgram:
             typeInString = "tNodeTypeProgram";
             break;
 
-        case ast::NodeType::kNodeTypeAOPAdd:
+        case ast::NodeType::kAOPAdd:
             typeInString = "tNodeTypeAOPAdd";
             break;
 
-        case ast::NodeType::kNodeTypeAOPDiv:
+        case ast::NodeType::kAOPDiv:
             typeInString = "tNodeTypeAOPDiv";
             break;
 
-        case ast::NodeType::kNodeTypeAOPMul:
+        case ast::NodeType::kAOPMul:
             typeInString = "tNodeTypeAOPMul";
             break;
 
-        case ast::NodeType::kNodeTypeAOPSub:
+        case ast::NodeType::kAOPSub:
             typeInString = "tNodeTypeAOPSub";
             break;
 
-        case ast::NodeType::kNodeTypeAssignment:
+        case ast::NodeType::kAssignment:
             typeInString = "tNodeTypeAssignment";
             break;
 
-        case ast::NodeType::kNodeTypeBlock:
+        case ast::NodeType::kBlock:
             typeInString = "tNodeTypeBlock";
             break;
 
-        case ast::NodeType::kNodeTypeFuncCall:
+        case ast::NodeType::kFuncCall:
             typeInString = "tNodeTypeFuncCall";
             break;
 
-        case ast::NodeType::kNodeTypeFunctionDeclaration:
+        case ast::NodeType::kFunctionDeclaration:
             typeInString = "tNodeTypeFunctionDeclaration";
             break;
 
-        case ast::NodeType::kNodeTypeIfStatement:
+        case ast::NodeType::kIfStatement:
             typeInString = "tNodeTypeIfStatement";
             break;
 
-        case ast::NodeType::kNodeTypeForStatement:
+        case ast::NodeType::kForStatement:
             typeInString = "tNodeTypeForStatement";
             break;
 
-        case ast::NodeType::kNodeTypeForVarDecl:
-            typeInString = "kNodeTypeForVarDecl";
+        case ast::NodeType::kForVarDecl:
+            typeInString = "kForVarDecl";
             break;
 
-        case ast::NodeType::kNodeTypeForCondition:
-            typeInString = "kNodeTypeForCondition";
+        case ast::NodeType::kForCondition:
+            typeInString = "kForCondition";
             break;
 
-        case ast::NodeType::kNodeTypeForIncrement:
-            typeInString = "kNodeTypeForIncrement";
+        case ast::NodeType::kForIncrement:
+            typeInString = "kForIncrement";
             break;
 
-        case ast::NodeType::kNodeTypeWhileStatement:
+        case ast::NodeType::kWhileStatement:
             typeInString = "tNodeTypeWhileStatement";
             break;
 
-        case ast::NodeType::kNodeTypeDoWhileStatement:
+        case ast::NodeType::kDoWhileStatement:
             typeInString = "tNodeTypeDoWhileStatement";
             break;
 
-        case ast::NodeType::kNodeTypeLiteralBool:
+        case ast::NodeType::kLiteralBool:
             typeInString = "tNodeTypeLiteralBool";
             break;
 
-        case ast::NodeType::kNodeTypeLiteralFloat:
+        case ast::NodeType::kLiteralFloat:
             typeInString = "tNodeTypeLiteralFloat";
             break;
 
-        case ast::NodeType::kNodeTypeLiteralID:
+        case ast::NodeType::kLiteralID:
             typeInString = "tNodeTypeLiteralID";
             break;
 
-        case ast::NodeType::kNodeTypeLiteralInt32:
+        case ast::NodeType::kLiteralInt32:
             typeInString = "tNodeTypeLiteralInt32";
             break;
 
-        case ast::NodeType::kNodeTypeReturnStatement:
+        case ast::NodeType::kReturnStatement:
             typeInString = "tNodeTypeReturnStatement";
             break;
 
-        case ast::NodeType::kNodeTypeContinue:
-            typeInString = "kNodeTypeContinue";
+        case ast::NodeType::kContinue:
+            typeInString = "kContinue";
             break;
 
-        case ast::NodeType::kNodeTypeBreak:
-            typeInString = "kNodeTypeBreak";
+        case ast::NodeType::kBreak:
+            typeInString = "kBreak";
             break;
 
-        case ast::NodeType::kNodeTypeUnknown:
+        case ast::NodeType::kUnknown:
             typeInString = "tNodeTypeReturnStatement";
             break;
 
-        case ast::NodeType::kNodeTypeVariableDeclaration:
+        case ast::NodeType::kVariableDeclaration:
             typeInString = "tNodeTypeVariableDeclaration";
             break;
 
-        case ast::NodeType::kNodeTypeExplicitTypeConversion:
-            typeInString = "kNodeTypeExplicitTypeConversion";
+        case ast::NodeType::kExplicitTypeConversion:
+            typeInString = "kExplicitTypeConversion";
             break;
 
-        case ast::NodeType::kNodeTypeLogicalNotOP:
-            typeInString = "kNodeTypeLogicalNotOP";
+        case ast::NodeType::kLogicalNotOP:
+            typeInString = "kLogicalNotOP";
             break;
 
-        case ast::NodeType::kNodeTypeLogicalAndOP:
-            typeInString = "kNodeTypeLogicalAndOP";
+        case ast::NodeType::kLogicalAndOP:
+            typeInString = "kLogicalAndOP";
             break;
 
-        case ast::NodeType::kNodeTypeLogicalOrOP:
-            typeInString = "kNodeTypeLogicalOrOP";
+        case ast::NodeType::kLogicalOrOP:
+            typeInString = "kLogicalOrOP";
             break;
 
-        case ast::NodeType::kNodeTypeUOPPlus:
-            typeInString = "kNodeTypeUOPPlus";
+        case ast::NodeType::kUOPPlus:
+            typeInString = "kUOPPlus";
             break;
 
-        case ast::NodeType::kNodeTypeUOPMinus:
-            typeInString = "kNodeTypeUOPMinus";
+        case ast::NodeType::kUOPMinus:
+            typeInString = "kUOPMinus";
             break;
 
-        case ast::NodeType::kNodeTypeCompOPEQ:
-            typeInString = "kNodeTypeCompOPEQ";
+        case ast::NodeType::kCompOPEQ:
+            typeInString = "kCompOPEQ";
             break;
 
-        case ast::NodeType::kNodeTypeCompOPNEQ:
-            typeInString = "kNodeTypeCompOPNEQ";
+        case ast::NodeType::kCompOPNEQ:
+            typeInString = "kCompOPNEQ";
             break;
 
-        case ast::NodeType::kNodeTypeCompOPLE:
-            typeInString = "kNodeTypeCompOPLE";
+        case ast::NodeType::kCompOPLE:
+            typeInString = "kCompOPLE";
             break;
 
-        case ast::NodeType::kNodeTypeCompOPGE:
-            typeInString = "kNodeTypeCompOPGE";
+        case ast::NodeType::kCompOPGE:
+            typeInString = "kCompOPGE";
             break;
 
-        case ast::NodeType::kNodeTypeCompOPL:
-            typeInString = "kNodeTypeCompOPL";
+        case ast::NodeType::kCompOPL:
+            typeInString = "kCompOPL";
             break;
 
-        case ast::NodeType::kNodeTypeCompOPG:
-            typeInString = "kNodeTypeCompOPG";
+        case ast::NodeType::kCompOPG:
+            typeInString = "kCompOPG";
             break;
 
         default:
@@ -320,7 +320,7 @@ ScopeNode * ast::Node::getScope()
 
 ast::NodeProgram::NodeProgram()
 {
-    m_nodeType = NodeType::kNodeTypeProgram;
+    m_nodeType = NodeType::kProgram;
 }
 
 
@@ -331,7 +331,7 @@ ast::NodeProgram::~NodeProgram()
 
 
 ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) :
-    ast::Node(NodeType::kNodeTypeVariableDeclaration)
+    ast::Node(NodeType::kVariableDeclaration)
 {
     m_varType = type;
     m_varName = std::move(varName);
@@ -357,7 +357,7 @@ std::string ast::NodeVarDeclaration::GetVarName()
 
 
 ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) :
-    ast::Node(NodeType::kNodeTypeFunctionDeclaration)
+    ast::Node(NodeType::kFunctionDeclaration)
 {
     m_returnType = returnType;
     m_funcName = std::move(funcName);
@@ -394,7 +394,7 @@ std::vector<ast::FuncArg> ast::NodeFuncDeclaration::GetArguments()
 }
 
 
-ast::NodeIfStatement::NodeIfStatement() : ast::Node(NodeType::kNodeTypeIfStatement)
+ast::NodeIfStatement::NodeIfStatement() : ast::Node(NodeType::kIfStatement)
 {
 
 }
@@ -406,7 +406,7 @@ ast::NodeIfStatement::~NodeIfStatement()
 }
 
 
-ast::NodeForStatement::NodeForStatement() : ast::Node(NodeType::kNodeTypeForStatement)
+ast::NodeForStatement::NodeForStatement() : ast::Node(NodeType::kForStatement)
 {
 
 }
@@ -430,7 +430,7 @@ ast::NodeFor::~NodeFor()
 }
 
 
-ast::NodeWhileStatement::NodeWhileStatement() : ast::Node(NodeType::kNodeTypeWhileStatement)
+ast::NodeWhileStatement::NodeWhileStatement() : ast::Node(NodeType::kWhileStatement)
 {
 
 }
@@ -442,7 +442,7 @@ ast::NodeWhileStatement::~NodeWhileStatement()
 }
 
 
-ast::NodeDoWhileStatement::NodeDoWhileStatement() : ast::Node(NodeType::kNodeTypeDoWhileStatement)
+ast::NodeDoWhileStatement::NodeDoWhileStatement() : ast::Node(NodeType::kDoWhileStatement)
 {
 
 }
@@ -454,7 +454,7 @@ ast::NodeDoWhileStatement::~NodeDoWhileStatement()
 }
 
 
-ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(NodeType::kNodeTypeReturnStatement)
+ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(NodeType::kReturnStatement)
 {
 
 }
@@ -466,7 +466,7 @@ ast::NodeReturnStatement::~NodeReturnStatement()
 }
 
 
-ast::NodeContinue::NodeContinue() : ast::Node(NodeType::kNodeTypeContinue)
+ast::NodeContinue::NodeContinue() : ast::Node(NodeType::kContinue)
 {
 
 }
@@ -478,7 +478,7 @@ ast::NodeContinue::~NodeContinue()
 }
 
 
-ast::NodeBreak::NodeBreak() : ast::Node(NodeType::kNodeTypeBreak)
+ast::NodeBreak::NodeBreak() : ast::Node(NodeType::kBreak)
 {
 
 }
@@ -490,7 +490,7 @@ ast::NodeBreak::~NodeBreak()
 }
 
 
-ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(NodeType::kNodeTypeFuncCall)
+ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(NodeType::kFuncCall)
 {
     m_funcName = std::move(funcName);
 }
@@ -508,7 +508,7 @@ std::string ast::NodeFuncCall::GetFuncName()
 
 ast::NodeBlock::NodeBlock()
 {
-    m_nodeType = NodeType::kNodeTypeBlock;
+    m_nodeType = NodeType::kBlock;
 }
 
 
@@ -519,7 +519,7 @@ ast::NodeBlock::~NodeBlock()
 }
 
 
-ast::NodeAssignment::NodeAssignment() : Node(NodeType::kNodeTypeAssignment)
+ast::NodeAssignment::NodeAssignment() : Node(NodeType::kAssignment)
 {
 
 }
@@ -532,7 +532,7 @@ ast::NodeAssignment::~NodeAssignment()
 
 
 ast::NodeExplicitTypeConversion::NodeExplicitTypeConversion(Type conversionType) :
-    Node(NodeType::kNodeTypeExplicitTypeConversion),
+    Node(NodeType::kExplicitTypeConversion),
     m_conversionType(conversionType)
 {
 
@@ -553,9 +553,9 @@ ast::NodeExplicitTypeConversion::~NodeExplicitTypeConversion()
 
 ast::NodeLogicalOP::NodeLogicalOP(ast::NodeType nodeType) : Node(nodeType)
 {
-    assert(nodeType == ast::NodeType::kNodeTypeLogicalNotOP
-        || nodeType == ast::NodeType::kNodeTypeLogicalAndOP
-        || nodeType == ast::NodeType::kNodeTypeLogicalOrOP);
+    assert(nodeType == ast::NodeType::kLogicalNotOP
+        || nodeType == ast::NodeType::kLogicalAndOP
+        || nodeType == ast::NodeType::kLogicalOrOP);
 }
 
 
@@ -567,8 +567,8 @@ ast::NodeLogicalOP::~NodeLogicalOP()
 
 ast::NodeUnaryOP::NodeUnaryOP(NodeType nodeType) : Node(nodeType)
 {
-    assert(nodeType == ast::NodeType::kNodeTypeUOPPlus
-        || nodeType == ast::NodeType::kNodeTypeUOPMinus);
+    assert(nodeType == ast::NodeType::kUOPPlus
+        || nodeType == ast::NodeType::kUOPMinus);
 }
 
 
@@ -580,12 +580,12 @@ ast::NodeUnaryOP::~NodeUnaryOP()
 
 ast::NodeCompOP::NodeCompOP(ast::NodeType nodeType) : ast::Node(nodeType)
 {
-    assert(nodeType == ast::NodeType::kNodeTypeCompOPEQ
-        || nodeType == ast::NodeType::kNodeTypeCompOPNEQ
-        || nodeType == ast::NodeType::kNodeTypeCompOPLE
-        || nodeType == ast::NodeType::kNodeTypeCompOPGE
-        || nodeType == ast::NodeType::kNodeTypeCompOPL
-        || nodeType == ast::NodeType::kNodeTypeCompOPG);
+    assert(nodeType == ast::NodeType::kCompOPEQ
+        || nodeType == ast::NodeType::kCompOPNEQ
+        || nodeType == ast::NodeType::kCompOPLE
+        || nodeType == ast::NodeType::kCompOPGE
+        || nodeType == ast::NodeType::kCompOPL
+        || nodeType == ast::NodeType::kCompOPG);
 }
 
 
@@ -597,10 +597,10 @@ ast::NodeCompOP::~NodeCompOP()
 
 ast::NodeAOP::NodeAOP(ast::NodeType nodeType) : ast::Node(nodeType)
 {
-    assert(nodeType == ast::NodeType::kNodeTypeAOPMul
-        || nodeType == ast::NodeType::kNodeTypeAOPDiv
-        || nodeType == ast::NodeType::kNodeTypeAOPAdd
-        || nodeType == ast::NodeType::kNodeTypeAOPSub);
+    assert(nodeType == ast::NodeType::kAOPMul
+        || nodeType == ast::NodeType::kAOPDiv
+        || nodeType == ast::NodeType::kAOPAdd
+        || nodeType == ast::NodeType::kAOPSub);
 }
 
 
@@ -612,8 +612,8 @@ ast::NodeAOP::~NodeAOP()
 
 ast::NodePrefixAOP::NodePrefixAOP(ast::NodeType nodeType) : ast::Node(nodeType)
 {
-    assert(nodeType == ast::NodeType::kNodeTypePrefixIncAOP
-        || nodeType == ast::NodeType::kNodeTypePrefixDecAOP);
+    assert(nodeType == ast::NodeType::kPrefixIncAOP
+        || nodeType == ast::NodeType::kPrefixDecAOP);
 }
 
 
@@ -627,10 +627,10 @@ ast::NodeLiteral::NodeLiteral(ast::NodeType nodeType, std::string value) :
     ast::Node(nodeType),
     m_value(std::move(value))
 {
-    assert(nodeType == ast::NodeType::kNodeTypeLiteralFloat
-        || nodeType == ast::NodeType::kNodeTypeLiteralInt32
-        || nodeType == ast::NodeType::kNodeTypeLiteralBool
-        || nodeType == ast::NodeType::kNodeTypeLiteralID);
+    assert(nodeType == ast::NodeType::kLiteralFloat
+        || nodeType == ast::NodeType::kLiteralInt32
+        || nodeType == ast::NodeType::kLiteralBool
+        || nodeType == ast::NodeType::kLiteralID);
 }
 
 

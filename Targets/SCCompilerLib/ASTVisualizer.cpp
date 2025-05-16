@@ -42,155 +42,155 @@ void ASTVisualizer::visit(ast::Node * node)
     // Output node-specific data to dot file.
     switch(node->getNodeType())
     {
-        case ast::NodeType::kNodeTypeProgram:
+        case ast::NodeType::kProgram:
             outputConfig(node, "[label = \"Program\"];");
             break;
     
-        case ast::NodeType::kNodeTypeVariableDeclaration:
+        case ast::NodeType::kVariableDeclaration:
             outputConfigVariableDecl(node);
             break;
 
-        case ast::NodeType::kNodeTypeFunctionDeclaration:
+        case ast::NodeType::kFunctionDeclaration:
             outputConfigFuncDecl(node);
             break;
 
-        case ast::NodeType::kNodeTypeBlock:
+        case ast::NodeType::kBlock:
             outputConfig(node, "[label = \"Block\"];");
             break;
 
-        case ast::NodeType::kNodeTypeIfStatement:
+        case ast::NodeType::kIfStatement:
             outputConfig(node, "[label = \"If\"];");
             break;
 
-        case ast::NodeType::kNodeTypeForStatement:
+        case ast::NodeType::kForStatement:
             outputConfig(node, "[label = \"For\"];");
             break;
 
-        case ast::NodeType::kNodeTypeForVarDecl:
+        case ast::NodeType::kForVarDecl:
             outputConfig(node, "[label = \"ForVarDecl\"];");
             break;
 
-        case ast::NodeType::kNodeTypeForCondition:
+        case ast::NodeType::kForCondition:
             outputConfig(node, "[label = \"ForCondition\"];");
             break;
 
-        case ast::NodeType::kNodeTypeForIncrement:
+        case ast::NodeType::kForIncrement:
             outputConfig(node, "[label = \"ForIncrement\"];");
             break;
 
-        case ast::NodeType::kNodeTypeWhileStatement:
+        case ast::NodeType::kWhileStatement:
             outputConfig(node, "[label = \"While\"];");
             break;
 
-        case ast::NodeType::kNodeTypeDoWhileStatement:
+        case ast::NodeType::kDoWhileStatement:
             outputConfig(node, "[label = \"Do While\"];");
             break;
 
-        case ast::NodeType::kNodeTypeReturnStatement:
+        case ast::NodeType::kReturnStatement:
             outputConfig(node, "[label = \"Func Return\"];");
             break;
 
-        case ast::NodeType::kNodeTypeContinue:
+        case ast::NodeType::kContinue:
             outputConfig(node, "[label = \"Continue\"];");
             break;
 
-        case ast::NodeType::kNodeTypeBreak:
+        case ast::NodeType::kBreak:
             outputConfig(node, "[label = \"Break\"];");
             break;
 
-        case ast::NodeType::kNodeTypeFuncCall:
+        case ast::NodeType::kFuncCall:
             outputConfig(node, "[label = \"Func Call: " + dynamic_cast<ast::NodeFuncCall*>(node)->GetFuncName() + "\"];");
             break;
 
-        case ast::NodeType::kNodeTypeAssignment:
+        case ast::NodeType::kAssignment:
             outputConfig(node, "[label = \"=\"];");
             break;
 
-        case ast::NodeType::kNodeTypeExplicitTypeConversion:
+        case ast::NodeType::kExplicitTypeConversion:
             outputConfig(node, "[label = \"ExplTypeConv To: " + ast::TypeToString(dynamic_cast<ast::NodeExplicitTypeConversion*>(node)->GetConversionType()) + "\"];");
             break;
 
-        case ast::NodeType::kNodeTypeLogicalNotOP:
+        case ast::NodeType::kLogicalNotOP:
             outputConfig(node, "[label = \"!\"];");
             break;
 
-        case ast::NodeType::kNodeTypeLogicalAndOP:
+        case ast::NodeType::kLogicalAndOP:
             outputConfig(node, "[label = \"&&\"];");
             break;
 
-        case ast::NodeType::kNodeTypeLogicalOrOP:
+        case ast::NodeType::kLogicalOrOP:
             outputConfig(node, "[label = \"||\"];");
             break;
 
-        case ast::NodeType::kNodeTypeUOPPlus:
+        case ast::NodeType::kUOPPlus:
             outputConfig(node, "[label = \"UnaryOP: +\"];");
             break;
 
-        case ast::NodeType::kNodeTypeUOPMinus:
+        case ast::NodeType::kUOPMinus:
             outputConfig(node, "[label = \"UnaryOP: -\"];");
             break;
 
-        case ast::NodeType::kNodeTypeCompOPEQ:
+        case ast::NodeType::kCompOPEQ:
             outputConfig(node, "[label = \"Cmp EQ\"];");
             break;
 
-        case ast::NodeType::kNodeTypeCompOPNEQ:
+        case ast::NodeType::kCompOPNEQ:
             outputConfig(node, "[label = \"Cmp NE\"];");
             break;
 
-        case ast::NodeType::kNodeTypeCompOPLE:
+        case ast::NodeType::kCompOPLE:
             outputConfig(node, "[label = \"Cmp LE\"];");
             break;
 
-        case ast::NodeType::kNodeTypeCompOPGE:
+        case ast::NodeType::kCompOPGE:
             outputConfig(node, "[label = \"Cmp GE\"];");
             break;
 
-        case ast::NodeType::kNodeTypeCompOPL:
+        case ast::NodeType::kCompOPL:
             outputConfig(node, "[label = \"Cmp LT\"];");
             break;
 
-        case ast::NodeType::kNodeTypeCompOPG:
+        case ast::NodeType::kCompOPG:
             outputConfig(node, "[label = \"Cmp GT\"];");
             break;
 
-        case ast::NodeType::kNodeTypePrefixIncAOP:
+        case ast::NodeType::kPrefixIncAOP:
             outputConfig(node, "[label = \"++\"];");
             break;
 
-        case ast::NodeType::kNodeTypePrefixDecAOP:
+        case ast::NodeType::kPrefixDecAOP:
             outputConfig(node, "[label = \"--\"];");
             break;
 
-        case ast::NodeType::kNodeTypeAOPMul:
+        case ast::NodeType::kAOPMul:
             outputConfig(node, "[label = \"*\"];");
             break;
 
-        case ast::NodeType::kNodeTypeAOPDiv:
+        case ast::NodeType::kAOPDiv:
             outputConfig(node, "[label = \"/\"];");
             break;
 
-        case ast::NodeType::kNodeTypeAOPAdd:
+        case ast::NodeType::kAOPAdd:
              outputConfig(node, "[label = \"+\"];");
             break;
 
-        case ast::NodeType::kNodeTypeAOPSub:
+        case ast::NodeType::kAOPSub:
             outputConfig(node, "[label = \"-\"];");
             break;
 
-        case ast::NodeType::kNodeTypeLiteralFloat:
+        case ast::NodeType::kLiteralFloat:
             outputConfig(node, "[label = \"Float: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
-        case ast::NodeType::kNodeTypeLiteralInt32:
+        case ast::NodeType::kLiteralInt32:
             outputConfig(node, "[label = \"Int: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
-        case ast::NodeType::kNodeTypeLiteralBool:
+        case ast::NodeType::kLiteralBool:
             outputConfig(node, "[label = \"Bool: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
-        case ast::NodeType::kNodeTypeLiteralID:
+        case ast::NodeType::kLiteralID:
             outputConfig(node, "[label = \"Variable: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 

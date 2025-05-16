@@ -19,7 +19,7 @@ using namespace scc;
 
 ScopeNode * SymbolDefPass::createScopeTree(ast::Node * node)
 {
-    auto scopeTreeHead = new ScopeNode(ScopeCategory::kScopeCategoryGlobal, nullptr);
+    auto scopeTreeHead = new ScopeNode(ScopeCategory::kGlobal, nullptr);
     m_currentScope = scopeTreeHead;
 
     // Add Built-In Types. They have no type definitions.
@@ -53,62 +53,62 @@ void SymbolDefPass::visit(ast::Node * node)
 
     switch(node->getNodeType())
     {
-        case ast::NodeType::kNodeTypeVariableDeclaration:
+        case ast::NodeType::kVariableDeclaration:
             visitVariableDeclaration(dynamic_cast<ast::NodeVarDeclaration *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeFunctionDeclaration:
+        case ast::NodeType::kFunctionDeclaration:
             visitFunctionDeclaration(dynamic_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeForStatement:
+        case ast::NodeType::kForStatement:
             visitForStatement(dynamic_cast<ast::NodeForStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeBlock:
+        case ast::NodeType::kBlock:
             visitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeFuncCall:
+        case ast::NodeType::kFuncCall:
             visitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeLiteralID:
+        case ast::NodeType::kLiteralID:
             visitLiteral(static_cast<ast::NodeLiteral *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeProgram:
-        case ast::NodeType::kNodeTypeReturnStatement:
-        case ast::NodeType::kNodeTypeContinue:
-        case ast::NodeType::kNodeTypeBreak:
-        case ast::NodeType::kNodeTypeAssignment:
-        case ast::NodeType::kNodeTypeIfStatement:
-        case ast::NodeType::kNodeTypeForVarDecl:
-        case ast::NodeType::kNodeTypeForCondition:
-        case ast::NodeType::kNodeTypeForIncrement:
-        case ast::NodeType::kNodeTypeWhileStatement:
-        case ast::NodeType::kNodeTypeDoWhileStatement:
-        case ast::NodeType::kNodeTypeExplicitTypeConversion:
-        case ast::NodeType::kNodeTypeLogicalNotOP:
-        case ast::NodeType::kNodeTypeLogicalAndOP:
-        case ast::NodeType::kNodeTypeLogicalOrOP:
-        case ast::NodeType::kNodeTypeUOPPlus:
-        case ast::NodeType::kNodeTypeUOPMinus:
-        case ast::NodeType::kNodeTypeCompOPEQ:
-        case ast::NodeType::kNodeTypeCompOPNEQ:
-        case ast::NodeType::kNodeTypeCompOPLE:
-        case ast::NodeType::kNodeTypeCompOPGE:
-        case ast::NodeType::kNodeTypeCompOPL:
-        case ast::NodeType::kNodeTypeCompOPG:
-        case ast::NodeType::kNodeTypePrefixIncAOP:
-        case ast::NodeType::kNodeTypePrefixDecAOP:
-        case ast::NodeType::kNodeTypeAOPMul:
-        case ast::NodeType::kNodeTypeAOPDiv:
-        case ast::NodeType::kNodeTypeAOPAdd:
-        case ast::NodeType::kNodeTypeAOPSub:
-        case ast::NodeType::kNodeTypeLiteralFloat:
-        case ast::NodeType::kNodeTypeLiteralInt32:
-        case ast::NodeType::kNodeTypeLiteralBool:
+        case ast::NodeType::kProgram:
+        case ast::NodeType::kReturnStatement:
+        case ast::NodeType::kContinue:
+        case ast::NodeType::kBreak:
+        case ast::NodeType::kAssignment:
+        case ast::NodeType::kIfStatement:
+        case ast::NodeType::kForVarDecl:
+        case ast::NodeType::kForCondition:
+        case ast::NodeType::kForIncrement:
+        case ast::NodeType::kWhileStatement:
+        case ast::NodeType::kDoWhileStatement:
+        case ast::NodeType::kExplicitTypeConversion:
+        case ast::NodeType::kLogicalNotOP:
+        case ast::NodeType::kLogicalAndOP:
+        case ast::NodeType::kLogicalOrOP:
+        case ast::NodeType::kUOPPlus:
+        case ast::NodeType::kUOPMinus:
+        case ast::NodeType::kCompOPEQ:
+        case ast::NodeType::kCompOPNEQ:
+        case ast::NodeType::kCompOPLE:
+        case ast::NodeType::kCompOPGE:
+        case ast::NodeType::kCompOPL:
+        case ast::NodeType::kCompOPG:
+        case ast::NodeType::kPrefixIncAOP:
+        case ast::NodeType::kPrefixDecAOP:
+        case ast::NodeType::kAOPMul:
+        case ast::NodeType::kAOPDiv:
+        case ast::NodeType::kAOPAdd:
+        case ast::NodeType::kAOPSub:
+        case ast::NodeType::kLiteralFloat:
+        case ast::NodeType::kLiteralInt32:
+        case ast::NodeType::kLiteralBool:
             visitChildren(node);
             break;
             
@@ -165,7 +165,7 @@ void SymbolDefPass::SymbolDefPass::visitFunctionDeclaration(ast::NodeFuncDeclara
 
     // CREATE A NEW SCOPE FOR THE FUNCTION
 
-    m_currentScope = new ScopeNode(ScopeCategory::kScopeCategoryFunction, m_currentScope);
+    m_currentScope = new ScopeNode(ScopeCategory::kFunction, m_currentScope);
 
     // Add function arguments to the function scope.
     auto arguments = node->GetArguments();
@@ -200,7 +200,7 @@ void SymbolDefPass::visitForStatement(ast::NodeForStatement * node)
 {
     // CREATE A NEW SCOPE FOR THE 'FOR' STATEMENT
 
-    m_currentScope = new ScopeNode(ScopeCategory::kScopeCategoryFor, m_currentScope);
+    m_currentScope = new ScopeNode(ScopeCategory::kFor, m_currentScope);
 
     // visit the children
     visitChildren(node);
@@ -214,7 +214,7 @@ void SymbolDefPass::visitForStatement(ast::NodeForStatement * node)
 void SymbolDefPass::SymbolDefPass::visitBlock(ast::NodeBlock * node)
 {
     // CREATE A NEW SCOPE FOR THE 'BLOCK'
-    m_currentScope = new ScopeNode(ScopeCategory::kScopeCategoryBlock, m_currentScope);
+    m_currentScope = new ScopeNode(ScopeCategory::kBlock, m_currentScope);
 
     // visit the children
     visitChildren(node);
@@ -241,13 +241,13 @@ void SymbolDefPass::visitLiteral(ast::NodeLiteral * node)
 {
     switch (node->getNodeType())
     {
-        case ast::NodeType::kNodeTypeLiteralFloat:
-        case ast::NodeType::kNodeTypeLiteralInt32:
-        case ast::NodeType::kNodeTypeLiteralBool:
+        case ast::NodeType::kLiteralFloat:
+        case ast::NodeType::kLiteralInt32:
+        case ast::NodeType::kLiteralBool:
             // Nothing to do with other literal types.
             break;
 
-        case ast::NodeType::kNodeTypeLiteralID:
+        case ast::NodeType::kLiteralID:
             {
                 // Rule: Resolve the variable name. It has to be defined before it is used.
                 auto scope = node->getScope();

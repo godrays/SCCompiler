@@ -40,7 +40,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
 
     SECTION("Should compile without an issue.")
     {
-        REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+        REQUIRE(compileResult == scc::SCCompileResult::kOk);
         REQUIRE(scModule != nullptr);
     }
     
@@ -169,7 +169,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
 
     SECTION("Should compile without an issue.")
     {
-        REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+        REQUIRE(compileResult == scc::SCCompileResult::kOk);
         REQUIRE(scModule != nullptr);
     }
 
@@ -250,7 +250,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
 
     SECTION("Should compile without an issue.")
     {
-        REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+        REQUIRE(compileResult == scc::SCCompileResult::kOk);
         REQUIRE(scModule != nullptr);
     }
 
@@ -339,7 +339,7 @@ TEST_CASE("CodeGenerationIfStatementTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    REQUIRE(compileResult == scc::SCCompileResult::kOk);
     REQUIRE(scModule != nullptr);
 
     using FuncIfTest1 = int (*)(bool);
@@ -379,7 +379,7 @@ TEST_CASE("CodeGenerationLogicalNotOPTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    REQUIRE(compileResult == scc::SCCompileResult::kOk);
     REQUIRE(scModule != nullptr);
 
     auto fmax = std::numeric_limits<float>::max();
@@ -432,7 +432,7 @@ TEST_CASE("CodeGenerationLogicalOPTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    REQUIRE(compileResult == scc::SCCompileResult::kOk);
     REQUIRE(scModule != nullptr);
 
     // AND Tests
@@ -492,7 +492,7 @@ TEST_CASE("CodeGenerationRecursiveCallTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    REQUIRE(compileResult == scc::SCCompileResult::kOk);
     REQUIRE(scModule != nullptr);
 
     // Recursive function call tests.
@@ -533,7 +533,7 @@ TEST_CASE("CodeGenerationForStatementTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    REQUIRE(compileResult == scc::SCCompileResult::kOk);
     REQUIRE(scModule != nullptr);
 
     using FuncTest1 = int (*)(int);
@@ -597,7 +597,7 @@ TEST_CASE("CodeGenerationWhileStatementTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    REQUIRE(compileResult == scc::SCCompileResult::kOk);
     REQUIRE(scModule != nullptr);
 
     using FuncTest1 = int (*)(int);
@@ -649,7 +649,7 @@ TEST_CASE("CodeGenerationDoWhileStatementTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    REQUIRE(compileResult == scc::SCCompileResult::kOk);
     REQUIRE(scModule != nullptr);
 
     using FuncTest1 = int (*)(int);
@@ -696,7 +696,7 @@ TEST_CASE("CodeGenerationPrefixAOPTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
+    REQUIRE(compileResult == scc::SCCompileResult::kOk);
     REQUIRE(scModule != nullptr);
 
     using FuncTest1 = int (*)(int);

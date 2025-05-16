@@ -26,11 +26,11 @@ class FuncArgSymbol;
 // Symbol category.
 enum class SymbolCategory
 {
-    kSymbolCategoryUnknown,
-    kSymbolCategoryType,
-    kSymbolCategoryVariable,
-    kSymbolCategoryFunction,
-    kSymbolCategoryFunctionArgument,
+    kUnknown,
+    kType,
+    kVariable,
+    kFunction,
+    kFunctionArgument,
 };
 
 
@@ -134,11 +134,11 @@ private:
 // Scope category.
 enum class ScopeCategory
 {
-    kScopeCategoryUnknown,
-    kScopeCategoryGlobal,
-    kScopeCategoryFunction,
-    kScopeCategoryFor,
-    kScopeCategoryBlock,
+    kUnknown,
+    kGlobal,
+    kFunction,
+    kFor,
+    kBlock,
 };
 
 

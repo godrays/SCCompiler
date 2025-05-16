@@ -16,10 +16,10 @@ namespace scc
 
 enum class SCCompileResult
 {
-    kSCCompileResultOk,
-    kSCCompileResultSyntaxError,
-    kSCCompileResultSemanticError,
-    kSCCompileResultCompileError,
+    kOk,
+    kSyntaxError,
+    kSemanticError,
+    kCompileError,
 };
 
 

@@ -172,113 +172,113 @@ llvm::Value * CodeGenPass::visit(ast::Node * node)
 {
     switch(node->getNodeType())
     {
-        case ast::NodeType::kNodeTypeProgram:
+        case ast::NodeType::kProgram:
             visitProgram(static_cast<ast::NodeProgram *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeVariableDeclaration:
+        case ast::NodeType::kVariableDeclaration:
             visitVariableDeclaration(static_cast<ast::NodeVarDeclaration *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeFunctionDeclaration:
+        case ast::NodeType::kFunctionDeclaration:
             visitFunctionDeclaration(static_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeBlock:
+        case ast::NodeType::kBlock:
             visitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeIfStatement:
+        case ast::NodeType::kIfStatement:
             visitIfStatement(static_cast<ast::NodeIfStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeForStatement:
+        case ast::NodeType::kForStatement:
             visitForStatement(static_cast<ast::NodeForStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeForVarDecl:
-        case ast::NodeType::kNodeTypeForIncrement:
+        case ast::NodeType::kForVarDecl:
+        case ast::NodeType::kForIncrement:
             visitChildren(node);
             break;
 
-        case ast::NodeType::kNodeTypeWhileStatement:
+        case ast::NodeType::kWhileStatement:
             visitWhileStatement(static_cast<ast::NodeWhileStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeDoWhileStatement:
+        case ast::NodeType::kDoWhileStatement:
             visitDoWhileStatement(static_cast<ast::NodeDoWhileStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeReturnStatement:
+        case ast::NodeType::kReturnStatement:
             visitReturnStatement(static_cast<ast::NodeReturnStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeContinue:
+        case ast::NodeType::kContinue:
             visitContinue(static_cast<ast::NodeContinue *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeBreak:
+        case ast::NodeType::kBreak:
             visitBreak(static_cast<ast::NodeBreak *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeFuncCall:
+        case ast::NodeType::kFuncCall:
             return visitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeAssignment:
+        case ast::NodeType::kAssignment:
             visitAssignment(static_cast<ast::NodeAssignment *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeExplicitTypeConversion:
+        case ast::NodeType::kExplicitTypeConversion:
             return visitExplicitTypeConversion(static_cast<ast::NodeExplicitTypeConversion *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeLogicalNotOP:
+        case ast::NodeType::kLogicalNotOP:
             return visitLogicalNotOP(static_cast<ast::NodeLogicalOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeLogicalAndOP:
+        case ast::NodeType::kLogicalAndOP:
             return visitLogicalAndOP(static_cast<ast::NodeLogicalOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeLogicalOrOP:
+        case ast::NodeType::kLogicalOrOP:
             return visitLogicalOrOP(static_cast<ast::NodeLogicalOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeUOPMinus:
-        case ast::NodeType::kNodeTypeUOPPlus:
+        case ast::NodeType::kUOPMinus:
+        case ast::NodeType::kUOPPlus:
             return visitNodeUnaryOP(static_cast<ast::NodeUnaryOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeCompOPEQ:
-        case ast::NodeType::kNodeTypeCompOPNEQ:
-        case ast::NodeType::kNodeTypeCompOPLE:
-        case ast::NodeType::kNodeTypeCompOPGE:
-        case ast::NodeType::kNodeTypeCompOPL:
-        case ast::NodeType::kNodeTypeCompOPG:
+        case ast::NodeType::kCompOPEQ:
+        case ast::NodeType::kCompOPNEQ:
+        case ast::NodeType::kCompOPLE:
+        case ast::NodeType::kCompOPGE:
+        case ast::NodeType::kCompOPL:
+        case ast::NodeType::kCompOPG:
             return visitCompOP(static_cast<ast::NodeCompOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypePrefixIncAOP:
-        case ast::NodeType::kNodeTypePrefixDecAOP:
+        case ast::NodeType::kPrefixIncAOP:
+        case ast::NodeType::kPrefixDecAOP:
             return visitPrefixAOP(static_cast<ast::NodePrefixAOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeAOPMul:
-        case ast::NodeType::kNodeTypeAOPDiv:
-        case ast::NodeType::kNodeTypeAOPAdd:
-        case ast::NodeType::kNodeTypeAOPSub:
+        case ast::NodeType::kAOPMul:
+        case ast::NodeType::kAOPDiv:
+        case ast::NodeType::kAOPAdd:
+        case ast::NodeType::kAOPSub:
             return visitAOP(static_cast<ast::NodeAOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeLiteralFloat:
-        case ast::NodeType::kNodeTypeLiteralInt32:
-        case ast::NodeType::kNodeTypeLiteralBool:
-        case ast::NodeType::kNodeTypeLiteralID:
+        case ast::NodeType::kLiteralFloat:
+        case ast::NodeType::kLiteralInt32:
+        case ast::NodeType::kLiteralBool:
+        case ast::NodeType::kLiteralID:
             return visitLiteral(static_cast<ast::NodeLiteral *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeForCondition:
+        case ast::NodeType::kForCondition:
             assert(false && "visitForStatement() must manage this node implicitly.");
             break;
 
@@ -304,7 +304,7 @@ void CodeGenPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
     assert(childCount < 2);
 
     // Create a global variable if the variable is in the global scope.
-    if (node->getScope()->getCategory() == ScopeCategory::kScopeCategoryGlobal)
+    if (node->getScope()->getCategory() == ScopeCategory::kGlobal)
     {
         auto globalVar = createGlobalVariable(varName, node->GetVarType());
         node->getScope()->resolveSymbol(varName)->setProperty(new SymbolProperty(globalVar));
@@ -684,19 +684,19 @@ void CodeGenPass::visitReturnStatement(ast::NodeReturnStatement * node)
 
 void CodeGenPass::visitContinue(ast::NodeContinue * node)
 {
-    auto nodeBasicBlocks = m_nodeBBStack.getOneOfThese({ast::NodeType::kNodeTypeForStatement,
-                                                        ast::NodeType::kNodeTypeWhileStatement,
-                                                        ast::NodeType::kNodeTypeDoWhileStatement});
+    auto nodeBasicBlocks = m_nodeBBStack.getOneOfThese({ast::NodeType::kForStatement,
+                                                        ast::NodeType::kWhileStatement,
+                                                        ast::NodeType::kDoWhileStatement});
     assert(nodeBasicBlocks);
     
     switch (nodeBasicBlocks->getNode()->getNodeType())
     {
-        case ast::NodeType::kNodeTypeForStatement:
+        case ast::NodeType::kForStatement:
             m_irBuilder->CreateBr(nodeBasicBlocks->getIncrementBasicBlock());
             break;
 
-        case ast::NodeType::kNodeTypeWhileStatement:
-        case ast::NodeType::kNodeTypeDoWhileStatement:
+        case ast::NodeType::kWhileStatement:
+        case ast::NodeType::kDoWhileStatement:
             m_irBuilder->CreateBr(nodeBasicBlocks->getConditionBasicBlock());
             break;
 
@@ -713,16 +713,16 @@ void CodeGenPass::visitContinue(ast::NodeContinue * node)
 
 void CodeGenPass::visitBreak(ast::NodeBreak * node)
 {
-    auto nodeBasicBlocks = m_nodeBBStack.getOneOfThese({ast::NodeType::kNodeTypeForStatement,
-                                                        ast::NodeType::kNodeTypeWhileStatement,
-                                                        ast::NodeType::kNodeTypeDoWhileStatement});
+    auto nodeBasicBlocks = m_nodeBBStack.getOneOfThese({ast::NodeType::kForStatement,
+                                                        ast::NodeType::kWhileStatement,
+                                                        ast::NodeType::kDoWhileStatement});
     assert(nodeBasicBlocks);
     
     switch (nodeBasicBlocks->getNode()->getNodeType())
     {
-        case ast::NodeType::kNodeTypeForStatement:
-        case ast::NodeType::kNodeTypeWhileStatement:
-        case ast::NodeType::kNodeTypeDoWhileStatement:
+        case ast::NodeType::kForStatement:
+        case ast::NodeType::kWhileStatement:
+        case ast::NodeType::kDoWhileStatement:
             m_irBuilder->CreateBr(nodeBasicBlocks->getExitBasicBlock());
             break;
 
@@ -957,7 +957,7 @@ llvm::Value * CodeGenPass::visitNodeUnaryOP(ast::NodeUnaryOP * node)
     llvm::Value * negatedValue{nullptr};
 
     // Nothing to do for '+' unary operation. Just return the expr value.
-    if (node->getNodeType() == ast::NodeType::kNodeTypeUOPPlus)
+    if (node->getNodeType() == ast::NodeType::kUOPPlus)
     {
         return exprValue;
     }
@@ -997,27 +997,27 @@ llvm::Value * CodeGenPass::visitCompOP(ast::NodeCompOP * node)
     {
         switch (node->getNodeType())
         {
-            case ast::NodeType::kNodeTypeCompOPEQ:
+            case ast::NodeType::kCompOPEQ:
                 resultValue = m_irBuilder->CreateFCmpOEQ(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPNEQ:
+            case ast::NodeType::kCompOPNEQ:
                 resultValue = m_irBuilder->CreateFCmpONE(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPLE:
+            case ast::NodeType::kCompOPLE:
                 resultValue = m_irBuilder->CreateFCmpOLE(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPGE:
+            case ast::NodeType::kCompOPGE:
                 resultValue = m_irBuilder->CreateFCmpOGE(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPL:
+            case ast::NodeType::kCompOPL:
                 resultValue = m_irBuilder->CreateFCmpOLT(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPG:
+            case ast::NodeType::kCompOPG:
                 resultValue = m_irBuilder->CreateFCmpOGT(leftOperandValue, rightOperandValue);
                 break;
 
@@ -1030,27 +1030,27 @@ llvm::Value * CodeGenPass::visitCompOP(ast::NodeCompOP * node)
     {
         switch (node->getNodeType())
         {
-            case ast::NodeType::kNodeTypeCompOPEQ:
+            case ast::NodeType::kCompOPEQ:
                 resultValue = m_irBuilder->CreateICmpEQ(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPNEQ:
+            case ast::NodeType::kCompOPNEQ:
                 resultValue = m_irBuilder->CreateICmpNE(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPLE:
+            case ast::NodeType::kCompOPLE:
                 resultValue = m_irBuilder->CreateICmpSLE(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPGE:
+            case ast::NodeType::kCompOPGE:
                 resultValue = m_irBuilder->CreateICmpSGE(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPL:
+            case ast::NodeType::kCompOPL:
                 resultValue = m_irBuilder->CreateICmpSLT(leftOperandValue, rightOperandValue);
                 break;
 
-            case ast::NodeType::kNodeTypeCompOPG:
+            case ast::NodeType::kCompOPG:
                 resultValue = m_irBuilder->CreateICmpSGT(leftOperandValue, rightOperandValue);
                 break;
 
@@ -1080,14 +1080,14 @@ llvm::Value * CodeGenPass::visitPrefixAOP(ast::NodePrefixAOP * node)
 
     switch (node->getNodeType())
     {
-        case ast::NodeType::kNodeTypePrefixIncAOP:
+        case ast::NodeType::kPrefixIncAOP:
             if (opTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFAdd(operandValue, createConstant(Type::kTypeFloat, "1.0"), "faddtmp");
             else
                 resultValue = m_irBuilder->CreateAdd(operandValue, createConstant(Type::kTypeInt, "1"), "addtmp");
             break;
 
-        case ast::NodeType::kNodeTypePrefixDecAOP:
+        case ast::NodeType::kPrefixDecAOP:
             if (opTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFSub(operandValue, createConstant(Type::kTypeFloat, "1.0"), "fsubtmp");
             else
@@ -1122,28 +1122,28 @@ llvm::Value * CodeGenPass::visitAOP(ast::NodeAOP * node)
 
     switch (node->getNodeType())
     {
-        case ast::NodeType::kNodeTypeAOPMul:
+        case ast::NodeType::kAOPMul:
             if (leftOpTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFMul(leftOperandValue, rightOperandValue, "fmultmp");
             else
                 resultValue = m_irBuilder->CreateMul(leftOperandValue, rightOperandValue, "multmp");
             break;
 
-        case ast::NodeType::kNodeTypeAOPDiv:
+        case ast::NodeType::kAOPDiv:
             if (leftOpTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFDiv(leftOperandValue, rightOperandValue, "fdivtmp");
             else
                 resultValue = m_irBuilder->CreateSDiv(leftOperandValue, rightOperandValue, "sdivtmp");
             break;
 
-        case ast::NodeType::kNodeTypeAOPAdd:
+        case ast::NodeType::kAOPAdd:
             if (leftOpTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFAdd(leftOperandValue, rightOperandValue, "faddtmp");
             else
                 resultValue = m_irBuilder->CreateAdd(leftOperandValue, rightOperandValue, "addtmp");
             break;
 
-        case ast::NodeType::kNodeTypeAOPSub:
+        case ast::NodeType::kAOPSub:
             if (leftOpTypeID == llvm::Type::FloatTyID)
                 resultValue = m_irBuilder->CreateFSub(leftOperandValue, rightOperandValue, "fsubtmp");
             else
@@ -1165,7 +1165,7 @@ llvm::Value * CodeGenPass::visitLiteral(ast::NodeLiteral * node)
     
     switch (node->getNodeType())
     {
-        case ast::NodeType::kNodeTypeLiteralFloat:
+        case ast::NodeType::kLiteralFloat:
             {
                 // We create a temp local variable and assign a constant value.
                 auto localVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeFloat), nullptr, "_ci");
@@ -1176,7 +1176,7 @@ llvm::Value * CodeGenPass::visitLiteral(ast::NodeLiteral * node)
             }
             break;
 
-        case ast::NodeType::kNodeTypeLiteralInt32:
+        case ast::NodeType::kLiteralInt32:
             {
                 // We create a temp local variable and assign a constant value.
                 auto localVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeInt), nullptr, "_cf");
@@ -1187,7 +1187,7 @@ llvm::Value * CodeGenPass::visitLiteral(ast::NodeLiteral * node)
             }
             break;
 
-        case ast::NodeType::kNodeTypeLiteralBool:
+        case ast::NodeType::kLiteralBool:
             {
                 // We create a temp local variable and assign a constant value.
                 auto localVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeBool), nullptr, "_cb");
@@ -1198,7 +1198,7 @@ llvm::Value * CodeGenPass::visitLiteral(ast::NodeLiteral * node)
             }
             break;
 
-        case ast::NodeType::kNodeTypeLiteralID:
+        case ast::NodeType::kLiteralID:
             {
                 // Returns the llvm value object of the variable, which is stored as a symbol property in the symbol object.
                 // The llvm object is referring to the variable pointer. It needs to be loaded to access the value of the variable.

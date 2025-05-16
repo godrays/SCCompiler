@@ -63,28 +63,28 @@ void Symbol::setProperty(SymbolPropertyBase * property)
 
 
 BuiltInTypeSymbol::BuiltInTypeSymbol(std::string name) :
-    Symbol(std::move(name), SymbolCategory::kSymbolCategoryType, Type::kTypeUnknown)
+    Symbol(std::move(name), SymbolCategory::kType, Type::kTypeUnknown)
 {
 
 }
 
 
 VariableSymbol::VariableSymbol(std::string name, Type type) :
-    Symbol(std::move(name), SymbolCategory::kSymbolCategoryVariable, type)
+    Symbol(std::move(name), SymbolCategory::kVariable, type)
 {
 
 }
 
 
 FuncArgSymbol::FuncArgSymbol(std::string name, Type type) :
-    Symbol(std::move(name), SymbolCategory::kSymbolCategoryFunctionArgument, type)
+    Symbol(std::move(name), SymbolCategory::kFunctionArgument, type)
 {
 
 }
 
 
 FunctionSymbol::FunctionSymbol(std::string name, Type type) :
-    Symbol(std::move(name), SymbolCategory::kSymbolCategoryFunction, type)
+    Symbol(std::move(name), SymbolCategory::kFunction, type)
 {
 
 }

@@ -45,105 +45,105 @@ Type SemanticPass::visit(ast::Node * node)
 {
     switch(node->getNodeType())
     {
-        case ast::NodeType::kNodeTypeProgram:
+        case ast::NodeType::kProgram:
             visitProgram(dynamic_cast<ast::NodeProgram *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeVariableDeclaration:
+        case ast::NodeType::kVariableDeclaration:
             visitVariableDeclaration(dynamic_cast<ast::NodeVarDeclaration *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeFunctionDeclaration:
+        case ast::NodeType::kFunctionDeclaration:
             visitFunctionDeclaration(dynamic_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeBlock:
+        case ast::NodeType::kBlock:
             visitBlock(dynamic_cast<ast::NodeBlock *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeIfStatement:
+        case ast::NodeType::kIfStatement:
             visitIfStatement(dynamic_cast<ast::NodeIfStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeForStatement:
+        case ast::NodeType::kForStatement:
             visitForStatement(dynamic_cast<ast::NodeForStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeForVarDecl:
-        case ast::NodeType::kNodeTypeForCondition:
-        case ast::NodeType::kNodeTypeForIncrement:
+        case ast::NodeType::kForVarDecl:
+        case ast::NodeType::kForCondition:
+        case ast::NodeType::kForIncrement:
             // These are just sub-statement / grouping nodes. Nothing to do with them.
             visitChildren(node);
             break;
 
-        case ast::NodeType::kNodeTypeWhileStatement:
+        case ast::NodeType::kWhileStatement:
             visitWhileStatement(dynamic_cast<ast::NodeWhileStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeDoWhileStatement:
+        case ast::NodeType::kDoWhileStatement:
             visitDoWhileStatement(dynamic_cast<ast::NodeDoWhileStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeReturnStatement:
+        case ast::NodeType::kReturnStatement:
             visitReturnStatement(dynamic_cast<ast::NodeReturnStatement *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeContinue:
+        case ast::NodeType::kContinue:
             visitContinue(dynamic_cast<ast::NodeContinue *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeBreak:
+        case ast::NodeType::kBreak:
             visitBreak(dynamic_cast<ast::NodeBreak *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeFuncCall:
+        case ast::NodeType::kFuncCall:
             return visitFunctionCall(dynamic_cast<ast::NodeFuncCall *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeAssignment:
+        case ast::NodeType::kAssignment:
             return visitAssignment(dynamic_cast<ast::NodeAssignment *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeExplicitTypeConversion:
+        case ast::NodeType::kExplicitTypeConversion:
             return visitExplicitTypeConversion(dynamic_cast<ast::NodeExplicitTypeConversion *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeLogicalNotOP:
-        case ast::NodeType::kNodeTypeLogicalAndOP:
-        case ast::NodeType::kNodeTypeLogicalOrOP:
+        case ast::NodeType::kLogicalNotOP:
+        case ast::NodeType::kLogicalAndOP:
+        case ast::NodeType::kLogicalOrOP:
             return visitLogicalOP(dynamic_cast<ast::NodeLogicalOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeCompOPEQ:
-        case ast::NodeType::kNodeTypeCompOPNEQ:
-        case ast::NodeType::kNodeTypeCompOPLE:
-        case ast::NodeType::kNodeTypeCompOPGE:
-        case ast::NodeType::kNodeTypeCompOPL:
-        case ast::NodeType::kNodeTypeCompOPG:
+        case ast::NodeType::kCompOPEQ:
+        case ast::NodeType::kCompOPNEQ:
+        case ast::NodeType::kCompOPLE:
+        case ast::NodeType::kCompOPGE:
+        case ast::NodeType::kCompOPL:
+        case ast::NodeType::kCompOPG:
             return visitCompOP(dynamic_cast<ast::NodeCompOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypePrefixIncAOP:
-        case ast::NodeType::kNodeTypePrefixDecAOP:
+        case ast::NodeType::kPrefixIncAOP:
+        case ast::NodeType::kPrefixDecAOP:
             return visitPrefixAOP(dynamic_cast<ast::NodePrefixAOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeAOPMul:
-        case ast::NodeType::kNodeTypeAOPDiv:
-        case ast::NodeType::kNodeTypeAOPAdd:
-        case ast::NodeType::kNodeTypeAOPSub:
+        case ast::NodeType::kAOPMul:
+        case ast::NodeType::kAOPDiv:
+        case ast::NodeType::kAOPAdd:
+        case ast::NodeType::kAOPSub:
             return visitAOP(dynamic_cast<ast::NodeAOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeUOPPlus:
-        case ast::NodeType::kNodeTypeUOPMinus:
+        case ast::NodeType::kUOPPlus:
+        case ast::NodeType::kUOPMinus:
             return visitNodeUnaryOP(dynamic_cast<ast::NodeUnaryOP *>(node));
             break;
 
-        case ast::NodeType::kNodeTypeLiteralFloat:
-        case ast::NodeType::kNodeTypeLiteralInt32:
-        case ast::NodeType::kNodeTypeLiteralBool:
-        case ast::NodeType::kNodeTypeLiteralID:
+        case ast::NodeType::kLiteralFloat:
+        case ast::NodeType::kLiteralInt32:
+        case ast::NodeType::kLiteralBool:
+        case ast::NodeType::kLiteralID:
             return visitLiteral(dynamic_cast<ast::NodeLiteral *>(node));
             break;
 
@@ -196,7 +196,7 @@ void SemanticPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     {
         // This search could be done faster by marking function declaration nodes when
         // visiting return statement nodes. AST nodes must be kept as simple as possible.
-        throw_if(node->findClosestChildNode(ast::NodeType::kNodeTypeReturnStatement) == nullptr,
+        throw_if(node->findClosestChildNode(ast::NodeType::kReturnStatement) == nullptr,
                  SemanticErrorException("Line: ", node->getSourceCodeLine(), " - ", node->GetFuncName(),
                                         " must have at least one return statement."));
     }
@@ -267,7 +267,7 @@ void SemanticPass::visitReturnStatement(ast::NodeReturnStatement * node)
     assert(node->childCount() < 2);
 
     // Find the belonging function declaration parent node.
-    auto funcDeclNode = dynamic_cast<ast::NodeFuncDeclaration *>(node->findClosestParentNode({ast::NodeType::kNodeTypeFunctionDeclaration}));
+    auto funcDeclNode = dynamic_cast<ast::NodeFuncDeclaration *>(node->findClosestParentNode({ast::NodeType::kFunctionDeclaration}));
     assert(funcDeclNode != nullptr);
 
     auto scope = funcDeclNode->getScope();
@@ -298,8 +298,8 @@ void SemanticPass::visitReturnStatement(ast::NodeReturnStatement * node)
 
 void SemanticPass::visitContinue(ast::NodeContinue * node)
 {
-    auto loopNode = node->findClosestParentNode({ast::NodeType::kNodeTypeForStatement,
-                                                 ast::NodeType::kNodeTypeWhileStatement});
+    auto loopNode = node->findClosestParentNode({ast::NodeType::kForStatement,
+                                                 ast::NodeType::kWhileStatement});
 
     throw_if(loopNode == nullptr,
              SemanticErrorException("Line: ", node->getSourceCodeLine(), " - The 'continue' statement is allowed only in loops."));
@@ -310,8 +310,8 @@ void SemanticPass::visitContinue(ast::NodeContinue * node)
 
 void SemanticPass::visitBreak(ast::NodeBreak * node)
 {
-    auto loopNode = node->findClosestParentNode({ast::NodeType::kNodeTypeForStatement,
-                                                 ast::NodeType::kNodeTypeWhileStatement});
+    auto loopNode = node->findClosestParentNode({ast::NodeType::kForStatement,
+                                                 ast::NodeType::kWhileStatement});
 
     throw_if(loopNode == nullptr,
              SemanticErrorException("Line: ", node->getSourceCodeLine(), " - The 'break' statement is allowed only in loops."));
@@ -381,7 +381,7 @@ Type SemanticPass::visitLogicalOP(ast::NodeLogicalOP * node)
     auto nodeType = node->getNodeType();
 
     // The Not Operator requires only a single expression, so it requires special treatment.
-    if (nodeType == ast::NodeType::kNodeTypeLogicalNotOP)
+    if (nodeType == ast::NodeType::kLogicalNotOP)
     {
         assert(node->childCount() == 1);
         return visit(node->getChild(0));
@@ -402,7 +402,7 @@ Type SemanticPass::visitPrefixAOP(ast::NodePrefixAOP * node)
 {
     auto rightOperandType = visit(node->getChild(0));
 
-    throw_if(node->getChild(0)->getNodeType() != ast::NodeType::kNodeTypeLiteralID,
+    throw_if(node->getChild(0)->getNodeType() != ast::NodeType::kLiteralID,
              SemanticErrorException("Line: ", node->getSourceCodeLine(), " - Prefix arithmetic operation is not allowed."));
 
     throw_if(rightOperandType != Type::kTypeFloat && rightOperandType != Type::kTypeInt,
@@ -435,19 +435,19 @@ Type SemanticPass::visitLiteral(ast::NodeLiteral * node)
 
     switch (node->getNodeType())
     {
-        case ast::NodeType::kNodeTypeLiteralFloat:
+        case ast::NodeType::kLiteralFloat:
             literalType = Type::kTypeFloat;
             break;
 
-        case ast::NodeType::kNodeTypeLiteralInt32:
+        case ast::NodeType::kLiteralInt32:
             literalType = Type::kTypeInt;
             break;
 
-        case ast::NodeType::kNodeTypeLiteralBool:
+        case ast::NodeType::kLiteralBool:
             literalType = Type::kTypeBool;
             break;
 
-        case ast::NodeType::kNodeTypeLiteralID:
+        case ast::NodeType::kLiteralID:
             {
                 // Rule: Resolve the variable name. It has to be defined before it's used.
                 auto scope = node->getScope();
