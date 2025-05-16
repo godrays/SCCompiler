@@ -41,14 +41,14 @@ private:
 };
 
 
-scc::SCModule * scc::Compiler::CompileFromFile(std::string filename, scc::SCCompileResult & compileResult)
+scc::SCModule * scc::Compiler::compileFromFile(std::string filename, scc::SCCompileResult & compileResult)
 {
     // Open test code source file.
     std::ifstream sourceCodeFile(filename);
 
     if (sourceCodeFile.is_open())
     {
-        auto scModule = Compile(sourceCodeFile, compileResult);
+        auto scModule = compile(sourceCodeFile, compileResult);
         sourceCodeFile.close();
         return scModule;
     }
@@ -59,15 +59,15 @@ scc::SCModule * scc::Compiler::CompileFromFile(std::string filename, scc::SCComp
 }
 
 
-scc::SCModule * scc::Compiler::CompileFromMemory(std::string sourceCode, scc::SCCompileResult & compileResult)
+scc::SCModule * scc::Compiler::compileFromMemory(std::string sourceCode, scc::SCCompileResult & compileResult)
 {
     std::istringstream sourceStream(sourceCode);
     
-    return Compile(sourceStream, compileResult);
+    return compile(sourceStream, compileResult);
 }
 
 
-scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompileResult & compileResult)
+scc::SCModule * scc::Compiler::compile(std::istream & sourceStream, scc::SCCompileResult & compileResult)
 {
     // Error listener for the parser.
     ParserErrorListener  parserErrorListener;
@@ -107,7 +107,7 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
         // Generate an AST from the Parse Tree.
         ASTGenerator astGenVisitor;
         astGenVisitor.visit(parseTree);
-        auto ast = astGenVisitor.GetAST();
+        auto ast = astGenVisitor.getAST();
 
         // DEBUG ONLY -----------------
         // Generate a Graphviz DOT file to visualize the AST.
@@ -118,7 +118,7 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
         // PASS: Create a scope tree and define symbols by visiting AST nodes.
         //       After this pass, each AST node and symbol will have access to its related scope node (symbol table).
         SymbolDefPass  symDefPass{};
-        auto scopeTree = symDefPass.CreateScopeTree(ast);
+        auto scopeTree = symDefPass.createScopeTree(ast);
 
         // PASS: Perform semantic analysis by visiting AST nodes.
         //       Semantic analysis: Resolving Symbols, Type checking, Type Promotion, Semantic Validation.
@@ -127,12 +127,12 @@ scc::SCModule * scc::Compiler::Compile(std::istream & sourceStream, scc::SCCompi
 
         // PASS: Perform code generation by visiting AST nodes and create a program execution module: SCModule.
         CodeGenPass codeGenerationPass;
-        scModule = codeGenerationPass.GenerateCode(ast);
+        scModule = codeGenerationPass.generateCode(ast);
 
         // Initialize global variables.
         if (scModule)
         {
-            scModule->Reset();
+            scModule->reset();
         }
 
         delete scopeTree;

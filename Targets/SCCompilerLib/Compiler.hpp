@@ -21,17 +21,17 @@ class Compiler : public SCCompiler
 public:
 
     // Compiles Simple C Source code from file.
-    SCModule * CompileFromFile(std::string filename, SCCompileResult & compileResult) final;
+    SCModule * compileFromFile(std::string filename, SCCompileResult & compileResult) final;
 
     // Compiles Simple C Source code from memory.
-    SCModule * CompileFromMemory(std::string sourceCode, SCCompileResult & compileResult) final;
+    SCModule * compileFromMemory(std::string sourceCode, SCCompileResult & compileResult) final;
 
     // Returns compile error message.
-    std::string GetErrorMessage() final  { return m_errorMessage; }
+    std::string getErrorMessage() final  { return m_errorMessage; }
 
 protected:
     // Compiles Simple C Source code.
-    SCModule * Compile(std::istream & sourceStream, SCCompileResult & compileResult);
+    SCModule * compile(std::istream & sourceStream, SCCompileResult & compileResult);
 
 private:
     std::string     m_errorMessage;

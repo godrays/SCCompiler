@@ -24,37 +24,37 @@ Symbol::Symbol(std::string name, SymbolCategory category, Type type) :
 }
 
 
-std::string Symbol::GetName() const
+std::string Symbol::getName() const
 {
     return m_name;
 }
 
 
-Type Symbol::GetType() const
+Type Symbol::getType() const
 {
     return m_type;
 }
 
 
-void Symbol::SetScope(ScopeNode * scopeNode)
+void Symbol::setScope(ScopeNode * scopeNode)
 {
     m_scopeNode = scopeNode;
 }
 
 
-SymbolCategory Symbol::GetCategory()
+SymbolCategory Symbol::getCategory()
 {
     return m_category;
 }
 
 
-SymbolPropertyBase * Symbol::GetProperty()
+SymbolPropertyBase * Symbol::getProperty()
 {
     return m_property;
 }
 
 
-void Symbol::SetProperty(SymbolPropertyBase * property)
+void Symbol::setProperty(SymbolPropertyBase * property)
 {
     // Can't assign new property without deleting the previous one.
     assert(m_property == nullptr);
@@ -89,19 +89,19 @@ FunctionSymbol::FunctionSymbol(std::string name, Type type) :
 
 }
 
-void FunctionSymbol::AddArgumentSymbol(FuncArgSymbol * argSymbol)
+void FunctionSymbol::addArgumentSymbol(FuncArgSymbol * argSymbol)
 {
     m_argumentSymbols.emplace_back(argSymbol);
 }
 
 
-size_t FunctionSymbol::ArgumentCount()
+size_t FunctionSymbol::argumentCount()
 {
     return m_argumentSymbols.size();
 }
 
 
-FuncArgSymbol * FunctionSymbol::GetArgumentSymbol(size_t index)
+FuncArgSymbol * FunctionSymbol::getArgumentSymbol(size_t index)
 {
     return m_argumentSymbols[index];
 }
@@ -118,7 +118,7 @@ ScopeNode::ScopeNode(ScopeCategory category, ScopeNode * enclosingScope) :
 
     if (enclosingScope != nullptr)
     {
-        enclosingScope->AddChild(this);
+        enclosingScope->addChild(this);
     }
 }
 
@@ -129,7 +129,7 @@ ScopeNode::~ScopeNode()
     for (auto pair : m_symbolTable)
     {
         // Has table pair.first = key, pair.second = symbol
-        delete pair.second->GetProperty();
+        delete pair.second->getProperty();
         delete pair.second;
     }
 
@@ -146,33 +146,33 @@ ScopeNode::~ScopeNode()
 }
 
 
-ScopeCategory ScopeNode::GetCategory()
+ScopeCategory ScopeNode::getCategory()
 {
     return m_category;
 }
 
 
-bool ScopeNode::IsDefined(const std::string & symbolName)
+bool ScopeNode::isDefined(const std::string & symbolName)
 {
     // Return true if the symbol exists. Otherwise, false.
     return  m_symbolTable.find(symbolName) != m_symbolTable.end();
 }
 
 
-void  ScopeNode::InsertSymbol(Symbol *  symbol)
+void  ScopeNode::insertSymbol(Symbol *  symbol)
 {
     // No duplicate symbol is allowed. The program should check before adding a new symbol.
-    assert(m_symbolTable.find(symbol->GetName()) == m_symbolTable.end());
+    assert(m_symbolTable.find(symbol->getName()) == m_symbolTable.end());
 
     // Add the symbol to the symbol table. We are basically defining a new symbol in this scope.
-    m_symbolTable[symbol->GetName()] = symbol;
+    m_symbolTable[symbol->getName()] = symbol;
 
     // Set the scope for the symbol. Each symbol should know which scope they are in.
-    symbol->SetScope(this);
+    symbol->setScope(this);
 }
 
 
-Symbol *  ScopeNode::ResolveSymbol(const std::string & symbolName)
+Symbol *  ScopeNode::resolveSymbol(const std::string & symbolName)
 {
     // Check if the symbol is available in the symbol table.
     auto pair = m_symbolTable.find(symbolName);
@@ -186,20 +186,20 @@ Symbol *  ScopeNode::ResolveSymbol(const std::string & symbolName)
     // If it can't be found in this scope, then check the enclosing scopes.
     if ( m_enclosingScope != nullptr )
     {
-        return m_enclosingScope->ResolveSymbol(symbolName);
+        return m_enclosingScope->resolveSymbol(symbolName);
     }
 
     // Not found.
     return nullptr;
 }
 
-void ScopeNode::AddChild(ScopeNode * childNode)
+void ScopeNode::addChild(ScopeNode * childNode)
 {
     m_children.emplace_back(childNode);
 }
 
 
-ScopeNode *  ScopeNode::GetEnclosingScope()
+ScopeNode *  ScopeNode::getEnclosingScope()
 {
     return m_enclosingScope;
 }

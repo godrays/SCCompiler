@@ -24,7 +24,7 @@ Type TypeChecker::m_typePromotionTable[kTypeMax][kTypeMax] =
 };
 
 
-Type TypeChecker::Promote(Type type1, Type type2)
+Type TypeChecker::promote(Type type1, Type type2)
 {
     assert(type1 < kTypeMax && type2 < kTypeMax);
 

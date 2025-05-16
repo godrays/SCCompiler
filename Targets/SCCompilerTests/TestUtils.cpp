@@ -12,18 +12,18 @@
 #include <utility>
 
 
-bool TestCode(std::string sourceCode, scc::SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult)
+bool testCode(std::string sourceCode, scc::SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult)
 {
     scc::Compiler compiler;
     scc::SCCompileResult compileResult;
 
-    auto scModule = compiler.CompileFromMemory(std::move(sourceCode), compileResult);
+    auto scModule = compiler.compileFromMemory(std::move(sourceCode), compileResult);
 
     // Assert if compiler result is not expected.
     if ((acceptExpectedCompileResult && (compileResult != expectedCompileResult)) ||
         (!acceptExpectedCompileResult && (compileResult == expectedCompileResult)))
     {
-        std::cerr << compiler.GetErrorMessage() << std::endl;
+        std::cerr << compiler.getErrorMessage() << std::endl;
         return false;
     }
 

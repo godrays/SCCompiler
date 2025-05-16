@@ -22,7 +22,7 @@ namespace ast
     class Node;
 }
 
-class  ASTGenerator final : public SCCompilerBaseVisitor
+class ASTGenerator final : public SCCompilerBaseVisitor
 {
 public:
     // Constructor.
@@ -32,9 +32,9 @@ public:
     ~ASTGenerator() final = default;
 
     // Return AST Node.
-    ast::Node *   GetAST()    { return m_rootNode; }
+    ast::Node *   getAST()    { return m_rootNode; }
 
-    static Type  ToASTType(const std::string&);
+    static Type   toASTType(const std::string&);
 
     antlrcpp::Any  visitProgram(SCCompilerParser::ProgramContext *ctx) final;
 
@@ -87,7 +87,7 @@ public:
     antlrcpp::Any  visitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *ctx) final;
 
 protected:
-    void  PushNodeToStack(ast::Node* node);
+    void  pushNodeToStack(ast::Node* node);
 
     ast::Node *   m_rootNode{nullptr};
     std::stack<ast::Node *>  m_currentNodeStack;

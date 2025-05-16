@@ -21,10 +21,10 @@ public:
     virtual ~SCModule() = 0;
 
     // Returns a pointer of a function.
-    virtual void * GetFunctionPtr(std::string name) = 0;
+    virtual void * getFunctionPtr(std::string name) = 0;
 
     // Reset and initialize global variables.
-    virtual void Reset() = 0;
+    virtual void reset() = 0;
 };
 
 }

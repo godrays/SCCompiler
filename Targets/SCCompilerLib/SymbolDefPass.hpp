@@ -34,26 +34,26 @@ public:
     SymbolDefPass() = default;
 
     // Creates a scope tree and defines symbols based on the AST nodes.
-    ScopeNode * CreateScopeTree(ast::Node * node);
+    ScopeNode * createScopeTree(ast::Node * node);
 
 private:
     // Visits nodes to create scopes and define symbols.
-    void Visit(ast::Node * node);
+    void visit(ast::Node * node);
 
     // Visits node's children.
-    void VisitChildren(ast::Node * node);
+    void visitChildren(ast::Node * node);
 
-    void VisitVariableDeclaration(ast::NodeVarDeclaration * node);
+    void visitVariableDeclaration(ast::NodeVarDeclaration * node);
 
-    void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
+    void visitFunctionDeclaration(ast::NodeFuncDeclaration * node);
 
-    void VisitForStatement(ast::NodeForStatement * node);
+    void visitForStatement(ast::NodeForStatement * node);
 
-    void VisitBlock(ast::NodeBlock * node);
+    void visitBlock(ast::NodeBlock * node);
 
-    void VisitFunctionCall(ast::NodeFuncCall * node);
+    void visitFunctionCall(ast::NodeFuncCall * node);
 
-    void VisitLiteral(ast::NodeLiteral * node);
+    void visitLiteral(ast::NodeLiteral * node);
 
 private:
     // Stores the current scope.

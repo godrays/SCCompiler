@@ -36,7 +36,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     int   BoolToInt(bool b)      { return int(b);   }
     float BoolToFloat(bool b)    { return float(b); }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     SECTION("Should compile without an issue.")
     {
@@ -49,7 +49,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     SECTION("FLOAT to BOOL conversions")
     {
         using FuncFloatToBool = bool (*)(float);
-        auto FloatToBool = reinterpret_cast<FuncFloatToBool>(scModule->GetFunctionPtr("FloatToBool"));
+        auto FloatToBool = reinterpret_cast<FuncFloatToBool>(scModule->getFunctionPtr("FloatToBool"));
 
         REQUIRE(FloatToBool(0.0f) == false);
         REQUIRE(FloatToBool(1.0f) == true);
@@ -61,7 +61,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     SECTION("FLOAT to INT conversions")
     {
         using FuncFloatToInt = int (*)(float);
-        auto FloatToInt = reinterpret_cast<FuncFloatToInt>(scModule->GetFunctionPtr("FloatToInt"));
+        auto FloatToInt = reinterpret_cast<FuncFloatToInt>(scModule->getFunctionPtr("FloatToInt"));
 
         REQUIRE(FloatToInt(0.0f) == 0);
         REQUIRE(FloatToInt(1.5f) == 1);
@@ -74,7 +74,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     SECTION("FLOAT to FLOAT conversions")
     {
         using FuncFloatToFloat = float (*)(float);
-        auto FloatToFloat = reinterpret_cast<FuncFloatToFloat>(scModule->GetFunctionPtr("FloatToFloat"));
+        auto FloatToFloat = reinterpret_cast<FuncFloatToFloat>(scModule->getFunctionPtr("FloatToFloat"));
 
         REQUIRE(FloatToFloat(0.0f) == 0.0f);
         REQUIRE(FloatToFloat(1.5f) == 1.5f);
@@ -88,7 +88,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     SECTION("INT to BOOL conversions")
     {
         using FuncIntToBool = bool (*)(int);
-        auto IntToBool = reinterpret_cast<FuncIntToBool>(scModule->GetFunctionPtr("IntToBool"));
+        auto IntToBool = reinterpret_cast<FuncIntToBool>(scModule->getFunctionPtr("IntToBool"));
 
         REQUIRE(IntToBool(0) == false);
         REQUIRE(IntToBool(1) == true);
@@ -100,7 +100,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     SECTION("INT to INT conversions")
     {
         using FuncIntToInt = int (*)(int);
-        auto IntToInt = reinterpret_cast<FuncIntToInt>(scModule->GetFunctionPtr("IntToInt"));
+        auto IntToInt = reinterpret_cast<FuncIntToInt>(scModule->getFunctionPtr("IntToInt"));
 
         REQUIRE(IntToInt(0) == 0);
         REQUIRE(IntToInt(1) == 1);
@@ -112,7 +112,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     SECTION("INT to FLOAT conversions")
     {
         using FuncIntToFloat = float (*)(int);
-        auto IntToFloat = reinterpret_cast<FuncIntToFloat>(scModule->GetFunctionPtr("IntToFloat"));
+        auto IntToFloat = reinterpret_cast<FuncIntToFloat>(scModule->getFunctionPtr("IntToFloat"));
 
         REQUIRE(IntToFloat(0) == 0.0f);
         REQUIRE(IntToFloat(1) == 1.0f);
@@ -126,7 +126,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     SECTION("BOOL to BOOL conversions")
     {
         using FuncBoolToBool = bool (*)(bool);
-        auto BoolToBool = reinterpret_cast<FuncBoolToBool>(scModule->GetFunctionPtr("BoolToBool"));
+        auto BoolToBool = reinterpret_cast<FuncBoolToBool>(scModule->getFunctionPtr("BoolToBool"));
 
         REQUIRE(BoolToBool(false) == false);
         REQUIRE(BoolToBool(true) == true);
@@ -135,7 +135,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     SECTION("BOOL to INT conversions")
     {
         using FuncBoolToInt = int (*)(bool);
-        auto BoolToInt = reinterpret_cast<FuncBoolToInt>(scModule->GetFunctionPtr("BoolToInt"));
+        auto BoolToInt = reinterpret_cast<FuncBoolToInt>(scModule->getFunctionPtr("BoolToInt"));
 
         REQUIRE(BoolToInt(false) == 0);
         REQUIRE(BoolToInt(true) == 1);
@@ -144,7 +144,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     SECTION("BOOL to FLOAT conversions")
     {
         using FuncBoolToFloat = float (*)(bool);
-        auto BoolToFloat = reinterpret_cast<FuncBoolToFloat>(scModule->GetFunctionPtr("BoolToFloat"));
+        auto BoolToFloat = reinterpret_cast<FuncBoolToFloat>(scModule->getFunctionPtr("BoolToFloat"));
 
         REQUIRE(BoolToFloat(false) == 0.0f);
         REQUIRE(BoolToFloat(true) == 1.0f);
@@ -165,7 +165,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
     int   NegInt(int i)     { return -i; }
     int   PosInt(int i)     { return +i; }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     SECTION("Should compile without an issue.")
     {
@@ -178,7 +178,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
     SECTION("Negative Float")
     {
         using FuncNegFloat = float (*)(float);
-        auto NegFloat = reinterpret_cast<FuncNegFloat>(scModule->GetFunctionPtr("NegFloat"));
+        auto NegFloat = reinterpret_cast<FuncNegFloat>(scModule->getFunctionPtr("NegFloat"));
 
         REQUIRE(NegFloat(0.0f) == 0.0f);
         REQUIRE(NegFloat(-1.123456f) == 1.123456f);
@@ -190,7 +190,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
     SECTION("Positive Float")
     {
         using FuncPosFloat = float (*)(float);
-        auto PosFloat = reinterpret_cast<FuncPosFloat>(scModule->GetFunctionPtr("PosFloat"));
+        auto PosFloat = reinterpret_cast<FuncPosFloat>(scModule->getFunctionPtr("PosFloat"));
 
         REQUIRE(PosFloat(0.0f) == 0.0f);
         REQUIRE(PosFloat(1.123456f) == 1.123456f);
@@ -206,7 +206,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
     SECTION("Negative Integer")
     {
         using FuncNegInt = int (*)(int);
-        auto NegInt = reinterpret_cast<FuncNegInt>(scModule->GetFunctionPtr("NegInt"));
+        auto NegInt = reinterpret_cast<FuncNegInt>(scModule->getFunctionPtr("NegInt"));
 
         REQUIRE(NegInt(0.0f) == 0.0f);
         REQUIRE(NegInt(-1) == 1);
@@ -218,7 +218,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
     SECTION("Positive Integer")
     {
         using FuncPosInt = int (*)(int);
-        auto PosInt = reinterpret_cast<FuncPosInt>(scModule->GetFunctionPtr("PosInt"));
+        auto PosInt = reinterpret_cast<FuncPosInt>(scModule->getFunctionPtr("PosInt"));
 
         REQUIRE(PosInt(0.0f) == 0.0f);
         REQUIRE(PosInt(1) == 1);
@@ -246,7 +246,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
     bool FloatCmpL(float a, float b)   { return a < b;   }
     bool FloatCmpG(float a, float b)   { return a > b;   }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     SECTION("Should compile without an issue.")
     {
@@ -260,7 +260,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
     // FLOAT
     using FuncFloatCmp = bool (*)(float, float);
 
-    auto FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpEQ"));
+    auto FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->getFunctionPtr("FloatCmpEQ"));
     REQUIRE(FloatCmp(0.0f, 0.0f) == true);
     REQUIRE(FloatCmp(-0.0f, 0.0f) == true);
     REQUIRE(FloatCmp(1.12f, 1.12f) == true);
@@ -269,7 +269,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
     REQUIRE(FloatCmp(fmax, fmax) == true);
     REQUIRE(FloatCmp(fmin, fmin) == true);
 
-    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpNEQ"));
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->getFunctionPtr("FloatCmpNEQ"));
     REQUIRE(FloatCmp(0.0f, 0.0f) == false);
     REQUIRE(FloatCmp(-0.0f, 0.0f) == false);
     REQUIRE(FloatCmp(1.12f, 1.12f) == false);
@@ -278,7 +278,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
     REQUIRE(FloatCmp(fmax, fmax) == false);
     REQUIRE(FloatCmp(fmin, fmin) == false);
 
-    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpLE"));
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->getFunctionPtr("FloatCmpLE"));
     REQUIRE(FloatCmp(0.0f, 0.0f) == true);
     REQUIRE(FloatCmp(-0.0f, 0.0f) == true);
     REQUIRE(FloatCmp(1.12f, 1.12f) == true);
@@ -289,7 +289,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
     REQUIRE(FloatCmp(fmax, fmin) == false);
     REQUIRE(FloatCmp(fmin, fmin) == true);
 
-    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpGE"));
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->getFunctionPtr("FloatCmpGE"));
     REQUIRE(FloatCmp(0.0f, 0.0f) == true);
     REQUIRE(FloatCmp(-0.0f, 0.0f) == true);
     REQUIRE(FloatCmp(1.12f, 1.12f) == true);
@@ -300,7 +300,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
     REQUIRE(FloatCmp(fmax, fmin) == true);
     REQUIRE(FloatCmp(fmin, fmin) == true);
 
-    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpL"));
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->getFunctionPtr("FloatCmpL"));
     REQUIRE(FloatCmp(0.0f, 0.0f) == false);
     REQUIRE(FloatCmp(-0.0f, 0.0f) == false);
     REQUIRE(FloatCmp(1.12f, 1.12f) == false);
@@ -311,7 +311,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
     REQUIRE(FloatCmp(fmax, fmin) == false);
     REQUIRE(FloatCmp(fmin, fmin) == false);
 
-    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->GetFunctionPtr("FloatCmpG"));
+    FloatCmp = reinterpret_cast<FuncFloatCmp>(scModule->getFunctionPtr("FloatCmpG"));
     REQUIRE(FloatCmp(0.0f, 0.0f) == false);
     REQUIRE(FloatCmp(-0.0f, 0.0f) == false);
     REQUIRE(FloatCmp(1.12f, 1.12f) == false);
@@ -337,29 +337,29 @@ TEST_CASE("CodeGenerationIfStatementTests", "[CodeGenerationTests]")
     int IfTest3(bool b1) { int a=-1; if (b1) { } else { } return a; }
     int IfTest4(bool b1) { int a=-1; if (b1) { a=1; } else { a=2; } return a; }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
     REQUIRE(scModule != nullptr);
 
     using FuncIfTest1 = int (*)(bool);
-    auto IfTest1 = reinterpret_cast<FuncIfTest1>(scModule->GetFunctionPtr("IfTest1"));
+    auto IfTest1 = reinterpret_cast<FuncIfTest1>(scModule->getFunctionPtr("IfTest1"));
     REQUIRE(IfTest1(true)  == 1);
     REQUIRE(IfTest1(false) == -1);
 
     using FuncIfTest2 = int (*)(bool, bool);
-    auto IfTest2 = reinterpret_cast<FuncIfTest2>(scModule->GetFunctionPtr("IfTest2"));
+    auto IfTest2 = reinterpret_cast<FuncIfTest2>(scModule->getFunctionPtr("IfTest2"));
     REQUIRE(IfTest2(true, false)  == 1);
     REQUIRE(IfTest2(false, true)  == 2);
     REQUIRE(IfTest2(false, false) == 3);
 
     using FuncIfTest3 = int (*)(bool);
-    auto IfTest3 = reinterpret_cast<FuncIfTest3>(scModule->GetFunctionPtr("IfTest3"));
+    auto IfTest3 = reinterpret_cast<FuncIfTest3>(scModule->getFunctionPtr("IfTest3"));
     REQUIRE(IfTest3(true) == -1);
     REQUIRE(IfTest3(true) == -1);
 
     using FuncIfTest4 = int (*)(bool);
-    auto IfTest4 = reinterpret_cast<FuncIfTest4>(scModule->GetFunctionPtr("IfTest4"));
+    auto IfTest4 = reinterpret_cast<FuncIfTest4>(scModule->getFunctionPtr("IfTest4"));
     REQUIRE(IfTest4(true) == 1);
     REQUIRE(IfTest4(false) == 2);
 
@@ -377,7 +377,7 @@ TEST_CASE("CodeGenerationLogicalNotOPTests", "[CodeGenerationTests]")
     bool IntNot(int i)     { return bool(!i); }
     bool BoolNot(bool b)   { return !b;       }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
     REQUIRE(scModule != nullptr);
@@ -390,7 +390,7 @@ TEST_CASE("CodeGenerationLogicalNotOPTests", "[CodeGenerationTests]")
 
     // Float Logical Not Tests
     using FuncFloatNot = bool (*)(float);
-    auto FloatNot = reinterpret_cast<FuncFloatNot>(scModule->GetFunctionPtr("FloatNot"));
+    auto FloatNot = reinterpret_cast<FuncFloatNot>(scModule->getFunctionPtr("FloatNot"));
     REQUIRE(FloatNot(0.0f) == !bool(0.0f));
     REQUIRE(FloatNot(-0.0f) == !bool(-0.0f));
     REQUIRE(FloatNot(1.12f) == !bool(1.12f));
@@ -400,7 +400,7 @@ TEST_CASE("CodeGenerationLogicalNotOPTests", "[CodeGenerationTests]")
     
     // Integer Logical Not Tests
     using FuncIntNot = bool (*)(int);
-    auto IntNot = reinterpret_cast<FuncIntNot>(scModule->GetFunctionPtr("IntNot"));
+    auto IntNot = reinterpret_cast<FuncIntNot>(scModule->getFunctionPtr("IntNot"));
     REQUIRE(IntNot(0) == bool(!0));
     REQUIRE(IntNot(-0) == bool(!-0));
     REQUIRE(IntNot(1) == bool(!1));
@@ -410,7 +410,7 @@ TEST_CASE("CodeGenerationLogicalNotOPTests", "[CodeGenerationTests]")
 
     // Bool Logical Not Tests
     using FuncBoolNot = bool (*)(bool);
-    auto BoolNot = reinterpret_cast<FuncBoolNot>(scModule->GetFunctionPtr("BoolNot"));
+    auto BoolNot = reinterpret_cast<FuncBoolNot>(scModule->getFunctionPtr("BoolNot"));
     REQUIRE(BoolNot(true) == false);
     REQUIRE(BoolNot(false) == true);
 
@@ -430,21 +430,21 @@ TEST_CASE("CodeGenerationLogicalOPTests", "[CodeGenerationTests]")
     bool OrTest2(bool a, bool b, bool c)             { return a || b || c;      }
     bool AndOrTest1(bool a, bool b, bool c, bool d)  { return a && b || c && d; }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
     REQUIRE(scModule != nullptr);
 
     // AND Tests
     using FuncAndTest1 = bool (*)(bool, bool);
-    auto AndTest1 = reinterpret_cast<FuncAndTest1>(scModule->GetFunctionPtr("AndTest1"));
+    auto AndTest1 = reinterpret_cast<FuncAndTest1>(scModule->getFunctionPtr("AndTest1"));
     REQUIRE(AndTest1(true, true) == true);
     REQUIRE(AndTest1(true, false) == false);
     REQUIRE(AndTest1(false, true) == false);
     REQUIRE(AndTest1(false, false) == false);
 
     using FuncAndTest2 = bool (*)(bool, bool, bool);
-    auto AndTest2 = reinterpret_cast<FuncAndTest2>(scModule->GetFunctionPtr("AndTest2"));
+    auto AndTest2 = reinterpret_cast<FuncAndTest2>(scModule->getFunctionPtr("AndTest2"));
     REQUIRE(AndTest2(true, true, true) == true);
     REQUIRE(AndTest2(true, true, false) == false);
     REQUIRE(AndTest2(true, false, true) == false);
@@ -453,14 +453,14 @@ TEST_CASE("CodeGenerationLogicalOPTests", "[CodeGenerationTests]")
 
     // OR Tests
     using FuncOrTest1 = bool (*)(bool, bool);
-    auto OrTest1 = reinterpret_cast<FuncOrTest1>(scModule->GetFunctionPtr("OrTest1"));
+    auto OrTest1 = reinterpret_cast<FuncOrTest1>(scModule->getFunctionPtr("OrTest1"));
     REQUIRE(OrTest1(true, true) == true);
     REQUIRE(OrTest1(true, false) == true);
     REQUIRE(OrTest1(false, true) == true);
     REQUIRE(OrTest1(false, false) == false);
 
     using FuncOrTest2 = bool (*)(bool, bool, bool);
-    auto OrTest2 = reinterpret_cast<FuncOrTest2>(scModule->GetFunctionPtr("OrTest2"));
+    auto OrTest2 = reinterpret_cast<FuncOrTest2>(scModule->getFunctionPtr("OrTest2"));
     REQUIRE(OrTest2(true, true, true) == true);
     REQUIRE(OrTest2(true, true, false) == true);
     REQUIRE(OrTest2(false, true, false) == true);
@@ -468,7 +468,7 @@ TEST_CASE("CodeGenerationLogicalOPTests", "[CodeGenerationTests]")
     REQUIRE(OrTest2(false, false, false) == false);
 
     using FuncAndOrTest1 = bool (*)(bool, bool, bool, bool);
-    auto AndOrTest1 = reinterpret_cast<FuncAndOrTest1>(scModule->GetFunctionPtr("AndOrTest1"));
+    auto AndOrTest1 = reinterpret_cast<FuncAndOrTest1>(scModule->getFunctionPtr("AndOrTest1"));
     REQUIRE(AndOrTest1(false, false, true, true) == true);
     REQUIRE(AndOrTest1(false, false, false, false) == false);
 
@@ -490,24 +490,24 @@ TEST_CASE("CodeGenerationRecursiveCallTests", "[CodeGenerationTests]")
     void RecursiveCall(int i) { if (i > 0) { RecursiveCall(i - 1); counter = counter + 1; } }
     int Fibonacci(int n)      { if (n == 0) return n; else if (n == 1) return n; return Fibonacci(n-1) + Fibonacci(n-2); }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
     REQUIRE(scModule != nullptr);
 
     // Recursive function call tests.
     using FuncRecursiveCall = void (*)(int);
-    auto RecursiveCall = reinterpret_cast<FuncRecursiveCall>(scModule->GetFunctionPtr("RecursiveCall"));
+    auto RecursiveCall = reinterpret_cast<FuncRecursiveCall>(scModule->getFunctionPtr("RecursiveCall"));
 
     using FuncGetCounter = int (*)();
-    auto GetCounter = reinterpret_cast<FuncGetCounter>(scModule->GetFunctionPtr("GetCounter"));
+    auto GetCounter = reinterpret_cast<FuncGetCounter>(scModule->getFunctionPtr("GetCounter"));
 
     int callCount= 10;
     RecursiveCall(callCount);
     REQUIRE(GetCounter() == callCount);
 
     using FuncFibonacci = int (*)(int);
-    auto Fibonacci = reinterpret_cast<FuncFibonacci>(scModule->GetFunctionPtr("Fibonacci"));
+    auto Fibonacci = reinterpret_cast<FuncFibonacci>(scModule->getFunctionPtr("Fibonacci"));
     REQUIRE(Fibonacci(10) == 55);
 
     delete scModule;
@@ -531,50 +531,50 @@ TEST_CASE("CodeGenerationForStatementTests", "[CodeGenerationTests]")
     int Test9(int a)   { for (int i=0; i<5; i=i+1) { a=i; if (i==2){ break; } a=-1; } return a; }
     int Test10(int a)  { for (int i=0; i<5; i=i+1) { a=i; for (int j=0; j<5; j=j+1) { break; a=-1; } } return a; }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
     REQUIRE(scModule != nullptr);
 
     using FuncTest1 = int (*)(int);
-    auto Test1 = reinterpret_cast<FuncTest1>(scModule->GetFunctionPtr("Test1"));
+    auto Test1 = reinterpret_cast<FuncTest1>(scModule->getFunctionPtr("Test1"));
     REQUIRE(Test1(5) == 4);
 
     using FuncTest2 = int (*)(int);
-    auto Test2 = reinterpret_cast<FuncTest2>(scModule->GetFunctionPtr("Test2"));
+    auto Test2 = reinterpret_cast<FuncTest2>(scModule->getFunctionPtr("Test2"));
     REQUIRE(Test2(5) == 5);
 
     using FuncTest3 = int (*)(int, bool);
-    auto Test3 = reinterpret_cast<FuncTest3>(scModule->GetFunctionPtr("Test3"));
+    auto Test3 = reinterpret_cast<FuncTest3>(scModule->getFunctionPtr("Test3"));
     REQUIRE(Test3(5, false) == 5);
     REQUIRE(Test3(5, true) == 6);
 
     using FuncTest4 = int (*)(int);
-    auto Test4 = reinterpret_cast<FuncTest4>(scModule->GetFunctionPtr("Test4"));
+    auto Test4 = reinterpret_cast<FuncTest4>(scModule->getFunctionPtr("Test4"));
     REQUIRE(Test4(5) == 4);
 
     using FuncTest5 = int (*)(int, bool);
-    auto Test5 = reinterpret_cast<FuncTest5>(scModule->GetFunctionPtr("Test5"));
+    auto Test5 = reinterpret_cast<FuncTest5>(scModule->getFunctionPtr("Test5"));
     REQUIRE(Test5(5, false) == 5);
 
     using FuncTest6 = int (*)(int);
-    auto Test6 = reinterpret_cast<FuncTest6>(scModule->GetFunctionPtr("Test6"));
+    auto Test6 = reinterpret_cast<FuncTest6>(scModule->getFunctionPtr("Test6"));
     REQUIRE(Test6(5) == 4);
 
     using FuncTest7 = int (*)(int);
-    auto Test7 = reinterpret_cast<FuncTest7>(scModule->GetFunctionPtr("Test7"));
+    auto Test7 = reinterpret_cast<FuncTest7>(scModule->getFunctionPtr("Test7"));
     REQUIRE(Test7(5) == 4);
 
     using FuncTest8 = int (*)(int);
-    auto Test8 = reinterpret_cast<FuncTest8>(scModule->GetFunctionPtr("Test8"));
+    auto Test8 = reinterpret_cast<FuncTest8>(scModule->getFunctionPtr("Test8"));
     REQUIRE(Test8(5) == 0);
 
     using FuncTest9 = int (*)(int);
-    auto Test9 = reinterpret_cast<FuncTest9>(scModule->GetFunctionPtr("Test9"));
+    auto Test9 = reinterpret_cast<FuncTest9>(scModule->getFunctionPtr("Test9"));
     REQUIRE(Test9(5) == 2);
 
     using FuncTest10 = int (*)(int);
-    auto Test10 = reinterpret_cast<FuncTest10>(scModule->GetFunctionPtr("Test10"));
+    auto Test10 = reinterpret_cast<FuncTest10>(scModule->getFunctionPtr("Test10"));
     REQUIRE(Test10(5) == 4);
 
     delete scModule;
@@ -595,38 +595,38 @@ TEST_CASE("CodeGenerationWhileStatementTests", "[CodeGenerationTests]")
     int Test9(int a)   { int i=0; while (i<5) { a=i; if (i==2){ break; } a=-1; i=i+1; } return a; }
     int _Test_10_(int a)  { int i=0; while (i<5) { a=i; i=i+1; int j=0; while(j<5) { j=j+1; break; a=-1; } } return a; }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
     REQUIRE(scModule != nullptr);
 
     using FuncTest1 = int (*)(int);
-    auto Test1 = reinterpret_cast<FuncTest1>(scModule->GetFunctionPtr("Test1"));
+    auto Test1 = reinterpret_cast<FuncTest1>(scModule->getFunctionPtr("Test1"));
     REQUIRE(Test1(5) == 4);
 
     using FuncTest3 = int (*)(int, bool);
-    auto Test3 = reinterpret_cast<FuncTest3>(scModule->GetFunctionPtr("Test3"));
+    auto Test3 = reinterpret_cast<FuncTest3>(scModule->getFunctionPtr("Test3"));
     REQUIRE(Test3(5, false) == 5);
     REQUIRE(Test3(5, true) == 6);
 
     using FuncTest6 = int (*)(int);
-    auto Test6 = reinterpret_cast<FuncTest6>(scModule->GetFunctionPtr("Test6"));
+    auto Test6 = reinterpret_cast<FuncTest6>(scModule->getFunctionPtr("Test6"));
     REQUIRE(Test6(5) == 4);
 
     using FuncTest7 = int (*)(int);
-    auto Test7 = reinterpret_cast<FuncTest7>(scModule->GetFunctionPtr("Test7"));
+    auto Test7 = reinterpret_cast<FuncTest7>(scModule->getFunctionPtr("Test7"));
     REQUIRE(Test7(5) == 4);
 
     using FuncTest8 = int (*)(int);
-    auto Test8 = reinterpret_cast<FuncTest8>(scModule->GetFunctionPtr("Test8"));
+    auto Test8 = reinterpret_cast<FuncTest8>(scModule->getFunctionPtr("Test8"));
     REQUIRE(Test8(5) == 0);
 
     using FuncTest9 = int (*)(int);
-    auto Test9 = reinterpret_cast<FuncTest9>(scModule->GetFunctionPtr("Test9"));
+    auto Test9 = reinterpret_cast<FuncTest9>(scModule->getFunctionPtr("Test9"));
     REQUIRE(Test9(5) == 2);
 
     using FuncTest10 = int (*)(int);
-    auto Test10 = reinterpret_cast<FuncTest10>(scModule->GetFunctionPtr("_Test_10_"));
+    auto Test10 = reinterpret_cast<FuncTest10>(scModule->getFunctionPtr("_Test_10_"));
     REQUIRE(Test10(5) == 4);
 
     delete scModule;
@@ -647,38 +647,38 @@ TEST_CASE("CodeGenerationDoWhileStatementTests", "[CodeGenerationTests]")
     int Test6(int a)   { int i=0; do { a=i; if (i==2){ break; } a=-1; i=i+1; } while (i<5); return a; }
     int Test7(int a)   { int i=0; do { a=i; i=i+1; int j=0; do { j=j+1; break; a=-1; } while (j<5); } while (i<5); return a; }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
     REQUIRE(scModule != nullptr);
 
     using FuncTest1 = int (*)(int);
-    auto Test1 = reinterpret_cast<FuncTest1>(scModule->GetFunctionPtr("Test1"));
+    auto Test1 = reinterpret_cast<FuncTest1>(scModule->getFunctionPtr("Test1"));
     REQUIRE(Test1(5) == 4);
 
     using FuncTest2 = int (*)(int, bool);
-    auto Test2 = reinterpret_cast<FuncTest2>(scModule->GetFunctionPtr("Test2"));
+    auto Test2 = reinterpret_cast<FuncTest2>(scModule->getFunctionPtr("Test2"));
     REQUIRE(Test2(5, false) == 6);
     REQUIRE(Test2(5, true) == 6);
 
     using FuncTest3 = int (*)(int);
-    auto Test3 = reinterpret_cast<FuncTest3>(scModule->GetFunctionPtr("Test3"));
+    auto Test3 = reinterpret_cast<FuncTest3>(scModule->getFunctionPtr("Test3"));
     REQUIRE(Test3(5) == 4);
 
     using FuncTest4 = int (*)(int);
-    auto Test4 = reinterpret_cast<FuncTest4>(scModule->GetFunctionPtr("Test4"));
+    auto Test4 = reinterpret_cast<FuncTest4>(scModule->getFunctionPtr("Test4"));
     REQUIRE(Test4(5) == 4);
 
     using FuncTest5 = int (*)(int);
-    auto Test5 = reinterpret_cast<FuncTest5>(scModule->GetFunctionPtr("Test5"));
+    auto Test5 = reinterpret_cast<FuncTest5>(scModule->getFunctionPtr("Test5"));
     REQUIRE(Test5(5) == 0);
 
     using FuncTest6 = int (*)(int);
-    auto Test6 = reinterpret_cast<FuncTest6>(scModule->GetFunctionPtr("Test6"));
+    auto Test6 = reinterpret_cast<FuncTest6>(scModule->getFunctionPtr("Test6"));
     REQUIRE(Test6(5) == 2);
 
     using FuncTest7 = int (*)(int);
-    auto Test7 = reinterpret_cast<FuncTest7>(scModule->GetFunctionPtr("Test7"));
+    auto Test7 = reinterpret_cast<FuncTest7>(scModule->getFunctionPtr("Test7"));
     REQUIRE(Test7(5) == 4);
 
     delete scModule;
@@ -694,18 +694,18 @@ TEST_CASE("CodeGenerationPrefixAOPTests", "[CodeGenerationTests]")
     int Test1(int a)  { return ++a; }
     int Test2(int a)  { return --a; }
     )";
-    auto scModule = compiler.CompileFromMemory(testCode, compileResult);
+    auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
     REQUIRE(compileResult == scc::SCCompileResult::kSCCompileResultOk);
     REQUIRE(scModule != nullptr);
 
     using FuncTest1 = int (*)(int);
-    auto Test1 = reinterpret_cast<FuncTest1>(scModule->GetFunctionPtr("Test1"));
+    auto Test1 = reinterpret_cast<FuncTest1>(scModule->getFunctionPtr("Test1"));
     REQUIRE(Test1(5) == 6);
     REQUIRE(Test1(-5) == -4);
 
     using FuncTest2 = int (*)(int);
-    auto Test2 = reinterpret_cast<FuncTest2>(scModule->GetFunctionPtr("Test2"));
+    auto Test2 = reinterpret_cast<FuncTest2>(scModule->getFunctionPtr("Test2"));
     REQUIRE(Test2(5) == 4);
     REQUIRE(Test2(-5) == -6);
 

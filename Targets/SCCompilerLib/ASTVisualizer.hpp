@@ -33,20 +33,20 @@ public:
     virtual ~ASTVisualizer() = default;
 
     // Generates DOT file from AST tree and outputs to a file.
-    void GenerateDOTFile(ast::Node * node, const std::string& filename);
+    void generateDOTFile(ast::Node * node, const std::string& filename);
 
 protected:
     // Visits node to generate Graphviz DOT file for visualization.
-    void Visit(ast::Node * node);
+    void visit(ast::Node * node);
 
     // Output string for a node
-    void OutputConfig(ast::Node * node, const std::string & nodeConfig);
+    void outputConfig(ast::Node * node, const std::string & nodeConfig);
 
     // Output variable declaration node string.
-    void OutputConfigVariableDecl(ast::Node * node);
+    void outputConfigVariableDecl(ast::Node * node);
 
     // Output function declaration node string.
-    void OutputConfigFuncDecl(ast::Node * node);
+    void outputConfigFuncDecl(ast::Node * node);
 
 private:
     // Output file.

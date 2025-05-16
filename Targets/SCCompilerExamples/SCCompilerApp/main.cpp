@@ -30,15 +30,15 @@ int main(int , const char **)
     )";
 
     // Create the compiler.
-    const auto compiler = scc::SCCompiler::Create();
+    const auto compiler = scc::SCCompiler::create();
     scc::SCCompileResult  compileResult;
 
     // Compile the source code from memory.
-    const auto scModule = compiler->CompileFromMemory(sourceCode, compileResult);
+    const auto scModule = compiler->compileFromMemory(sourceCode, compileResult);
 
     if (scc::SCCompileResult::kSCCompileResultOk != compileResult)
     {
-        std::cerr << compiler->GetErrorMessage() << std::endl;
+        std::cerr << compiler->getErrorMessage() << std::endl;
         return -1;
     }
 
@@ -47,7 +47,7 @@ int main(int , const char **)
 
     // SCModule holds compiled machine code. Let's bind to the compiled main function.
     using mainFuncType = int (*)(int);
-    const auto mainFunc = reinterpret_cast<mainFuncType>(scModule->GetFunctionPtr("main"));
+    const auto mainFunc = reinterpret_cast<mainFuncType>(scModule->getFunctionPtr("main"));
 
     // Call the main function, which is the machine code in memory, directly.
     std::cout << "fib(10) = " << mainFunc(10) << std::endl;

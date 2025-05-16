@@ -15,7 +15,7 @@
 using namespace scc;
 
 
-void ASTVisualizer::GenerateDOTFile(ast::Node * node, const std::string & filename)
+void ASTVisualizer::generateDOTFile(ast::Node * node, const std::string & filename)
 {
     // Open dot file.
     m_outputFile.open(filename);
@@ -26,8 +26,8 @@ void ASTVisualizer::GenerateDOTFile(ast::Node * node, const std::string & filena
                  << "\tnode [shape = record,height=.05];"
                  << std::endl;
 
-    // Visit each node and output node details to file.
-    Visit(node);
+    // visit each node and output node details to file.
+    visit(node);
 
     // Complete the dot configuration.
     m_outputFile << "}" << std::endl;
@@ -37,161 +37,161 @@ void ASTVisualizer::GenerateDOTFile(ast::Node * node, const std::string & filena
 }
 
 
-void ASTVisualizer::Visit(ast::Node * node)
+void ASTVisualizer::visit(ast::Node * node)
 {
     // Output node-specific data to dot file.
-    switch(node->GetNodeType())
+    switch(node->getNodeType())
     {
         case ast::NodeType::kNodeTypeProgram:
-            OutputConfig(node, "[label = \"Program\"];");
+            outputConfig(node, "[label = \"Program\"];");
             break;
     
         case ast::NodeType::kNodeTypeVariableDeclaration:
-            OutputConfigVariableDecl(node);
+            outputConfigVariableDecl(node);
             break;
 
         case ast::NodeType::kNodeTypeFunctionDeclaration:
-            OutputConfigFuncDecl(node);
+            outputConfigFuncDecl(node);
             break;
 
         case ast::NodeType::kNodeTypeBlock:
-            OutputConfig(node, "[label = \"Block\"];");
+            outputConfig(node, "[label = \"Block\"];");
             break;
 
         case ast::NodeType::kNodeTypeIfStatement:
-            OutputConfig(node, "[label = \"If\"];");
+            outputConfig(node, "[label = \"If\"];");
             break;
 
         case ast::NodeType::kNodeTypeForStatement:
-            OutputConfig(node, "[label = \"For\"];");
+            outputConfig(node, "[label = \"For\"];");
             break;
 
         case ast::NodeType::kNodeTypeForVarDecl:
-            OutputConfig(node, "[label = \"ForVarDecl\"];");
+            outputConfig(node, "[label = \"ForVarDecl\"];");
             break;
 
         case ast::NodeType::kNodeTypeForCondition:
-            OutputConfig(node, "[label = \"ForCondition\"];");
+            outputConfig(node, "[label = \"ForCondition\"];");
             break;
 
         case ast::NodeType::kNodeTypeForIncrement:
-            OutputConfig(node, "[label = \"ForIncrement\"];");
+            outputConfig(node, "[label = \"ForIncrement\"];");
             break;
 
         case ast::NodeType::kNodeTypeWhileStatement:
-            OutputConfig(node, "[label = \"While\"];");
+            outputConfig(node, "[label = \"While\"];");
             break;
 
         case ast::NodeType::kNodeTypeDoWhileStatement:
-            OutputConfig(node, "[label = \"Do While\"];");
+            outputConfig(node, "[label = \"Do While\"];");
             break;
 
         case ast::NodeType::kNodeTypeReturnStatement:
-            OutputConfig(node, "[label = \"Func Return\"];");
+            outputConfig(node, "[label = \"Func Return\"];");
             break;
 
         case ast::NodeType::kNodeTypeContinue:
-            OutputConfig(node, "[label = \"Continue\"];");
+            outputConfig(node, "[label = \"Continue\"];");
             break;
 
         case ast::NodeType::kNodeTypeBreak:
-            OutputConfig(node, "[label = \"Break\"];");
+            outputConfig(node, "[label = \"Break\"];");
             break;
 
         case ast::NodeType::kNodeTypeFuncCall:
-            OutputConfig(node, "[label = \"Func Call: " + dynamic_cast<ast::NodeFuncCall*>(node)->GetFuncName() + "\"];");
+            outputConfig(node, "[label = \"Func Call: " + dynamic_cast<ast::NodeFuncCall*>(node)->GetFuncName() + "\"];");
             break;
 
         case ast::NodeType::kNodeTypeAssignment:
-            OutputConfig(node, "[label = \"=\"];");
+            outputConfig(node, "[label = \"=\"];");
             break;
 
         case ast::NodeType::kNodeTypeExplicitTypeConversion:
-            OutputConfig(node, "[label = \"ExplTypeConv To: " + ast::TypeToString(dynamic_cast<ast::NodeExplicitTypeConversion*>(node)->GetConversionType()) + "\"];");
+            outputConfig(node, "[label = \"ExplTypeConv To: " + ast::TypeToString(dynamic_cast<ast::NodeExplicitTypeConversion*>(node)->GetConversionType()) + "\"];");
             break;
 
         case ast::NodeType::kNodeTypeLogicalNotOP:
-            OutputConfig(node, "[label = \"!\"];");
+            outputConfig(node, "[label = \"!\"];");
             break;
 
         case ast::NodeType::kNodeTypeLogicalAndOP:
-            OutputConfig(node, "[label = \"&&\"];");
+            outputConfig(node, "[label = \"&&\"];");
             break;
 
         case ast::NodeType::kNodeTypeLogicalOrOP:
-            OutputConfig(node, "[label = \"||\"];");
+            outputConfig(node, "[label = \"||\"];");
             break;
 
         case ast::NodeType::kNodeTypeUOPPlus:
-            OutputConfig(node, "[label = \"UnaryOP: +\"];");
+            outputConfig(node, "[label = \"UnaryOP: +\"];");
             break;
 
         case ast::NodeType::kNodeTypeUOPMinus:
-            OutputConfig(node, "[label = \"UnaryOP: -\"];");
+            outputConfig(node, "[label = \"UnaryOP: -\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPEQ:
-            OutputConfig(node, "[label = \"Cmp EQ\"];");
+            outputConfig(node, "[label = \"Cmp EQ\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPNEQ:
-            OutputConfig(node, "[label = \"Cmp NE\"];");
+            outputConfig(node, "[label = \"Cmp NE\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPLE:
-            OutputConfig(node, "[label = \"Cmp LE\"];");
+            outputConfig(node, "[label = \"Cmp LE\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPGE:
-            OutputConfig(node, "[label = \"Cmp GE\"];");
+            outputConfig(node, "[label = \"Cmp GE\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPL:
-            OutputConfig(node, "[label = \"Cmp LT\"];");
+            outputConfig(node, "[label = \"Cmp LT\"];");
             break;
 
         case ast::NodeType::kNodeTypeCompOPG:
-            OutputConfig(node, "[label = \"Cmp GT\"];");
+            outputConfig(node, "[label = \"Cmp GT\"];");
             break;
 
         case ast::NodeType::kNodeTypePrefixIncAOP:
-            OutputConfig(node, "[label = \"++\"];");
+            outputConfig(node, "[label = \"++\"];");
             break;
 
         case ast::NodeType::kNodeTypePrefixDecAOP:
-            OutputConfig(node, "[label = \"--\"];");
+            outputConfig(node, "[label = \"--\"];");
             break;
 
         case ast::NodeType::kNodeTypeAOPMul:
-            OutputConfig(node, "[label = \"*\"];");
+            outputConfig(node, "[label = \"*\"];");
             break;
 
         case ast::NodeType::kNodeTypeAOPDiv:
-            OutputConfig(node, "[label = \"/\"];");
+            outputConfig(node, "[label = \"/\"];");
             break;
 
         case ast::NodeType::kNodeTypeAOPAdd:
-             OutputConfig(node, "[label = \"+\"];");
+             outputConfig(node, "[label = \"+\"];");
             break;
 
         case ast::NodeType::kNodeTypeAOPSub:
-            OutputConfig(node, "[label = \"-\"];");
+            outputConfig(node, "[label = \"-\"];");
             break;
 
         case ast::NodeType::kNodeTypeLiteralFloat:
-            OutputConfig(node, "[label = \"Float: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
+            outputConfig(node, "[label = \"Float: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
         case ast::NodeType::kNodeTypeLiteralInt32:
-            OutputConfig(node, "[label = \"Int: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
+            outputConfig(node, "[label = \"Int: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
         case ast::NodeType::kNodeTypeLiteralBool:
-            OutputConfig(node, "[label = \"Bool: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
+            outputConfig(node, "[label = \"Bool: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
         case ast::NodeType::kNodeTypeLiteralID:
-            OutputConfig(node, "[label = \"Variable: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
+            outputConfig(node, "[label = \"Variable: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
             break;
 
         default:
@@ -199,29 +199,29 @@ void ASTVisualizer::Visit(ast::Node * node)
             break;
     }
 
-    // Visit node children.
-    for (size_t index=0; index<node->ChildCount(); ++index)
+    // visit node children.
+    for (size_t index=0; index<node->childCount(); ++index)
     {
-        Visit(node->GetChild(index));
+        visit(node->getChild(index));
     }
 }
 
 
-void ASTVisualizer::OutputConfig(ast::Node * node, const std::string & nodeConfig)
+void ASTVisualizer::outputConfig(ast::Node * node, const std::string & nodeConfig)
 {
     // Write node's address configuration.
     m_outputFile << "\tnode_" << std::hex << node << " " << nodeConfig << std::endl;
 
     // Write node's child connections.
-    for (size_t index=0; index < node->ChildCount(); ++index)
+    for (size_t index=0; index < node->childCount(); ++index)
     {
         m_outputFile << "\tnode_" << std::hex << node << " -> "
-                     << "node_" << std::hex << node->GetChild(index) << ";" << std::endl;
+                     << "node_" << std::hex << node->getChild(index) << ";" << std::endl;
     }
 }
 
 
-void ASTVisualizer::OutputConfigVariableDecl(ast::Node *  node)
+void ASTVisualizer::outputConfigVariableDecl(ast::Node *  node)
 {
     auto varDecNode = dynamic_cast<ast::NodeVarDeclaration *>(node);
     assert(varDecNode != nullptr);
@@ -231,11 +231,11 @@ void ASTVisualizer::OutputConfigVariableDecl(ast::Node *  node)
     strStream   << "[label = \"{Variable Decl |" << ast::TypeToString(varDecNode->GetVarType())
                 << " " << varDecNode->GetVarName() << "}\"];" << std::endl;
 
-    OutputConfig(node, strStream.str());
+    outputConfig(node, strStream.str());
 }
 
 
-void ASTVisualizer::OutputConfigFuncDecl(ast::Node * node)
+void ASTVisualizer::outputConfigFuncDecl(ast::Node * node)
 {
     auto funcDecNode = dynamic_cast<ast::NodeFuncDeclaration *>(node);
     assert(funcDecNode != nullptr);
@@ -248,11 +248,11 @@ void ASTVisualizer::OutputConfigFuncDecl(ast::Node * node)
     // Write arguments.
     for (auto & argument : arguments)
     {
-        strStream << "| Arg: " << ast::TypeToString(argument.GetType()) << " " << argument.GetName() ;
+        strStream << "| Arg: " << ast::TypeToString(argument.getType()) << " " << argument.getName() ;
     }
     
     strStream   << "}\"];" << std::endl;
 
-    OutputConfig(node, strStream.str());
+    outputConfig(node, strStream.str());
 }
 

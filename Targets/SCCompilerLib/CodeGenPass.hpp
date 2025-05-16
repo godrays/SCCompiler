@@ -68,7 +68,7 @@ public:
     explicit SymbolProperty(llvm::Value * value);
 
     // Returns pointer to llvm value.
-    llvm::Value * GetValue();
+    llvm::Value * getValue();
 
 protected:
     // Pointer to llvm value.
@@ -87,19 +87,19 @@ public:
                     llvm::BasicBlock * exitBasicBlock);
 
     // Return node.
-    ast::Node * GetNode();
+    ast::Node * getNode();
 
     // Return condition basic block.
-    llvm::BasicBlock * GetConditionBasicBlock();
+    llvm::BasicBlock * getConditionBasicBlock();
 
     // Return body basic block.
-    llvm::BasicBlock * GetBodyBasicBlock();
+    llvm::BasicBlock * getBodyBasicBlock();
 
     // Return increment basic block.
-    llvm::BasicBlock * GetIncrementBasicBlock();
+    llvm::BasicBlock * getIncrementBasicBlock();
 
     // Return exit basic block.
-    llvm::BasicBlock * GetExitBasicBlock();
+    llvm::BasicBlock * getExitBasicBlock();
 
 protected:
     // AST Node.
@@ -126,13 +126,13 @@ public:
     ~NodeBasicBlocksStack();
 
     // Pushes new element to stack.
-    void Push(NodeBasicBlocks * nodeBasicBlocks);
+    void push(NodeBasicBlocks * nodeBasicBlocks);
 
     // Pops and deletes top element in stack.
-    void PopAndDelete();
+    void popAndDelete();
 
     // Returns NodeBasicBlocks object if node matches with given one of the node types.
-    NodeBasicBlocks * GetOneOfThese(const std::vector<ast::NodeType> & nodeTypes);
+    NodeBasicBlocks * getOneOfThese(const std::vector<ast::NodeType> & nodeTypes);
 
 protected:
     // Node BasicBlock Stack. Using vector here to implement stack behavior since
@@ -151,92 +151,92 @@ public:
     virtual ~CodeGenPass();
 
     // Performs semantic analysis on the AST nodes.
-    JITEngine * GenerateCode(ast::Node * node);
+    JITEngine * generateCode(ast::Node * node);
 
 private:
     // Visits all node children.
-    void VisitChildren(ast::Node * node);
+    void visitChildren(ast::Node * node);
 
     // Visits nodes to create scopes and define symbols.
-    llvm::Value * Visit(ast::Node * node);
+    llvm::Value * visit(ast::Node * node);
 
-    void VisitProgram(ast::NodeProgram * node);
+    void visitProgram(ast::NodeProgram * node);
 
-    void VisitVariableDeclaration(ast::NodeVarDeclaration * node);
+    void visitVariableDeclaration(ast::NodeVarDeclaration * node);
 
-    void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
+    void visitFunctionDeclaration(ast::NodeFuncDeclaration * node);
 
-    void VisitBlock(ast::NodeBlock * node);
+    void visitBlock(ast::NodeBlock * node);
 
-    void VisitIfStatement(ast::NodeIfStatement * node);
+    void visitIfStatement(ast::NodeIfStatement * node);
 
-    void VisitForStatement(ast::NodeForStatement * node);
+    void visitForStatement(ast::NodeForStatement * node);
 
-    void VisitWhileStatement(ast::NodeWhileStatement * node);
+    void visitWhileStatement(ast::NodeWhileStatement * node);
 
-    void VisitDoWhileStatement(ast::NodeDoWhileStatement * node);
+    void visitDoWhileStatement(ast::NodeDoWhileStatement * node);
 
-    void VisitReturnStatement(ast::NodeReturnStatement * node);
+    void visitReturnStatement(ast::NodeReturnStatement * node);
 
-    void VisitContinue(ast::NodeContinue * node);
+    void visitContinue(ast::NodeContinue * node);
 
-    void VisitBreak(ast::NodeBreak * node);
+    void visitBreak(ast::NodeBreak * node);
 
-    void VisitAssignment(ast::NodeAssignment * node);
+    void visitAssignment(ast::NodeAssignment * node);
 
-    llvm::Value *  VisitFunctionCall(ast::NodeFuncCall * node);
+    llvm::Value *  visitFunctionCall(ast::NodeFuncCall * node);
 
-    llvm::Value * VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
+    llvm::Value * visitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 
-    llvm::Value * VisitLogicalNotOP(ast::NodeLogicalOP * node);
+    llvm::Value * visitLogicalNotOP(ast::NodeLogicalOP * node);
 
-    llvm::Value * VisitLogicalAndOP(ast::NodeLogicalOP * node);
+    llvm::Value * visitLogicalAndOP(ast::NodeLogicalOP * node);
 
-    llvm::Value * VisitLogicalOrOP(ast::NodeLogicalOP * node);
+    llvm::Value * visitLogicalOrOP(ast::NodeLogicalOP * node);
 
-    llvm::Value * VisitPrefixAOP(ast::NodePrefixAOP * node);
+    llvm::Value * visitPrefixAOP(ast::NodePrefixAOP * node);
 
-    llvm::Value * VisitAOP(ast::NodeAOP * node);
+    llvm::Value * visitAOP(ast::NodeAOP * node);
 
-    llvm::Value * VisitCompOP(ast::NodeCompOP * node);
+    llvm::Value * visitCompOP(ast::NodeCompOP * node);
 
-    llvm::Value * VisitNodeUnaryOP(ast::NodeUnaryOP * node);
+    llvm::Value * visitNodeUnaryOP(ast::NodeUnaryOP * node);
 
-    llvm::Value * VisitLiteral(ast::NodeLiteral * node);
+    llvm::Value * visitLiteral(ast::NodeLiteral * node);
 
 private:
     // Creates an internal initializer function.
-    void CreateInternalInitializerFunction();
+    void createInternalInitializerFunction();
 
     // Finalizes the internal initializer function.
-    void FinalizeInternalInitializerFunction();
+    void finalizeInternalInitializerFunction();
 
     // Creates an LLVM base type (float, int, bool, etc.).
-    llvm::Type * CreateBaseType(scc::Type type);
+    llvm::Type * createBaseType(scc::Type type);
 
     // Creates an LLVM constant value.
-    llvm::Constant * CreateConstant(scc::Type type, const std::string & value);
+    llvm::Constant * createConstant(scc::Type type, const std::string & value);
 
     // Creates a new global variable.
-    llvm::GlobalVariable * CreateGlobalVariable(std::string name, scc::Type);
+    llvm::GlobalVariable * createGlobalVariable(std::string name, scc::Type);
 
     // Creates a function.
-    llvm::Function * CreateFunc(llvm::IRBuilder <> &Builder, scc::Type returnType, const std::string& Name, std::vector<llvm::Type *> & argTypes);
+    llvm::Function * createFunc(llvm::IRBuilder <> &Builder, scc::Type returnType, const std::string& Name, std::vector<llvm::Type *> & argTypes);
 
     // Creates a basic block.
-    llvm::BasicBlock * CreateBasicBlock(llvm::Function * func, const std::string& name);
+    llvm::BasicBlock * createBasicBlock(llvm::Function * func, const std::string& name);
 
     // Loads the value if it is a pointer type.
-    llvm::Value * LoadIfPointerType(llvm::Value * value);
+    llvm::Value * loadIfPointerType(llvm::Value * value);
 
     // Dumps the LLVM IR of the module.
-    void DumpIRCode() const;
+    void dumpIRCode() const;
 
     // Converts an LLVM type to a string.
-    std::string DebugLLVMTypeAsString(llvm::Type::TypeID typeID) const;
+    std::string debugLLVMTypeAsString(llvm::Type::TypeID typeID) const;
 
     // Deletes unreachable blocks in the function's basic block list.
-    void DeleteUnreachableBasicBlocks(llvm::Function * function);
+    void deleteUnreachableBasicBlocks(llvm::Function * function);
 
 protected:
     // Stores the entire code.

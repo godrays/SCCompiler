@@ -20,13 +20,13 @@ ast::FuncArg::FuncArg(Type type, std::string name) : m_type(type), m_name(std::m
 }
 
 
-Type ast::FuncArg::GetType()
+Type ast::FuncArg::getType()
 {
     return m_type;
 }
 
 
-std::string ast::FuncArg::GetName()
+std::string ast::FuncArg::getName()
 {
     return m_name;
 }
@@ -40,11 +40,11 @@ ast::Node::Node(NodeType nodeType) : m_nodeType(nodeType)
 
 ast::Node::~Node()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
-void ast::Node::DeleteChildren()
+void ast::Node::deleteChildren()
 {
     // Delete all children.
     for (auto child : m_children)
@@ -56,53 +56,53 @@ void ast::Node::DeleteChildren()
 }
 
 
-void ast::Node::AddChild(ast::Node * childNode)
+void ast::Node::addChild(ast::Node * childNode)
 {
     m_children.emplace_back(childNode);
 }
 
 
-size_t ast::Node::ChildCount()
+size_t ast::Node::childCount()
 {
     return m_children.size();
 }
 
 
-ast::Node * ast::Node::GetChild(size_t index)
+ast::Node * ast::Node::getChild(size_t index)
 {
     assert(index < m_children.size());
     return m_children[index];
 }
 
 
-void ast::Node::SetParent(ast::Node * parentNode)
+void ast::Node::setParent(ast::Node * parentNode)
 {
     m_parent = parentNode;
 }
 
 
-ast::Node * ast::Node::GetParent()
+ast::Node * ast::Node::getParent()
 {
     return m_parent;
 }
 
-ast::NodeType  ast::Node::GetNodeType()
+ast::NodeType  ast::Node::getNodeType()
 {
     return m_nodeType;
 }
 
-void ast::Node::SetSourceCodeLine(size_t lineNumber)
+void ast::Node::setSourceCodeLine(size_t lineNumber)
 {
     m_lineNumber = lineNumber;
 }
 
-size_t ast::Node::GetSourceCodeLine() const
+size_t ast::Node::getSourceCodeLine() const
 {
     return m_lineNumber;
 }
 
 
-std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
+std::string ast::Node::getNodeTypeInString(ast::NodeType nodeType)
 {
     std::string typeInString;
 
@@ -257,7 +257,7 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
             break;
 
         default:
-            assert(false && "Unknown node type in Node::GetNodeTypeInString()");
+            assert(false && "Unknown node type in Node::getNodeTypeInString()");
             break;
     }
 
@@ -265,7 +265,7 @@ std::string ast::Node::GetNodeTypeInString(ast::NodeType nodeType)
 }
 
 
-ast::Node * ast::Node::FindClosestParentNode(const std::vector<ast::NodeType> & nodeTypes)
+ast::Node * ast::Node::findClosestParentNode(const std::vector<ast::NodeType> & nodeTypes)
 {
     // If node type matches one of the given type then return it.
     for (auto nodeType : nodeTypes)
@@ -278,14 +278,14 @@ ast::Node * ast::Node::FindClosestParentNode(const std::vector<ast::NodeType> & 
 
     if ( m_parent != nullptr )
     {
-        return m_parent->FindClosestParentNode(nodeTypes);
+        return m_parent->findClosestParentNode(nodeTypes);
     }
 
     return nullptr;
 }
 
 
-ast::Node * ast::Node::FindClosestChildNode(ast::NodeType nodeType)
+ast::Node * ast::Node::findClosestChildNode(ast::NodeType nodeType)
 {
     if (m_nodeType == nodeType)
     {
@@ -294,7 +294,7 @@ ast::Node * ast::Node::FindClosestChildNode(ast::NodeType nodeType)
 
     for (const auto & m_child : m_children)
     {
-        auto foundNode = m_child->FindClosestChildNode(nodeType);
+        auto foundNode = m_child->findClosestChildNode(nodeType);
 
         if (foundNode)
         {
@@ -306,13 +306,13 @@ ast::Node * ast::Node::FindClosestChildNode(ast::NodeType nodeType)
 }
 
 
-void ast::Node::SetScope(ScopeNode * scope)
+void ast::Node::setScope(ScopeNode * scope)
 {
     m_scope = scope;
 }
 
 
-ScopeNode * ast::Node::GetScope()
+ScopeNode * ast::Node::getScope()
 {
     return m_scope;
 }
@@ -326,7 +326,7 @@ ast::NodeProgram::NodeProgram()
 
 ast::NodeProgram::~NodeProgram()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -340,7 +340,7 @@ ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) :
 
 ast::NodeVarDeclaration::~NodeVarDeclaration()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -366,7 +366,7 @@ ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcN
 
 ast::NodeFuncDeclaration::~NodeFuncDeclaration()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -402,7 +402,7 @@ ast::NodeIfStatement::NodeIfStatement() : ast::Node(NodeType::kNodeTypeIfStateme
 
 ast::NodeIfStatement::~NodeIfStatement()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -414,7 +414,7 @@ ast::NodeForStatement::NodeForStatement() : ast::Node(NodeType::kNodeTypeForStat
 
 ast::NodeForStatement::~NodeForStatement()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -426,7 +426,7 @@ ast::NodeFor::NodeFor(ast::NodeType nodeType) : Node(nodeType)
 
 ast::NodeFor::~NodeFor()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -438,7 +438,7 @@ ast::NodeWhileStatement::NodeWhileStatement() : ast::Node(NodeType::kNodeTypeWhi
 
 ast::NodeWhileStatement::~NodeWhileStatement()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -450,7 +450,7 @@ ast::NodeDoWhileStatement::NodeDoWhileStatement() : ast::Node(NodeType::kNodeTyp
 
 ast::NodeDoWhileStatement::~NodeDoWhileStatement()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -462,7 +462,7 @@ ast::NodeReturnStatement::NodeReturnStatement() : ast::Node(NodeType::kNodeTypeR
 
 ast::NodeReturnStatement::~NodeReturnStatement()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -474,7 +474,7 @@ ast::NodeContinue::NodeContinue() : ast::Node(NodeType::kNodeTypeContinue)
 
 ast::NodeContinue::~NodeContinue()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -486,7 +486,7 @@ ast::NodeBreak::NodeBreak() : ast::Node(NodeType::kNodeTypeBreak)
 
 ast::NodeBreak::~NodeBreak()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -497,7 +497,7 @@ ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(NodeType::kNo
 
 ast::NodeFuncCall::~NodeFuncCall()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 std::string ast::NodeFuncCall::GetFuncName()
@@ -515,7 +515,7 @@ ast::NodeBlock::NodeBlock()
 // Destructor.
 ast::NodeBlock::~NodeBlock()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -527,7 +527,7 @@ ast::NodeAssignment::NodeAssignment() : Node(NodeType::kNodeTypeAssignment)
 
 ast::NodeAssignment::~NodeAssignment()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -547,7 +547,7 @@ Type ast::NodeExplicitTypeConversion::GetConversionType()
 
 ast::NodeExplicitTypeConversion::~NodeExplicitTypeConversion()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -561,7 +561,7 @@ ast::NodeLogicalOP::NodeLogicalOP(ast::NodeType nodeType) : Node(nodeType)
 
 ast::NodeLogicalOP::~NodeLogicalOP()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -574,7 +574,7 @@ ast::NodeUnaryOP::NodeUnaryOP(NodeType nodeType) : Node(nodeType)
 
 ast::NodeUnaryOP::~NodeUnaryOP()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -591,7 +591,7 @@ ast::NodeCompOP::NodeCompOP(ast::NodeType nodeType) : ast::Node(nodeType)
 
 ast::NodeCompOP::~NodeCompOP()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -606,7 +606,7 @@ ast::NodeAOP::NodeAOP(ast::NodeType nodeType) : ast::Node(nodeType)
 
 ast::NodeAOP::~NodeAOP()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -619,7 +619,7 @@ ast::NodePrefixAOP::NodePrefixAOP(ast::NodeType nodeType) : ast::Node(nodeType)
 
 ast::NodePrefixAOP::~NodePrefixAOP()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 
@@ -636,7 +636,7 @@ ast::NodeLiteral::NodeLiteral(ast::NodeType nodeType, std::string value) :
 
 ast::NodeLiteral::~NodeLiteral()
 {
-    DeleteChildren();
+    deleteChildren();
 }
 
 

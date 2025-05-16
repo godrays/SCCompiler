@@ -49,16 +49,16 @@ public:
     ~JITEngine() final;
 
     // Get function pointer.
-    void * GetFunctionPtr(std::string name) final;
+    void * getFunctionPtr(std::string name) final;
 
     // Run function.
-    llvm::GenericValue RunFunction(const std::string& funcName, std::vector<llvm::GenericValue> & args);
+    llvm::GenericValue runFunction(const std::string& funcName, std::vector<llvm::GenericValue> & args);
 
     // Reset and initialize global variables.
-    void Reset() final;
+    void reset() final;
 
     // Optimize IR code.
-    void OptimizeIR();
+    void optimizeIR();
 
 protected:
     // Pointer to program module object.

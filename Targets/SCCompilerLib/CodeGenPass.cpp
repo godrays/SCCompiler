@@ -25,7 +25,7 @@ SymbolProperty::SymbolProperty(llvm::Value * value) :
 }
 
 
-llvm::Value * SymbolProperty::GetValue()
+llvm::Value * SymbolProperty::getValue()
 {
     return m_value;
 }
@@ -46,34 +46,34 @@ NodeBasicBlocks::NodeBasicBlocks(ast::Node * node,
 }
 
 
-ast::Node * NodeBasicBlocks::GetNode()
+ast::Node * NodeBasicBlocks::getNode()
 {
     return m_node;
 }
 
 
-llvm::BasicBlock * NodeBasicBlocks::GetConditionBasicBlock()
+llvm::BasicBlock * NodeBasicBlocks::getConditionBasicBlock()
 {
     assert(m_conditionBasicBlock != nullptr && "No reason to use if it is nullptr.");
     return m_conditionBasicBlock;
 }
 
 
-llvm::BasicBlock * NodeBasicBlocks::GetBodyBasicBlock()
+llvm::BasicBlock * NodeBasicBlocks::getBodyBasicBlock()
 {
     assert(m_bodyBasicBlock != nullptr && "No reason to use if it is nullptr.");
     return m_bodyBasicBlock;
 }
 
 
-llvm::BasicBlock * NodeBasicBlocks::GetIncrementBasicBlock()
+llvm::BasicBlock * NodeBasicBlocks::getIncrementBasicBlock()
 {
     assert(m_incrementBasicBlock != nullptr && "No reason to use if it is nullptr.");
     return m_incrementBasicBlock;
 }
 
 
-llvm::BasicBlock * NodeBasicBlocks::GetExitBasicBlock()
+llvm::BasicBlock * NodeBasicBlocks::getExitBasicBlock()
 {
     assert(m_exitBasicBlock != nullptr && "No reason to use if it is nullptr.");
     return m_exitBasicBlock;
@@ -87,14 +87,14 @@ NodeBasicBlocksStack::~NodeBasicBlocksStack()
 }
 
 
-void NodeBasicBlocksStack::Push(NodeBasicBlocks * nodeBasicBlocks)
+void NodeBasicBlocksStack::push(NodeBasicBlocks * nodeBasicBlocks)
 {
     assert(nodeBasicBlocks != nullptr);
     m_nodeBBStack.emplace_back(nodeBasicBlocks);
 }
 
 
-void NodeBasicBlocksStack::PopAndDelete()
+void NodeBasicBlocksStack::popAndDelete()
 {
     auto stackSize = m_nodeBBStack.size();
     assert(stackSize > 0);
@@ -109,7 +109,7 @@ void NodeBasicBlocksStack::PopAndDelete()
 }
 
 
-NodeBasicBlocks * NodeBasicBlocksStack::GetOneOfThese(const std::vector<ast::NodeType> & nodeTypes)
+NodeBasicBlocks * NodeBasicBlocksStack::getOneOfThese(const std::vector<ast::NodeType> & nodeTypes)
 {
     auto size = m_nodeBBStack.size();
     assert(size > 0);
@@ -120,7 +120,7 @@ NodeBasicBlocks * NodeBasicBlocksStack::GetOneOfThese(const std::vector<ast::Nod
         for (auto nodeType : nodeTypes)
         {
             auto nodeBasicBlocks = m_nodeBBStack[size-index-1];
-            if (nodeBasicBlocks->GetNode()->GetNodeType() == nodeType)
+            if (nodeBasicBlocks->getNode()->getNodeType() == nodeType)
             {
                 return nodeBasicBlocks;
             }
@@ -137,7 +137,7 @@ CodeGenPass::~CodeGenPass()
 }
 
 
-JITEngine * CodeGenPass::GenerateCode(ast::Node * node)
+JITEngine * CodeGenPass::generateCode(ast::Node * node)
 {
     m_context = new llvm::LLVMContext();
     m_module = std::make_unique<llvm::Module>("Program", *m_context);
@@ -145,109 +145,109 @@ JITEngine * CodeGenPass::GenerateCode(ast::Node * node)
     // Create new IRBuilder for global scope.
     m_irBuilder = new llvm::IRBuilder<>(*m_context);
 
-    CreateInternalInitializerFunction();
+    createInternalInitializerFunction();
 
-    Visit(node);
+    visit(node);
 
-    FinalizeInternalInitializerFunction();
+    finalizeInternalInitializerFunction();
 
-    // DumpIRCode(); // REQUIRES to build LLVM in debug mode.
+    // dumpIRCode(); // REQUIRES to build LLVM in debug mode.
 
     // Create JITEngine. Transfer ownership of m_module and m_context to JITEngine.
     return new JITEngine(std::move(m_module));
 }
 
 
-void CodeGenPass::VisitChildren(ast::Node * node)
+void CodeGenPass::visitChildren(ast::Node * node)
 {
     // Visit node children.
-    for (size_t index=0; index<node->ChildCount(); ++index)
+    for (size_t index=0; index<node->childCount(); ++index)
     {
-        Visit(node->GetChild(index));
+        visit(node->getChild(index));
     }
 }
 
 
-llvm::Value * CodeGenPass::Visit(ast::Node * node)
+llvm::Value * CodeGenPass::visit(ast::Node * node)
 {
-    switch(node->GetNodeType())
+    switch(node->getNodeType())
     {
         case ast::NodeType::kNodeTypeProgram:
-            VisitProgram(static_cast<ast::NodeProgram *>(node));
+            visitProgram(static_cast<ast::NodeProgram *>(node));
             break;
 
         case ast::NodeType::kNodeTypeVariableDeclaration:
-            VisitVariableDeclaration(static_cast<ast::NodeVarDeclaration *>(node));
+            visitVariableDeclaration(static_cast<ast::NodeVarDeclaration *>(node));
             break;
 
         case ast::NodeType::kNodeTypeFunctionDeclaration:
-            VisitFunctionDeclaration(static_cast<ast::NodeFuncDeclaration *>(node));
+            visitFunctionDeclaration(static_cast<ast::NodeFuncDeclaration *>(node));
             break;
 
         case ast::NodeType::kNodeTypeBlock:
-            VisitBlock(static_cast<ast::NodeBlock *>(node));
+            visitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
         case ast::NodeType::kNodeTypeIfStatement:
-            VisitIfStatement(static_cast<ast::NodeIfStatement *>(node));
+            visitIfStatement(static_cast<ast::NodeIfStatement *>(node));
             break;
 
         case ast::NodeType::kNodeTypeForStatement:
-            VisitForStatement(static_cast<ast::NodeForStatement *>(node));
+            visitForStatement(static_cast<ast::NodeForStatement *>(node));
             break;
 
         case ast::NodeType::kNodeTypeForVarDecl:
         case ast::NodeType::kNodeTypeForIncrement:
-            VisitChildren(node);
+            visitChildren(node);
             break;
 
         case ast::NodeType::kNodeTypeWhileStatement:
-            VisitWhileStatement(static_cast<ast::NodeWhileStatement *>(node));
+            visitWhileStatement(static_cast<ast::NodeWhileStatement *>(node));
             break;
 
         case ast::NodeType::kNodeTypeDoWhileStatement:
-            VisitDoWhileStatement(static_cast<ast::NodeDoWhileStatement *>(node));
+            visitDoWhileStatement(static_cast<ast::NodeDoWhileStatement *>(node));
             break;
 
         case ast::NodeType::kNodeTypeReturnStatement:
-            VisitReturnStatement(static_cast<ast::NodeReturnStatement *>(node));
+            visitReturnStatement(static_cast<ast::NodeReturnStatement *>(node));
             break;
 
         case ast::NodeType::kNodeTypeContinue:
-            VisitContinue(static_cast<ast::NodeContinue *>(node));
+            visitContinue(static_cast<ast::NodeContinue *>(node));
             break;
 
         case ast::NodeType::kNodeTypeBreak:
-            VisitBreak(static_cast<ast::NodeBreak *>(node));
+            visitBreak(static_cast<ast::NodeBreak *>(node));
             break;
 
         case ast::NodeType::kNodeTypeFuncCall:
-            return VisitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
+            return visitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
             break;
 
         case ast::NodeType::kNodeTypeAssignment:
-            VisitAssignment(static_cast<ast::NodeAssignment *>(node));
+            visitAssignment(static_cast<ast::NodeAssignment *>(node));
             break;
 
         case ast::NodeType::kNodeTypeExplicitTypeConversion:
-            return VisitExplicitTypeConversion(static_cast<ast::NodeExplicitTypeConversion *>(node));
+            return visitExplicitTypeConversion(static_cast<ast::NodeExplicitTypeConversion *>(node));
             break;
 
         case ast::NodeType::kNodeTypeLogicalNotOP:
-            return VisitLogicalNotOP(static_cast<ast::NodeLogicalOP *>(node));
+            return visitLogicalNotOP(static_cast<ast::NodeLogicalOP *>(node));
             break;
 
         case ast::NodeType::kNodeTypeLogicalAndOP:
-            return VisitLogicalAndOP(static_cast<ast::NodeLogicalOP *>(node));
+            return visitLogicalAndOP(static_cast<ast::NodeLogicalOP *>(node));
             break;
 
         case ast::NodeType::kNodeTypeLogicalOrOP:
-            return VisitLogicalOrOP(static_cast<ast::NodeLogicalOP *>(node));
+            return visitLogicalOrOP(static_cast<ast::NodeLogicalOP *>(node));
             break;
 
         case ast::NodeType::kNodeTypeUOPMinus:
         case ast::NodeType::kNodeTypeUOPPlus:
-            return VisitNodeUnaryOP(static_cast<ast::NodeUnaryOP *>(node));
+            return visitNodeUnaryOP(static_cast<ast::NodeUnaryOP *>(node));
             break;
 
         case ast::NodeType::kNodeTypeCompOPEQ:
@@ -256,30 +256,30 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
         case ast::NodeType::kNodeTypeCompOPGE:
         case ast::NodeType::kNodeTypeCompOPL:
         case ast::NodeType::kNodeTypeCompOPG:
-            return VisitCompOP(static_cast<ast::NodeCompOP *>(node));
+            return visitCompOP(static_cast<ast::NodeCompOP *>(node));
             break;
 
         case ast::NodeType::kNodeTypePrefixIncAOP:
         case ast::NodeType::kNodeTypePrefixDecAOP:
-            return VisitPrefixAOP(static_cast<ast::NodePrefixAOP *>(node));
+            return visitPrefixAOP(static_cast<ast::NodePrefixAOP *>(node));
             break;
 
         case ast::NodeType::kNodeTypeAOPMul:
         case ast::NodeType::kNodeTypeAOPDiv:
         case ast::NodeType::kNodeTypeAOPAdd:
         case ast::NodeType::kNodeTypeAOPSub:
-            return VisitAOP(static_cast<ast::NodeAOP *>(node));
+            return visitAOP(static_cast<ast::NodeAOP *>(node));
             break;
 
         case ast::NodeType::kNodeTypeLiteralFloat:
         case ast::NodeType::kNodeTypeLiteralInt32:
         case ast::NodeType::kNodeTypeLiteralBool:
         case ast::NodeType::kNodeTypeLiteralID:
-            return VisitLiteral(static_cast<ast::NodeLiteral *>(node));
+            return visitLiteral(static_cast<ast::NodeLiteral *>(node));
             break;
 
         case ast::NodeType::kNodeTypeForCondition:
-            assert(false && "VisitForStatement() must manage this node implicitly.");
+            assert(false && "visitForStatement() must manage this node implicitly.");
             break;
 
         default:
@@ -291,23 +291,23 @@ llvm::Value * CodeGenPass::Visit(ast::Node * node)
 }
 
 
-void CodeGenPass::VisitProgram(ast::NodeProgram * node)
+void CodeGenPass::visitProgram(ast::NodeProgram * node)
 {
-    VisitChildren(node);
+    visitChildren(node);
 }
 
 
-void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
+void CodeGenPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
 {
-    auto childCount = node->ChildCount();
+    auto childCount = node->childCount();
     auto varName = node->GetVarName();
     assert(childCount < 2);
 
     // Create a global variable if the variable is in the global scope.
-    if (node->GetScope()->GetCategory() == ScopeCategory::kScopeCategoryGlobal)
+    if (node->getScope()->getCategory() == ScopeCategory::kScopeCategoryGlobal)
     {
-        auto globalVar = CreateGlobalVariable(varName, node->GetVarType());
-        node->GetScope()->ResolveSymbol(varName)->SetProperty(new SymbolProperty(globalVar));
+        auto globalVar = createGlobalVariable(varName, node->GetVarType());
+        node->getScope()->resolveSymbol(varName)->setProperty(new SymbolProperty(globalVar));
 
         // Generate initialization code in the internal initialization function.
         if (childCount == 1)
@@ -323,14 +323,14 @@ void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
             m_irBuilder->SetInsertPoint(m_initFunctionBlock);
 
             // Generate code for the right expression and get the assignment value.
-            auto rightExprValue = Visit(node->GetChild(0));
+            auto rightExprValue = visit(node->getChild(0));
 
             // Save the last used initializer function's basic block. If there is another
             // global variable, it will start from this block to generate code.
             m_initFunctionBlock = m_irBuilder->GetInsertBlock();
 
             // We load the value from the rightExprValue address and store it at the globalVar address.
-            m_irBuilder->CreateStore(LoadIfPointerType(rightExprValue), globalVar);
+            m_irBuilder->CreateStore(loadIfPointerType(rightExprValue), globalVar);
 
             // Restore the saved block (instruction generation point).
             m_irBuilder->SetInsertPoint(prevBlock);
@@ -341,62 +341,62 @@ void CodeGenPass::VisitVariableDeclaration(ast::NodeVarDeclaration * node)
     else
     {
         // Create a stack-allocated local variable.
-        auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(node->GetVarType()), nullptr, varName);
+        auto localVar = m_irBuilder->CreateAlloca(createBaseType(node->GetVarType()), nullptr, varName);
         // Set the symbol property to save the new LLVM variable object. Save related LLVM objects in the symbol object.
         // We save the LLVM object because every time this variable is used, we need to access its LLVM object.
-        node->GetScope()->ResolveSymbol(varName)->SetProperty(new SymbolProperty(localVar));
+        node->getScope()->resolveSymbol(varName)->setProperty(new SymbolProperty(localVar));
 
         // If the node has a child, then it needs to be evaluated and assigned to the new variable.
         if (childCount == 1)
         {
             // Generate code for the right expression and get the assignment value.
-            auto rightExprValue = Visit(node->GetChild(0));
+            auto rightExprValue = visit(node->getChild(0));
             // We load the value from the rightExprValue address and store it at the localVar address.
-            m_irBuilder->CreateStore(LoadIfPointerType(rightExprValue), localVar);
+            m_irBuilder->CreateStore(loadIfPointerType(rightExprValue), localVar);
         }
     }
 }
 
-void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
+void CodeGenPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 {
     // Save current block.
     llvm::BasicBlock *  prevBlock = m_irBuilder->GetInsertBlock();
 
     auto funcName = node->GetFuncName();
     auto funcReturnType = node->GetReturnType();
-    auto funcSymbol = static_cast<FunctionSymbol*>(node->GetScope()->ResolveSymbol(funcName));
+    auto funcSymbol = static_cast<FunctionSymbol*>(node->getScope()->resolveSymbol(funcName));
 
     // Create function argument types.
     std::vector<llvm::Type *>  argTypes;
-    for (size_t i=0; i<funcSymbol->ArgumentCount(); ++i)
+    for (size_t i=0; i<funcSymbol->argumentCount(); ++i)
     {
-        argTypes.emplace_back(CreateBaseType(funcSymbol->GetArgumentSymbol(i)->GetType()));
+        argTypes.emplace_back(createBaseType(funcSymbol->getArgumentSymbol(i)->getType()));
     }
     
     // Create function with arguments.
-    m_currentFunction = CreateFunc(*m_irBuilder, funcReturnType, funcName, argTypes);
-    funcSymbol->SetProperty(new SymbolProperty(m_currentFunction));
+    m_currentFunction = createFunc(*m_irBuilder, funcReturnType, funcName, argTypes);
+    funcSymbol->setProperty(new SymbolProperty(m_currentFunction));
 
     // Create basic block for function.
-    llvm::BasicBlock * funcBlock = CreateBasicBlock(m_currentFunction, "entry");
+    llvm::BasicBlock * funcBlock = createBasicBlock(m_currentFunction, "entry");
     m_irBuilder->SetInsertPoint(funcBlock);
 
-    // CreateFunc() creates function arguments without names. We need to set argument names.
+    // createFunc() creates function arguments without names. We need to set argument names.
     size_t index = 0;
-    for (auto argIt = m_currentFunction->arg_begin(); index < funcSymbol->ArgumentCount(); ++argIt, ++index)
+    for (auto argIt = m_currentFunction->arg_begin(); index < funcSymbol->argumentCount(); ++argIt, ++index)
     {
-        auto funcArgSymbol = funcSymbol->GetArgumentSymbol(index);
-        // argIt->setName(funcArgSymbol->GetName());
+        auto funcArgSymbol = funcSymbol->getArgumentSymbol(index);
+        // argIt->setName(funcArgSymbol->getName());
 
         // Program should be able to change function parameter in function body but not original function parameter value.
         // To allow this we need to create new local variables and copy argument values to new local vars and use it as func arguments.
         // This way program can't change original function parameter values.
-        auto localFuncArgVar = m_irBuilder->CreateAlloca(CreateBaseType(funcArgSymbol->GetType()), nullptr, funcArgSymbol->GetName());
+        auto localFuncArgVar = m_irBuilder->CreateAlloca(createBaseType(funcArgSymbol->getType()), nullptr, funcArgSymbol->getName());
         m_irBuilder->CreateStore(argIt, localFuncArgVar);
-        funcArgSymbol->SetProperty(new SymbolProperty(localFuncArgVar));
+        funcArgSymbol->setProperty(new SymbolProperty(localFuncArgVar));
     }
 
-    VisitChildren(node);
+    visitChildren(node);
 
     // It's possible that the final basic block may not have a return instruction.
     // Note: This is a workaround solution until return path analysis is done in the semantic pass.
@@ -408,11 +408,11 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
         }
         else
         {
-            m_irBuilder->CreateRet(CreateConstant(funcReturnType, "0"));
+            m_irBuilder->CreateRet(createConstant(funcReturnType, "0"));
         }
     }
     
-    DeleteUnreachableBasicBlocks(m_currentFunction);
+    deleteUnreachableBasicBlocks(m_currentFunction);
 
     // DEBUG
     // m_currentFunction->viewCFG();
@@ -422,39 +422,39 @@ void CodeGenPass::VisitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 }
 
 
-void CodeGenPass::VisitBlock(ast::NodeBlock * node)
+void CodeGenPass::visitBlock(ast::NodeBlock * node)
 {
-    VisitChildren(node);
+    visitChildren(node);
 }
 
 
-void CodeGenPass::VisitIfStatement(ast::NodeIfStatement* node)
+void CodeGenPass::visitIfStatement(ast::NodeIfStatement* node)
 {
     //auto prevBlock = m_irBuilder->GetInsertBlock();
 
-    auto condNode = node->GetChild(0);
-    auto thenNode = node->GetChild(1);
-    auto elseNode = node->ChildCount() == 3 ? node->GetChild(2) : nullptr;
+    auto condNode = node->getChild(0);
+    auto thenNode = node->getChild(1);
+    auto elseNode = node->childCount() == 3 ? node->getChild(2) : nullptr;
 
     // Generate code for the condition expression.
-    auto conditionValue = LoadIfPointerType(Visit(condNode));
+    auto conditionValue = loadIfPointerType(visit(condNode));
 
     // Generate blocks.
-    auto thenBlock = CreateBasicBlock(m_currentFunction, "if.then");
-    auto elseBlock = CreateBasicBlock(m_currentFunction, "if.else");
-    auto continueBlock = CreateBasicBlock(m_currentFunction, "if.cont");
+    auto thenBlock = createBasicBlock(m_currentFunction, "if.then");
+    auto elseBlock = createBasicBlock(m_currentFunction, "if.else");
+    auto continueBlock = createBasicBlock(m_currentFunction, "if.cont");
     m_irBuilder->CreateCondBr(conditionValue, thenBlock, elseBlock);
 
     // Generate code for the then statement.
     m_irBuilder->SetInsertPoint(thenBlock);
-    Visit(thenNode);
+    visit(thenNode);
     m_irBuilder->CreateBr(continueBlock);
 
     m_irBuilder->SetInsertPoint(elseBlock);
     // Generate code only if there is an else statement.
     if (elseNode != nullptr)
     {
-        Visit(elseNode);
+        visit(elseNode);
     }
     // Even if there is no else block, we create an else block to make the flow work properly.
     // The empty else block will be eliminated by the code optimizer.
@@ -465,16 +465,16 @@ void CodeGenPass::VisitIfStatement(ast::NodeIfStatement* node)
 }
 
 
-void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
+void CodeGenPass::visitForStatement(ast::NodeForStatement * node)
 {
     // There have to be at least 4 children: ForVarDec, ForCondition, ForIncrements, and ForCodeBlock
-    assert(node->ChildCount() == 4);
+    assert(node->childCount() == 4);
 
     // for ( varDecl ; forCondition ; forIncrements ) forBody
-    auto forVarDeclNode = node->GetChild(0);
-    auto forCondNode    = node->GetChild(1);
-    auto forIncsNode    = node->GetChild(2);
-    auto forBodyNode    = node->GetChild(3);
+    auto forVarDeclNode = node->getChild(0);
+    auto forCondNode    = node->getChild(1);
+    auto forIncsNode    = node->getChild(2);
+    auto forBodyNode    = node->getChild(3);
 
     // Create basic blocks for loop construction.
     // Note: The reason we have an extra block (for.body) is that LLVM has a strict rule that every basic block
@@ -495,27 +495,27 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
         for.exit:
             <...>
     */
-    auto forCondBlock = CreateBasicBlock(m_currentFunction, "for.cmp");
-    auto forBodyBlock = CreateBasicBlock(m_currentFunction, "for.body");
-    auto forIncBlock  = CreateBasicBlock(m_currentFunction, "for.inc");
-    auto forExitBlock = CreateBasicBlock(m_currentFunction, "for.exit");
+    auto forCondBlock = createBasicBlock(m_currentFunction, "for.cmp");
+    auto forBodyBlock = createBasicBlock(m_currentFunction, "for.body");
+    auto forIncBlock  = createBasicBlock(m_currentFunction, "for.inc");
+    auto forExitBlock = createBasicBlock(m_currentFunction, "for.exit");
 
     // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
     // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
-    m_nodeBBStack.Push(new NodeBasicBlocks(node, forCondBlock, forBodyBlock, forIncBlock, forExitBlock));
+    m_nodeBBStack.push(new NodeBasicBlocks(node, forCondBlock, forBodyBlock, forIncBlock, forExitBlock));
 
     // Generate code for variable declarations in the current block.
-    VisitChildren(forVarDeclNode);
+    visitChildren(forVarDeclNode);
     m_irBuilder->CreateBr(forCondBlock);
 
     // Generate code for 'for.cmp'
 
     m_irBuilder->SetInsertPoint(forCondBlock);
 
-    if (forCondNode->ChildCount() > 0)
+    if (forCondNode->childCount() > 0)
     {
-        auto condValue = LoadIfPointerType(Visit(forCondNode->GetChild(0)));
+        auto condValue = loadIfPointerType(visit(forCondNode->getChild(0)));
         m_irBuilder->CreateCondBr(condValue, forBodyBlock, forExitBlock);
     }
     else
@@ -526,16 +526,16 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
 
     // Generate code for 'for.body'
     m_irBuilder->SetInsertPoint(forBodyBlock);
-    Visit(forBodyNode);
+    visit(forBodyNode);
     m_irBuilder->CreateBr(forIncBlock);
 
     // Generate code for 'for.Inc'
 
     m_irBuilder->SetInsertPoint(forIncBlock);
 
-    if (forIncsNode->ChildCount() > 0)
+    if (forIncsNode->childCount() > 0)
     {
-        VisitChildren(forIncsNode);
+        visitChildren(forIncsNode);
     }
 
     m_irBuilder->CreateBr(forCondBlock);
@@ -545,18 +545,18 @@ void CodeGenPass::VisitForStatement(ast::NodeForStatement * node)
     m_irBuilder->SetInsertPoint(forExitBlock);
 
     // Pop BasicBlock info from the stack.
-    m_nodeBBStack.PopAndDelete();
+    m_nodeBBStack.popAndDelete();
 }
 
 
-void CodeGenPass::VisitWhileStatement(ast::NodeWhileStatement * node)
+void CodeGenPass::visitWhileStatement(ast::NodeWhileStatement * node)
 {
     // There have to be 2 children: expr and body.
-    assert(node->ChildCount() == 2);
+    assert(node->childCount() == 2);
 
     // while ( condition ) body
-    auto condNode = node->GetChild(0);
-    auto bodyNode = node->GetChild(1);
+    auto condNode = node->getChild(0);
+    auto bodyNode = node->getChild(1);
 
     // Create basic blocks for while loop construction.
     // Note: The reason we have an extra block (while.body) is that LLVM has a strict rule that every basic block
@@ -573,14 +573,14 @@ void CodeGenPass::VisitWhileStatement(ast::NodeWhileStatement * node)
         while.exit:
             <...>
     */
-    auto condBlock = CreateBasicBlock(m_currentFunction, "while.cmp");
-    auto bodyBlock = CreateBasicBlock(m_currentFunction, "while.body");
-    auto exitBlock = CreateBasicBlock(m_currentFunction, "while.exit");
+    auto condBlock = createBasicBlock(m_currentFunction, "while.cmp");
+    auto bodyBlock = createBasicBlock(m_currentFunction, "while.body");
+    auto exitBlock = createBasicBlock(m_currentFunction, "while.exit");
 
     // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
     // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
-    m_nodeBBStack.Push(new NodeBasicBlocks(node, condBlock, bodyBlock, nullptr, exitBlock));
+    m_nodeBBStack.push(new NodeBasicBlocks(node, condBlock, bodyBlock, nullptr, exitBlock));
 
     // Jump from the current block to the condition block.
     m_irBuilder->CreateBr(condBlock);
@@ -589,30 +589,30 @@ void CodeGenPass::VisitWhileStatement(ast::NodeWhileStatement * node)
 
     m_irBuilder->SetInsertPoint(condBlock);
 
-    auto condValue = LoadIfPointerType(Visit(condNode));
+    auto condValue = loadIfPointerType(visit(condNode));
     m_irBuilder->CreateCondBr(condValue, bodyBlock, exitBlock);
 
     // Generate code for while.body
     m_irBuilder->SetInsertPoint(bodyBlock);
-    Visit(bodyNode);
+    visit(bodyNode);
     m_irBuilder->CreateBr(condBlock);
 
     // Set the code generation block to while.exit
     m_irBuilder->SetInsertPoint(exitBlock);
 
     // Pop BasicBlock info from the stack.
-    m_nodeBBStack.PopAndDelete();
+    m_nodeBBStack.popAndDelete();
 }
 
 
-void CodeGenPass::VisitDoWhileStatement(ast::NodeDoWhileStatement * node)
+void CodeGenPass::visitDoWhileStatement(ast::NodeDoWhileStatement * node)
 {
     // There have to be 2 children: expr and body.
-    assert(node->ChildCount() == 2);
+    assert(node->childCount() == 2);
 
     // do body while ( condition )
-    auto bodyNode = node->GetChild(0);
-    auto condNode = node->GetChild(1);
+    auto bodyNode = node->getChild(0);
+    auto condNode = node->getChild(1);
 
     // Create basic blocks for do while loop construction.
     // Note: The reason we have an extra block (do_while.body) is that LLVM has a strict rule that every basic block
@@ -629,14 +629,14 @@ void CodeGenPass::VisitDoWhileStatement(ast::NodeDoWhileStatement * node)
         do_while.exit:
             <...>
     */
-    auto condBlock = CreateBasicBlock(m_currentFunction, "do_while.cmp");
-    auto bodyBlock = CreateBasicBlock(m_currentFunction, "do_while.body");
-    auto exitBlock = CreateBasicBlock(m_currentFunction, "do_while.exit");
+    auto condBlock = createBasicBlock(m_currentFunction, "do_while.cmp");
+    auto bodyBlock = createBasicBlock(m_currentFunction, "do_while.body");
+    auto exitBlock = createBasicBlock(m_currentFunction, "do_while.exit");
 
     // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
     // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
-    m_nodeBBStack.Push(new NodeBasicBlocks(node, condBlock, bodyBlock, nullptr, exitBlock));
+    m_nodeBBStack.push(new NodeBasicBlocks(node, condBlock, bodyBlock, nullptr, exitBlock));
 
     // Jump from the current block to the body block.
     m_irBuilder->CreateBr(bodyBlock);
@@ -644,60 +644,60 @@ void CodeGenPass::VisitDoWhileStatement(ast::NodeDoWhileStatement * node)
     // Generate code for 'do_while.body'
 
     m_irBuilder->SetInsertPoint(bodyBlock);
-    Visit(bodyNode);
+    visit(bodyNode);
     m_irBuilder->CreateBr(condBlock);
 
     // Generate code for 'do_while.cmp'
 
     m_irBuilder->SetInsertPoint(condBlock);
 
-    auto condValue = LoadIfPointerType(Visit(condNode));
+    auto condValue = loadIfPointerType(visit(condNode));
     m_irBuilder->CreateCondBr(condValue, bodyBlock, exitBlock);
 
     // Set the code generation block to do_while.exit
     m_irBuilder->SetInsertPoint(exitBlock);
 
     // Pop BasicBlock info from the stack.
-    m_nodeBBStack.PopAndDelete();
+    m_nodeBBStack.popAndDelete();
 }
 
 
-void CodeGenPass::VisitReturnStatement(ast::NodeReturnStatement * node)
+void CodeGenPass::visitReturnStatement(ast::NodeReturnStatement * node)
 {
     // If there is no child, then return void. The function return type is void.
-    if (node->ChildCount() == 0)
+    if (node->childCount() == 0)
     {
         m_irBuilder->CreateRetVoid();
     }
     else
     {
         // return <expression>
-        auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
+        auto exprValue = loadIfPointerType(visit(node->getChild(0)));
         m_irBuilder->CreateRet(exprValue);
     }
     // Any instructions after a terminator instruction (ret, br, switch, ...) won't be executed.
     // Creating a new block and generating all unreachable code in it allows the optimizer to eliminate it.
-    auto unreachableBlock = CreateBasicBlock(m_currentFunction, "unreachable");
+    auto unreachableBlock = createBasicBlock(m_currentFunction, "unreachable");
     m_irBuilder->SetInsertPoint(unreachableBlock);
 }
 
 
-void CodeGenPass::VisitContinue(ast::NodeContinue * node)
+void CodeGenPass::visitContinue(ast::NodeContinue * node)
 {
-    auto nodeBasicBlocks = m_nodeBBStack.GetOneOfThese({ast::NodeType::kNodeTypeForStatement,
+    auto nodeBasicBlocks = m_nodeBBStack.getOneOfThese({ast::NodeType::kNodeTypeForStatement,
                                                         ast::NodeType::kNodeTypeWhileStatement,
                                                         ast::NodeType::kNodeTypeDoWhileStatement});
     assert(nodeBasicBlocks);
     
-    switch (nodeBasicBlocks->GetNode()->GetNodeType())
+    switch (nodeBasicBlocks->getNode()->getNodeType())
     {
         case ast::NodeType::kNodeTypeForStatement:
-            m_irBuilder->CreateBr(nodeBasicBlocks->GetIncrementBasicBlock());
+            m_irBuilder->CreateBr(nodeBasicBlocks->getIncrementBasicBlock());
             break;
 
         case ast::NodeType::kNodeTypeWhileStatement:
         case ast::NodeType::kNodeTypeDoWhileStatement:
-            m_irBuilder->CreateBr(nodeBasicBlocks->GetConditionBasicBlock());
+            m_irBuilder->CreateBr(nodeBasicBlocks->getConditionBasicBlock());
             break;
 
         default:
@@ -706,24 +706,24 @@ void CodeGenPass::VisitContinue(ast::NodeContinue * node)
     }
 
     // Create a new basic block for unreachable instructions after the current continue statement.
-    auto unreachableBasicBlock = CreateBasicBlock(m_currentFunction, "unreachable");
+    auto unreachableBasicBlock = createBasicBlock(m_currentFunction, "unreachable");
     m_irBuilder->SetInsertPoint(unreachableBasicBlock);
 }
 
 
-void CodeGenPass::VisitBreak(ast::NodeBreak * node)
+void CodeGenPass::visitBreak(ast::NodeBreak * node)
 {
-    auto nodeBasicBlocks = m_nodeBBStack.GetOneOfThese({ast::NodeType::kNodeTypeForStatement,
+    auto nodeBasicBlocks = m_nodeBBStack.getOneOfThese({ast::NodeType::kNodeTypeForStatement,
                                                         ast::NodeType::kNodeTypeWhileStatement,
                                                         ast::NodeType::kNodeTypeDoWhileStatement});
     assert(nodeBasicBlocks);
     
-    switch (nodeBasicBlocks->GetNode()->GetNodeType())
+    switch (nodeBasicBlocks->getNode()->getNodeType())
     {
         case ast::NodeType::kNodeTypeForStatement:
         case ast::NodeType::kNodeTypeWhileStatement:
         case ast::NodeType::kNodeTypeDoWhileStatement:
-            m_irBuilder->CreateBr(nodeBasicBlocks->GetExitBasicBlock());
+            m_irBuilder->CreateBr(nodeBasicBlocks->getExitBasicBlock());
             break;
 
         default:
@@ -732,26 +732,26 @@ void CodeGenPass::VisitBreak(ast::NodeBreak * node)
     }
 
     // Create a new basic block for unreachable instructions after the current continue statement.
-    auto unreachableBasicBlock = CreateBasicBlock(m_currentFunction, "unreachable");
+    auto unreachableBasicBlock = createBasicBlock(m_currentFunction, "unreachable");
     m_irBuilder->SetInsertPoint(unreachableBasicBlock);
 }
 
 
-llvm::Value * CodeGenPass::VisitFunctionCall(ast::NodeFuncCall * node)
+llvm::Value * CodeGenPass::visitFunctionCall(ast::NodeFuncCall * node)
 {
     std::vector<llvm::Value *> args;
 
     // Visit all function argument expressions.
-    for (size_t index=0; index < node->ChildCount(); ++index)
+    for (size_t index=0; index < node->childCount(); ++index)
     {
-        auto argExprValue = Visit(node->GetChild(index));
-        args.emplace_back(LoadIfPointerType(argExprValue));
+        auto argExprValue = visit(node->getChild(index));
+        args.emplace_back(loadIfPointerType(argExprValue));
     }
     auto funcName = node->GetFuncName();
-    auto funcSymbol = static_cast<FunctionSymbol *>(node->GetScope()->ResolveSymbol(funcName));
+    auto funcSymbol = static_cast<FunctionSymbol *>(node->getScope()->resolveSymbol(funcName));
     assert(funcSymbol != nullptr);
     
-    auto func = static_cast<SymbolProperty *>(funcSymbol->GetProperty())->GetValue();
+    auto func = static_cast<SymbolProperty *>(funcSymbol->getProperty())->getValue();
     assert(func != nullptr);
 
     auto funcPtr = llvm::dyn_cast<llvm::Function>(func);
@@ -761,27 +761,27 @@ llvm::Value * CodeGenPass::VisitFunctionCall(ast::NodeFuncCall * node)
 }
 
 
-void CodeGenPass::VisitAssignment(ast::NodeAssignment * node)
+void CodeGenPass::visitAssignment(ast::NodeAssignment * node)
 {
     // Get the variable's LLVM value
-    auto variable = Visit(node->GetChild(0));
+    auto variable = visit(node->getChild(0));
 
     // Generate code for the right expression and get the assignment value.
-    auto rightExprValue = Visit(node->GetChild(1));
+    auto rightExprValue = visit(node->getChild(1));
 
-    //std::cout << "VarTypeID:" << DebugLLVMTypeAsString(variable->getType()->getTypeID()) << std::endl;
-    //std::cout << "BRightTypeID:" << DebugLLVMTypeAsString(rightExprValue->getType()->getTypeID()) << std::endl;
-    //std::cout << "ARightTypeID:" << DebugLLVMTypeAsString(LoadIfPointerType(rightExprValue)->getType()->getTypeID()) << std::endl;
+    //std::cout << "VarTypeID:" << debugLLVMTypeAsString(variable->getType()->getTypeID()) << std::endl;
+    //std::cout << "BRightTypeID:" << debugLLVMTypeAsString(rightExprValue->getType()->getTypeID()) << std::endl;
+    //std::cout << "ARightTypeID:" << debugLLVMTypeAsString(loadIfPointerType(rightExprValue)->getType()->getTypeID()) << std::endl;
 
     // We load the value from the rightExprValue address and store it at the variable address.
-    m_irBuilder->CreateStore(LoadIfPointerType(rightExprValue), variable);
+    m_irBuilder->CreateStore(loadIfPointerType(rightExprValue), variable);
 }
 
 
-llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node)
+llvm::Value * CodeGenPass::visitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node)
 {
     // Generate code for the expression.
-    auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
+    auto exprValue = loadIfPointerType(visit(node->getChild(0)));
     llvm::Value * convertedValue{nullptr};
 
     // Convert exprValue from Float to (int or bool)
@@ -790,11 +790,11 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
         switch (node->GetConversionType())
         {
             case Type::kTypeInt:
-                convertedValue = m_irBuilder->CreateFPToSI(exprValue, CreateBaseType(Type::kTypeInt));
+                convertedValue = m_irBuilder->CreateFPToSI(exprValue, createBaseType(Type::kTypeInt));
                 break;
 
             case Type::kTypeBool:
-                convertedValue = m_irBuilder->CreateFCmpUNE(exprValue, CreateConstant(scc::Type::kTypeFloat, "0"));
+                convertedValue = m_irBuilder->CreateFCmpUNE(exprValue, createConstant(scc::Type::kTypeFloat, "0"));
                 break;
 
             case Type::kTypeFloat:
@@ -815,11 +815,11 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
         switch (node->GetConversionType())
         {
             case Type::kTypeFloat:
-                convertedValue = m_irBuilder->CreateSIToFP(exprValue, CreateBaseType(Type::kTypeFloat));
+                convertedValue = m_irBuilder->CreateSIToFP(exprValue, createBaseType(Type::kTypeFloat));
                 break;
 
             case Type::kTypeBool:
-                convertedValue = m_irBuilder->CreateICmpNE(exprValue, CreateConstant(scc::Type::kTypeInt, "0"));
+                convertedValue = m_irBuilder->CreateICmpNE(exprValue, createConstant(scc::Type::kTypeInt, "0"));
                 break;
 
             case Type::kTypeInt:
@@ -840,12 +840,12 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
         switch (node->GetConversionType())
         {
             case Type::kTypeFloat:
-                convertedValue = m_irBuilder->CreateUIToFP(exprValue, CreateBaseType(Type::kTypeFloat));
+                convertedValue = m_irBuilder->CreateUIToFP(exprValue, createBaseType(Type::kTypeFloat));
                 break;
 
             case Type::kTypeInt:
                 {
-                    convertedValue = m_irBuilder->CreateZExt(exprValue, CreateBaseType(scc::Type::kTypeInt));
+                    convertedValue = m_irBuilder->CreateZExt(exprValue, createBaseType(scc::Type::kTypeInt));
                 }
                 break;
 
@@ -864,28 +864,28 @@ llvm::Value * CodeGenPass::VisitExplicitTypeConversion(ast::NodeExplicitTypeConv
 }
 
 
-llvm::Value * CodeGenPass::VisitLogicalNotOP(ast::NodeLogicalOP * node)
+llvm::Value * CodeGenPass::visitLogicalNotOP(ast::NodeLogicalOP * node)
 {
-    auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
+    auto exprValue = loadIfPointerType(visit(node->getChild(0)));
     auto exprType = exprValue->getType()->getTypeID();
     
     if (exprType == llvm::Type::TypeID::FloatTyID)
     {
-        exprValue = m_irBuilder->CreateFCmpUNE(exprValue, CreateConstant(scc::Type::kTypeFloat, "0"));
-        exprValue = m_irBuilder->CreateXor(exprValue, CreateConstant(scc::Type::kTypeBool, "true"));
-        exprValue = m_irBuilder->CreateUIToFP(exprValue, CreateBaseType(scc::Type::kTypeFloat));
+        exprValue = m_irBuilder->CreateFCmpUNE(exprValue, createConstant(scc::Type::kTypeFloat, "0"));
+        exprValue = m_irBuilder->CreateXor(exprValue, createConstant(scc::Type::kTypeBool, "true"));
+        exprValue = m_irBuilder->CreateUIToFP(exprValue, createBaseType(scc::Type::kTypeFloat));
     }
     else if (exprType == llvm::Type::TypeID::IntegerTyID &&
              exprValue->getType()->getPrimitiveSizeInBits() == 32)
     {
-        exprValue = m_irBuilder->CreateICmpNE(exprValue, CreateConstant(scc::Type::kTypeInt, "0"));
-        exprValue = m_irBuilder->CreateXor(exprValue, CreateConstant(scc::Type::kTypeBool, "true"));
-        exprValue = m_irBuilder->CreateZExt(exprValue, CreateBaseType(scc::Type::kTypeInt));
+        exprValue = m_irBuilder->CreateICmpNE(exprValue, createConstant(scc::Type::kTypeInt, "0"));
+        exprValue = m_irBuilder->CreateXor(exprValue, createConstant(scc::Type::kTypeBool, "true"));
+        exprValue = m_irBuilder->CreateZExt(exprValue, createBaseType(scc::Type::kTypeInt));
     }
     else if (exprType == llvm::Type::TypeID::IntegerTyID &&
              exprValue->getType()->getPrimitiveSizeInBits() == 1)
     {
-        exprValue = m_irBuilder->CreateXor(exprValue, CreateConstant(scc::Type::kTypeBool, "true"));
+        exprValue = m_irBuilder->CreateXor(exprValue, createConstant(scc::Type::kTypeBool, "true"));
     }
     else
     {
@@ -896,23 +896,23 @@ llvm::Value * CodeGenPass::VisitLogicalNotOP(ast::NodeLogicalOP * node)
 }
 
 
-llvm::Value * CodeGenPass::VisitLogicalAndOP(ast::NodeLogicalOP * node)
+llvm::Value * CodeGenPass::visitLogicalAndOP(ast::NodeLogicalOP * node)
 {
-    auto leftExprNode  = node->GetChild(0);
-    auto rightExprNode = node->GetChild(1);
+    auto leftExprNode  = node->getChild(0);
+    auto rightExprNode = node->getChild(1);
 
-    auto rightExprBlock = CreateBasicBlock(m_currentFunction, "&&.rightExpr");
-    auto exitBlock = CreateBasicBlock(m_currentFunction, "&&.exit");
+    auto rightExprBlock = createBasicBlock(m_currentFunction, "&&.rightExpr");
+    auto exitBlock = createBasicBlock(m_currentFunction, "&&.exit");
 
     // Generate code in current block.
-    auto resultVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeBool), nullptr, "_cb");
-    auto leftExprValue = LoadIfPointerType(Visit(leftExprNode));
+    auto resultVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeBool), nullptr, "_cb");
+    auto leftExprValue = loadIfPointerType(visit(leftExprNode));
     m_irBuilder->CreateStore(leftExprValue, resultVar);
     m_irBuilder->CreateCondBr(leftExprValue, rightExprBlock, exitBlock);
 
     // Generate code for rightExprBlock.
     m_irBuilder->SetInsertPoint(rightExprBlock);
-    auto rightExprValue = LoadIfPointerType(Visit(rightExprNode));
+    auto rightExprValue = loadIfPointerType(visit(rightExprNode));
     m_irBuilder->CreateStore(rightExprValue, resultVar);
     m_irBuilder->CreateBr(exitBlock);
 
@@ -923,23 +923,23 @@ llvm::Value * CodeGenPass::VisitLogicalAndOP(ast::NodeLogicalOP * node)
 }
 
 
-llvm::Value * CodeGenPass::VisitLogicalOrOP(ast::NodeLogicalOP * node)
+llvm::Value * CodeGenPass::visitLogicalOrOP(ast::NodeLogicalOP * node)
 {
-    auto leftExprNode  = node->GetChild(0);
-    auto rightExprNode = node->GetChild(1);
+    auto leftExprNode  = node->getChild(0);
+    auto rightExprNode = node->getChild(1);
 
-    auto rightExprBlock = CreateBasicBlock(m_currentFunction, "&&.rightExpr");
-    auto exitBlock = CreateBasicBlock(m_currentFunction, "&&.exit");
+    auto rightExprBlock = createBasicBlock(m_currentFunction, "&&.rightExpr");
+    auto exitBlock = createBasicBlock(m_currentFunction, "&&.exit");
 
     // Generate code in current block.
-    auto resultVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeBool), nullptr);
-    auto leftExprValue = LoadIfPointerType(Visit(leftExprNode));
+    auto resultVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeBool), nullptr);
+    auto leftExprValue = loadIfPointerType(visit(leftExprNode));
     m_irBuilder->CreateStore(leftExprValue, resultVar);
     m_irBuilder->CreateCondBr(leftExprValue, exitBlock, rightExprBlock);
 
     // Generate code for rightExprBlock.
     m_irBuilder->SetInsertPoint(rightExprBlock);
-    auto rightExprValue = LoadIfPointerType(Visit(rightExprNode));
+    auto rightExprValue = loadIfPointerType(visit(rightExprNode));
     m_irBuilder->CreateStore(rightExprValue, resultVar);
     m_irBuilder->CreateBr(exitBlock);
 
@@ -950,14 +950,14 @@ llvm::Value * CodeGenPass::VisitLogicalOrOP(ast::NodeLogicalOP * node)
 }
 
 
-llvm::Value * CodeGenPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
+llvm::Value * CodeGenPass::visitNodeUnaryOP(ast::NodeUnaryOP * node)
 {
     // Generate code for the right expression.
-    auto exprValue = LoadIfPointerType(Visit(node->GetChild(0)));
+    auto exprValue = loadIfPointerType(visit(node->getChild(0)));
     llvm::Value * negatedValue{nullptr};
 
     // Nothing to do for '+' unary operation. Just return the expr value.
-    if (node->GetNodeType() == ast::NodeType::kNodeTypeUOPPlus)
+    if (node->getNodeType() == ast::NodeType::kNodeTypeUOPPlus)
     {
         return exprValue;
     }
@@ -966,11 +966,11 @@ llvm::Value * CodeGenPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
     switch (exprValue->getType()->getTypeID())
     {
         case llvm::Type::TypeID::FloatTyID:
-            negatedValue = m_irBuilder->CreateFMul(CreateConstant(scc::Type::kTypeFloat, "-1"), exprValue, "negtmp");
+            negatedValue = m_irBuilder->CreateFMul(createConstant(scc::Type::kTypeFloat, "-1"), exprValue, "negtmp");
             break;
 
         case llvm::Type::TypeID::IntegerTyID:
-            negatedValue = m_irBuilder->CreateMul(CreateConstant(scc::Type::kTypeInt, "-1"), exprValue, "negtmp");
+            negatedValue = m_irBuilder->CreateMul(createConstant(scc::Type::kTypeInt, "-1"), exprValue, "negtmp");
             break;
 
         default:
@@ -982,20 +982,20 @@ llvm::Value * CodeGenPass::VisitNodeUnaryOP(ast::NodeUnaryOP * node)
 }
 
 
-llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
+llvm::Value * CodeGenPass::visitCompOP(ast::NodeCompOP * node)
 {
     llvm::Value * resultValue{nullptr};
 
     // Visit always returns a pointer to the value, so we need to load it to get the value from the pointed address.
-    auto leftOperandValue = LoadIfPointerType(Visit(node->GetChild(0)));
-    auto rightOperandValue = LoadIfPointerType(Visit(node->GetChild(1)));
+    auto leftOperandValue = loadIfPointerType(visit(node->getChild(0)));
+    auto rightOperandValue = loadIfPointerType(visit(node->getChild(1)));
 
     llvm::Type::TypeID leftOpTypeID = leftOperandValue->getType()->getTypeID();
     assert(rightOperandValue->getType()->getTypeID() == leftOpTypeID);
 
     if (leftOpTypeID == llvm::Type::FloatTyID)
     {
-        switch (node->GetNodeType())
+        switch (node->getNodeType())
         {
             case ast::NodeType::kNodeTypeCompOPEQ:
                 resultValue = m_irBuilder->CreateFCmpOEQ(leftOperandValue, rightOperandValue);
@@ -1028,7 +1028,7 @@ llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
     }
     else if (leftOpTypeID == llvm::Type::IntegerTyID)
     {
-        switch (node->GetNodeType())
+        switch (node->getNodeType())
         {
             case ast::NodeType::kNodeTypeCompOPEQ:
                 resultValue = m_irBuilder->CreateICmpEQ(leftOperandValue, rightOperandValue);
@@ -1068,30 +1068,30 @@ llvm::Value * CodeGenPass::VisitCompOP(ast::NodeCompOP * node)
 }
 
 
-llvm::Value * CodeGenPass::VisitPrefixAOP(ast::NodePrefixAOP * node)
+llvm::Value * CodeGenPass::visitPrefixAOP(ast::NodePrefixAOP * node)
 {
     llvm::Value * resultValue{nullptr};
 
     // Visit always returns a pointer to the value, so we need to load it to get the value from the pointed address.
-    auto operandVar = Visit(node->GetChild(0));
-    auto operandValue = LoadIfPointerType(operandVar);
+    auto operandVar = visit(node->getChild(0));
+    auto operandValue = loadIfPointerType(operandVar);
 
     auto opTypeID = operandValue->getType()->getTypeID();
 
-    switch (node->GetNodeType())
+    switch (node->getNodeType())
     {
         case ast::NodeType::kNodeTypePrefixIncAOP:
             if (opTypeID == llvm::Type::FloatTyID)
-                resultValue = m_irBuilder->CreateFAdd(operandValue, CreateConstant(Type::kTypeFloat, "1.0"), "faddtmp");
+                resultValue = m_irBuilder->CreateFAdd(operandValue, createConstant(Type::kTypeFloat, "1.0"), "faddtmp");
             else
-                resultValue = m_irBuilder->CreateAdd(operandValue, CreateConstant(Type::kTypeInt, "1"), "addtmp");
+                resultValue = m_irBuilder->CreateAdd(operandValue, createConstant(Type::kTypeInt, "1"), "addtmp");
             break;
 
         case ast::NodeType::kNodeTypePrefixDecAOP:
             if (opTypeID == llvm::Type::FloatTyID)
-                resultValue = m_irBuilder->CreateFSub(operandValue, CreateConstant(Type::kTypeFloat, "1.0"), "fsubtmp");
+                resultValue = m_irBuilder->CreateFSub(operandValue, createConstant(Type::kTypeFloat, "1.0"), "fsubtmp");
             else
-                resultValue = m_irBuilder->CreateSub(operandValue, CreateConstant(Type::kTypeInt, "1"), "subtmp");
+                resultValue = m_irBuilder->CreateSub(operandValue, createConstant(Type::kTypeInt, "1"), "subtmp");
             break;
 
         default:
@@ -1105,22 +1105,22 @@ llvm::Value * CodeGenPass::VisitPrefixAOP(ast::NodePrefixAOP * node)
 }
 
 
-llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
+llvm::Value * CodeGenPass::visitAOP(ast::NodeAOP * node)
 {
     llvm::Value * resultValue{nullptr};
 
     // Visit always returns a pointer to the value, so we need to load it to get the value from the pointed address.
-    auto leftOperandValue = LoadIfPointerType(Visit(node->GetChild(0)));
-    auto rightOperandValue = LoadIfPointerType(Visit(node->GetChild(1)));
+    auto leftOperandValue = loadIfPointerType(visit(node->getChild(0)));
+    auto rightOperandValue = loadIfPointerType(visit(node->getChild(1)));
 
-    //std::cout << "BeforeLeftTypeID:" << DebugLLVMTypeAsString(leftOperandValue->getType()->getTypeID()) << std::endl;
-    //std::cout << "BeforeRightTypeID:" << DebugLLVMTypeAsString(rightOperandValue->getType()->getTypeID()) << std::endl;
+    //std::cout << "BeforeLeftTypeID:" << debugLLVMTypeAsString(leftOperandValue->getType()->getTypeID()) << std::endl;
+    //std::cout << "BeforeRightTypeID:" << debugLLVMTypeAsString(rightOperandValue->getType()->getTypeID()) << std::endl;
 
     // Type promotion should be done here.
     llvm::Type::TypeID leftOpTypeID = leftOperandValue->getType()->getTypeID();
     //llvm::Type::TypeID rightOpTypeID = rightOperandValue->getType()->getTypeID();
 
-    switch (node->GetNodeType())
+    switch (node->getNodeType())
     {
         case ast::NodeType::kNodeTypeAOPMul:
             if (leftOpTypeID == llvm::Type::FloatTyID)
@@ -1159,18 +1159,18 @@ llvm::Value * CodeGenPass::VisitAOP(ast::NodeAOP * node)
 }
 
 
-llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
+llvm::Value * CodeGenPass::visitLiteral(ast::NodeLiteral * node)
 {
     llvm::Value * literalValue{nullptr};
     
-    switch (node->GetNodeType())
+    switch (node->getNodeType())
     {
         case ast::NodeType::kNodeTypeLiteralFloat:
             {
                 // We create a temp local variable and assign a constant value.
-                auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeFloat), nullptr, "_ci");
+                auto localVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeFloat), nullptr, "_ci");
                 // Since we store a constant, we don't need to load the value from an address.
-                m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeFloat, node->GetValue()), localVar);
+                m_irBuilder->CreateStore(createConstant(scc::Type::kTypeFloat, node->GetValue()), localVar);
                 // Returns a pointer to the local variable.
                 literalValue = localVar;
             }
@@ -1179,9 +1179,9 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
         case ast::NodeType::kNodeTypeLiteralInt32:
             {
                 // We create a temp local variable and assign a constant value.
-                auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeInt), nullptr, "_cf");
+                auto localVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeInt), nullptr, "_cf");
                 // Since we store a constant, we don't need to load the value from an address.
-                m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeInt, node->GetValue()), localVar);
+                m_irBuilder->CreateStore(createConstant(scc::Type::kTypeInt, node->GetValue()), localVar);
                 // Returns a pointer to the local variable.
                 literalValue = localVar;
             }
@@ -1190,9 +1190,9 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
         case ast::NodeType::kNodeTypeLiteralBool:
             {
                 // We create a temp local variable and assign a constant value.
-                auto localVar = m_irBuilder->CreateAlloca(CreateBaseType(scc::Type::kTypeBool), nullptr, "_cb");
+                auto localVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeBool), nullptr, "_cb");
                 // Since we store a constant, we don't need to load the value from an address.
-                m_irBuilder->CreateStore(CreateConstant(scc::Type::kTypeBool, node->GetValue()), localVar);
+                m_irBuilder->CreateStore(createConstant(scc::Type::kTypeBool, node->GetValue()), localVar);
                 // Returns a pointer to the local variable.
                 literalValue = localVar;
             }
@@ -1202,8 +1202,8 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
             {
                 // Returns the llvm value object of the variable, which is stored as a symbol property in the symbol object.
                 // The llvm object is referring to the variable pointer. It needs to be loaded to access the value of the variable.
-                auto symbol = node->GetScope()->ResolveSymbol(node->GetValue());
-                literalValue = static_cast<SymbolProperty *>(symbol->GetProperty())->GetValue();
+                auto symbol = node->getScope()->resolveSymbol(node->GetValue());
+                literalValue = static_cast<SymbolProperty *>(symbol->getProperty())->getValue();
             }
             break;
 
@@ -1216,7 +1216,7 @@ llvm::Value * CodeGenPass::VisitLiteral(ast::NodeLiteral * node)
 }
 
 
-void CodeGenPass::CreateInternalInitializerFunction()
+void CodeGenPass::createInternalInitializerFunction()
 {
     // Save the current block.
     llvm::BasicBlock *  prevBlock = m_irBuilder->GetInsertBlock();
@@ -1225,17 +1225,17 @@ void CodeGenPass::CreateInternalInitializerFunction()
     std::vector<llvm::Type *> argTypes;
 
     // Create the initializer function.
-    m_initFunction = CreateFunc(*m_irBuilder, Type::kTypeVoid, "__initGlobalVariables__", argTypes);
+    m_initFunction = createFunc(*m_irBuilder, Type::kTypeVoid, "__initGlobalVariables__", argTypes);
 
     // Create a basic block for the function.
-    m_initFunctionBlock = CreateBasicBlock(m_initFunction, "entry");
+    m_initFunctionBlock = createBasicBlock(m_initFunction, "entry");
 
     // Restore the previous block.
     m_irBuilder->SetInsertPoint(prevBlock);
 }
 
 
-void CodeGenPass::FinalizeInternalInitializerFunction()
+void CodeGenPass::finalizeInternalInitializerFunction()
 {
     // Finalize the global variable initialization code.
     auto prevBlock = m_irBuilder->GetInsertBlock();
@@ -1245,7 +1245,7 @@ void CodeGenPass::FinalizeInternalInitializerFunction()
 }
 
 
-llvm::Type * CodeGenPass::CreateBaseType(scc::Type type)
+llvm::Type * CodeGenPass::createBaseType(scc::Type type)
 {
     switch(type)
     {
@@ -1274,7 +1274,7 @@ llvm::Type * CodeGenPass::CreateBaseType(scc::Type type)
 }
 
 
-llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string & value)
+llvm::Constant * CodeGenPass::createConstant(scc::Type type, const std::string & value)
 {
     assert(!value.empty());
 
@@ -1298,24 +1298,24 @@ llvm::Constant * CodeGenPass::CreateConstant(scc::Type type, const std::string &
 }
 
 
-llvm::GlobalVariable * CodeGenPass::CreateGlobalVariable(std::string name, scc::Type type)
+llvm::GlobalVariable * CodeGenPass::createGlobalVariable(std::string name, scc::Type type)
 {
-    m_module->getOrInsertGlobal(name, CreateBaseType(type));
+    m_module->getOrInsertGlobal(name, createBaseType(type));
     auto gVar = m_module->getNamedGlobal(name);
     gVar->setLinkage(llvm::GlobalValue::CommonLinkage);
     gVar->setAlignment(llvm::MaybeAlign(sizeof(void*)));
-    gVar->setInitializer(CreateConstant(type, "0"));
+    gVar->setInitializer(createConstant(type, "0"));
 
     return gVar;
 }
 
 
-llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
+llvm::Function * CodeGenPass::createFunc(llvm::IRBuilder <> & Builder,
                                          scc::Type returnType,
                                          const std::string & name,
                                          std::vector<llvm::Type *> & argTypes)
 {
-    auto funcType = llvm::FunctionType::get(CreateBaseType(returnType), argTypes, false);
+    auto funcType = llvm::FunctionType::get(createBaseType(returnType), argTypes, false);
     // The ExternalLinkage enumeration member means that the function can be referred to from other modules.
     auto func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, name, m_module.get());
 
@@ -1323,13 +1323,13 @@ llvm::Function * CodeGenPass::CreateFunc(llvm::IRBuilder <> & Builder,
 }
 
 
-llvm::BasicBlock * CodeGenPass::CreateBasicBlock(llvm::Function * func, const std::string & name)
+llvm::BasicBlock * CodeGenPass::createBasicBlock(llvm::Function * func, const std::string & name)
 {
     return llvm::BasicBlock::Create(*m_context, name, func);
 }
 
 
-llvm::Value * CodeGenPass::LoadIfPointerType(llvm::Value * value)
+llvm::Value * CodeGenPass::loadIfPointerType(llvm::Value * value)
 {
     if (value->getType()->getTypeID() == llvm::Type::PointerTyID)
     {
@@ -1340,14 +1340,14 @@ llvm::Value * CodeGenPass::LoadIfPointerType(llvm::Value * value)
 }
 
 
-void CodeGenPass::DumpIRCode() const
+void CodeGenPass::dumpIRCode() const
 {
     // REQUIRES to build LLVM in debug mode.
     // m_module->dump();
 }
 
 
-void CodeGenPass::DeleteUnreachableBasicBlocks(llvm::Function * function)
+void CodeGenPass::deleteUnreachableBasicBlocks(llvm::Function * function)
 {
     auto & bbList = m_currentFunction->getBasicBlockList();
     auto prevIt = bbList.begin();
@@ -1363,7 +1363,7 @@ void CodeGenPass::DeleteUnreachableBasicBlocks(llvm::Function * function)
 }
 
 
-std::string CodeGenPass::DebugLLVMTypeAsString(llvm::Type::TypeID typeID) const
+std::string CodeGenPass::debugLLVMTypeAsString(llvm::Type::TypeID typeID) const
 {
     switch (typeID)
     {

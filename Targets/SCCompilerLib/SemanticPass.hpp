@@ -49,50 +49,50 @@ public:
 
 private:
     // Visits all node children.
-    void VisitChildren(ast::Node * node);
+    void visitChildren(ast::Node * node);
 
-    // Visit nodes to create scopes and define symbols.
-    Type Visit(ast::Node * node);
+    // visit nodes to create scopes and define symbols.
+    Type visit(ast::Node * node);
 
-    void VisitProgram(ast::NodeProgram * node);
+    void visitProgram(ast::NodeProgram * node);
 
-    void VisitVariableDeclaration(ast::NodeVarDeclaration * node);
+    void visitVariableDeclaration(ast::NodeVarDeclaration * node);
 
-    void VisitFunctionDeclaration(ast::NodeFuncDeclaration * node);
+    void visitFunctionDeclaration(ast::NodeFuncDeclaration * node);
 
-    void VisitBlock(ast::NodeBlock * node);
+    void visitBlock(ast::NodeBlock * node);
 
-    void VisitIfStatement(ast::NodeIfStatement * node);
+    void visitIfStatement(ast::NodeIfStatement * node);
 
-    void VisitForStatement(ast::NodeForStatement * node);
+    void visitForStatement(ast::NodeForStatement * node);
 
-    void VisitWhileStatement(ast::NodeWhileStatement * node);
+    void visitWhileStatement(ast::NodeWhileStatement * node);
 
-    void VisitDoWhileStatement(ast::NodeDoWhileStatement * node);
+    void visitDoWhileStatement(ast::NodeDoWhileStatement * node);
 
-    void VisitReturnStatement(ast::NodeReturnStatement * node);
+    void visitReturnStatement(ast::NodeReturnStatement * node);
 
-    void VisitContinue(ast::NodeContinue * node);
+    void visitContinue(ast::NodeContinue * node);
 
-    void VisitBreak(ast::NodeBreak * node);
+    void visitBreak(ast::NodeBreak * node);
 
-    Type VisitFunctionCall(ast::NodeFuncCall * node);
+    Type visitFunctionCall(ast::NodeFuncCall * node);
 
-    Type VisitAssignment(ast::NodeAssignment * node);
+    Type visitAssignment(ast::NodeAssignment * node);
 
-    Type VisitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
+    Type visitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 
-    Type VisitLogicalOP(ast::NodeLogicalOP * node);
+    Type visitLogicalOP(ast::NodeLogicalOP * node);
 
-    Type VisitPrefixAOP(ast::NodePrefixAOP * node);
+    Type visitPrefixAOP(ast::NodePrefixAOP * node);
 
-    Type VisitAOP(ast::NodeAOP * node);
+    Type visitAOP(ast::NodeAOP * node);
 
-    Type VisitNodeUnaryOP(ast::NodeUnaryOP * node);
+    Type visitNodeUnaryOP(ast::NodeUnaryOP * node);
 
-    Type VisitLiteral(ast::NodeLiteral * node);
+    Type visitLiteral(ast::NodeLiteral * node);
 
-    Type VisitCompOP(ast::NodeCompOP * node);
+    Type visitCompOP(ast::NodeCompOP * node);
 };
 
 }

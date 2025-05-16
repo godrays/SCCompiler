@@ -30,7 +30,7 @@ JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
 
     m_module = module.get();
 
-    OptimizeIR();
+    optimizeIR();
 
     // DEBUG
     // llvm::outs() << "[OPTIMIZED] ----------------------------------------\n" << *m_module;
@@ -53,7 +53,7 @@ JITEngine::~JITEngine()
 }
 
 
-void * JITEngine::GetFunctionPtr(std::string name)
+void * JITEngine::getFunctionPtr(std::string name)
 {
     // OLD WAY: auto funcPtr = m_executionEngine->getPointerToFunction(m_module->getFunction(name));
     void * funcPtr = reinterpret_cast<void *>(m_executionEngine->getFunctionAddress(name));
@@ -62,7 +62,7 @@ void * JITEngine::GetFunctionPtr(std::string name)
 }
 
 
-llvm::GenericValue JITEngine::RunFunction(const std::string & funcName, std::vector<llvm::GenericValue> & args)
+llvm::GenericValue JITEngine::runFunction(const std::string & funcName, std::vector<llvm::GenericValue> & args)
 {
     auto func = m_executionEngine->FindFunctionNamed(funcName);
     auto returnVal = m_executionEngine->runFunction(func, args);
@@ -71,16 +71,16 @@ llvm::GenericValue JITEngine::RunFunction(const std::string & funcName, std::vec
 }
 
 
-void JITEngine::Reset()
+void JITEngine::reset()
 {
     using InitFuncType = void (*)();
-    auto initFunc = reinterpret_cast<InitFuncType>(GetFunctionPtr("__initGlobalVariables__"));
+    auto initFunc = reinterpret_cast<InitFuncType>(getFunctionPtr("__initGlobalVariables__"));
     // Initialize global variables.
     initFunc();
 }
 
 
-void JITEngine::OptimizeIR()
+void JITEngine::optimizeIR()
 {
     // Create a PassManager to hold and optimize the collection of passes we are about to build.
     llvm::legacy::PassManager Passes;

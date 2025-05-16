@@ -76,10 +76,10 @@ public:
     FuncArg(Type type, std::string name);
 
     // Returns argument type.
-    Type GetType();
+    Type getType();
 
     // Returns argument name.
-    std::string GetName();
+    std::string getName();
 
 protected:
     // Stores argument type.
@@ -100,49 +100,49 @@ public:
     virtual ~Node();
 
     // Adds child node.
-    void    AddChild(Node * childNode);
+    void    addChild(Node * childNode);
 
     // Returns children's count.
-    size_t  ChildCount();
+    size_t  childCount();
 
     // Returns child at given index.
-    Node *  GetChild(size_t index);
+    Node *  getChild(size_t index);
 
     // Sets parent node.
-    void    SetParent(Node * parentNode);
+    void    setParent(Node * parentNode);
 
     // Returns parent node.
-    Node *  GetParent();
+    Node *  getParent();
 
     // Returns node type.
-    NodeType  GetNodeType();
+    NodeType  getNodeType();
 
     // Return node type in string.
-    std::string GetNodeTypeInString(ast::NodeType nodeType);
+    std::string getNodeTypeInString(ast::NodeType nodeType);
 
     // Set scope.
-    void SetScope(ScopeNode * scope);
+    void setScope(ScopeNode * scope);
 
     // Get scope.
-    ScopeNode * GetScope();
+    ScopeNode * getScope();
 
     // Set source code line.
-    void  SetSourceCodeLine(size_t lineNumber);
+    void  setSourceCodeLine(size_t lineNumber);
 
     // Get source code line.
-    size_t  GetSourceCodeLine() const;
+    size_t  getSourceCodeLine() const;
 
     // Finds the closest parent node with the given type in the path from the current node to the tree root node.
-    Node * FindClosestParentNode(const std::vector<NodeType> & nodeType);
+    Node * findClosestParentNode(const std::vector<NodeType> & nodeType);
 
     // Finds the closest child node with the given type in the path from the current node to its children.
-    Node * FindClosestChildNode(NodeType nodeType);
+    Node * findClosestChildNode(NodeType nodeType);
 
 protected:
     explicit Node(NodeType nodeType);
 
     // Delete all child nodes.
-    void DeleteChildren();
+    void deleteChildren();
 
     // Node Type
     NodeType    m_nodeType{NodeType::kNodeTypeUnknown};

@@ -13,7 +13,7 @@
 using namespace scc;
 
 
-SCCompiler * SCCompiler::Create()
+SCCompiler * SCCompiler::create()
 {
     return new Compiler();
 }

@@ -32,7 +32,7 @@ class TypeChecker
 {
 public:
     // Promotes types if possible.
-    static Type Promote(Type type1, Type type2);
+    static Type promote(Type type1, Type type2);
 
 protected:
     // The protected constructor disallows allocation of this object.

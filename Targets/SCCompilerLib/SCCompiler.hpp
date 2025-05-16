@@ -27,19 +27,19 @@ class SCCompiler
 {
 public:
     // Creates SCCompilerLib object.
-    static SCCompiler * Create();
+    static SCCompiler * create();
 
     // Destructor.
     virtual ~SCCompiler() = 0;
 
     // Compiles Simple C Source code from file.
-    virtual SCModule * CompileFromFile(std::string filename, SCCompileResult & compileResult) = 0;
+    virtual SCModule * compileFromFile(std::string filename, SCCompileResult & compileResult) = 0;
 
     // Compiles Simple C Source code from memory.
-    virtual SCModule * CompileFromMemory(std::string sourceCode, SCCompileResult & compileResult) = 0;
+    virtual SCModule * compileFromMemory(std::string sourceCode, SCCompileResult & compileResult) = 0;
 
     // Returns compile error message.
-    virtual std::string GetErrorMessage() = 0;
+    virtual std::string getErrorMessage() = 0;
 };
 
 }

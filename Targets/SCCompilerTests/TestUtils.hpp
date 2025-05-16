@@ -12,6 +12,6 @@
 #include <string>
 
 
-bool TestCode(std::string sourceCode, scc::SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult);
+bool testCode(std::string sourceCode, scc::SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult);
 
-scc::SCModule * TestCodeM(std::string sourceCode, scc::SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult);
+scc::SCModule * testCodeM(std::string sourceCode, scc::SCCompileResult expectedCompileResult, bool acceptExpectedCompileResult);

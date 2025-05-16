@@ -52,22 +52,22 @@ public:
     virtual ~Symbol() = default;
 
     // Returns symbol name.
-    std::string GetName() const;
+    std::string getName() const;
 
     // Returns symbol type.
-    Type GetType() const;
+    Type getType() const;
 
     // Returns symbol name.
-    void SetScope(ScopeNode * scopeNode);
+    void setScope(ScopeNode * scopeNode);
 
     // Returns symbol category.
-    SymbolCategory GetCategory();
+    SymbolCategory getCategory();
 
     // Get Property.
-    SymbolPropertyBase * GetProperty();
+    SymbolPropertyBase * getProperty();
 
     // Set Property.
-    void SetProperty(SymbolPropertyBase * property);
+    void setProperty(SymbolPropertyBase * property);
 
 protected:
     // Symbol name.
@@ -118,13 +118,13 @@ public:
     FunctionSymbol(std::string name, Type type);
 
     // Adds a function argument symbol.
-    void AddArgumentSymbol(FuncArgSymbol * argSymbol);
+    void addArgumentSymbol(FuncArgSymbol * argSymbol);
 
     // Returns the argument count.
-    size_t ArgumentCount();
+    size_t argumentCount();
 
     // Returns the function argument symbol at the given index.
-    FuncArgSymbol * GetArgumentSymbol(size_t index);
+    FuncArgSymbol * getArgumentSymbol(size_t index);
 
 private:
     std::vector<FuncArgSymbol *>  m_argumentSymbols;
@@ -154,22 +154,22 @@ public:
     ~ScopeNode();
 
     // Get scope category.
-    ScopeCategory GetCategory();
+    ScopeCategory getCategory();
 
     // Add a child scope node.
-    void AddChild(ScopeNode * childNode);
+    void addChild(ScopeNode * childNode);
 
     // Returns the enclosing scope (parent node of this node).
-    ScopeNode * GetEnclosingScope();
+    ScopeNode * getEnclosingScope();
 
     // Returns true if the symbol is defined in this scope. Otherwise, false.
-    bool  IsDefined(const std::string& symbolName);
+    bool  isDefined(const std::string& symbolName);
 
     // Insert a symbol.
-    void  InsertSymbol(Symbol *  symbolNode);
+    void  insertSymbol(Symbol *  symbolNode);
 
     // Resolve a symbol between the current scope and the global scope (root node).
-    Symbol *  ResolveSymbol(const std::string& symbolName);
+    Symbol *  resolveSymbol(const std::string& symbolName);
 
 protected:
     // Scope category.
