@@ -49,8 +49,7 @@ protected:
     void outputConfigFuncDecl(ast::Node * node);
 
 private:
-    // Output file.
-    std::ofstream   m_outputFile;
+    std::ofstream   m_outputFile;       // Output file.
 };
     
 }

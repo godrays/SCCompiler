@@ -82,11 +82,8 @@ public:
     std::string getName();
 
 protected:
-    // Stores argument type.
-    Type   m_type;
-
-    // Stores argument name.
-    std::string   m_name;
+    Type   m_type;          // Stores argument type.
+    std::string   m_name;   // Stores argument name.
 };
 
 

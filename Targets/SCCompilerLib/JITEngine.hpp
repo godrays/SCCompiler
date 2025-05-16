@@ -61,11 +61,8 @@ public:
     void optimizeIR();
 
 protected:
-    // Pointer to program module object.
-    llvm::Module *  m_module{nullptr};
-
-    // Execution engine.
-    llvm::ExecutionEngine * m_executionEngine{nullptr};
+    llvm::Module *  m_module{nullptr};                      // Pointer to program module object.
+    llvm::ExecutionEngine * m_executionEngine{nullptr};     // Execution engine.
 };
 
 }

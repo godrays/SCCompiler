@@ -102,20 +102,11 @@ public:
     llvm::BasicBlock * getExitBasicBlock();
 
 protected:
-    // AST Node.
-    ast::Node *  m_node;
-
-    // Condition basic block.
-    llvm::BasicBlock *  m_conditionBasicBlock;
-
-    // Body basic block.
-    llvm::BasicBlock *  m_bodyBasicBlock;
-
-    // Increment basic block.
-    llvm::BasicBlock *  m_incrementBasicBlock;
-
-    // Exit basic block.
-    llvm::BasicBlock *  m_exitBasicBlock;
+    ast::Node *  m_node;                            // AST Node.
+    llvm::BasicBlock *  m_conditionBasicBlock;      // Condition basic block.
+    llvm::BasicBlock *  m_bodyBasicBlock;           // Body basic block.
+    llvm::BasicBlock *  m_incrementBasicBlock;      // Increment basic block.
+    llvm::BasicBlock *  m_exitBasicBlock;           // Exit basic block.
 };
 
 
@@ -239,26 +230,13 @@ private:
     void deleteUnreachableBasicBlocks(llvm::Function * function);
 
 protected:
-    // Stores the entire code.
-    std::unique_ptr<llvm::Module>  m_module;
-
-    // LLVM context. NOTE: We need an LLVMContext per-thread context.
-    llvm::LLVMContext * m_context{nullptr};
-
-    // Pointer to the current LLVM Function.
-    llvm::Function *  m_currentFunction{nullptr};
-
-    // Initializer function for global variables.
-    llvm::Function *  m_initFunction{nullptr};
-
-    // Last used basic block in the initializer function.
-    llvm::BasicBlock *  m_initFunctionBlock{nullptr};
-
-    // IR builder stack.
-    llvm::IRBuilder<> * m_irBuilder{nullptr};
-
-    // Stores LLVM BasicBlocks.
-    NodeBasicBlocksStack    m_nodeBBStack;
+    std::unique_ptr<llvm::Module>  m_module;            // Stores the entire code.
+    llvm::LLVMContext * m_context{nullptr};             // LLVM context. NOTE: We need an LLVMContext per-thread context.
+    llvm::Function *  m_currentFunction{nullptr};       // Pointer to the current LLVM Function.
+    llvm::Function *  m_initFunction{nullptr};          // Initializer function for global variables.
+    llvm::BasicBlock *  m_initFunctionBlock{nullptr};   // Last used basic block in the initializer function.
+    llvm::IRBuilder<> * m_irBuilder{nullptr};           // IR builder stack.
+    NodeBasicBlocksStack  m_nodeBBStack;                // Stores LLVM BasicBlocks.
 };
 
 }

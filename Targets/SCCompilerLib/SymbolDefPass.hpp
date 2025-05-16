@@ -56,8 +56,7 @@ private:
     void visitLiteral(ast::NodeLiteral * node);
 
 private:
-    // Stores the current scope.
-    ScopeNode *  m_currentScope{nullptr};
+    ScopeNode *  m_currentScope{nullptr};       // Stores the current scope.
 };
 
 }

@@ -172,17 +172,10 @@ public:
     Symbol *  resolveSymbol(const std::string& symbolName);
 
 protected:
-    // Scope category.
-    ScopeCategory   m_category;
-
-    // Hash table for symbols.
-    std::unordered_map<std::string, Symbol *>   m_symbolTable;
-
-    // Enclosing scope that covers this scope.
-    ScopeNode *   m_enclosingScope;
-
-    // Stores child scope nodes. We only need this for deleting the scope node tree.
-    std::vector<ScopeNode *>    m_children;
+    ScopeCategory   m_category;                                 // Scope category.
+    std::unordered_map<std::string, Symbol *>   m_symbolTable;  // Hash table for symbols.
+    ScopeNode *   m_enclosingScope;                             // Enclosing scope that covers this scope.
+    std::vector<ScopeNode *>    m_children;                     // Stores child scope nodes.
 };
 
 }
