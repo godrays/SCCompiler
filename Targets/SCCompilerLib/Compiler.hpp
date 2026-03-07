@@ -10,6 +10,7 @@
 #include "SCModule.hpp"
 // External includes
 // System includes
+#include <istream>
 #include <string>
 
 
@@ -21,17 +22,17 @@ class Compiler : public SCCompiler
 public:
 
     // Compiles Simple C Source code from file.
-    SCModule * compileFromFile(std::string filename, SCCompileResult & compileResult) final;
+    std::unique_ptr<SCModule> compileFromFile(std::string filename, SCCompileResult & compileResult) final;
 
     // Compiles Simple C Source code from memory.
-    SCModule * compileFromMemory(std::string sourceCode, SCCompileResult & compileResult) final;
+    std::unique_ptr<SCModule> compileFromMemory(std::string sourceCode, SCCompileResult & compileResult) final;
 
     // Returns compile error message.
     std::string getErrorMessage() final  { return m_errorMessage; }
 
 protected:
     // Compiles Simple C Source code.
-    SCModule * compile(std::istream & sourceStream, SCCompileResult & compileResult);
+    std::unique_ptr<SCModule> compile(std::istream & sourceStream, SCCompileResult & compileResult);
 
 private:
     std::string     m_errorMessage;

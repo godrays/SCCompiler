@@ -9,6 +9,7 @@
 #include "AST.hpp"
 // External includes
 // System includes
+#include <memory>
 
 
 namespace scc
@@ -34,7 +35,7 @@ public:
     SymbolDefPass() = default;
 
     // Creates a scope tree and defines symbols based on the AST nodes.
-    ScopeNode * createScopeTree(ast::Node * node);
+    std::unique_ptr<ScopeNode> createScopeTree(ast::Node * node);
 
 private:
     // Visits nodes to create scopes and define symbols.

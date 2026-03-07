@@ -42,17 +42,12 @@ int main(int , const char **)
         return -1;
     }
 
-    // We no longer need compiler since SCModule holds compiled machine code.
-    delete compiler;
-
     // SCModule holds compiled machine code. Let's bind to the compiled main function.
     using mainFuncType = int (*)(int);
     const auto mainFunc = reinterpret_cast<mainFuncType>(scModule->getFunctionPtr("main"));
 
     // Call the main function, which is the machine code in memory, directly.
     std::cout << "fib(10) = " << mainFunc(10) << std::endl;
-
-    delete scModule;
 
     return 0;
 }

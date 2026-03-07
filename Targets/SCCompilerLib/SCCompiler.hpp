@@ -9,6 +9,7 @@
 #include "SCModule.hpp"
 // External includes
 // System includes
+#include <memory>
 
 
 namespace scc
@@ -27,16 +28,16 @@ class SCCompiler
 {
 public:
     // Creates SCCompilerLib object.
-    static SCCompiler * create();
+    static std::unique_ptr<SCCompiler> create();
 
     // Destructor.
     virtual ~SCCompiler() = 0;
 
     // Compiles Simple C Source code from file.
-    virtual SCModule * compileFromFile(std::string filename, SCCompileResult & compileResult) = 0;
+    virtual std::unique_ptr<SCModule> compileFromFile(std::string filename, SCCompileResult & compileResult) = 0;
 
     // Compiles Simple C Source code from memory.
-    virtual SCModule * compileFromMemory(std::string sourceCode, SCCompileResult & compileResult) = 0;
+    virtual std::unique_ptr<SCModule> compileFromMemory(std::string sourceCode, SCCompileResult & compileResult) = 0;
 
     // Returns compile error message.
     virtual std::string getErrorMessage() = 0;

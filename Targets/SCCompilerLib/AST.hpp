@@ -10,6 +10,7 @@
 // External includes
 // System includes
 #include <cassert>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -97,7 +98,7 @@ public:
     virtual ~Node();
 
     // Adds child node.
-    void    addChild(Node * childNode);
+    void    addChild(std::unique_ptr<Node> childNode);
 
     // Returns children's count.
     size_t  childCount();
@@ -148,7 +149,7 @@ protected:
     Node *   m_parent{nullptr};
 
     // Stores child nodes.
-    std::vector<Node *>   m_children;
+    std::vector<std::unique_ptr<Node>>   m_children;
 
     // Pointer to the scope. Each AST node should know which scope it is in.
     ScopeNode *     m_scope{nullptr};

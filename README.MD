@@ -63,9 +63,6 @@ int main()
         std::cerr << compiler->getErrorMessage() << std::endl;
         return -1;
     }
-    
-    // We no longer need the compiler.
-    delete compiler;
 
     // SCModule holds compiled machine code. Let's bind to the compiled main function.
     using mainFuncType = int (*)(int);
@@ -74,8 +71,6 @@ int main()
     // Call the main function, which is the machine code in memory, directly.
     std::cout << "fib(10) = " << mainFunc(10) << std::endl;
 
-    delete scModule;
-
     return 0;
 }
 ```
@@ -83,7 +78,7 @@ int main()
 Alternatively, you can load the source code from a file with a single line change.
 
 ```C++
-auto scModule = compiler->CompileFromFile("my_source_file.src", compileResult);
+auto scModule = compiler->compileFromFile("my_source_file.src", compileResult);
 ```
 
 # Guidance

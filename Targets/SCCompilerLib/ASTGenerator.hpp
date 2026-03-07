@@ -10,6 +10,7 @@
 #include "Types.hpp"
 // External includes
 // System includes
+#include <memory>
 #include <stack>
 
 
@@ -31,8 +32,8 @@ public:
     // Destructor.
     ~ASTGenerator() final = default;
 
-    // Return AST Node.
-    ast::Node *   getAST()    { return m_rootNode; }
+    // Releases AST ownership to the caller.
+    std::unique_ptr<ast::Node> takeAST() { return std::move(m_rootNode); }
 
     static Type   toASTType(const std::string&);
 
@@ -87,9 +88,9 @@ public:
     antlrcpp::Any  visitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *ctx) final;
 
 protected:
-    void  pushNodeToStack(ast::Node* node);
+    void  pushNodeToStack(std::unique_ptr<ast::Node> node);
 
-    ast::Node *   m_rootNode{nullptr};
+    std::unique_ptr<ast::Node>  m_rootNode;
     std::stack<ast::Node *>  m_currentNodeStack;
 };
 

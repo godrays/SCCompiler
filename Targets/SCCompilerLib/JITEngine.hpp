@@ -29,6 +29,7 @@
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Support/raw_ostream.h>
 // System includes
+#include <memory>
 #include <unordered_map>
 #include <stack>
 #include <string>
@@ -43,7 +44,7 @@ class JITEngine final : public SCModule
 {
 public:
     // Constructor.
-    explicit JITEngine(std::unique_ptr<llvm::Module> module);
+    JITEngine(std::unique_ptr<llvm::Module> module, std::unique_ptr<llvm::LLVMContext> context);
 
     // Destructor.
     ~JITEngine() final;
@@ -61,8 +62,9 @@ public:
     void optimizeIR();
 
 protected:
-    llvm::Module *  m_module{nullptr};                      // Pointer to program module object.
-    llvm::ExecutionEngine * m_executionEngine{nullptr};     // Execution engine.
+    std::unique_ptr<llvm::LLVMContext> m_context;            // Owns LLVM context required by the module.
+    llvm::Module *  m_module{nullptr};                       // Pointer to program module object.
+    std::unique_ptr<llvm::ExecutionEngine> m_executionEngine; // Execution engine.
 };
 
 }

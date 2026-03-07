@@ -17,8 +17,7 @@ Symbol::Symbol(std::string name, SymbolCategory category, Type type) :
     m_name(std::move(name)),
     m_category(category),
     m_type(type),
-    m_scopeNode(nullptr),
-    m_property(nullptr)
+    m_scopeNode(nullptr)
 {
 
 }
@@ -50,15 +49,15 @@ SymbolCategory Symbol::getCategory()
 
 SymbolPropertyBase * Symbol::getProperty()
 {
-    return m_property;
+    return m_property.get();
 }
 
 
-void Symbol::setProperty(SymbolPropertyBase * property)
+void Symbol::setProperty(std::unique_ptr<SymbolPropertyBase> property)
 {
     // Can't assign new property without deleting the previous one.
     assert(m_property == nullptr);
-    m_property = property;
+    m_property = std::move(property);
 }
 
 
@@ -111,39 +110,11 @@ ScopeNode::ScopeNode(ScopeCategory category, ScopeNode * enclosingScope) :
     m_category(category),
     m_enclosingScope(enclosingScope)
 {
-    // In the scope tree, a child is always connected to its parent.
-    // Because of that, the child should add itself to the parent's children list.
-    // In fact, the parent never needs to know its children since children point to the parent due to the nature of the scope tree.
-    // However, we want the parent node to know its children since we need to delete child nodes when we delete the scope node root node.
-
-    if (enclosingScope != nullptr)
-    {
-        enclosingScope->addChild(this);
-    }
 }
 
 
 ScopeNode::~ScopeNode()
-{
-    // Delete all symbol objects.
-    for (auto pair : m_symbolTable)
-    {
-        // Has table pair.first = key, pair.second = symbol
-        delete pair.second->getProperty();
-        delete pair.second;
-    }
-
-    // Clear symbol table.
-    m_symbolTable.clear();
-
-    // Delete all children.
-    for (auto child : m_children)
-    {
-        delete child;
-    }
-
-    m_children.clear();
-}
+= default;
 
 
 ScopeCategory ScopeNode::getCategory()
@@ -159,16 +130,22 @@ bool ScopeNode::isDefined(const std::string & symbolName)
 }
 
 
-void  ScopeNode::insertSymbol(Symbol *  symbol)
+Symbol * ScopeNode::insertSymbol(std::unique_ptr<Symbol> symbol)
 {
+    assert(symbol != nullptr);
+
     // No duplicate symbol is allowed. The program should check before adding a new symbol.
     assert(m_symbolTable.find(symbol->getName()) == m_symbolTable.end());
 
+    auto * symbolPtr = symbol.get();
+
     // Add the symbol to the symbol table. We are basically defining a new symbol in this scope.
-    m_symbolTable[symbol->getName()] = symbol;
+    m_symbolTable[symbol->getName()] = std::move(symbol);
 
     // Set the scope for the symbol. Each symbol should know which scope they are in.
-    symbol->setScope(this);
+    symbolPtr->setScope(this);
+
+    return symbolPtr;
 }
 
 
@@ -180,7 +157,7 @@ Symbol *  ScopeNode::resolveSymbol(const std::string & symbolName)
     // Return if the symbol exists.
     if ( pair != m_symbolTable.end())
     {
-        return pair->second;
+        return pair->second.get();
     }
 
     // If it can't be found in this scope, then check the enclosing scopes.
@@ -193,9 +170,20 @@ Symbol *  ScopeNode::resolveSymbol(const std::string & symbolName)
     return nullptr;
 }
 
-void ScopeNode::addChild(ScopeNode * childNode)
+ScopeNode * ScopeNode::addChild(std::unique_ptr<ScopeNode> childNode)
 {
-    m_children.emplace_back(childNode);
+    assert(childNode != nullptr);
+
+    auto * childPtr = childNode.get();
+    m_children.emplace_back(std::move(childNode));
+
+    return childPtr;
+}
+
+
+ScopeNode * ScopeNode::createChildScope(ScopeCategory category)
+{
+    return addChild(std::make_unique<ScopeNode>(category, this));
 }
 
 

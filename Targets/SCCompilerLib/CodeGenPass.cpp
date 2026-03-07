@@ -80,32 +80,17 @@ llvm::BasicBlock * NodeBasicBlocks::getExitBasicBlock()
 }
 
 
-NodeBasicBlocksStack::~NodeBasicBlocksStack()
-{
-    assert(m_nodeBBStack.empty() && "Stack size has to be zero.");
-    m_nodeBBStack.clear();
-}
-
-
-void NodeBasicBlocksStack::push(NodeBasicBlocks * nodeBasicBlocks)
+void NodeBasicBlocksStack::push(std::unique_ptr<NodeBasicBlocks> nodeBasicBlocks)
 {
     assert(nodeBasicBlocks != nullptr);
-    m_nodeBBStack.emplace_back(nodeBasicBlocks);
+    m_nodeBBStack.emplace_back(std::move(nodeBasicBlocks));
 }
 
 
-void NodeBasicBlocksStack::popAndDelete()
+void NodeBasicBlocksStack::pop()
 {
-    auto stackSize = m_nodeBBStack.size();
-    assert(stackSize > 0);
-
-    // Pop nodeBBs.
-    auto nodeBBs = m_nodeBBStack[stackSize - 1];
+    assert(!m_nodeBBStack.empty());
     m_nodeBBStack.pop_back();
-
-    // Delete.
-    assert(nodeBBs != nullptr);
-    delete nodeBBs;
 }
 
 
@@ -119,7 +104,7 @@ NodeBasicBlocks * NodeBasicBlocksStack::getOneOfThese(const std::vector<ast::Nod
         // If node type matches one of the given type then return it.
         for (auto nodeType : nodeTypes)
         {
-            auto nodeBasicBlocks = m_nodeBBStack[size-index-1];
+            auto nodeBasicBlocks = m_nodeBBStack[size-index-1].get();
             if (nodeBasicBlocks->getNode()->getNodeType() == nodeType)
             {
                 return nodeBasicBlocks;
@@ -133,17 +118,16 @@ NodeBasicBlocks * NodeBasicBlocksStack::getOneOfThese(const std::vector<ast::Nod
 
 CodeGenPass::~CodeGenPass()
 {
-    delete m_irBuilder;
 }
 
 
-JITEngine * CodeGenPass::generateCode(ast::Node * node)
+std::unique_ptr<SCModule> CodeGenPass::generateCode(ast::Node * node)
 {
-    m_context = new llvm::LLVMContext();
+    m_context = std::make_unique<llvm::LLVMContext>();
     m_module = std::make_unique<llvm::Module>("Program", *m_context);
 
     // Create new IRBuilder for global scope.
-    m_irBuilder = new llvm::IRBuilder<>(*m_context);
+    m_irBuilder = std::make_unique<llvm::IRBuilder<>>(*m_context);
 
     createInternalInitializerFunction();
 
@@ -154,7 +138,7 @@ JITEngine * CodeGenPass::generateCode(ast::Node * node)
     // dumpIRCode(); // REQUIRES to build LLVM in debug mode.
 
     // Create JITEngine. Transfer ownership of m_module and m_context to JITEngine.
-    return new JITEngine(std::move(m_module));
+    return std::make_unique<JITEngine>(std::move(m_module), std::move(m_context));
 }
 
 
@@ -307,7 +291,7 @@ void CodeGenPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
     if (node->getScope()->getCategory() == ScopeCategory::kGlobal)
     {
         auto globalVar = createGlobalVariable(varName, node->GetVarType());
-        node->getScope()->resolveSymbol(varName)->setProperty(new SymbolProperty(globalVar));
+        node->getScope()->resolveSymbol(varName)->setProperty(std::make_unique<SymbolProperty>(globalVar));
 
         // Generate initialization code in the internal initialization function.
         if (childCount == 1)
@@ -344,7 +328,7 @@ void CodeGenPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
         auto localVar = m_irBuilder->CreateAlloca(createBaseType(node->GetVarType()), nullptr, varName);
         // Set the symbol property to save the new LLVM variable object. Save related LLVM objects in the symbol object.
         // We save the LLVM object because every time this variable is used, we need to access its LLVM object.
-        node->getScope()->resolveSymbol(varName)->setProperty(new SymbolProperty(localVar));
+        node->getScope()->resolveSymbol(varName)->setProperty(std::make_unique<SymbolProperty>(localVar));
 
         // If the node has a child, then it needs to be evaluated and assigned to the new variable.
         if (childCount == 1)
@@ -375,7 +359,7 @@ void CodeGenPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     
     // Create function with arguments.
     m_currentFunction = createFunc(*m_irBuilder, funcReturnType, funcName, argTypes);
-    funcSymbol->setProperty(new SymbolProperty(m_currentFunction));
+    funcSymbol->setProperty(std::make_unique<SymbolProperty>(m_currentFunction));
 
     // Create basic block for function.
     llvm::BasicBlock * funcBlock = createBasicBlock(m_currentFunction, "entry");
@@ -393,7 +377,7 @@ void CodeGenPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
         // This way program can't change original function parameter values.
         auto localFuncArgVar = m_irBuilder->CreateAlloca(createBaseType(funcArgSymbol->getType()), nullptr, funcArgSymbol->getName());
         m_irBuilder->CreateStore(argIt, localFuncArgVar);
-        funcArgSymbol->setProperty(new SymbolProperty(localFuncArgVar));
+        funcArgSymbol->setProperty(std::make_unique<SymbolProperty>(localFuncArgVar));
     }
 
     visitChildren(node);
@@ -503,7 +487,7 @@ void CodeGenPass::visitForStatement(ast::NodeForStatement * node)
     // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
     // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
-    m_nodeBBStack.push(new NodeBasicBlocks(node, forCondBlock, forBodyBlock, forIncBlock, forExitBlock));
+    m_nodeBBStack.push(std::make_unique<NodeBasicBlocks>(node, forCondBlock, forBodyBlock, forIncBlock, forExitBlock));
 
     // Generate code for variable declarations in the current block.
     visitChildren(forVarDeclNode);
@@ -545,7 +529,7 @@ void CodeGenPass::visitForStatement(ast::NodeForStatement * node)
     m_irBuilder->SetInsertPoint(forExitBlock);
 
     // Pop BasicBlock info from the stack.
-    m_nodeBBStack.popAndDelete();
+    m_nodeBBStack.pop();
 }
 
 
@@ -580,7 +564,7 @@ void CodeGenPass::visitWhileStatement(ast::NodeWhileStatement * node)
     // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
     // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
-    m_nodeBBStack.push(new NodeBasicBlocks(node, condBlock, bodyBlock, nullptr, exitBlock));
+    m_nodeBBStack.push(std::make_unique<NodeBasicBlocks>(node, condBlock, bodyBlock, nullptr, exitBlock));
 
     // Jump from the current block to the condition block.
     m_irBuilder->CreateBr(condBlock);
@@ -601,7 +585,7 @@ void CodeGenPass::visitWhileStatement(ast::NodeWhileStatement * node)
     m_irBuilder->SetInsertPoint(exitBlock);
 
     // Pop BasicBlock info from the stack.
-    m_nodeBBStack.popAndDelete();
+    m_nodeBBStack.pop();
 }
 
 
@@ -636,7 +620,7 @@ void CodeGenPass::visitDoWhileStatement(ast::NodeDoWhileStatement * node)
     // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
     // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
-    m_nodeBBStack.push(new NodeBasicBlocks(node, condBlock, bodyBlock, nullptr, exitBlock));
+    m_nodeBBStack.push(std::make_unique<NodeBasicBlocks>(node, condBlock, bodyBlock, nullptr, exitBlock));
 
     // Jump from the current block to the body block.
     m_irBuilder->CreateBr(bodyBlock);
@@ -658,7 +642,7 @@ void CodeGenPass::visitDoWhileStatement(ast::NodeDoWhileStatement * node)
     m_irBuilder->SetInsertPoint(exitBlock);
 
     // Pop BasicBlock info from the stack.
-    m_nodeBBStack.popAndDelete();
+    m_nodeBBStack.pop();
 }
 
 

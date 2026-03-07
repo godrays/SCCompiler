@@ -10,6 +10,7 @@
 // External includes
 // System includes
 #include <cassert>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -67,7 +68,7 @@ public:
     SymbolPropertyBase * getProperty();
 
     // Set Property.
-    void setProperty(SymbolPropertyBase * property);
+    void setProperty(std::unique_ptr<SymbolPropertyBase> property);
 
 protected:
     // Symbol name.
@@ -83,7 +84,7 @@ protected:
     ScopeNode *  m_scopeNode;
 
     // Scope Property.
-    SymbolPropertyBase *  m_property;
+    std::unique_ptr<SymbolPropertyBase>  m_property;
 };
 
 
@@ -157,7 +158,10 @@ public:
     ScopeCategory getCategory();
 
     // Add a child scope node.
-    void addChild(ScopeNode * childNode);
+    ScopeNode * addChild(std::unique_ptr<ScopeNode> childNode);
+
+    // Creates and adds a child scope node.
+    ScopeNode * createChildScope(ScopeCategory category);
 
     // Returns the enclosing scope (parent node of this node).
     ScopeNode * getEnclosingScope();
@@ -166,16 +170,16 @@ public:
     bool  isDefined(const std::string& symbolName);
 
     // Insert a symbol.
-    void  insertSymbol(Symbol *  symbolNode);
+    Symbol * insertSymbol(std::unique_ptr<Symbol> symbolNode);
 
     // Resolve a symbol between the current scope and the global scope (root node).
     Symbol *  resolveSymbol(const std::string& symbolName);
 
 protected:
     ScopeCategory   m_category;                                 // Scope category.
-    std::unordered_map<std::string, Symbol *>   m_symbolTable;  // Hash table for symbols.
+    std::unordered_map<std::string, std::unique_ptr<Symbol>>   m_symbolTable;  // Hash table for symbols.
     ScopeNode *   m_enclosingScope;                             // Enclosing scope that covers this scope.
-    std::vector<ScopeNode *>    m_children;                     // Stores child scope nodes.
+    std::vector<std::unique_ptr<ScopeNode>>    m_children;      // Stores child scope nodes.
 };
 
 }

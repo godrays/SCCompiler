@@ -21,7 +21,8 @@
 using namespace scc;
 
 
-JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
+JITEngine::JITEngine(std::unique_ptr<llvm::Module> module, std::unique_ptr<llvm::LLVMContext> context) :
+    m_context(std::move(context))
 {
     // Set up the host target and ensure that the target libraries are linked.
     llvm::InitializeNativeTarget();
@@ -36,7 +37,10 @@ JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
     // llvm::outs() << "[OPTIMIZED] ----------------------------------------\n" << *m_module;
 
     std::string error;
-    m_executionEngine = llvm::EngineBuilder(std::move(module)).setEngineKind(llvm::EngineKind::Kind::JIT).setErrorStr(&error).create();
+    m_executionEngine.reset(llvm::EngineBuilder(std::move(module))
+                                .setEngineKind(llvm::EngineKind::Kind::JIT)
+                                .setErrorStr(&error)
+                                .create());
     throw_if(m_executionEngine == nullptr,
              CompileErrorException("Could not create ExecutionEngine: ", error));
 
@@ -48,7 +52,6 @@ JITEngine::JITEngine(std::unique_ptr<llvm::Module> module)
 
 JITEngine::~JITEngine()
 {
-    delete m_executionEngine;
     //TODO: llvm::llvm_shutdown(); needs to be called per process only one time.
 }
 

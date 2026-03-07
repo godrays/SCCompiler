@@ -46,19 +46,14 @@ ast::Node::~Node()
 
 void ast::Node::deleteChildren()
 {
-    // Delete all children.
-    for (auto child : m_children)
-    {
-        delete child;
-    }
-
     m_children.clear();
 }
 
 
-void ast::Node::addChild(ast::Node * childNode)
+void ast::Node::addChild(std::unique_ptr<ast::Node> childNode)
 {
-    m_children.emplace_back(childNode);
+    assert(childNode != nullptr);
+    m_children.emplace_back(std::move(childNode));
 }
 
 
@@ -71,7 +66,7 @@ size_t ast::Node::childCount()
 ast::Node * ast::Node::getChild(size_t index)
 {
     assert(index < m_children.size());
-    return m_children[index];
+    return m_children[index].get();
 }
 
 

@@ -7,6 +7,7 @@
 
 // Project includes
 #include "AST.hpp"
+#include "SCModule.hpp"
 #include "Symbols.hpp"
 // External includes
 #include <llvm/ADT/STLExtras.h>
@@ -30,6 +31,7 @@
 #include <llvm/Support/raw_ostream.h>
 // System includes
 #include <list>
+#include <memory>
 #include <vector>
 
 
@@ -113,14 +115,11 @@ protected:
 class NodeBasicBlocksStack final
 {
 public:
-    // Destructor.
-    ~NodeBasicBlocksStack();
-
     // Pushes new element to stack.
-    void push(NodeBasicBlocks * nodeBasicBlocks);
+    void push(std::unique_ptr<NodeBasicBlocks> nodeBasicBlocks);
 
-    // Pops and deletes top element in stack.
-    void popAndDelete();
+    // Pops top element in stack.
+    void pop();
 
     // Returns NodeBasicBlocks object if node matches with given one of the node types.
     NodeBasicBlocks * getOneOfThese(const std::vector<ast::NodeType> & nodeTypes);
@@ -128,7 +127,7 @@ public:
 protected:
     // Node BasicBlock Stack. Using vector here to implement stack behavior since
     // std::stack implementation doesn't support iteration on its elements.
-    std::vector<NodeBasicBlocks *>  m_nodeBBStack;
+    std::vector<std::unique_ptr<NodeBasicBlocks>>  m_nodeBBStack;
 };
 
 
@@ -142,7 +141,7 @@ public:
     virtual ~CodeGenPass();
 
     // Performs semantic analysis on the AST nodes.
-    JITEngine * generateCode(ast::Node * node);
+    std::unique_ptr<SCModule> generateCode(ast::Node * node);
 
 private:
     // Visits all node children.
@@ -230,12 +229,12 @@ private:
     void deleteUnreachableBasicBlocks(llvm::Function * function);
 
 protected:
+    std::unique_ptr<llvm::LLVMContext> m_context;       // LLVM context. NOTE: We need an LLVMContext per-thread context.
     std::unique_ptr<llvm::Module>  m_module;            // Stores the entire code.
-    llvm::LLVMContext * m_context{nullptr};             // LLVM context. NOTE: We need an LLVMContext per-thread context.
     llvm::Function *  m_currentFunction{nullptr};       // Pointer to the current LLVM Function.
     llvm::Function *  m_initFunction{nullptr};          // Initializer function for global variables.
     llvm::BasicBlock *  m_initFunctionBlock{nullptr};   // Last used basic block in the initializer function.
-    llvm::IRBuilder<> * m_irBuilder{nullptr};           // IR builder stack.
+    std::unique_ptr<llvm::IRBuilder<>> m_irBuilder;     // IR builder stack.
     NodeBasicBlocksStack  m_nodeBBStack;                // Stores LLVM BasicBlocks.
 };
 

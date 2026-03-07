@@ -16,6 +16,7 @@
 // External includes
 #include <antlr4-runtime.h>
 // System includes
+#include <memory>
 #include <string>
 #include <istream>
 
@@ -41,7 +42,8 @@ private:
 };
 
 
-scc::SCModule * scc::Compiler::compileFromFile(std::string filename, scc::SCCompileResult & compileResult)
+std::unique_ptr<scc::SCModule> scc::Compiler::compileFromFile(std::string filename,
+                                                              scc::SCCompileResult & compileResult)
 {
     // Open test code source file.
     std::ifstream sourceCodeFile(filename);
@@ -59,7 +61,8 @@ scc::SCModule * scc::Compiler::compileFromFile(std::string filename, scc::SCComp
 }
 
 
-scc::SCModule * scc::Compiler::compileFromMemory(std::string sourceCode, scc::SCCompileResult & compileResult)
+std::unique_ptr<scc::SCModule> scc::Compiler::compileFromMemory(std::string sourceCode,
+                                                                scc::SCCompileResult & compileResult)
 {
     std::istringstream sourceStream(sourceCode);
     
@@ -67,11 +70,12 @@ scc::SCModule * scc::Compiler::compileFromMemory(std::string sourceCode, scc::SC
 }
 
 
-scc::SCModule * scc::Compiler::compile(std::istream & sourceStream, scc::SCCompileResult & compileResult)
+std::unique_ptr<scc::SCModule> scc::Compiler::compile(std::istream & sourceStream,
+                                                      scc::SCCompileResult & compileResult)
 {
     // Error listener for the parser.
     ParserErrorListener  parserErrorListener;
-    SCModule * scModule{nullptr};
+    std::unique_ptr<SCModule> scModule;
 
     try
     {
@@ -107,7 +111,7 @@ scc::SCModule * scc::Compiler::compile(std::istream & sourceStream, scc::SCCompi
         // Generate an AST from the Parse Tree.
         ASTGenerator astGenVisitor;
         astGenVisitor.visit(parseTree);
-        auto ast = astGenVisitor.getAST();
+        auto ast = astGenVisitor.takeAST();
 
         // DEBUG ONLY -----------------
         // Generate a Graphviz DOT file to visualize the AST.
@@ -118,16 +122,16 @@ scc::SCModule * scc::Compiler::compile(std::istream & sourceStream, scc::SCCompi
         // PASS: Create a scope tree and define symbols by visiting AST nodes.
         //       After this pass, each AST node and symbol will have access to its related scope node (symbol table).
         SymbolDefPass  symDefPass{};
-        auto scopeTree = symDefPass.createScopeTree(ast);
+        auto scopeTree = symDefPass.createScopeTree(ast.get());
 
         // PASS: Perform semantic analysis by visiting AST nodes.
         //       Semantic analysis: Resolving Symbols, Type checking, Type Promotion, Semantic Validation.
         SemanticPass  semanticAnalysisPass;
-        semanticAnalysisPass.SemanticCheck(ast);
+        semanticAnalysisPass.SemanticCheck(ast.get());
 
         // PASS: Perform code generation by visiting AST nodes and create a program execution module: SCModule.
         CodeGenPass codeGenerationPass;
-        scModule = codeGenerationPass.generateCode(ast);
+        scModule = codeGenerationPass.generateCode(ast.get());
 
         // Initialize global variables.
         if (scModule)
@@ -135,8 +139,6 @@ scc::SCModule * scc::Compiler::compile(std::istream & sourceStream, scc::SCCompi
             scModule->reset();
         }
 
-        delete scopeTree;
-        delete ast;
     }
     catch (SemanticErrorException & e)
     {

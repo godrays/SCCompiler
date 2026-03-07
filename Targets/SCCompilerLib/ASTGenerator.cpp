@@ -28,10 +28,10 @@ Type ASTGenerator::toASTType(const std::string & type)
 
 antlrcpp::Any ASTGenerator::visitProgram(SCCompilerParser::ProgramContext *ctx)
 {
-    m_rootNode = new ast::NodeProgram();
+    m_rootNode = std::make_unique<ast::NodeProgram>();
 
     // Push a new parent node onto the stack. It becomes the new parent node for child visits.
-    m_currentNodeStack.push(m_rootNode);
+    m_currentNodeStack.push(m_rootNode.get());
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -57,9 +57,9 @@ antlrcpp::Any ASTGenerator::visitVarDecl(SCCompilerParser::VarDeclContext *ctx)
         std::string varName = child->ID()->getText();
 
         // Create new AST Node.
-        auto newNode = new ast::NodeVarDeclaration(type, varName);
+        auto newNode = std::make_unique<ast::NodeVarDeclaration>(type, varName);
         newNode->setSourceCodeLine(child->getStart()->getLine());
-        pushNodeToStack(newNode);
+        pushNodeToStack(std::move(newNode));
 
         // Visit parser tree children.
         visitChildren(child);
@@ -80,9 +80,9 @@ antlrcpp::Any ASTGenerator::visitFuncDeclaration(SCCompilerParser::FuncDeclarati
     std::string funcName = ctx->ID()->getText();
 
     // Create new AST Node.
-    auto newNode = new ast::NodeFuncDeclaration(funcReturnType, funcName);
+    auto newNode = std::make_unique<ast::NodeFuncDeclaration>(funcReturnType, funcName);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -112,8 +112,8 @@ antlrcpp::Any ASTGenerator::visitFuncArgDeclaration(SCCompilerParser::FuncArgDec
 antlrcpp::Any ASTGenerator::visitBlock(SCCompilerParser::BlockContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeBlock();
-    pushNodeToStack(newNode);
+    auto newNode = std::make_unique<ast::NodeBlock>();
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -128,9 +128,9 @@ antlrcpp::Any ASTGenerator::visitBlock(SCCompilerParser::BlockContext *ctx)
 antlrcpp::Any ASTGenerator::visitIfStatement(SCCompilerParser::IfStatementContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeIfStatement();
+    auto newNode = std::make_unique<ast::NodeIfStatement>();
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -145,9 +145,9 @@ antlrcpp::Any ASTGenerator::visitIfStatement(SCCompilerParser::IfStatementContex
 antlrcpp::Any ASTGenerator::visitForStatement(SCCompilerParser::ForStatementContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeForStatement();
+    auto newNode = std::make_unique<ast::NodeForStatement>();
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -162,9 +162,9 @@ antlrcpp::Any ASTGenerator::visitForStatement(SCCompilerParser::ForStatementCont
 antlrcpp::Any  ASTGenerator::visitForVarDecl(SCCompilerParser::ForVarDeclContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeFor(ast::NodeType::kForVarDecl);
+    auto newNode = std::make_unique<ast::NodeFor>(ast::NodeType::kForVarDecl);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -179,9 +179,9 @@ antlrcpp::Any  ASTGenerator::visitForVarDecl(SCCompilerParser::ForVarDeclContext
 antlrcpp::Any  ASTGenerator::visitForCondition(SCCompilerParser::ForConditionContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeFor(ast::NodeType::kForCondition);
+    auto newNode = std::make_unique<ast::NodeFor>(ast::NodeType::kForCondition);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -196,9 +196,9 @@ antlrcpp::Any  ASTGenerator::visitForCondition(SCCompilerParser::ForConditionCon
 antlrcpp::Any  ASTGenerator::visitForIncrements(SCCompilerParser::ForIncrementsContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeFor(ast::NodeType::kForIncrement);
+    auto newNode = std::make_unique<ast::NodeFor>(ast::NodeType::kForIncrement);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -213,9 +213,9 @@ antlrcpp::Any  ASTGenerator::visitForIncrements(SCCompilerParser::ForIncrementsC
 antlrcpp::Any ASTGenerator::visitWhileStatement(SCCompilerParser::WhileStatementContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeWhileStatement();
+    auto newNode = std::make_unique<ast::NodeWhileStatement>();
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -230,9 +230,9 @@ antlrcpp::Any ASTGenerator::visitWhileStatement(SCCompilerParser::WhileStatement
 antlrcpp::Any ASTGenerator::visitDoWhileStatement(SCCompilerParser::DoWhileStatementContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeDoWhileStatement();
+    auto newNode = std::make_unique<ast::NodeDoWhileStatement>();
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -247,9 +247,9 @@ antlrcpp::Any ASTGenerator::visitDoWhileStatement(SCCompilerParser::DoWhileState
 antlrcpp::Any ASTGenerator::visitReturnStatement(SCCompilerParser::ReturnStatementContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeReturnStatement();
+    auto newNode = std::make_unique<ast::NodeReturnStatement>();
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -264,9 +264,9 @@ antlrcpp::Any ASTGenerator::visitReturnStatement(SCCompilerParser::ReturnStateme
 antlrcpp::Any ASTGenerator::visitContinue(SCCompilerParser::ContinueContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeContinue();
+    auto newNode = std::make_unique<ast::NodeContinue>();
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -281,9 +281,9 @@ antlrcpp::Any ASTGenerator::visitContinue(SCCompilerParser::ContinueContext *ctx
 antlrcpp::Any ASTGenerator::visitBreak(SCCompilerParser::BreakContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeBreak();
+    auto newNode = std::make_unique<ast::NodeBreak>();
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -298,9 +298,9 @@ antlrcpp::Any ASTGenerator::visitBreak(SCCompilerParser::BreakContext *ctx)
 antlrcpp::Any ASTGenerator::visitAssignment(SCCompilerParser::AssignmentContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeAssignment();
+    auto newNode = std::make_unique<ast::NodeAssignment>();
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -322,9 +322,9 @@ antlrcpp::Any ASTGenerator::visitExplicitTypeConversion(SCCompilerParser::Explic
     else if (strConvType == "bool") conversionType = Type::kTypeBool;
 
     // Create new AST Node.
-    auto newNode = new ast::NodeExplicitTypeConversion(conversionType);
+    auto newNode = std::make_unique<ast::NodeExplicitTypeConversion>(conversionType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -339,9 +339,9 @@ antlrcpp::Any ASTGenerator::visitExplicitTypeConversion(SCCompilerParser::Explic
 antlrcpp::Any ASTGenerator::visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = new ast::NodeLogicalOP(ast::NodeType::kLogicalNotOP);
+    auto newNode = std::make_unique<ast::NodeLogicalOP>(ast::NodeType::kLogicalNotOP);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -364,9 +364,9 @@ antlrcpp::Any ASTGenerator::visitLogicalOPExpr(SCCompilerParser::LogicalOPExprCo
     else assert(false && "Unknown logical operator.");
 
     // Create new AST Node.
-    auto newNode = new ast::NodeLogicalOP(nodeType);
+    auto newNode = std::make_unique<ast::NodeLogicalOP>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -408,9 +408,9 @@ antlrcpp::Any  ASTGenerator::visitLiteralExpr(SCCompilerParser::LiteralExprConte
     }
 
     // Create new AST Node.
-    auto newNode = new ast::NodeLiteral(nodeType, value);
+    auto newNode = std::make_unique<ast::NodeLiteral>(nodeType, value);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -433,16 +433,16 @@ antlrcpp::Any ASTGenerator::visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprCo
     else assert(false && "Unknown prefix arithmetic operator.");
 
     // Create new AST Node: '++' or '--'
-    auto newNode = new ast::NodePrefixAOP(nodeType);
+    auto newNode = std::make_unique<ast::NodePrefixAOP>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Create new AST Node: ID
     auto IDToken = ctx->getStop();
     std::string  ID = IDToken->getText();
-    auto newNodeID = new ast::NodeLiteral(ast::NodeType::kLiteralID, ID);
+    auto newNodeID = std::make_unique<ast::NodeLiteral>(ast::NodeType::kLiteralID, ID);
     newNodeID->setSourceCodeLine(IDToken->getLine());
-    pushNodeToStack(newNodeID);
+    pushNodeToStack(std::move(newNodeID));
 
     // Visit parser tree child.
     // NOTE: We don't expect a child node, but we still call for the conventions.
@@ -472,9 +472,9 @@ antlrcpp::Any ASTGenerator::visitAOPExpr(SCCompilerParser::AOPExprContext *ctx)
     else assert(false && "Unknown arithmetic operator.");
 
     // Create new AST Node.
-    auto newNode = new ast::NodeAOP(nodeType);
+    auto newNode = std::make_unique<ast::NodeAOP>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -491,9 +491,9 @@ antlrcpp::Any ASTGenerator::visitFuncCallExpr(SCCompilerParser::FuncCallExprCont
     std::string funcName = ctx->ID()->getText();
 
     // Create new AST Node.
-    auto newNode = new ast::NodeFuncCall(funcName);
+    auto newNode = std::make_unique<ast::NodeFuncCall>(funcName);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -516,9 +516,9 @@ antlrcpp::Any  ASTGenerator::visitUnaryExpr(SCCompilerParser::UnaryExprContext *
     else assert(false && "Unknown unary operator.");
 
     // Create new AST Node.
-    auto newNode = new ast::NodeUnaryOP(nodeType);
+    auto newNode = std::make_unique<ast::NodeUnaryOP>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -545,9 +545,9 @@ antlrcpp::Any ASTGenerator::visitCompExpr(SCCompilerParser::CompExprContext *ctx
     else assert(false && "Unknown arithmetic operator.");
 
     // Create new AST Node.
-    auto newNode = new ast::NodeCompOP(nodeType);
+    auto newNode = std::make_unique<ast::NodeCompOP>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
-    pushNodeToStack(newNode);
+    pushNodeToStack(std::move(newNode));
 
     // Visit parser tree children.
     auto visitResult = visitChildren(ctx);
@@ -559,14 +559,17 @@ antlrcpp::Any ASTGenerator::visitCompExpr(SCCompilerParser::CompExprContext *ctx
 }
 
 
-void ASTGenerator::pushNodeToStack(ast::Node* node)
+void ASTGenerator::pushNodeToStack(std::unique_ptr<ast::Node> node)
 {
+    assert(node != nullptr);
+
     // Set the parent node. The parent node is the top element in the currentNode stack.
     node->setParent(m_currentNodeStack.top());
 
     // Add yourself as a child to the parent node.
-    m_currentNodeStack.top()->addChild(node);
+    auto nodePtr = node.get();
+    m_currentNodeStack.top()->addChild(std::move(node));
 
     // Push a new parent node onto the stack. It becomes the new parent node for child visits.
-    m_currentNodeStack.push(node);
+    m_currentNodeStack.push(nodePtr);
 }

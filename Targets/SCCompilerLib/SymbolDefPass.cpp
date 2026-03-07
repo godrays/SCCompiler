@@ -17,27 +17,19 @@
 using namespace scc;
 
 
-ScopeNode * SymbolDefPass::createScopeTree(ast::Node * node)
+std::unique_ptr<ScopeNode> SymbolDefPass::createScopeTree(ast::Node * node)
 {
-    auto scopeTreeHead = new ScopeNode(ScopeCategory::kGlobal, nullptr);
-    m_currentScope = scopeTreeHead;
+    auto scopeTreeHead = std::make_unique<ScopeNode>(ScopeCategory::kGlobal, nullptr);
+    m_currentScope = scopeTreeHead.get();
 
     // Add Built-In Types. They have no type definitions.
-    auto typeSymbol = new BuiltInTypeSymbol("float");
-    typeSymbol->setScope(m_currentScope);
-    m_currentScope->insertSymbol(typeSymbol);
+    m_currentScope->insertSymbol(std::make_unique<BuiltInTypeSymbol>("float"));
     
-    typeSymbol = new BuiltInTypeSymbol("int");
-    typeSymbol->setScope(m_currentScope);
-    m_currentScope->insertSymbol(typeSymbol);
+    m_currentScope->insertSymbol(std::make_unique<BuiltInTypeSymbol>("int"));
 
-    typeSymbol = new BuiltInTypeSymbol("bool");
-    typeSymbol->setScope(m_currentScope);
-    m_currentScope->insertSymbol(typeSymbol);
+    m_currentScope->insertSymbol(std::make_unique<BuiltInTypeSymbol>("bool"));
 
-    typeSymbol = new BuiltInTypeSymbol("void");
-    typeSymbol->setScope(m_currentScope);
-    m_currentScope->insertSymbol(typeSymbol);
+    m_currentScope->insertSymbol(std::make_unique<BuiltInTypeSymbol>("void"));
 
     // visit nodes to defined symbols.
     visit(node);
@@ -129,7 +121,7 @@ void SymbolDefPass::visitChildren(ast::Node * node)
 }
 
 
-void SymbolDefPass::SymbolDefPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
+void SymbolDefPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
 {
     auto symbolName = node->GetVarName();
     auto symbolType = node->GetVarType();
@@ -138,16 +130,14 @@ void SymbolDefPass::SymbolDefPass::visitVariableDeclaration(ast::NodeVarDeclarat
     throw_if(m_currentScope->isDefined(symbolName),
              SemanticErrorException("Line: ", node->getSourceCodeLine(), " - Redefinition of a symbol: ", symbolName));
 
-    auto symbol = new VariableSymbol(symbolName, symbolType);
-    symbol->setScope(m_currentScope);
     // Define new symbol.
-    m_currentScope->insertSymbol(symbol);
+    m_currentScope->insertSymbol(std::make_unique<VariableSymbol>(symbolName, symbolType));
 
     visitChildren(node);
 }
 
 
-void SymbolDefPass::SymbolDefPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
+void SymbolDefPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 {
     // ADD FUNCTION SYMBOL TO CURRENT SCOPE
     
@@ -158,14 +148,13 @@ void SymbolDefPass::SymbolDefPass::visitFunctionDeclaration(ast::NodeFuncDeclara
     throw_if(m_currentScope->isDefined(funcSymbolName),
              SemanticErrorException("Line: ", node->getSourceCodeLine(), " - Redefinition of a symbol: ", funcSymbolName));
 
-    auto funcSymbol = new FunctionSymbol(funcSymbolName, funcSymbolType);
-    funcSymbol->setScope(m_currentScope);
     // Define the function symbol.
-    m_currentScope->insertSymbol(funcSymbol);
+    auto * funcSymbol = static_cast<FunctionSymbol *>(m_currentScope->insertSymbol(
+        std::make_unique<FunctionSymbol>(funcSymbolName, funcSymbolType)));
 
     // CREATE A NEW SCOPE FOR THE FUNCTION
 
-    m_currentScope = new ScopeNode(ScopeCategory::kFunction, m_currentScope);
+    m_currentScope = m_currentScope->createChildScope(ScopeCategory::kFunction);
 
     // Add function arguments to the function scope.
     auto arguments = node->GetArguments();
@@ -178,10 +167,9 @@ void SymbolDefPass::SymbolDefPass::visitFunctionDeclaration(ast::NodeFuncDeclara
         throw_if(m_currentScope->isDefined(argName),
                  SemanticErrorException("Line: ", node->getSourceCodeLine(), " - Redefinition of a symbol: ", argName));
 
-        auto argSymbol = new FuncArgSymbol(argName, argType);
-        argSymbol->setScope(m_currentScope);
         // Define the new symbol.
-        m_currentScope->insertSymbol(argSymbol);
+        auto * argSymbol = static_cast<FuncArgSymbol *>(m_currentScope->insertSymbol(
+            std::make_unique<FuncArgSymbol>(argName, argType)));
 
         // Add the argument symbol to the function symbol to track arguments.
         funcSymbol->addArgumentSymbol(argSymbol);
@@ -200,7 +188,7 @@ void SymbolDefPass::visitForStatement(ast::NodeForStatement * node)
 {
     // CREATE A NEW SCOPE FOR THE 'FOR' STATEMENT
 
-    m_currentScope = new ScopeNode(ScopeCategory::kFor, m_currentScope);
+    m_currentScope = m_currentScope->createChildScope(ScopeCategory::kFor);
 
     // visit the children
     visitChildren(node);
@@ -211,10 +199,10 @@ void SymbolDefPass::visitForStatement(ast::NodeForStatement * node)
 }
 
 
-void SymbolDefPass::SymbolDefPass::visitBlock(ast::NodeBlock * node)
+void SymbolDefPass::visitBlock(ast::NodeBlock * node)
 {
     // CREATE A NEW SCOPE FOR THE 'BLOCK'
-    m_currentScope = new ScopeNode(ScopeCategory::kBlock, m_currentScope);
+    m_currentScope = m_currentScope->createChildScope(ScopeCategory::kBlock);
 
     // visit the children
     visitChildren(node);

@@ -13,9 +13,9 @@
 using namespace scc;
 
 
-SCCompiler * SCCompiler::create()
+std::unique_ptr<SCCompiler> SCCompiler::create()
 {
-    return new Compiler();
+    return std::make_unique<Compiler>();
 }
 
 

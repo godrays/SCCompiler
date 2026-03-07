@@ -26,7 +26,5 @@ bool testCode(std::string sourceCode, scc::SCCompileResult expectedCompileResult
         return false;
     }
 
-    delete scModule;
-
     return true;
 }

@@ -149,8 +149,6 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests [CodeGenerationTests]")
         REQUIRE(BoolToFloat(false) == 0.0f);
         REQUIRE(BoolToFloat(true) == 1.0f);
     }
-
-    delete scModule;
 }
 
 
@@ -228,8 +226,6 @@ TEST_CASE("CodeGenerationUnaryOPTests [CodeGenerationTests]")
         REQUIRE(PosInt(-std::numeric_limits<int>::max()) == -std::numeric_limits<int>::max());
         REQUIRE(PosInt(-std::numeric_limits<int>::min()) == -std::numeric_limits<int>::min());
     }
-
-    delete scModule;
 }
 
 
@@ -321,8 +317,6 @@ TEST_CASE("CodeGenerationComparisonOPTests [CodeGenerationTests]")
     REQUIRE(FloatCmp(fmin, fmax) == false);
     REQUIRE(FloatCmp(fmax, fmin) == true);
     REQUIRE(FloatCmp(fmin, fmin) == false);
-
-    delete scModule;
 }
 
 
@@ -362,8 +356,6 @@ TEST_CASE("CodeGenerationIfStatementTests [CodeGenerationTests]")
     auto IfTest4 = reinterpret_cast<FuncIfTest4>(scModule->getFunctionPtr("IfTest4"));
     REQUIRE(IfTest4(true) == 1);
     REQUIRE(IfTest4(false) == 2);
-
-    delete scModule;
 }
 
 
@@ -413,8 +405,6 @@ TEST_CASE("CodeGenerationLogicalNotOPTests [CodeGenerationTests]")
     auto BoolNot = reinterpret_cast<FuncBoolNot>(scModule->getFunctionPtr("BoolNot"));
     REQUIRE(BoolNot(true) == false);
     REQUIRE(BoolNot(false) == true);
-
-    delete scModule;
 }
 
 
@@ -474,8 +464,6 @@ TEST_CASE("CodeGenerationLogicalOPTests [CodeGenerationTests]")
 
     // TODO: In 'expr || expr' case, if left expr result is true, code for right expr should not run.
     // Currently, it doesn't, but need to add tests to cover these cases.
-
-    delete scModule;
 }
 
 
@@ -509,8 +497,6 @@ TEST_CASE("CodeGenerationRecursiveCallTests [CodeGenerationTests]")
     using FuncFibonacci = int (*)(int);
     auto Fibonacci = reinterpret_cast<FuncFibonacci>(scModule->getFunctionPtr("Fibonacci"));
     REQUIRE(Fibonacci(10) == 55);
-
-    delete scModule;
 }
 
 
@@ -576,8 +562,6 @@ TEST_CASE("CodeGenerationForStatementTests [CodeGenerationTests]")
     using FuncTest10 = int (*)(int);
     auto Test10 = reinterpret_cast<FuncTest10>(scModule->getFunctionPtr("Test10"));
     REQUIRE(Test10(5) == 4);
-
-    delete scModule;
 }
 
 
@@ -628,8 +612,6 @@ TEST_CASE("CodeGenerationWhileStatementTests [CodeGenerationTests]")
     using FuncTest10 = int (*)(int);
     auto Test10 = reinterpret_cast<FuncTest10>(scModule->getFunctionPtr("_Test_10_"));
     REQUIRE(Test10(5) == 4);
-
-    delete scModule;
 }
 
 
@@ -680,8 +662,6 @@ TEST_CASE("CodeGenerationDoWhileStatementTests [CodeGenerationTests]")
     using FuncTest7 = int (*)(int);
     auto Test7 = reinterpret_cast<FuncTest7>(scModule->getFunctionPtr("Test7"));
     REQUIRE(Test7(5) == 4);
-
-    delete scModule;
 }
 
 
@@ -708,6 +688,4 @@ TEST_CASE("CodeGenerationPrefixAOPTests [CodeGenerationTests]")
     auto Test2 = reinterpret_cast<FuncTest2>(scModule->getFunctionPtr("Test2"));
     REQUIRE(Test2(5) == 4);
     REQUIRE(Test2(-5) == -6);
-
-    delete scModule;
 }
