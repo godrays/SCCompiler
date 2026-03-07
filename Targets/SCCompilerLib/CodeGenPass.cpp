@@ -10,12 +10,34 @@
 #include "Symbols.hpp"
 #include "Types.hpp"
 // External includes
+#include <llvm/ADT/STLExtras.h>
+#include <llvm/ExecutionEngine/ExecutionEngine.h>
+#include <llvm/ExecutionEngine/GenericValue.h>
+#include <llvm/ExecutionEngine/MCJIT.h>
+#include <llvm/IR/Argument.h>
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Constants.h>
+#include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/Function.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Instructions.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Type.h>
+#include <llvm/IR/Verifier.h>
+#include <llvm/Support/Casting.h>
+#include <llvm/Support/ManagedStatic.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/Support/raw_ostream.h>
 // System includes
 #include <cassert>
 #include <string>
 
 
 using namespace scc;
+
+
+CodeGenPass::CodeGenPass() = default;
 
 
 SymbolProperty::SymbolProperty(llvm::Value * value) :
@@ -1295,7 +1317,7 @@ llvm::GlobalVariable * CodeGenPass::createGlobalVariable(std::string name, scc::
 }
 
 
-llvm::Function * CodeGenPass::createFunc(llvm::IRBuilder <> & Builder,
+llvm::Function * CodeGenPass::createFunc(LLVMIRBuilder & Builder,
                                          scc::Type returnType,
                                          const std::string & name,
                                          std::vector<llvm::Type *> & argTypes)
@@ -1344,66 +1366,5 @@ void CodeGenPass::deleteUnreachableBasicBlocks(llvm::Function * function)
             it = prevIt;
         }
         prevIt = it;
-    }
-}
-
-
-std::string CodeGenPass::debugLLVMTypeAsString(llvm::Type::TypeID typeID) const
-{
-    switch (typeID)
-    {
-        case llvm::Type::VoidTyID:        ///<  0: type with no size
-            return "VoidTyID";
-
-        case llvm::Type::HalfTyID:        ///<  1: 16-bit floating point type
-            return "HalfTyID";
-
-        case llvm::Type::FloatTyID:       ///<  2: 32-bit floating point type
-            return "FloatTyID";
-
-        case llvm::Type::DoubleTyID:      ///<  3: 64-bit floating point type
-            return "DoubleTyID";
-
-        case llvm::Type::X86_FP80TyID:    ///<  4: 80-bit floating point type (X87)
-            return "X86_FP80TyID";
-
-        case llvm::Type::FP128TyID:       ///<  5: 128-bit floating point type (112-bit mantissa)
-            return "FP128TyID";
-
-        case llvm::Type::PPC_FP128TyID:   ///<  6: 128-bit floating point type (two 64-bits, PowerPC)
-            return "PPC_FP128TyID";
-
-        case llvm::Type::LabelTyID:       ///<  7: Labels
-            return "LabelTyID";
-
-        case llvm::Type::MetadataTyID:    ///<  8: Metadata
-            return "MetadataTyID";
-
-        case llvm::Type::X86_MMXTyID:     ///<  9: MMX vectors (64 bits, X86 specific)
-            return "X86_MMXTyID";
-
-        case llvm::Type::TokenTyID:       ///< 10: Tokens
-            return "TokenTyID";
-
-        // Derived types... see DerivedTypes.h file.
-        // Make sure FirstDerivedTyID stays up to date!
-        case llvm::Type::IntegerTyID:     ///< 11: Arbitrary bit width integers
-            return "IntegerTyID";
-
-        case llvm::Type::FunctionTyID:    ///< 12: Functions
-            return "FunctionTyID";
-
-        case llvm::Type::StructTyID:      ///< 13: Structures
-            return "StructTyID";
-
-        case llvm::Type::ArrayTyID:       ///< 14: Arrays
-            return "ArrayTyID";
-
-        case llvm::Type::PointerTyID:     ///< 15: Pointers
-            return "PointerTyID";
-
-        default:
-            assert("Unknown llvm typeID");
-            break;
     }
 }

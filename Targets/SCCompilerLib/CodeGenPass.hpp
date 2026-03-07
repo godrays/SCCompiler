@@ -6,60 +6,64 @@
 #pragma once
 
 // Project includes
-#include "AST.hpp"
-#include "SCModule.hpp"
 #include "Symbols.hpp"
-// External includes
-#include <llvm/ADT/STLExtras.h>
-#include <llvm/ExecutionEngine/ExecutionEngine.h>
-#include <llvm/ExecutionEngine/MCJIT.h>
-#include <llvm/ExecutionEngine/GenericValue.h>
-#include <llvm/IR/Argument.h>
-#include <llvm/IR/BasicBlock.h>
-#include <llvm/IR/Constants.h>
-#include <llvm/IR/DerivedTypes.h>
-#include <llvm/IR/Function.h>
-#include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/Instructions.h>
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
-#include <llvm/IR/Type.h>
-#include <llvm/IR/Verifier.h>
-#include <llvm/Support/Casting.h>
-#include <llvm/Support/ManagedStatic.h>
-#include <llvm/Support/TargetSelect.h>
-#include <llvm/Support/raw_ostream.h>
 // System includes
-#include <list>
 #include <memory>
+#include <string>
 #include <vector>
 
+
+namespace llvm
+{
+    class BasicBlock;
+    class Constant;
+    class ConstantFolder;
+    class Function;
+    class GlobalVariable;
+    class IRBuilderDefaultInserter;
+    class LLVMContext;
+    class Module;
+    class Type;
+    class Value;
+
+    template <typename FolderTy, typename InserterTy>
+    class IRBuilder;
+}
 
 namespace scc
 {
 
+class SCModule;
+
 // Forward declaration.
 namespace ast
 {
+    enum class NodeType : int;
+
     class Node;
     class NodeProgram;
     class NodeVariableDeclaration;
     class NodeFunctionDeclaration;
+    class NodeIfStatement;
     class NodeForStatement;
     class NodeWhileStatement;
     class NodeDoWhileStatement;
     class NodeBlock;
     class NodeLogicalOperator;
     class NodeReturnStatement;
+    class NodeContinue;
     class NodeBreak;
     class NodeFunctionCall;
     class NodeAssignment;
+    class NodeExplicitTypeConversion;
     class NodePrefixArithmeticOperator;
     class NodeArithmeticOperator;
+    class NodeComparisonOperator;
+    class NodeUnaryOperator;
     class NodeLiteral;
 }
 
-class JITEngine;
+using LLVMIRBuilder = llvm::IRBuilder<llvm::ConstantFolder, llvm::IRBuilderDefaultInserter>;
 
 
 class SymbolProperty : public SymbolPropertyBase
@@ -135,7 +139,7 @@ class  CodeGenPass
 {
 public:
     // Constructor.
-    CodeGenPass() = default;
+    CodeGenPass();
 
     // Destructor.
     virtual ~CodeGenPass();
@@ -211,7 +215,7 @@ private:
     llvm::GlobalVariable * createGlobalVariable(std::string name, scc::Type);
 
     // Creates a function.
-    llvm::Function * createFunc(llvm::IRBuilder <> &Builder, scc::Type returnType, const std::string& Name, std::vector<llvm::Type *> & argTypes);
+    llvm::Function * createFunc(LLVMIRBuilder & Builder, scc::Type returnType, const std::string& Name, std::vector<llvm::Type *> & argTypes);
 
     // Creates a basic block.
     llvm::BasicBlock * createBasicBlock(llvm::Function * func, const std::string& name);
@@ -222,9 +226,6 @@ private:
     // Dumps the LLVM IR of the module.
     void dumpIRCode() const;
 
-    // Converts an LLVM type to a string.
-    std::string debugLLVMTypeAsString(llvm::Type::TypeID typeID) const;
-
     // Deletes unreachable blocks in the function's basic block list.
     void deleteUnreachableBasicBlocks(llvm::Function * function);
 
@@ -234,7 +235,7 @@ protected:
     llvm::Function *  m_currentFunction{nullptr};       // Pointer to the current LLVM Function.
     llvm::Function *  m_initFunction{nullptr};          // Initializer function for global variables.
     llvm::BasicBlock *  m_initFunctionBlock{nullptr};   // Last used basic block in the initializer function.
-    std::unique_ptr<llvm::IRBuilder<>> m_irBuilder;     // IR builder stack.
+    std::unique_ptr<LLVMIRBuilder> m_irBuilder;         // IR builder stack.
     NodeBasicBlockSetStack  m_nodeBasicBlockStack;      // Stores LLVM basic blocks.
 };
 
