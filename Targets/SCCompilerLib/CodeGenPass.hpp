@@ -78,15 +78,15 @@ protected:
 };
 
 
-class NodeBasicBlocks final
+class NodeBasicBlockSet final
 {
 public:
     // Constructor
-    NodeBasicBlocks(ast::Node * node,
-                    llvm::BasicBlock * conditionBasicBlock,
-                    llvm::BasicBlock * bodyBasicBlock,
-                    llvm::BasicBlock * incrementBasicBlock,
-                    llvm::BasicBlock * exitBasicBlock);
+    NodeBasicBlockSet(ast::Node * node,
+                      llvm::BasicBlock * conditionBasicBlock,
+                      llvm::BasicBlock * bodyBasicBlock,
+                      llvm::BasicBlock * incrementBasicBlock,
+                      llvm::BasicBlock * exitBasicBlock);
 
     // Return node.
     ast::Node * getNode();
@@ -112,22 +112,22 @@ protected:
 };
 
 
-class NodeBasicBlocksStack final
+class NodeBasicBlockSetStack final
 {
 public:
     // Pushes new element to stack.
-    void push(std::unique_ptr<NodeBasicBlocks> nodeBasicBlocks);
+    void push(std::unique_ptr<NodeBasicBlockSet> nodeBasicBlockSet);
 
     // Pops top element in stack.
     void pop();
 
-    // Returns NodeBasicBlocks object if node matches with given one of the node types.
-    NodeBasicBlocks * getOneOfThese(const std::vector<ast::NodeType> & nodeTypes);
+    // Returns the basic block set if the node matches one of the given node types.
+    NodeBasicBlockSet * getOneOfNodeTypes(const std::vector<ast::NodeType> & nodeTypes);
 
 protected:
-    // Node BasicBlock Stack. Using vector here to implement stack behavior since
+    // Node basic block stack. Using vector here to implement stack behavior since
     // std::stack implementation doesn't support iteration on its elements.
-    std::vector<std::unique_ptr<NodeBasicBlocks>>  m_nodeBBStack;
+    std::vector<std::unique_ptr<NodeBasicBlockSet>>  m_nodeBasicBlockStack;
 };
 
 
@@ -235,7 +235,7 @@ protected:
     llvm::Function *  m_initFunction{nullptr};          // Initializer function for global variables.
     llvm::BasicBlock *  m_initFunctionBlock{nullptr};   // Last used basic block in the initializer function.
     std::unique_ptr<llvm::IRBuilder<>> m_irBuilder;     // IR builder stack.
-    NodeBasicBlocksStack  m_nodeBBStack;                // Stores LLVM BasicBlocks.
+    NodeBasicBlockSetStack  m_nodeBasicBlockStack;      // Stores LLVM basic blocks.
 };
 
 }

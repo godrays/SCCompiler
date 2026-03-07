@@ -31,11 +31,11 @@ llvm::Value * SymbolProperty::getValue()
 }
 
 
-NodeBasicBlocks::NodeBasicBlocks(ast::Node * node,
-                llvm::BasicBlock * conditionBasicBlock,
-                llvm::BasicBlock * bodyBasicBlock,
-                llvm::BasicBlock * incrementBasicBlock,
-                llvm::BasicBlock * exitBasicBlock)
+NodeBasicBlockSet::NodeBasicBlockSet(ast::Node * node,
+                    llvm::BasicBlock * conditionBasicBlock,
+                    llvm::BasicBlock * bodyBasicBlock,
+                    llvm::BasicBlock * incrementBasicBlock,
+                    llvm::BasicBlock * exitBasicBlock)
     : m_node(node),
       m_conditionBasicBlock(conditionBasicBlock),
       m_bodyBasicBlock(bodyBasicBlock),
@@ -46,57 +46,57 @@ NodeBasicBlocks::NodeBasicBlocks(ast::Node * node,
 }
 
 
-ast::Node * NodeBasicBlocks::getNode()
+ast::Node * NodeBasicBlockSet::getNode()
 {
     return m_node;
 }
 
 
-llvm::BasicBlock * NodeBasicBlocks::getConditionBasicBlock()
+llvm::BasicBlock * NodeBasicBlockSet::getConditionBasicBlock()
 {
     assert(m_conditionBasicBlock != nullptr && "No reason to use if it is nullptr.");
     return m_conditionBasicBlock;
 }
 
 
-llvm::BasicBlock * NodeBasicBlocks::getBodyBasicBlock()
+llvm::BasicBlock * NodeBasicBlockSet::getBodyBasicBlock()
 {
     assert(m_bodyBasicBlock != nullptr && "No reason to use if it is nullptr.");
     return m_bodyBasicBlock;
 }
 
 
-llvm::BasicBlock * NodeBasicBlocks::getIncrementBasicBlock()
+llvm::BasicBlock * NodeBasicBlockSet::getIncrementBasicBlock()
 {
     assert(m_incrementBasicBlock != nullptr && "No reason to use if it is nullptr.");
     return m_incrementBasicBlock;
 }
 
 
-llvm::BasicBlock * NodeBasicBlocks::getExitBasicBlock()
+llvm::BasicBlock * NodeBasicBlockSet::getExitBasicBlock()
 {
     assert(m_exitBasicBlock != nullptr && "No reason to use if it is nullptr.");
     return m_exitBasicBlock;
 }
 
 
-void NodeBasicBlocksStack::push(std::unique_ptr<NodeBasicBlocks> nodeBasicBlocks)
+void NodeBasicBlockSetStack::push(std::unique_ptr<NodeBasicBlockSet> nodeBasicBlockSet)
 {
-    assert(nodeBasicBlocks != nullptr);
-    m_nodeBBStack.emplace_back(std::move(nodeBasicBlocks));
+    assert(nodeBasicBlockSet != nullptr);
+    m_nodeBasicBlockStack.emplace_back(std::move(nodeBasicBlockSet));
 }
 
 
-void NodeBasicBlocksStack::pop()
+void NodeBasicBlockSetStack::pop()
 {
-    assert(!m_nodeBBStack.empty());
-    m_nodeBBStack.pop_back();
+    assert(!m_nodeBasicBlockStack.empty());
+    m_nodeBasicBlockStack.pop_back();
 }
 
 
-NodeBasicBlocks * NodeBasicBlocksStack::getOneOfThese(const std::vector<ast::NodeType> & nodeTypes)
+NodeBasicBlockSet * NodeBasicBlockSetStack::getOneOfNodeTypes(const std::vector<ast::NodeType> & nodeTypes)
 {
-    auto size = m_nodeBBStack.size();
+    auto size = m_nodeBasicBlockStack.size();
     assert(size > 0);
     
     for (size_t index=0; index < size; ++index)
@@ -104,10 +104,10 @@ NodeBasicBlocks * NodeBasicBlocksStack::getOneOfThese(const std::vector<ast::Nod
         // If node type matches one of the given type then return it.
         for (auto nodeType : nodeTypes)
         {
-            auto nodeBasicBlocks = m_nodeBBStack[size-index-1].get();
-            if (nodeBasicBlocks->getNode()->getNodeType() == nodeType)
+            auto nodeBasicBlockSet = m_nodeBasicBlockStack[size-index-1].get();
+            if (nodeBasicBlockSet->getNode()->getNodeType() == nodeType)
             {
-                return nodeBasicBlocks;
+                return nodeBasicBlockSet;
             }
         }
     }
@@ -488,7 +488,7 @@ void CodeGenPass::visitForStatement(ast::NodeForStatement * node)
     // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
     // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
-    m_nodeBBStack.push(std::make_unique<NodeBasicBlocks>(node, forCondBlock, forBodyBlock, forIncBlock, forExitBlock));
+    m_nodeBasicBlockStack.push(std::make_unique<NodeBasicBlockSet>(node, forCondBlock, forBodyBlock, forIncBlock, forExitBlock));
 
     // Generate code for variable declarations in the current block.
     visitChildren(forVarDeclNode);
@@ -530,7 +530,7 @@ void CodeGenPass::visitForStatement(ast::NodeForStatement * node)
     m_irBuilder->SetInsertPoint(forExitBlock);
 
     // Pop BasicBlock info from the stack.
-    m_nodeBBStack.pop();
+    m_nodeBasicBlockStack.pop();
 }
 
 
@@ -565,7 +565,7 @@ void CodeGenPass::visitWhileStatement(ast::NodeWhileStatement * node)
     // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
     // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
-    m_nodeBBStack.push(std::make_unique<NodeBasicBlocks>(node, condBlock, bodyBlock, nullptr, exitBlock));
+    m_nodeBasicBlockStack.push(std::make_unique<NodeBasicBlockSet>(node, condBlock, bodyBlock, nullptr, exitBlock));
 
     // Jump from the current block to the condition block.
     m_irBuilder->CreateBr(condBlock);
@@ -586,7 +586,7 @@ void CodeGenPass::visitWhileStatement(ast::NodeWhileStatement * node)
     m_irBuilder->SetInsertPoint(exitBlock);
 
     // Pop BasicBlock info from the stack.
-    m_nodeBBStack.pop();
+    m_nodeBasicBlockStack.pop();
 }
 
 
@@ -621,7 +621,7 @@ void CodeGenPass::visitDoWhileStatement(ast::NodeDoWhileStatement * node)
     // Push BasicBlocks onto the stack for this node. We may need these blocks to create branches
     // for continue, break, return etc. statements to create branches to jump to this node's blocks
     // if necessary.
-    m_nodeBBStack.push(std::make_unique<NodeBasicBlocks>(node, condBlock, bodyBlock, nullptr, exitBlock));
+    m_nodeBasicBlockStack.push(std::make_unique<NodeBasicBlockSet>(node, condBlock, bodyBlock, nullptr, exitBlock));
 
     // Jump from the current block to the body block.
     m_irBuilder->CreateBr(bodyBlock);
@@ -643,7 +643,7 @@ void CodeGenPass::visitDoWhileStatement(ast::NodeDoWhileStatement * node)
     m_irBuilder->SetInsertPoint(exitBlock);
 
     // Pop BasicBlock info from the stack.
-    m_nodeBBStack.pop();
+    m_nodeBasicBlockStack.pop();
 }
 
 
@@ -669,20 +669,20 @@ void CodeGenPass::visitReturnStatement(ast::NodeReturnStatement * node)
 
 void CodeGenPass::visitContinue(ast::NodeContinue * node)
 {
-    auto nodeBasicBlocks = m_nodeBBStack.getOneOfThese({ast::NodeType::kForStatement,
-                                                        ast::NodeType::kWhileStatement,
-                                                        ast::NodeType::kDoWhileStatement});
-    assert(nodeBasicBlocks);
+    auto nodeBasicBlockSet = m_nodeBasicBlockStack.getOneOfNodeTypes({ast::NodeType::kForStatement,
+                                                                      ast::NodeType::kWhileStatement,
+                                                                      ast::NodeType::kDoWhileStatement});
+    assert(nodeBasicBlockSet);
     
-    switch (nodeBasicBlocks->getNode()->getNodeType())
+    switch (nodeBasicBlockSet->getNode()->getNodeType())
     {
         case ast::NodeType::kForStatement:
-            m_irBuilder->CreateBr(nodeBasicBlocks->getIncrementBasicBlock());
+            m_irBuilder->CreateBr(nodeBasicBlockSet->getIncrementBasicBlock());
             break;
 
         case ast::NodeType::kWhileStatement:
         case ast::NodeType::kDoWhileStatement:
-            m_irBuilder->CreateBr(nodeBasicBlocks->getConditionBasicBlock());
+            m_irBuilder->CreateBr(nodeBasicBlockSet->getConditionBasicBlock());
             break;
 
         default:
@@ -698,17 +698,17 @@ void CodeGenPass::visitContinue(ast::NodeContinue * node)
 
 void CodeGenPass::visitBreak(ast::NodeBreak * node)
 {
-    auto nodeBasicBlocks = m_nodeBBStack.getOneOfThese({ast::NodeType::kForStatement,
-                                                        ast::NodeType::kWhileStatement,
-                                                        ast::NodeType::kDoWhileStatement});
-    assert(nodeBasicBlocks);
+    auto nodeBasicBlockSet = m_nodeBasicBlockStack.getOneOfNodeTypes({ast::NodeType::kForStatement,
+                                                                      ast::NodeType::kWhileStatement,
+                                                                      ast::NodeType::kDoWhileStatement});
+    assert(nodeBasicBlockSet);
     
-    switch (nodeBasicBlocks->getNode()->getNodeType())
+    switch (nodeBasicBlockSet->getNode()->getNodeType())
     {
         case ast::NodeType::kForStatement:
         case ast::NodeType::kWhileStatement:
         case ast::NodeType::kDoWhileStatement:
-            m_irBuilder->CreateBr(nodeBasicBlocks->getExitBasicBlock());
+            m_irBuilder->CreateBr(nodeBasicBlockSet->getExitBasicBlock());
             break;
 
         default:
