@@ -15,6 +15,27 @@
 using namespace scc;
 
 
+TEST_CASE("PublicAPICompatibilityRawOwnershipTests [CodeGenerationTests]")
+{
+    auto * compiler = SCCompiler::createRaw();
+    SCCompileResult compileResult;
+
+    auto * scModule = compiler->compileFromMemoryRaw(R"(
+    int main() { return 7; }
+    )", compileResult);
+
+    REQUIRE(compileResult == scc::SCCompileResult::kOk);
+    REQUIRE(scModule != nullptr);
+
+    using MainFunc = int (*)();
+    auto mainFunc = reinterpret_cast<MainFunc>(scModule->getFunctionPtr("main"));
+    REQUIRE(mainFunc() == 7);
+
+    delete scModule;
+    delete compiler;
+}
+
+
 TEST_CASE("CodeGenerationExplicitTypeConversionTests [CodeGenerationTests]")
 {
     Compiler compiler;

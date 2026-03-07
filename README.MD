@@ -81,6 +81,13 @@ Alternatively, you can load the source code from a file with a single line chang
 auto scModule = compiler->compileFromFile("my_source_file.src", compileResult);
 ```
 
+If you need a temporary bridge for older raw-pointer-based call sites, use the explicit compatibility helpers.
+
+```C++
+auto * compiler = scc::SCCompiler::createRaw();
+auto * scModule = compiler->compileFromMemoryRaw(sourceCode, compileResult);
+```
+
 # Guidance
 
 The following steps are necessary to understand and add a new language feature.

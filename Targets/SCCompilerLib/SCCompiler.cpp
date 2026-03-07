@@ -19,6 +19,24 @@ std::unique_ptr<SCCompiler> SCCompiler::create()
 }
 
 
+SCCompiler * SCCompiler::createRaw()
+{
+    return create().release();
+}
+
+
+SCModule * SCCompiler::compileFromFileRaw(std::string filename, SCCompileResult & compileResult)
+{
+    return compileFromFile(std::move(filename), compileResult).release();
+}
+
+
+SCModule * SCCompiler::compileFromMemoryRaw(std::string sourceCode, SCCompileResult & compileResult)
+{
+    return compileFromMemory(std::move(sourceCode), compileResult).release();
+}
+
+
 SCCompiler::~SCCompiler()
 {
     // Abstract classes with pure virtual functions do not implement methods, but the destructor has to be implemented.
