@@ -1,6 +1,6 @@
 # Simple C JIT Compiler
 
-Welcome to the Simple C JIT Compiler project designed by `Arkin Terli` to demonstrate the construction of a Just-In-Time (JIT) compiler using modern tools and technologies.
+Welcome to `SCCompiler`, a simple C JIT compiler project designed by `Arkin Terli` to demonstrate the construction of a Just-In-Time (JIT) compiler using modern tools and technologies.
 
 This compiler is built using ANTLR4 for the frontend and LLVM for the backend, providing a practical example of how these powerful libraries can be leveraged to create a fully functional JIT compiler in C++.
 
@@ -9,7 +9,7 @@ The entire purpose is experimentation/research; although with limited language f
 ---
 
 ### Overview
-The Simple C JIT Compiler aims to provide a comprehensive understanding of the compiler design process, from lexical analysis and parsing to code generation and optimization. Despite its simplicity, this compiler supports a wide range of features typically found in the C programming language, including:
+`SCCompiler` aims to provide a comprehensive understanding of the compiler design process, from lexical analysis and parsing to code generation and optimization. Despite its simplicity, this compiler supports a wide range of features typically found in the C programming language, including:
 
 - Variable declarations (float, int, bool)
 - Functions and recursive function calls
@@ -25,7 +25,7 @@ The Simple C JIT Compiler aims to provide a comprehensive understanding of the c
 
 ### Example
 
-This example demonstrates how to use the Simple C JIT Compiler to compile and execute C code from memory.
+This example demonstrates how to use `SCCompiler` to compile and execute C code from memory.
 
 Let's go through the code step by step:
 
@@ -104,7 +104,7 @@ The following steps are necessary to understand and add a new language feature.
 2. We need to check if our grammar can parse our new language feature. Create a sample source code file that uses the new language feature. Let's assume it's called `example.src`. 
 
 
-3. A vital step is to ensure your language grammar is constructed as expected. The following script will generate a temporary Java parser and use your source code to parse and visualize the parsed tree:
+3. A vital step is to ensure your language grammar is constructed as expected. The following script will generate a temporary Java parser and use your source code to parse and visualize the parse tree:
    ```bash
    python show_ptree.py build-release Targets/SCCompilerLib/Parser/SCCompiler.g4 example.src
    ```
@@ -130,7 +130,7 @@ SCCompiler follows a typical compiler construction process:
 4. Perform a Semantic Analysis pass by visiting the AST nodes again to ensure the language is used as expected.
 5. Perform a Code Generation pass to generate code with LLVM by visiting the AST nodes as a final step.
 
-You can see the entire process clearly at a higher level in the `scc::Compiler::Compile(...)` method in the `Targets/SCCompilerLib/Compiler.cpp` file.
+You can see the entire process clearly at a higher level in the `scc::Compiler::compile(...)` method in the `Targets/SCCompilerLib/Compiler.cpp` file.
 
 While it's not possible to cover everything here, the following files typically need to be changed for each step listed above when adding a new language feature:
 
@@ -182,7 +182,7 @@ https://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 # Citing 
 
-The SCCompiler is designed and developed by Arkin Terli. If you find SCCompiler useful in your research and wish to cite it, please use the following BibTex entry:
+`SCCompiler` is designed and developed by Arkin Terli. If you find it useful in your research and wish to cite it, please use the following BibTex entry:
 
 ```
 @software{SCCompiler2018,
