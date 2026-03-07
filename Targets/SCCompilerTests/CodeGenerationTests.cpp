@@ -6,7 +6,7 @@
 // Project includes
 #include <Compiler.hpp>
 // External includes
-#include <catch2/catch.hpp>
+#include <doctest/doctest.h>
 // System includes
 #include <string>
 #include <limits>
@@ -15,7 +15,7 @@
 using namespace scc;
 
 
-TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationExplicitTypeConversionTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -38,7 +38,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    SECTION("Should compile without an issue.")
+    SUBCASE("Should compile without an issue.")
     {
         REQUIRE(compileResult == scc::SCCompileResult::kOk);
         REQUIRE(scModule != nullptr);
@@ -46,7 +46,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
     
     // FLOAT CONVERSIONS -----------------------------------
 
-    SECTION("FLOAT to BOOL conversions")
+    SUBCASE("FLOAT to BOOL conversions")
     {
         using FuncFloatToBool = bool (*)(float);
         auto FloatToBool = reinterpret_cast<FuncFloatToBool>(scModule->getFunctionPtr("FloatToBool"));
@@ -58,7 +58,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
         REQUIRE(FloatToBool(std::numeric_limits<float>::min()) == true);
     }
 
-    SECTION("FLOAT to INT conversions")
+    SUBCASE("FLOAT to INT conversions")
     {
         using FuncFloatToInt = int (*)(float);
         auto FloatToInt = reinterpret_cast<FuncFloatToInt>(scModule->getFunctionPtr("FloatToInt"));
@@ -71,7 +71,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
         // REQUIRE(FloatToInt(std::numeric_limits<float>::max()) == int(std::numeric_limits<float>::max()));
     }
 
-    SECTION("FLOAT to FLOAT conversions")
+    SUBCASE("FLOAT to FLOAT conversions")
     {
         using FuncFloatToFloat = float (*)(float);
         auto FloatToFloat = reinterpret_cast<FuncFloatToFloat>(scModule->getFunctionPtr("FloatToFloat"));
@@ -85,7 +85,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
 
     // INT CONVERSIONS -----------------------------------
 
-    SECTION("INT to BOOL conversions")
+    SUBCASE("INT to BOOL conversions")
     {
         using FuncIntToBool = bool (*)(int);
         auto IntToBool = reinterpret_cast<FuncIntToBool>(scModule->getFunctionPtr("IntToBool"));
@@ -97,7 +97,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
         REQUIRE(IntToBool(std::numeric_limits<int>::min()) == bool(std::numeric_limits<int>::min()));
     }
 
-    SECTION("INT to INT conversions")
+    SUBCASE("INT to INT conversions")
     {
         using FuncIntToInt = int (*)(int);
         auto IntToInt = reinterpret_cast<FuncIntToInt>(scModule->getFunctionPtr("IntToInt"));
@@ -109,7 +109,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
         REQUIRE(IntToInt(std::numeric_limits<int>::min()) == std::numeric_limits<int>::min());
     }
 
-    SECTION("INT to FLOAT conversions")
+    SUBCASE("INT to FLOAT conversions")
     {
         using FuncIntToFloat = float (*)(int);
         auto IntToFloat = reinterpret_cast<FuncIntToFloat>(scModule->getFunctionPtr("IntToFloat"));
@@ -123,7 +123,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
 
     // BOOL CONVERSIONS -----------------------------------
 
-    SECTION("BOOL to BOOL conversions")
+    SUBCASE("BOOL to BOOL conversions")
     {
         using FuncBoolToBool = bool (*)(bool);
         auto BoolToBool = reinterpret_cast<FuncBoolToBool>(scModule->getFunctionPtr("BoolToBool"));
@@ -132,7 +132,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
         REQUIRE(BoolToBool(true) == true);
     }
 
-    SECTION("BOOL to INT conversions")
+    SUBCASE("BOOL to INT conversions")
     {
         using FuncBoolToInt = int (*)(bool);
         auto BoolToInt = reinterpret_cast<FuncBoolToInt>(scModule->getFunctionPtr("BoolToInt"));
@@ -141,7 +141,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
         REQUIRE(BoolToInt(true) == 1);
     }
 
-    SECTION("BOOL to FLOAT conversions")
+    SUBCASE("BOOL to FLOAT conversions")
     {
         using FuncBoolToFloat = float (*)(bool);
         auto BoolToFloat = reinterpret_cast<FuncBoolToFloat>(scModule->getFunctionPtr("BoolToFloat"));
@@ -154,7 +154,7 @@ TEST_CASE("CodeGenerationExplicitTypeConversionTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationUnaryOPTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -167,7 +167,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    SECTION("Should compile without an issue.")
+    SUBCASE("Should compile without an issue.")
     {
         REQUIRE(compileResult == scc::SCCompileResult::kOk);
         REQUIRE(scModule != nullptr);
@@ -175,7 +175,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
 
     // FLOAT
 
-    SECTION("Negative Float")
+    SUBCASE("Negative Float")
     {
         using FuncNegFloat = float (*)(float);
         auto NegFloat = reinterpret_cast<FuncNegFloat>(scModule->getFunctionPtr("NegFloat"));
@@ -187,7 +187,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
         REQUIRE(NegFloat(std::numeric_limits<float>::min()) == -std::numeric_limits<float>::min());
     }
 
-    SECTION("Positive Float")
+    SUBCASE("Positive Float")
     {
         using FuncPosFloat = float (*)(float);
         auto PosFloat = reinterpret_cast<FuncPosFloat>(scModule->getFunctionPtr("PosFloat"));
@@ -203,7 +203,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
 
     // INT
 
-    SECTION("Negative Integer")
+    SUBCASE("Negative Integer")
     {
         using FuncNegInt = int (*)(int);
         auto NegInt = reinterpret_cast<FuncNegInt>(scModule->getFunctionPtr("NegInt"));
@@ -215,7 +215,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
         REQUIRE(NegInt(std::numeric_limits<int>::min()) == -std::numeric_limits<int>::min());
     }
 
-    SECTION("Positive Integer")
+    SUBCASE("Positive Integer")
     {
         using FuncPosInt = int (*)(int);
         auto PosInt = reinterpret_cast<FuncPosInt>(scModule->getFunctionPtr("PosInt"));
@@ -233,7 +233,7 @@ TEST_CASE("CodeGenerationUnaryOPTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationComparisonOPTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -248,7 +248,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
     )";
     auto scModule = compiler.compileFromMemory(testCode, compileResult);
 
-    SECTION("Should compile without an issue.")
+    SUBCASE("Should compile without an issue.")
     {
         REQUIRE(compileResult == scc::SCCompileResult::kOk);
         REQUIRE(scModule != nullptr);
@@ -326,7 +326,7 @@ TEST_CASE("CodeGenerationComparisonOPTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationIfStatementTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationIfStatementTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -367,7 +367,7 @@ TEST_CASE("CodeGenerationIfStatementTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationLogicalNotOPTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationLogicalNotOPTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -418,7 +418,7 @@ TEST_CASE("CodeGenerationLogicalNotOPTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationLogicalOPTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationLogicalOPTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -479,7 +479,7 @@ TEST_CASE("CodeGenerationLogicalOPTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationRecursiveCallTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationRecursiveCallTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -514,7 +514,7 @@ TEST_CASE("CodeGenerationRecursiveCallTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationForStatementTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationForStatementTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -581,7 +581,7 @@ TEST_CASE("CodeGenerationForStatementTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationWhileStatementTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationWhileStatementTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -633,7 +633,7 @@ TEST_CASE("CodeGenerationWhileStatementTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationDoWhileStatementTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationDoWhileStatementTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;
@@ -685,7 +685,7 @@ TEST_CASE("CodeGenerationDoWhileStatementTests", "[CodeGenerationTests]")
 }
 
 
-TEST_CASE("CodeGenerationPrefixAOPTests", "[CodeGenerationTests]")
+TEST_CASE("CodeGenerationPrefixAOPTests [CodeGenerationTests]")
 {
     Compiler compiler;
     SCCompileResult compileResult;

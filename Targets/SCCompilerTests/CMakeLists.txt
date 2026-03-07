@@ -12,7 +12,7 @@ add_executable(${TARGET_NAME}
         TestUtils.cpp
         )
 
-add_dependencies(${TARGET_NAME} catch2_cpp)
+add_dependencies(${TARGET_NAME} doctest_cpp)
 
 target_link_libraries(${TARGET_NAME} PRIVATE SCCompilerLib)
 

@@ -6,7 +6,6 @@
 // Project includes
 #include "TestUtils.hpp"
 // External includes
-#include <catch2/catch.hpp>
 // System includes
 #include <iostream>
 #include <utility>

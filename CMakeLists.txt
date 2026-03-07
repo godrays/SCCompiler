@@ -53,7 +53,7 @@ endif()
 
 # Set external lib versions.
 set(EXTERNAL_ANTLR4_VERSION 4.13.2)
-set(EXTERNAL_CATCH2_VERSION v2.12.4)
+set(EXTERNAL_DOCTEST_VERSION v2.4.11)
 set(EXTERNAL_LLVM_VERSION   llvmorg-12.0.1)
 include(Externals/Externals.cmake)
 

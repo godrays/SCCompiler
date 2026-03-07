@@ -7,7 +7,7 @@
 #include "TestUtils.hpp"
 #include <Compiler.hpp>
 // External includes
-#include <catch2/catch.hpp>
+#include <doctest/doctest.h>
 // System includes
 #include <string>
 
@@ -15,7 +15,7 @@
 using namespace scc;
 
 
-TEST_CASE("SyntaxTests", "[SyntaxTests]")
+TEST_CASE("SyntaxTests [SyntaxTests]")
 {
     REQUIRE(testCode(R"(
     int i;

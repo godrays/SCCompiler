@@ -110,6 +110,7 @@ set(EXTERNAL_COMMON_CMAKE_ARGS
         -DCMAKE_POSITION_INDEPENDENT_CODE=${CMAKE_POSITION_INDEPENDENT_CODE}
         -DCMAKE_BUILD_WITH_INSTALL_RPATH=${CMAKE_BUILD_WITH_INSTALL_RPATH}
         -DCMAKE_INSTALL_RPATH=${CMAKE_INSTALL_RPATH}
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
         -Wno-dev
 )
 
@@ -171,15 +172,14 @@ download_external_file(
 include_directories(${EXTERNALS_BINARY_DIR}/antlr4_cpp/install/include/antlr4-runtime)
 
 # ---------------------------------------------------------------------------------
-# CATCH2 CPP
+# DOCTEST CPP
 # ---------------------------------------------------------------------------------
-
 add_external_git_project(
-        NAME                catch2_cpp
-        GIT_REPOSITORY      https://github.com/catchorg/Catch2.git
-        GIT_TAG             ${EXTERNAL_CATCH2_VERSION}
+        NAME                doctest_cpp
+        GIT_REPOSITORY      https://github.com/doctest/doctest.git
+        GIT_TAG             ${EXTERNAL_DOCTEST_VERSION}
         CMAKE_ARGS          ${EXTERNAL_COMMON_CMAKE_ARGS}
-                            -DCATCH_BUILD_TESTING=OFF
+                            -DDOCTEST_WITH_TESTS=OFF
         EXTERNALS_BIN_DIR   ${EXTERNALS_BINARY_DIR}
         BUILD_TYPE          Release
 )

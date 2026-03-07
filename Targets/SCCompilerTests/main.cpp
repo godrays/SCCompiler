@@ -3,5 +3,9 @@
 //  Copyright © 2018-Present, Arkin Terli. All rights reserved.
 //
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+
+// Project includes
+// External includes
+#include <doctest/doctest.h>
+// System includes

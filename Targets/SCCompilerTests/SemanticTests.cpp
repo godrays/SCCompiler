@@ -7,7 +7,7 @@
 #include "TestUtils.hpp"
 #include <Compiler.hpp>
 // External includes
-#include <catch2/catch.hpp>
+#include <doctest/doctest.h>
 // System includes
 #include <string>
 
@@ -15,7 +15,7 @@
 using namespace scc;
 
 
-TEST_CASE("SemanticUndeclaredIdentifierTest", "[SemanticTests]")
+TEST_CASE("SemanticUndeclaredIdentifierTest [SemanticTests]")
 {
     // Compiler must fail in use of an undeclared identifier.
 
@@ -45,7 +45,7 @@ TEST_CASE("SemanticUndeclaredIdentifierTest", "[SemanticTests]")
 }
 
 
-TEST_CASE("SemanticTypeMismatchTest", "[SemanticTests]")
+TEST_CASE("SemanticTypeMismatchTest [SemanticTests]")
 {
     // Compiler must fails for mismathed type use.
 
@@ -83,7 +83,7 @@ TEST_CASE("SemanticTypeMismatchTest", "[SemanticTests]")
 }
 
 
-TEST_CASE("SemanticNonSpecificTest", "[SemanticTests]")
+TEST_CASE("SemanticNonSpecificTest [SemanticTests]")
 {
     // Function with return type must have at least one return statement.
 
@@ -93,7 +93,7 @@ TEST_CASE("SemanticNonSpecificTest", "[SemanticTests]")
 }
 
 
-TEST_CASE("SemanticUnaryOPTest", "[SemanticTests]")
+TEST_CASE("SemanticUnaryOPTest [SemanticTests]")
 {
     REQUIRE(testCode(R"(
     bool   func()  { return -true; }
@@ -105,7 +105,7 @@ TEST_CASE("SemanticUnaryOPTest", "[SemanticTests]")
 }
 
 
-TEST_CASE("SemanticContinueStatementTest", "[SemanticTests]")
+TEST_CASE("SemanticContinueStatementTest [SemanticTests]")
 {
     // Continue statement is allowed only in loops.
     REQUIRE(testCode(R"(
@@ -114,7 +114,7 @@ TEST_CASE("SemanticContinueStatementTest", "[SemanticTests]")
 }
 
 
-TEST_CASE("SemanticBreakStatementTest", "[SemanticTests]")
+TEST_CASE("SemanticBreakStatementTest [SemanticTests]")
 {
     // Break statement is allowed only in loops.
     REQUIRE(testCode(R"(
