@@ -339,7 +339,7 @@ antlrcpp::Any ASTGenerator::visitExplicitTypeConversion(SCCompilerParser::Explic
 antlrcpp::Any ASTGenerator::visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOPExprContext *ctx)
 {
     // Create new AST Node.
-    auto newNode = std::make_unique<ast::NodeLogicalOP>(ast::NodeType::kLogicalNotOP);
+    auto newNode = std::make_unique<ast::NodeLogicalOperator>(ast::NodeType::kLogicalNotOP);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
     pushNodeToStack(std::move(newNode));
 
@@ -357,14 +357,14 @@ antlrcpp::Any ASTGenerator::visitLogicalNotOPExpr(SCCompilerParser::LogicalNotOP
 antlrcpp::Any ASTGenerator::visitLogicalOPExpr(SCCompilerParser::LogicalOPExprContext *ctx)
 {
     ast::NodeType  nodeType = ast::NodeType::kUnknown;
-    std::string  logicalOP = ctx->children[1]->getText();
+    std::string  logicalOperator = ctx->children[1]->getText();
 
-    if (logicalOP == "&&") nodeType = ast::NodeType::kLogicalAndOP;
-    else if (logicalOP == "||") nodeType = ast::NodeType::kLogicalOrOP;
+    if (logicalOperator == "&&") nodeType = ast::NodeType::kLogicalAndOP;
+    else if (logicalOperator == "||") nodeType = ast::NodeType::kLogicalOrOP;
     else assert(false && "Unknown logical operator.");
 
     // Create new AST Node.
-    auto newNode = std::make_unique<ast::NodeLogicalOP>(nodeType);
+    auto newNode = std::make_unique<ast::NodeLogicalOperator>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
     pushNodeToStack(std::move(newNode));
 
@@ -426,14 +426,14 @@ antlrcpp::Any ASTGenerator::visitPrefixAOPExpr(SCCompilerParser::PrefixAOPExprCo
 {
     ast::NodeType nodeType = ast::NodeType::kUnknown;
     assert(ctx->children.size() == 2);
-    std::string  prefixAOP = ctx->getStart()->getText();
+    std::string  prefixArithmeticOperator = ctx->getStart()->getText();
 
-    if (prefixAOP == "++")      nodeType = ast::NodeType::kPrefixIncAOP;
-    else if (prefixAOP == "--") nodeType = ast::NodeType::kPrefixDecAOP;
+    if (prefixArithmeticOperator == "++")      nodeType = ast::NodeType::kPrefixIncAOP;
+    else if (prefixArithmeticOperator == "--") nodeType = ast::NodeType::kPrefixDecAOP;
     else assert(false && "Unknown prefix arithmetic operator.");
 
     // Create new AST Node: '++' or '--'
-    auto newNode = std::make_unique<ast::NodePrefixAOP>(nodeType);
+    auto newNode = std::make_unique<ast::NodePrefixArithmeticOperator>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
     pushNodeToStack(std::move(newNode));
 
@@ -463,16 +463,16 @@ antlrcpp::Any ASTGenerator::visitAOPExpr(SCCompilerParser::AOPExprContext *ctx)
 {
     ast::NodeType nodeType = ast::NodeType::kUnknown;
     assert(ctx->children.size() == 3);
-    std::string  aop = ctx->children[1]->getText(); // Second child is arithmetic operator in the expression.
+    std::string  arithmeticOperator = ctx->children[1]->getText(); // Second child is arithmetic operator in the expression.
 
-    if (aop == "*")      nodeType = ast::NodeType::kAOPMul;
-    else if (aop == "/") nodeType = ast::NodeType::kAOPDiv;
-    else if (aop == "+") nodeType = ast::NodeType::kAOPAdd;
-    else if (aop == "-") nodeType = ast::NodeType::kAOPSub;
+    if (arithmeticOperator == "*")      nodeType = ast::NodeType::kAOPMul;
+    else if (arithmeticOperator == "/") nodeType = ast::NodeType::kAOPDiv;
+    else if (arithmeticOperator == "+") nodeType = ast::NodeType::kAOPAdd;
+    else if (arithmeticOperator == "-") nodeType = ast::NodeType::kAOPSub;
     else assert(false && "Unknown arithmetic operator.");
 
     // Create new AST Node.
-    auto newNode = std::make_unique<ast::NodeAOP>(nodeType);
+    auto newNode = std::make_unique<ast::NodeArithmeticOperator>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
     pushNodeToStack(std::move(newNode));
 
@@ -509,14 +509,14 @@ antlrcpp::Any  ASTGenerator::visitUnaryExpr(SCCompilerParser::UnaryExprContext *
 {
     ast::NodeType nodeType = ast::NodeType::kUnknown;
     assert(ctx->children.size() == 2);
-    std::string  uop = ctx->children[0]->getText(); // First child is unary operator in the expression.
+    std::string  unaryOperator = ctx->children[0]->getText(); // First child is unary operator in the expression.
 
-    if (uop == "-") nodeType = ast::NodeType::kUOPMinus;
-    else if (uop == "+") nodeType = ast::NodeType::kUOPPlus;
+    if (unaryOperator == "-") nodeType = ast::NodeType::kUOPMinus;
+    else if (unaryOperator == "+") nodeType = ast::NodeType::kUOPPlus;
     else assert(false && "Unknown unary operator.");
 
     // Create new AST Node.
-    auto newNode = std::make_unique<ast::NodeUnaryOP>(nodeType);
+    auto newNode = std::make_unique<ast::NodeUnaryOperator>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
     pushNodeToStack(std::move(newNode));
 
@@ -534,18 +534,18 @@ antlrcpp::Any ASTGenerator::visitCompExpr(SCCompilerParser::CompExprContext *ctx
 {
     ast::NodeType nodeType = ast::NodeType::kUnknown;
     assert(ctx->children.size() == 3);
-    std::string  compOP = ctx->children[1]->getText(); // Second child is comparison operator in the expression.
+    std::string  comparisonOperator = ctx->children[1]->getText(); // Second child is comparison operator in the expression.
 
-    if (compOP == "==")      nodeType = ast::NodeType::kCompOPEQ;
-    else if (compOP == "!=") nodeType = ast::NodeType::kCompOPNEQ;
-    else if (compOP == "<=") nodeType = ast::NodeType::kCompOPLE;
-    else if (compOP == ">=") nodeType = ast::NodeType::kCompOPGE;
-    else if (compOP == "<")  nodeType = ast::NodeType::kCompOPL;
-    else if (compOP == ">")  nodeType = ast::NodeType::kCompOPG;
+    if (comparisonOperator == "==")      nodeType = ast::NodeType::kCompOPEQ;
+    else if (comparisonOperator == "!=") nodeType = ast::NodeType::kCompOPNEQ;
+    else if (comparisonOperator == "<=") nodeType = ast::NodeType::kCompOPLE;
+    else if (comparisonOperator == ">=") nodeType = ast::NodeType::kCompOPGE;
+    else if (comparisonOperator == "<")  nodeType = ast::NodeType::kCompOPL;
+    else if (comparisonOperator == ">")  nodeType = ast::NodeType::kCompOPG;
     else assert(false && "Unknown arithmetic operator.");
 
     // Create new AST Node.
-    auto newNode = std::make_unique<ast::NodeCompOP>(nodeType);
+    auto newNode = std::make_unique<ast::NodeComparisonOperator>(nodeType);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
     pushNodeToStack(std::move(newNode));
 

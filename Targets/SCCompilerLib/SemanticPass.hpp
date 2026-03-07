@@ -31,13 +31,13 @@ namespace ast
     class NodeReturnStatement;
     class NodeContinue;
     class NodeBreak;
-    class NodeLogicalOP;
+    class NodeLogicalOperator;
     class NodeFunctionCall;
     class NodeAssignment;
-    class NodeAOP;
+    class NodeArithmeticOperator;
     class NodeLiteral;
     class NodeExplicitTypeConversion;
-    class NodeUnaryOP;
+    class NodeUnaryOperator;
 }
 
 
@@ -82,17 +82,17 @@ private:
 
     Type visitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 
-    Type visitLogicalOP(ast::NodeLogicalOP * node);
+    Type visitLogicalOperator(ast::NodeLogicalOperator * node);
 
-    Type visitPrefixAOP(ast::NodePrefixAOP * node);
+    Type visitPrefixArithmeticOperator(ast::NodePrefixArithmeticOperator * node);
 
-    Type visitAOP(ast::NodeAOP * node);
+    Type visitArithmeticOperator(ast::NodeArithmeticOperator * node);
 
-    Type visitNodeUnaryOP(ast::NodeUnaryOP * node);
+    Type visitUnaryOperator(ast::NodeUnaryOperator * node);
 
     Type visitLiteral(ast::NodeLiteral * node);
 
-    Type visitCompOP(ast::NodeCompOP * node);
+    Type visitComparisonOperator(ast::NodeComparisonOperator * node);
 };
 
 }

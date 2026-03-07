@@ -364,58 +364,58 @@ protected:
 };
 
 
-class NodeLogicalOP : public Node
+class NodeLogicalOperator : public Node
 {
 public:
     // Constructor.
-    explicit NodeLogicalOP(ast::NodeType nodetype);
+    explicit NodeLogicalOperator(ast::NodeType nodetype);
 
     // Destructor.
-    ~NodeLogicalOP() override;
+    ~NodeLogicalOperator() override;
 };
 
 
-class NodeUnaryOP : public Node
+class NodeUnaryOperator : public Node
 {
 public:
     // Constructor.
-    explicit NodeUnaryOP(NodeType nodeType);
+    explicit NodeUnaryOperator(NodeType nodeType);
 
     // Destructor.
-    ~NodeUnaryOP() override;
+    ~NodeUnaryOperator() override;
 };
 
 
-class NodeCompOP : public Node
+class NodeComparisonOperator : public Node
 {
 public:
     // Constructor.
-    explicit NodeCompOP(NodeType nodeType);
+    explicit NodeComparisonOperator(NodeType nodeType);
 
     // Destructor.
-    ~NodeCompOP() override;
+    ~NodeComparisonOperator() override;
 };
 
 
-class NodePrefixAOP : public Node
+class NodePrefixArithmeticOperator : public Node
 {
 public:
     // Constructor.
-    explicit NodePrefixAOP(NodeType nodeType);
+    explicit NodePrefixArithmeticOperator(NodeType nodeType);
 
     // Destructor.
-    ~NodePrefixAOP() override;
+    ~NodePrefixArithmeticOperator() override;
 };
 
 
-class NodeAOP : public Node
+class NodeArithmeticOperator : public Node
 {
 public:
     // Constructor.
-    explicit NodeAOP(NodeType nodeType);
+    explicit NodeArithmeticOperator(NodeType nodeType);
 
     // Destructor.
-    ~NodeAOP() override;
+    ~NodeArithmeticOperator() override;
 };
 
 

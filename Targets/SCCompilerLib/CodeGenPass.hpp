@@ -49,13 +49,13 @@ namespace ast
     class NodeWhileStatement;
     class NodeDoWhileStatement;
     class NodeBlock;
-    class NodeLogicalOP;
+    class NodeLogicalOperator;
     class NodeReturnStatement;
     class NodeBreak;
     class NodeFunctionCall;
     class NodeAssignment;
-    class NodePrefixAOP;
-    class NodeAOP;
+    class NodePrefixArithmeticOperator;
+    class NodeArithmeticOperator;
     class NodeLiteral;
 }
 
@@ -178,19 +178,19 @@ private:
 
     llvm::Value * visitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 
-    llvm::Value * visitLogicalNotOP(ast::NodeLogicalOP * node);
+    llvm::Value * visitLogicalNotOperator(ast::NodeLogicalOperator * node);
 
-    llvm::Value * visitLogicalAndOP(ast::NodeLogicalOP * node);
+    llvm::Value * visitLogicalAndOperator(ast::NodeLogicalOperator * node);
 
-    llvm::Value * visitLogicalOrOP(ast::NodeLogicalOP * node);
+    llvm::Value * visitLogicalOrOperator(ast::NodeLogicalOperator * node);
 
-    llvm::Value * visitPrefixAOP(ast::NodePrefixAOP * node);
+    llvm::Value * visitPrefixArithmeticOperator(ast::NodePrefixArithmeticOperator * node);
 
-    llvm::Value * visitAOP(ast::NodeAOP * node);
+    llvm::Value * visitArithmeticOperator(ast::NodeArithmeticOperator * node);
 
-    llvm::Value * visitCompOP(ast::NodeCompOP * node);
+    llvm::Value * visitComparisonOperator(ast::NodeComparisonOperator * node);
 
-    llvm::Value * visitNodeUnaryOP(ast::NodeUnaryOP * node);
+    llvm::Value * visitUnaryOperator(ast::NodeUnaryOperator * node);
 
     llvm::Value * visitLiteral(ast::NodeLiteral * node);
 

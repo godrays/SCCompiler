@@ -546,7 +546,7 @@ ast::NodeExplicitTypeConversion::~NodeExplicitTypeConversion()
 }
 
 
-ast::NodeLogicalOP::NodeLogicalOP(ast::NodeType nodeType) : Node(nodeType)
+ast::NodeLogicalOperator::NodeLogicalOperator(ast::NodeType nodeType) : Node(nodeType)
 {
     assert(nodeType == ast::NodeType::kLogicalNotOP
         || nodeType == ast::NodeType::kLogicalAndOP
@@ -554,26 +554,26 @@ ast::NodeLogicalOP::NodeLogicalOP(ast::NodeType nodeType) : Node(nodeType)
 }
 
 
-ast::NodeLogicalOP::~NodeLogicalOP()
+ast::NodeLogicalOperator::~NodeLogicalOperator()
 {
     deleteChildren();
 }
 
 
-ast::NodeUnaryOP::NodeUnaryOP(NodeType nodeType) : Node(nodeType)
+ast::NodeUnaryOperator::NodeUnaryOperator(NodeType nodeType) : Node(nodeType)
 {
     assert(nodeType == ast::NodeType::kUOPPlus
         || nodeType == ast::NodeType::kUOPMinus);
 }
 
 
-ast::NodeUnaryOP::~NodeUnaryOP()
+ast::NodeUnaryOperator::~NodeUnaryOperator()
 {
     deleteChildren();
 }
 
 
-ast::NodeCompOP::NodeCompOP(ast::NodeType nodeType) : ast::Node(nodeType)
+ast::NodeComparisonOperator::NodeComparisonOperator(ast::NodeType nodeType) : ast::Node(nodeType)
 {
     assert(nodeType == ast::NodeType::kCompOPEQ
         || nodeType == ast::NodeType::kCompOPNEQ
@@ -584,13 +584,13 @@ ast::NodeCompOP::NodeCompOP(ast::NodeType nodeType) : ast::Node(nodeType)
 }
 
 
-ast::NodeCompOP::~NodeCompOP()
+ast::NodeComparisonOperator::~NodeComparisonOperator()
 {
     deleteChildren();
 }
 
 
-ast::NodeAOP::NodeAOP(ast::NodeType nodeType) : ast::Node(nodeType)
+ast::NodeArithmeticOperator::NodeArithmeticOperator(ast::NodeType nodeType) : ast::Node(nodeType)
 {
     assert(nodeType == ast::NodeType::kAOPMul
         || nodeType == ast::NodeType::kAOPDiv
@@ -599,20 +599,20 @@ ast::NodeAOP::NodeAOP(ast::NodeType nodeType) : ast::Node(nodeType)
 }
 
 
-ast::NodeAOP::~NodeAOP()
+ast::NodeArithmeticOperator::~NodeArithmeticOperator()
 {
     deleteChildren();
 }
 
 
-ast::NodePrefixAOP::NodePrefixAOP(ast::NodeType nodeType) : ast::Node(nodeType)
+ast::NodePrefixArithmeticOperator::NodePrefixArithmeticOperator(ast::NodeType nodeType) : ast::Node(nodeType)
 {
     assert(nodeType == ast::NodeType::kPrefixIncAOP
         || nodeType == ast::NodeType::kPrefixDecAOP);
 }
 
 
-ast::NodePrefixAOP::~NodePrefixAOP()
+ast::NodePrefixArithmeticOperator::~NodePrefixArithmeticOperator()
 {
     deleteChildren();
 }

@@ -218,20 +218,20 @@ llvm::Value * CodeGenPass::visit(ast::Node * node)
             break;
 
         case ast::NodeType::kLogicalNotOP:
-            return visitLogicalNotOP(static_cast<ast::NodeLogicalOP *>(node));
+            return visitLogicalNotOperator(static_cast<ast::NodeLogicalOperator *>(node));
             break;
 
         case ast::NodeType::kLogicalAndOP:
-            return visitLogicalAndOP(static_cast<ast::NodeLogicalOP *>(node));
+            return visitLogicalAndOperator(static_cast<ast::NodeLogicalOperator *>(node));
             break;
 
         case ast::NodeType::kLogicalOrOP:
-            return visitLogicalOrOP(static_cast<ast::NodeLogicalOP *>(node));
+            return visitLogicalOrOperator(static_cast<ast::NodeLogicalOperator *>(node));
             break;
 
         case ast::NodeType::kUOPMinus:
         case ast::NodeType::kUOPPlus:
-            return visitNodeUnaryOP(static_cast<ast::NodeUnaryOP *>(node));
+            return visitUnaryOperator(static_cast<ast::NodeUnaryOperator *>(node));
             break;
 
         case ast::NodeType::kCompOPEQ:
@@ -240,19 +240,19 @@ llvm::Value * CodeGenPass::visit(ast::Node * node)
         case ast::NodeType::kCompOPGE:
         case ast::NodeType::kCompOPL:
         case ast::NodeType::kCompOPG:
-            return visitCompOP(static_cast<ast::NodeCompOP *>(node));
+            return visitComparisonOperator(static_cast<ast::NodeComparisonOperator *>(node));
             break;
 
         case ast::NodeType::kPrefixIncAOP:
         case ast::NodeType::kPrefixDecAOP:
-            return visitPrefixAOP(static_cast<ast::NodePrefixAOP *>(node));
+            return visitPrefixArithmeticOperator(static_cast<ast::NodePrefixArithmeticOperator *>(node));
             break;
 
         case ast::NodeType::kAOPMul:
         case ast::NodeType::kAOPDiv:
         case ast::NodeType::kAOPAdd:
         case ast::NodeType::kAOPSub:
-            return visitAOP(static_cast<ast::NodeAOP *>(node));
+            return visitArithmeticOperator(static_cast<ast::NodeArithmeticOperator *>(node));
             break;
 
         case ast::NodeType::kLiteralFloat:
@@ -849,7 +849,7 @@ llvm::Value * CodeGenPass::visitExplicitTypeConversion(ast::NodeExplicitTypeConv
 }
 
 
-llvm::Value * CodeGenPass::visitLogicalNotOP(ast::NodeLogicalOP * node)
+llvm::Value * CodeGenPass::visitLogicalNotOperator(ast::NodeLogicalOperator * node)
 {
     auto exprValue = loadIfPointerType(visit(node->getChild(0)));
     auto exprType = exprValue->getType()->getTypeID();
@@ -881,7 +881,7 @@ llvm::Value * CodeGenPass::visitLogicalNotOP(ast::NodeLogicalOP * node)
 }
 
 
-llvm::Value * CodeGenPass::visitLogicalAndOP(ast::NodeLogicalOP * node)
+llvm::Value * CodeGenPass::visitLogicalAndOperator(ast::NodeLogicalOperator * node)
 {
     auto leftExprNode  = node->getChild(0);
     auto rightExprNode = node->getChild(1);
@@ -908,7 +908,7 @@ llvm::Value * CodeGenPass::visitLogicalAndOP(ast::NodeLogicalOP * node)
 }
 
 
-llvm::Value * CodeGenPass::visitLogicalOrOP(ast::NodeLogicalOP * node)
+llvm::Value * CodeGenPass::visitLogicalOrOperator(ast::NodeLogicalOperator * node)
 {
     auto leftExprNode  = node->getChild(0);
     auto rightExprNode = node->getChild(1);
@@ -935,7 +935,7 @@ llvm::Value * CodeGenPass::visitLogicalOrOP(ast::NodeLogicalOP * node)
 }
 
 
-llvm::Value * CodeGenPass::visitNodeUnaryOP(ast::NodeUnaryOP * node)
+llvm::Value * CodeGenPass::visitUnaryOperator(ast::NodeUnaryOperator * node)
 {
     // Generate code for the right expression.
     auto exprValue = loadIfPointerType(visit(node->getChild(0)));
@@ -967,7 +967,7 @@ llvm::Value * CodeGenPass::visitNodeUnaryOP(ast::NodeUnaryOP * node)
 }
 
 
-llvm::Value * CodeGenPass::visitCompOP(ast::NodeCompOP * node)
+llvm::Value * CodeGenPass::visitComparisonOperator(ast::NodeComparisonOperator * node)
 {
     llvm::Value * resultValue{nullptr};
 
@@ -1053,7 +1053,7 @@ llvm::Value * CodeGenPass::visitCompOP(ast::NodeCompOP * node)
 }
 
 
-llvm::Value * CodeGenPass::visitPrefixAOP(ast::NodePrefixAOP * node)
+llvm::Value * CodeGenPass::visitPrefixArithmeticOperator(ast::NodePrefixArithmeticOperator * node)
 {
     llvm::Value * resultValue{nullptr};
 
@@ -1090,7 +1090,7 @@ llvm::Value * CodeGenPass::visitPrefixAOP(ast::NodePrefixAOP * node)
 }
 
 
-llvm::Value * CodeGenPass::visitAOP(ast::NodeAOP * node)
+llvm::Value * CodeGenPass::visitArithmeticOperator(ast::NodeArithmeticOperator * node)
 {
     llvm::Value * resultValue{nullptr};
 

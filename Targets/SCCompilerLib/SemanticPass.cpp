@@ -111,7 +111,7 @@ Type SemanticPass::visit(ast::Node * node)
         case ast::NodeType::kLogicalNotOP:
         case ast::NodeType::kLogicalAndOP:
         case ast::NodeType::kLogicalOrOP:
-            return visitLogicalOP(dynamic_cast<ast::NodeLogicalOP *>(node));
+            return visitLogicalOperator(dynamic_cast<ast::NodeLogicalOperator *>(node));
             break;
 
         case ast::NodeType::kCompOPEQ:
@@ -120,24 +120,24 @@ Type SemanticPass::visit(ast::Node * node)
         case ast::NodeType::kCompOPGE:
         case ast::NodeType::kCompOPL:
         case ast::NodeType::kCompOPG:
-            return visitCompOP(dynamic_cast<ast::NodeCompOP *>(node));
+            return visitComparisonOperator(dynamic_cast<ast::NodeComparisonOperator *>(node));
             break;
 
         case ast::NodeType::kPrefixIncAOP:
         case ast::NodeType::kPrefixDecAOP:
-            return visitPrefixAOP(dynamic_cast<ast::NodePrefixAOP *>(node));
+            return visitPrefixArithmeticOperator(dynamic_cast<ast::NodePrefixArithmeticOperator *>(node));
             break;
 
         case ast::NodeType::kAOPMul:
         case ast::NodeType::kAOPDiv:
         case ast::NodeType::kAOPAdd:
         case ast::NodeType::kAOPSub:
-            return visitAOP(dynamic_cast<ast::NodeAOP *>(node));
+            return visitArithmeticOperator(dynamic_cast<ast::NodeArithmeticOperator *>(node));
             break;
 
         case ast::NodeType::kUOPPlus:
         case ast::NodeType::kUOPMinus:
-            return visitNodeUnaryOP(dynamic_cast<ast::NodeUnaryOP *>(node));
+            return visitUnaryOperator(dynamic_cast<ast::NodeUnaryOperator *>(node));
             break;
 
         case ast::NodeType::kLiteralFloat:
@@ -376,7 +376,7 @@ Type SemanticPass::visitExplicitTypeConversion(ast::NodeExplicitTypeConversion *
 }
 
 
-Type SemanticPass::visitLogicalOP(ast::NodeLogicalOP * node)
+Type SemanticPass::visitLogicalOperator(ast::NodeLogicalOperator * node)
 {
     auto nodeType = node->getNodeType();
 
@@ -398,7 +398,7 @@ Type SemanticPass::visitLogicalOP(ast::NodeLogicalOP * node)
 }
 
 
-Type SemanticPass::visitPrefixAOP(ast::NodePrefixAOP * node)
+Type SemanticPass::visitPrefixArithmeticOperator(ast::NodePrefixArithmeticOperator * node)
 {
     auto rightOperandType = visit(node->getChild(0));
 
@@ -412,7 +412,7 @@ Type SemanticPass::visitPrefixAOP(ast::NodePrefixAOP * node)
 }
 
 
-Type SemanticPass::visitAOP(ast::NodeAOP * node)
+Type SemanticPass::visitArithmeticOperator(ast::NodeArithmeticOperator * node)
 {
     // Rule: An arithmetic operation requires two operands.
     // The node must have two child nodes.
@@ -470,7 +470,7 @@ Type SemanticPass::visitLiteral(ast::NodeLiteral * node)
 }
 
 
-Type SemanticPass::visitNodeUnaryOP(ast::NodeUnaryOP * node)
+Type SemanticPass::visitUnaryOperator(ast::NodeUnaryOperator * node)
 {
     // The node must have one child node.
     assert(node->childCount() == 1);
@@ -485,7 +485,7 @@ Type SemanticPass::visitNodeUnaryOP(ast::NodeUnaryOP * node)
 }
 
 
-Type SemanticPass::visitCompOP(ast::NodeCompOP * node)
+Type SemanticPass::visitComparisonOperator(ast::NodeComparisonOperator * node)
 {
     // Rule: A comparison operation requires two operands.
     // The node must have two child nodes.
