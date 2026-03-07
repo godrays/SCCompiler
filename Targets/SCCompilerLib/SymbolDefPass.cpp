@@ -123,8 +123,8 @@ void SymbolDefPass::visitChildren(ast::Node * node)
 
 void SymbolDefPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
 {
-    auto symbolName = node->GetVarName();
-    auto symbolType = node->GetVarType();
+    auto symbolName = node->getVarName();
+    auto symbolType = node->getVarType();
 
     // Symbol redefinition is not allowed.
     throw_if(m_currentScope->isDefined(symbolName),
@@ -141,8 +141,8 @@ void SymbolDefPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 {
     // ADD FUNCTION SYMBOL TO CURRENT SCOPE
     
-    auto funcSymbolName = node->GetFuncName();
-    auto funcSymbolType = node->GetReturnType();
+    auto funcSymbolName = node->getFuncName();
+    auto funcSymbolType = node->getReturnType();
 
     // Symbol redefinition is not allowed.
     throw_if(m_currentScope->isDefined(funcSymbolName),
@@ -157,7 +157,7 @@ void SymbolDefPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     m_currentScope = m_currentScope->createChildScope(ScopeCategory::kFunction);
 
     // Add function arguments to the function scope.
-    auto arguments = node->GetArguments();
+    auto arguments = node->getArguments();
     for (auto & argument : arguments)
     {
         auto argName = argument.getName();
@@ -216,10 +216,10 @@ void SymbolDefPass::visitFunctionCall(ast::NodeFuncCall * node)
 {
     // Rule: The function name must be resolved (must be defined).
     auto scope = node->getScope();
-    auto symbol = static_cast<FunctionSymbol *>(scope->resolveSymbol(node->GetFuncName()));
+    auto symbol = static_cast<FunctionSymbol *>(scope->resolveSymbol(node->getFuncName()));
     throw_if(!symbol,
              SemanticErrorException("Line: ", node->getSourceCodeLine(), " - Use of an undeclared identifier: ",
-                                    node->GetFuncName()));
+                                    node->getFuncName()));
 
     visitChildren(node);
 }
@@ -239,10 +239,10 @@ void SymbolDefPass::visitLiteral(ast::NodeLiteral * node)
             {
                 // Rule: Resolve the variable name. It has to be defined before it is used.
                 auto scope = node->getScope();
-                auto symbol = scope->resolveSymbol(node->GetValue());
+                auto symbol = scope->resolveSymbol(node->getValue());
                 throw_if(!symbol,
                          SemanticErrorException("Line: ", node->getSourceCodeLine(),
-                                                " - Use of an undeclared identifier: ", node->GetValue()));
+                                                " - Use of an undeclared identifier: ", node->getValue()));
             }
             break;
 

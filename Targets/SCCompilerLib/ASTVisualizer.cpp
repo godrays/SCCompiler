@@ -99,7 +99,7 @@ void ASTVisualizer::visit(ast::Node * node)
             break;
 
         case ast::NodeType::kFuncCall:
-            outputConfig(node, "[label = \"Func Call: " + dynamic_cast<ast::NodeFuncCall*>(node)->GetFuncName() + "\"];");
+            outputConfig(node, "[label = \"Func Call: " + dynamic_cast<ast::NodeFuncCall*>(node)->getFuncName() + "\"];");
             break;
 
         case ast::NodeType::kAssignment:
@@ -107,7 +107,7 @@ void ASTVisualizer::visit(ast::Node * node)
             break;
 
         case ast::NodeType::kExplicitTypeConversion:
-            outputConfig(node, "[label = \"ExplTypeConv To: " + ast::TypeToString(dynamic_cast<ast::NodeExplicitTypeConversion*>(node)->GetConversionType()) + "\"];");
+            outputConfig(node, "[label = \"ExplTypeConv To: " + ast::TypeToString(dynamic_cast<ast::NodeExplicitTypeConversion*>(node)->getConversionType()) + "\"];");
             break;
 
         case ast::NodeType::kLogicalNotOP:
@@ -179,19 +179,19 @@ void ASTVisualizer::visit(ast::Node * node)
             break;
 
         case ast::NodeType::kLiteralFloat:
-            outputConfig(node, "[label = \"Float: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
+            outputConfig(node, "[label = \"Float: " + dynamic_cast<ast::NodeLiteral*>(node)->getValue() + "\"];");
             break;
 
         case ast::NodeType::kLiteralInt32:
-            outputConfig(node, "[label = \"Int: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
+            outputConfig(node, "[label = \"Int: " + dynamic_cast<ast::NodeLiteral*>(node)->getValue() + "\"];");
             break;
 
         case ast::NodeType::kLiteralBool:
-            outputConfig(node, "[label = \"Bool: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
+            outputConfig(node, "[label = \"Bool: " + dynamic_cast<ast::NodeLiteral*>(node)->getValue() + "\"];");
             break;
 
         case ast::NodeType::kLiteralID:
-            outputConfig(node, "[label = \"Variable: " + dynamic_cast<ast::NodeLiteral*>(node)->GetValue() + "\"];");
+            outputConfig(node, "[label = \"Variable: " + dynamic_cast<ast::NodeLiteral*>(node)->getValue() + "\"];");
             break;
 
         default:
@@ -228,8 +228,8 @@ void ASTVisualizer::outputConfigVariableDecl(ast::Node *  node)
     
     // Generate config string.
     std::ostringstream  strStream;
-    strStream   << "[label = \"{Variable Decl |" << ast::TypeToString(varDecNode->GetVarType())
-                << " " << varDecNode->GetVarName() << "}\"];" << std::endl;
+    strStream   << "[label = \"{Variable Decl |" << ast::TypeToString(varDecNode->getVarType())
+                << " " << varDecNode->getVarName() << "}\"];" << std::endl;
 
     outputConfig(node, strStream.str());
 }
@@ -239,11 +239,11 @@ void ASTVisualizer::outputConfigFuncDecl(ast::Node * node)
 {
     auto funcDecNode = dynamic_cast<ast::NodeFuncDeclaration *>(node);
     assert(funcDecNode != nullptr);
-    auto arguments = funcDecNode->GetArguments();
+    auto arguments = funcDecNode->getArguments();
     
     // Generate config string.
     std::ostringstream  strStream;
-    strStream   << "[label = \"{Func Decl |" << funcDecNode->GetFuncName() << "| Return Type: " << ast::TypeToString(funcDecNode->GetReturnType());
+    strStream   << "[label = \"{Func Decl |" << funcDecNode->getFuncName() << "| Return Type: " << ast::TypeToString(funcDecNode->getReturnType());
     
     // Write arguments.
     for (auto & argument : arguments)

@@ -339,13 +339,13 @@ ast::NodeVarDeclaration::~NodeVarDeclaration()
 }
 
 
-Type ast::NodeVarDeclaration::GetVarType()
+Type ast::NodeVarDeclaration::getVarType()
 {
     return m_varType;
 }
 
 
-std::string ast::NodeVarDeclaration::GetVarName()
+std::string ast::NodeVarDeclaration::getVarName()
 {
     return m_varName;
 }
@@ -365,25 +365,25 @@ ast::NodeFuncDeclaration::~NodeFuncDeclaration()
 }
 
 
-std::string ast::NodeFuncDeclaration::GetFuncName()
+std::string ast::NodeFuncDeclaration::getFuncName()
 {
     return m_funcName;
 }
 
 
-Type ast::NodeFuncDeclaration::GetReturnType()
+Type ast::NodeFuncDeclaration::getReturnType()
 {
     return m_returnType;
 }
 
 
-void ast::NodeFuncDeclaration::AddArgument(const ast::FuncArg & argument)
+void ast::NodeFuncDeclaration::addArgument(const ast::FuncArg & argument)
 {
     m_argumentList.emplace_back(argument);
 }
 
 
-std::vector<ast::FuncArg> ast::NodeFuncDeclaration::GetArguments()
+std::vector<ast::FuncArg> ast::NodeFuncDeclaration::getArguments()
 {
     return m_argumentList;
 }
@@ -495,7 +495,7 @@ ast::NodeFuncCall::~NodeFuncCall()
     deleteChildren();
 }
 
-std::string ast::NodeFuncCall::GetFuncName()
+std::string ast::NodeFuncCall::getFuncName()
 {
     return m_funcName;
 }
@@ -534,7 +534,7 @@ ast::NodeExplicitTypeConversion::NodeExplicitTypeConversion(Type conversionType)
 }
 
 
-Type ast::NodeExplicitTypeConversion::GetConversionType()
+Type ast::NodeExplicitTypeConversion::getConversionType()
 {
     return m_conversionType;
 }
@@ -635,7 +635,7 @@ ast::NodeLiteral::~NodeLiteral()
 }
 
 
-std::string ast::NodeLiteral::GetValue()
+std::string ast::NodeLiteral::getValue()
 {
     return m_value;
 }

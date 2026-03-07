@@ -284,13 +284,13 @@ void CodeGenPass::visitProgram(ast::NodeProgram * node)
 void CodeGenPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
 {
     auto childCount = node->childCount();
-    auto varName = node->GetVarName();
+    auto varName = node->getVarName();
     assert(childCount < 2);
 
     // Create a global variable if the variable is in the global scope.
     if (node->getScope()->getCategory() == ScopeCategory::kGlobal)
     {
-        auto globalVar = createGlobalVariable(varName, node->GetVarType());
+        auto globalVar = createGlobalVariable(varName, node->getVarType());
         node->getScope()->resolveSymbol(varName)->setProperty(std::make_unique<SymbolProperty>(globalVar));
 
         // Generate initialization code in the internal initialization function.
@@ -325,7 +325,7 @@ void CodeGenPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
     else
     {
         // Create a stack-allocated local variable.
-        auto localVar = m_irBuilder->CreateAlloca(createBaseType(node->GetVarType()), nullptr, varName);
+        auto localVar = m_irBuilder->CreateAlloca(createBaseType(node->getVarType()), nullptr, varName);
         // Set the symbol property to save the new LLVM variable object. Save related LLVM objects in the symbol object.
         // We save the LLVM object because every time this variable is used, we need to access its LLVM object.
         node->getScope()->resolveSymbol(varName)->setProperty(std::make_unique<SymbolProperty>(localVar));
@@ -346,8 +346,8 @@ void CodeGenPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     // Save current block.
     llvm::BasicBlock *  prevBlock = m_irBuilder->GetInsertBlock();
 
-    auto funcName = node->GetFuncName();
-    auto funcReturnType = node->GetReturnType();
+    auto funcName = node->getFuncName();
+    auto funcReturnType = node->getReturnType();
     auto funcSymbol = static_cast<FunctionSymbol*>(node->getScope()->resolveSymbol(funcName));
 
     // Create function argument types.
@@ -731,7 +731,7 @@ llvm::Value * CodeGenPass::visitFunctionCall(ast::NodeFuncCall * node)
         auto argExprValue = visit(node->getChild(index));
         args.emplace_back(loadIfPointerType(argExprValue));
     }
-    auto funcName = node->GetFuncName();
+    auto funcName = node->getFuncName();
     auto funcSymbol = static_cast<FunctionSymbol *>(node->getScope()->resolveSymbol(funcName));
     assert(funcSymbol != nullptr);
     
@@ -771,7 +771,7 @@ llvm::Value * CodeGenPass::visitExplicitTypeConversion(ast::NodeExplicitTypeConv
     // Convert exprValue from Float to (int or bool)
     if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::FloatTyID)
     {
-        switch (node->GetConversionType())
+        switch (node->getConversionType())
         {
             case Type::kTypeInt:
                 convertedValue = m_irBuilder->CreateFPToSI(exprValue, createBaseType(Type::kTypeInt));
@@ -796,7 +796,7 @@ llvm::Value * CodeGenPass::visitExplicitTypeConversion(ast::NodeExplicitTypeConv
     if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID &&
         exprValue->getType()->getPrimitiveSizeInBits() == 32)
     {
-        switch (node->GetConversionType())
+        switch (node->getConversionType())
         {
             case Type::kTypeFloat:
                 convertedValue = m_irBuilder->CreateSIToFP(exprValue, createBaseType(Type::kTypeFloat));
@@ -821,7 +821,7 @@ llvm::Value * CodeGenPass::visitExplicitTypeConversion(ast::NodeExplicitTypeConv
     if (exprValue->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID &&
         exprValue->getType()->getPrimitiveSizeInBits() == 1)
     {
-        switch (node->GetConversionType())
+        switch (node->getConversionType())
         {
             case Type::kTypeFloat:
                 convertedValue = m_irBuilder->CreateUIToFP(exprValue, createBaseType(Type::kTypeFloat));
@@ -1154,7 +1154,7 @@ llvm::Value * CodeGenPass::visitLiteral(ast::NodeLiteral * node)
                 // We create a temp local variable and assign a constant value.
                 auto localVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeFloat), nullptr, "_ci");
                 // Since we store a constant, we don't need to load the value from an address.
-                m_irBuilder->CreateStore(createConstant(scc::Type::kTypeFloat, node->GetValue()), localVar);
+                m_irBuilder->CreateStore(createConstant(scc::Type::kTypeFloat, node->getValue()), localVar);
                 // Returns a pointer to the local variable.
                 literalValue = localVar;
             }
@@ -1165,7 +1165,7 @@ llvm::Value * CodeGenPass::visitLiteral(ast::NodeLiteral * node)
                 // We create a temp local variable and assign a constant value.
                 auto localVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeInt), nullptr, "_cf");
                 // Since we store a constant, we don't need to load the value from an address.
-                m_irBuilder->CreateStore(createConstant(scc::Type::kTypeInt, node->GetValue()), localVar);
+                m_irBuilder->CreateStore(createConstant(scc::Type::kTypeInt, node->getValue()), localVar);
                 // Returns a pointer to the local variable.
                 literalValue = localVar;
             }
@@ -1176,7 +1176,7 @@ llvm::Value * CodeGenPass::visitLiteral(ast::NodeLiteral * node)
                 // We create a temp local variable and assign a constant value.
                 auto localVar = m_irBuilder->CreateAlloca(createBaseType(scc::Type::kTypeBool), nullptr, "_cb");
                 // Since we store a constant, we don't need to load the value from an address.
-                m_irBuilder->CreateStore(createConstant(scc::Type::kTypeBool, node->GetValue()), localVar);
+                m_irBuilder->CreateStore(createConstant(scc::Type::kTypeBool, node->getValue()), localVar);
                 // Returns a pointer to the local variable.
                 literalValue = localVar;
             }
@@ -1186,7 +1186,7 @@ llvm::Value * CodeGenPass::visitLiteral(ast::NodeLiteral * node)
             {
                 // Returns the llvm value object of the variable, which is stored as a symbol property in the symbol object.
                 // The llvm object is referring to the variable pointer. It needs to be loaded to access the value of the variable.
-                auto symbol = node->getScope()->resolveSymbol(node->GetValue());
+                auto symbol = node->getScope()->resolveSymbol(node->getValue());
                 literalValue = static_cast<SymbolProperty *>(symbol->getProperty())->getValue();
             }
             break;

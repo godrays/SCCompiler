@@ -180,10 +180,10 @@ public:
     ~NodeVarDeclaration() override;
 
     // Get var type.
-    Type GetVarType();
+    Type getVarType();
 
     // Get var name.
-    std::string GetVarName();
+    std::string getVarName();
 
 protected:
     Type         m_varType = Type::kTypeUnknown;
@@ -201,16 +201,16 @@ public:
     ~NodeFuncDeclaration() override;
 
     // Get func name.
-    std::string GetFuncName();
+    std::string getFuncName();
 
     // Get return type.
-    Type GetReturnType();
+    Type getReturnType();
 
     // Add argument.
-    void AddArgument(const FuncArg& argument);
+    void addArgument(const FuncArg& argument);
 
     // Return argument list.
-    std::vector<FuncArg> GetArguments();
+    std::vector<FuncArg> getArguments();
 
 protected:
     Type   m_returnType = Type::kTypeUnknown;
@@ -317,7 +317,7 @@ public:
     ~NodeFuncCall() override;
 
     // Returns function name.
-    std::string GetFuncName();
+    std::string getFuncName();
 
 protected:
     std::string m_funcName;
@@ -356,7 +356,7 @@ public:
     ~NodeExplicitTypeConversion() override;
 
     // Get explicit conversion type.
-    Type GetConversionType();
+    Type getConversionType();
 
 protected:
     // ConversionType.
@@ -429,7 +429,7 @@ public:
     ~NodeLiteral() override;
 
     // Get literal value.
-    std::string GetValue();
+    std::string getValue();
 
 protected:
     // Literal value.

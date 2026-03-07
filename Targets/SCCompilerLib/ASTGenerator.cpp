@@ -103,7 +103,7 @@ antlrcpp::Any ASTGenerator::visitFuncArgDeclaration(SCCompilerParser::FuncArgDec
     auto parentNode = dynamic_cast<ast::NodeFuncDeclaration*>(m_currentNodeStack.top());
     assert(parentNode != nullptr);
 
-    parentNode->AddArgument({argType, argName});
+    parentNode->addArgument({argType, argName});
 
     return visitChildren(ctx);
 }

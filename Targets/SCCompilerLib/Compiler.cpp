@@ -35,7 +35,7 @@ public:
         m_message = strStream.str();
     }
 
-    std::string GetErrorMessage() const     { return m_message; }
+    std::string getErrorMessage() const     { return m_message; }
 
 private:
     std::string  m_message;
@@ -103,7 +103,7 @@ std::unique_ptr<scc::SCModule> scc::Compiler::compile(std::istream & sourceStrea
         // Stop if there is a syntax error.
         if (lexer.getNumberOfSyntaxErrors() > 0 || parser.getNumberOfSyntaxErrors() > 0)
         {
-            m_errorMessage = parserErrorListener.GetErrorMessage();
+            m_errorMessage = parserErrorListener.getErrorMessage();
             compileResult = scc::SCCompileResult::kSyntaxError;
             return nullptr;
         }
@@ -127,7 +127,7 @@ std::unique_ptr<scc::SCModule> scc::Compiler::compile(std::istream & sourceStrea
         // PASS: Perform semantic analysis by visiting AST nodes.
         //       Semantic analysis: Resolving Symbols, Type checking, Type Promotion, Semantic Validation.
         SemanticPass  semanticAnalysisPass;
-        semanticAnalysisPass.SemanticCheck(ast.get());
+        semanticAnalysisPass.semanticCheck(ast.get());
 
         // PASS: Perform code generation by visiting AST nodes and create a program execution module: SCModule.
         CodeGenPass codeGenerationPass;

@@ -17,7 +17,7 @@
 using namespace scc;
 
 
-void SemanticPass::SemanticCheck(ast::Node * node)
+void SemanticPass::semanticCheck(ast::Node * node)
 {
     // Do symbol resolution, type checking, type promotion and validation.
     // Anything about the code which may not make sense should be caught in this pass.
@@ -174,7 +174,7 @@ void SemanticPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
         // Rule: The right expression (initializer) type must match.
         auto rightExprType = visit(node->getChild(0));
 
-        throw_if(node->GetVarType() != rightExprType,
+        throw_if(node->getVarType() != rightExprType,
                  SemanticErrorException("Line: ", node->getChild(0)->getSourceCodeLine(), " - Assignment type mismatch."));
 
         return;
@@ -186,7 +186,7 @@ void SemanticPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
 
 void SemanticPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
 {
-    auto funcReturnType = node->GetReturnType();
+    auto funcReturnType = node->getReturnType();
 
     // A function's return type can't be unknown.
     assert(funcReturnType != Type::kTypeUnknown);
@@ -197,7 +197,7 @@ void SemanticPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
         // This search could be done faster by marking function declaration nodes when
         // visiting return statement nodes. AST nodes must be kept as simple as possible.
         throw_if(node->findClosestChildNode(ast::NodeType::kReturnStatement) == nullptr,
-                 SemanticErrorException("Line: ", node->getSourceCodeLine(), " - ", node->GetFuncName(),
+                 SemanticErrorException("Line: ", node->getSourceCodeLine(), " - ", node->getFuncName(),
                                         " must have at least one return statement."));
     }
 
@@ -271,7 +271,7 @@ void SemanticPass::visitReturnStatement(ast::NodeReturnStatement * node)
     assert(funcDeclNode != nullptr);
 
     auto scope = funcDeclNode->getScope();
-    auto funcSymbol = scope->resolveSymbol(funcDeclNode->GetFuncName());
+    auto funcSymbol = scope->resolveSymbol(funcDeclNode->getFuncName());
 
     // Rule: A void function should not return a value.
     throw_if(funcSymbol->getType() == Type::kTypeVoid && node->childCount() == 1,
@@ -323,7 +323,7 @@ void SemanticPass::visitBreak(ast::NodeBreak * node)
 Type SemanticPass::visitFunctionCall(ast::NodeFuncCall * node)
 {
     auto scope = node->getScope();
-    auto symbol = static_cast<FunctionSymbol *>(scope->resolveSymbol(node->GetFuncName()));
+    auto symbol = static_cast<FunctionSymbol *>(scope->resolveSymbol(node->getFuncName()));
     assert(symbol && "Use of an undeclared identifier.");
     auto funcReturnType = symbol->getType();
 
@@ -331,7 +331,7 @@ Type SemanticPass::visitFunctionCall(ast::NodeFuncCall * node)
     // Rule: The number of parameters declared and the number of parameters used must match.
     throw_if(node->childCount() != symbol->argumentCount(),
              SemanticErrorException("Line: ", node->getSourceCodeLine(), " - No matching function to call: ",
-                                    node->GetFuncName()));
+                                    node->getFuncName()));
 
     // Rule: The function argument type must match the expression (parameter) type.
     //       All parameters passed to a function are expressions.
@@ -344,7 +344,7 @@ Type SemanticPass::visitFunctionCall(ast::NodeFuncCall * node)
 
         throw_if(paramExprType != argumentType,
                  SemanticErrorException("Line: ", node->getSourceCodeLine(), " - No matching function to call: ",
-                                        node->GetFuncName()));
+                                        node->getFuncName()));
     }
 
     return funcReturnType;
@@ -372,7 +372,7 @@ Type SemanticPass::visitExplicitTypeConversion(ast::NodeExplicitTypeConversion *
 {
     visit(node->getChild(0));
 
-    return node->GetConversionType();
+    return node->getConversionType();
 }
 
 
@@ -451,7 +451,7 @@ Type SemanticPass::visitLiteral(ast::NodeLiteral * node)
             {
                 // Rule: Resolve the variable name. It has to be defined before it's used.
                 auto scope = node->getScope();
-                auto symbol = scope->resolveSymbol(node->GetValue());
+                auto symbol = scope->resolveSymbol(node->getValue());
                 assert(symbol && "Use of an undeclared identifier");
                 literalType = symbol->getType();
             }

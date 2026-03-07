@@ -45,7 +45,7 @@ class  SemanticPass
 {
 public:
     // Perform semantic analysis.
-    void SemanticCheck(ast::Node * node);
+    void semanticCheck(ast::Node * node);
 
 private:
     // Visits all node children.
