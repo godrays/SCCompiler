@@ -46,11 +46,11 @@ void SymbolDefPass::visit(ast::Node * node)
     switch(node->getNodeType())
     {
         case ast::NodeType::kVariableDeclaration:
-            visitVariableDeclaration(dynamic_cast<ast::NodeVarDeclaration *>(node));
+            visitVariableDeclaration(dynamic_cast<ast::NodeVariableDeclaration *>(node));
             break;
 
         case ast::NodeType::kFunctionDeclaration:
-            visitFunctionDeclaration(dynamic_cast<ast::NodeFuncDeclaration *>(node));
+            visitFunctionDeclaration(dynamic_cast<ast::NodeFunctionDeclaration *>(node));
             break;
 
         case ast::NodeType::kForStatement:
@@ -61,8 +61,8 @@ void SymbolDefPass::visit(ast::Node * node)
             visitBlock(static_cast<ast::NodeBlock *>(node));
             break;
 
-        case ast::NodeType::kFuncCall:
-            visitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
+        case ast::NodeType::kFunctionCall:
+            visitFunctionCall(static_cast<ast::NodeFunctionCall *>(node));
             break;
 
         case ast::NodeType::kLiteralID:
@@ -121,7 +121,7 @@ void SymbolDefPass::visitChildren(ast::Node * node)
 }
 
 
-void SymbolDefPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
+void SymbolDefPass::visitVariableDeclaration(ast::NodeVariableDeclaration * node)
 {
     auto symbolName = node->getVarName();
     auto symbolType = node->getVarType();
@@ -137,7 +137,7 @@ void SymbolDefPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
 }
 
 
-void SymbolDefPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
+void SymbolDefPass::visitFunctionDeclaration(ast::NodeFunctionDeclaration * node)
 {
     // ADD FUNCTION SYMBOL TO CURRENT SCOPE
     
@@ -168,8 +168,8 @@ void SymbolDefPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
                  SemanticErrorException("Line: ", node->getSourceCodeLine(), " - Redefinition of a symbol: ", argName));
 
         // Define the new symbol.
-        auto * argSymbol = static_cast<FuncArgSymbol *>(m_currentScope->insertSymbol(
-            std::make_unique<FuncArgSymbol>(argName, argType)));
+        auto * argSymbol = static_cast<FunctionArgumentSymbol *>(m_currentScope->insertSymbol(
+            std::make_unique<FunctionArgumentSymbol>(argName, argType)));
 
         // Add the argument symbol to the function symbol to track arguments.
         funcSymbol->addArgumentSymbol(argSymbol);
@@ -212,7 +212,7 @@ void SymbolDefPass::visitBlock(ast::NodeBlock * node)
 }
 
 
-void SymbolDefPass::visitFunctionCall(ast::NodeFuncCall * node)
+void SymbolDefPass::visitFunctionCall(ast::NodeFunctionCall * node)
 {
     // Rule: The function name must be resolved (must be defined).
     auto scope = node->getScope();

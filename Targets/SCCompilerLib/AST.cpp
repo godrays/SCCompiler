@@ -14,19 +14,19 @@
 using namespace scc;
 
 
-ast::FuncArg::FuncArg(Type type, std::string name) : m_type(type), m_name(std::move(name))
+ast::FunctionArgument::FunctionArgument(Type type, std::string name) : m_type(type), m_name(std::move(name))
 {
 
 }
 
 
-Type ast::FuncArg::getType()
+Type ast::FunctionArgument::getType()
 {
     return m_type;
 }
 
 
-std::string ast::FuncArg::getName()
+std::string ast::FunctionArgument::getName()
 {
     return m_name;
 }
@@ -131,8 +131,8 @@ std::string ast::Node::getNodeTypeInString(ast::NodeType nodeType)
             typeInString = "tNodeTypeBlock";
             break;
 
-        case ast::NodeType::kFuncCall:
-            typeInString = "tNodeTypeFuncCall";
+        case ast::NodeType::kFunctionCall:
+            typeInString = "tNodeTypeFunctionCall";
             break;
 
         case ast::NodeType::kFunctionDeclaration:
@@ -325,7 +325,7 @@ ast::NodeProgram::~NodeProgram()
 }
 
 
-ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) :
+ast::NodeVariableDeclaration::NodeVariableDeclaration(Type type, std::string varName) :
     ast::Node(NodeType::kVariableDeclaration)
 {
     m_varType = type;
@@ -333,25 +333,25 @@ ast::NodeVarDeclaration::NodeVarDeclaration(Type type, std::string varName) :
 }
 
 
-ast::NodeVarDeclaration::~NodeVarDeclaration()
+ast::NodeVariableDeclaration::~NodeVariableDeclaration()
 {
     deleteChildren();
 }
 
 
-Type ast::NodeVarDeclaration::getVarType()
+Type ast::NodeVariableDeclaration::getVarType()
 {
     return m_varType;
 }
 
 
-std::string ast::NodeVarDeclaration::getVarName()
+std::string ast::NodeVariableDeclaration::getVarName()
 {
     return m_varName;
 }
 
 
-ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcName) :
+ast::NodeFunctionDeclaration::NodeFunctionDeclaration(Type returnType, std::string funcName) :
     ast::Node(NodeType::kFunctionDeclaration)
 {
     m_returnType = returnType;
@@ -359,31 +359,31 @@ ast::NodeFuncDeclaration::NodeFuncDeclaration(Type returnType, std::string funcN
 }
 
 
-ast::NodeFuncDeclaration::~NodeFuncDeclaration()
+ast::NodeFunctionDeclaration::~NodeFunctionDeclaration()
 {
     deleteChildren();
 }
 
 
-std::string ast::NodeFuncDeclaration::getFuncName()
+std::string ast::NodeFunctionDeclaration::getFuncName()
 {
     return m_funcName;
 }
 
 
-Type ast::NodeFuncDeclaration::getReturnType()
+Type ast::NodeFunctionDeclaration::getReturnType()
 {
     return m_returnType;
 }
 
 
-void ast::NodeFuncDeclaration::addArgument(const ast::FuncArg & argument)
+void ast::NodeFunctionDeclaration::addArgument(const ast::FunctionArgument & argument)
 {
     m_argumentList.emplace_back(argument);
 }
 
 
-std::vector<ast::FuncArg> ast::NodeFuncDeclaration::getArguments()
+std::vector<ast::FunctionArgument> ast::NodeFunctionDeclaration::getArguments()
 {
     return m_argumentList;
 }
@@ -485,17 +485,17 @@ ast::NodeBreak::~NodeBreak()
 }
 
 
-ast::NodeFuncCall::NodeFuncCall(std::string funcName)  : ast::Node(NodeType::kFuncCall)
+ast::NodeFunctionCall::NodeFunctionCall(std::string funcName)  : ast::Node(NodeType::kFunctionCall)
 {
     m_funcName = std::move(funcName);
 }
 
-ast::NodeFuncCall::~NodeFuncCall()
+ast::NodeFunctionCall::~NodeFunctionCall()
 {
     deleteChildren();
 }
 
-std::string ast::NodeFuncCall::getFuncName()
+std::string ast::NodeFunctionCall::getFuncName()
 {
     return m_funcName;
 }

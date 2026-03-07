@@ -41,7 +41,7 @@ enum class NodeType
     kReturnStatement,
     kContinue,
     kBreak,
-    kFuncCall,
+    kFunctionCall,
     kBlock,
     kAssignment,
     kExplicitTypeConversion,
@@ -70,11 +70,11 @@ enum class NodeType
 
 
 // Class for function argument.
-class FuncArg
+class FunctionArgument
 {
 public:
     // Constructor.
-    FuncArg(Type type, std::string name);
+    FunctionArgument(Type type, std::string name);
 
     // Returns argument type.
     Type getType();
@@ -170,14 +170,14 @@ public:
 };
 
 
-class NodeVarDeclaration : public Node
+class NodeVariableDeclaration : public Node
 {
 public:
     // Constructor.
-    NodeVarDeclaration(Type type, std::string varName);
+    NodeVariableDeclaration(Type type, std::string varName);
 
     // Destructor.
-    ~NodeVarDeclaration() override;
+    ~NodeVariableDeclaration() override;
 
     // Get var type.
     Type getVarType();
@@ -191,14 +191,14 @@ protected:
 };
 
 
-class NodeFuncDeclaration : public Node
+class NodeFunctionDeclaration : public Node
 {
 public:
     // Constructor.
-    NodeFuncDeclaration(Type returnType, std::string funcName);
+    NodeFunctionDeclaration(Type returnType, std::string funcName);
 
     // Destructor.
-    ~NodeFuncDeclaration() override;
+    ~NodeFunctionDeclaration() override;
 
     // Get func name.
     std::string getFuncName();
@@ -207,15 +207,15 @@ public:
     Type getReturnType();
 
     // Add argument.
-    void addArgument(const FuncArg& argument);
+    void addArgument(const FunctionArgument & argument);
 
     // Return argument list.
-    std::vector<FuncArg> getArguments();
+    std::vector<FunctionArgument> getArguments();
 
 protected:
     Type   m_returnType = Type::kTypeUnknown;
     std::string   m_funcName;
-    std::vector<FuncArg>   m_argumentList;
+    std::vector<FunctionArgument>   m_argumentList;
 };
 
 
@@ -307,14 +307,14 @@ public:
 };
 
 
-class NodeFuncCall : public Node
+class NodeFunctionCall : public Node
 {
 public:
     // Constructor.
-    explicit NodeFuncCall(std::string funcName);
+    explicit NodeFunctionCall(std::string funcName);
 
     // Destructor.
-    ~NodeFuncCall() override;
+    ~NodeFunctionCall() override;
 
     // Returns function name.
     std::string getFuncName();

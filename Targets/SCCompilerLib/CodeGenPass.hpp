@@ -43,8 +43,8 @@ namespace ast
 {
     class Node;
     class NodeProgram;
-    class NodeVarDeclaration;
-    class NodeFuncDeclaration;
+    class NodeVariableDeclaration;
+    class NodeFunctionDeclaration;
     class NodeForStatement;
     class NodeWhileStatement;
     class NodeDoWhileStatement;
@@ -52,7 +52,7 @@ namespace ast
     class NodeLogicalOP;
     class NodeReturnStatement;
     class NodeBreak;
-    class NodeFuncCall;
+    class NodeFunctionCall;
     class NodeAssignment;
     class NodePrefixAOP;
     class NodeAOP;
@@ -152,9 +152,9 @@ private:
 
     void visitProgram(ast::NodeProgram * node);
 
-    void visitVariableDeclaration(ast::NodeVarDeclaration * node);
+    void visitVariableDeclaration(ast::NodeVariableDeclaration * node);
 
-    void visitFunctionDeclaration(ast::NodeFuncDeclaration * node);
+    void visitFunctionDeclaration(ast::NodeFunctionDeclaration * node);
 
     void visitBlock(ast::NodeBlock * node);
 
@@ -174,7 +174,7 @@ private:
 
     void visitAssignment(ast::NodeAssignment * node);
 
-    llvm::Value *  visitFunctionCall(ast::NodeFuncCall * node);
+    llvm::Value *  visitFunctionCall(ast::NodeFunctionCall * node);
 
     llvm::Value * visitExplicitTypeConversion(ast::NodeExplicitTypeConversion * node);
 

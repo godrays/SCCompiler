@@ -75,7 +75,7 @@ VariableSymbol::VariableSymbol(std::string name, Type type) :
 }
 
 
-FuncArgSymbol::FuncArgSymbol(std::string name, Type type) :
+FunctionArgumentSymbol::FunctionArgumentSymbol(std::string name, Type type) :
     Symbol(std::move(name), SymbolCategory::kFunctionArgument, type)
 {
 
@@ -88,7 +88,7 @@ FunctionSymbol::FunctionSymbol(std::string name, Type type) :
 
 }
 
-void FunctionSymbol::addArgumentSymbol(FuncArgSymbol * argSymbol)
+void FunctionSymbol::addArgumentSymbol(FunctionArgumentSymbol * argSymbol)
 {
     m_argumentSymbols.emplace_back(argSymbol);
 }
@@ -100,7 +100,7 @@ size_t FunctionSymbol::argumentCount()
 }
 
 
-FuncArgSymbol * FunctionSymbol::getArgumentSymbol(size_t index)
+FunctionArgumentSymbol * FunctionSymbol::getArgumentSymbol(size_t index)
 {
     return m_argumentSymbols[index];
 }

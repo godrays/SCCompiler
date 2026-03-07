@@ -161,11 +161,11 @@ llvm::Value * CodeGenPass::visit(ast::Node * node)
             break;
 
         case ast::NodeType::kVariableDeclaration:
-            visitVariableDeclaration(static_cast<ast::NodeVarDeclaration *>(node));
+            visitVariableDeclaration(static_cast<ast::NodeVariableDeclaration *>(node));
             break;
 
         case ast::NodeType::kFunctionDeclaration:
-            visitFunctionDeclaration(static_cast<ast::NodeFuncDeclaration *>(node));
+            visitFunctionDeclaration(static_cast<ast::NodeFunctionDeclaration *>(node));
             break;
 
         case ast::NodeType::kBlock:
@@ -205,8 +205,8 @@ llvm::Value * CodeGenPass::visit(ast::Node * node)
             visitBreak(static_cast<ast::NodeBreak *>(node));
             break;
 
-        case ast::NodeType::kFuncCall:
-            return visitFunctionCall(static_cast<ast::NodeFuncCall *>(node));
+        case ast::NodeType::kFunctionCall:
+            return visitFunctionCall(static_cast<ast::NodeFunctionCall *>(node));
             break;
 
         case ast::NodeType::kAssignment:
@@ -281,7 +281,7 @@ void CodeGenPass::visitProgram(ast::NodeProgram * node)
 }
 
 
-void CodeGenPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
+void CodeGenPass::visitVariableDeclaration(ast::NodeVariableDeclaration * node)
 {
     auto childCount = node->childCount();
     auto varName = node->getVarName();
@@ -341,7 +341,7 @@ void CodeGenPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
     }
 }
 
-void CodeGenPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
+void CodeGenPass::visitFunctionDeclaration(ast::NodeFunctionDeclaration * node)
 {
     // Save current block.
     llvm::BasicBlock *  prevBlock = m_irBuilder->GetInsertBlock();
@@ -369,15 +369,16 @@ void CodeGenPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
     size_t index = 0;
     for (auto argIt = m_currentFunction->arg_begin(); index < funcSymbol->argumentCount(); ++argIt, ++index)
     {
-        auto funcArgSymbol = funcSymbol->getArgumentSymbol(index);
-        // argIt->setName(funcArgSymbol->getName());
+        auto functionArgumentSymbol = funcSymbol->getArgumentSymbol(index);
+        // argIt->setName(functionArgumentSymbol->getName());
 
         // Program should be able to change function parameter in function body but not original function parameter value.
         // To allow this we need to create new local variables and copy argument values to new local vars and use it as func arguments.
         // This way program can't change original function parameter values.
-        auto localFuncArgVar = m_irBuilder->CreateAlloca(createBaseType(funcArgSymbol->getType()), nullptr, funcArgSymbol->getName());
+        auto localFuncArgVar = m_irBuilder->CreateAlloca(createBaseType(functionArgumentSymbol->getType()), nullptr,
+                                                         functionArgumentSymbol->getName());
         m_irBuilder->CreateStore(argIt, localFuncArgVar);
-        funcArgSymbol->setProperty(std::make_unique<SymbolProperty>(localFuncArgVar));
+        functionArgumentSymbol->setProperty(std::make_unique<SymbolProperty>(localFuncArgVar));
     }
 
     visitChildren(node);
@@ -721,7 +722,7 @@ void CodeGenPass::visitBreak(ast::NodeBreak * node)
 }
 
 
-llvm::Value * CodeGenPass::visitFunctionCall(ast::NodeFuncCall * node)
+llvm::Value * CodeGenPass::visitFunctionCall(ast::NodeFunctionCall * node)
 {
     std::vector<llvm::Value *> args;
 

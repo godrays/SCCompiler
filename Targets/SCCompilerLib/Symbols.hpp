@@ -21,7 +21,7 @@ namespace scc
 
 // Forward declaration.
 class ScopeNode;
-class FuncArgSymbol;
+class FunctionArgumentSymbol;
 
 
 // Symbol category.
@@ -104,11 +104,11 @@ public:
 };
 
 
-class FuncArgSymbol : public Symbol
+class FunctionArgumentSymbol : public Symbol
 {
 public:
     // Constructor.
-    FuncArgSymbol(std::string name, Type type);
+    FunctionArgumentSymbol(std::string name, Type type);
 };
 
 
@@ -119,16 +119,16 @@ public:
     FunctionSymbol(std::string name, Type type);
 
     // Adds a function argument symbol.
-    void addArgumentSymbol(FuncArgSymbol * argSymbol);
+    void addArgumentSymbol(FunctionArgumentSymbol * argSymbol);
 
     // Returns the argument count.
     size_t argumentCount();
 
     // Returns the function argument symbol at the given index.
-    FuncArgSymbol * getArgumentSymbol(size_t index);
+    FunctionArgumentSymbol * getArgumentSymbol(size_t index);
 
 private:
-    std::vector<FuncArgSymbol *>  m_argumentSymbols;
+    std::vector<FunctionArgumentSymbol *>  m_argumentSymbols;
 };
 
 

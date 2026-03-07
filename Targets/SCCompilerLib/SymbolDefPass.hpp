@@ -22,8 +22,8 @@ class ScopeNode;
 namespace ast
 {
     class Node;
-    class NodeVarDeclaration;
-    class NodeFuncDeclaration;
+    class NodeVariableDeclaration;
+    class NodeFunctionDeclaration;
     class NodeBlock;
 }
 
@@ -44,15 +44,15 @@ private:
     // Visits node's children.
     void visitChildren(ast::Node * node);
 
-    void visitVariableDeclaration(ast::NodeVarDeclaration * node);
+    void visitVariableDeclaration(ast::NodeVariableDeclaration * node);
 
-    void visitFunctionDeclaration(ast::NodeFuncDeclaration * node);
+    void visitFunctionDeclaration(ast::NodeFunctionDeclaration * node);
 
     void visitForStatement(ast::NodeForStatement * node);
 
     void visitBlock(ast::NodeBlock * node);
 
-    void visitFunctionCall(ast::NodeFuncCall * node);
+    void visitFunctionCall(ast::NodeFunctionCall * node);
 
     void visitLiteral(ast::NodeLiteral * node);
 

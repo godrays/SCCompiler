@@ -50,11 +50,11 @@ Type SemanticPass::visit(ast::Node * node)
             break;
 
         case ast::NodeType::kVariableDeclaration:
-            visitVariableDeclaration(dynamic_cast<ast::NodeVarDeclaration *>(node));
+            visitVariableDeclaration(dynamic_cast<ast::NodeVariableDeclaration *>(node));
             break;
 
         case ast::NodeType::kFunctionDeclaration:
-            visitFunctionDeclaration(dynamic_cast<ast::NodeFuncDeclaration *>(node));
+            visitFunctionDeclaration(dynamic_cast<ast::NodeFunctionDeclaration *>(node));
             break;
 
         case ast::NodeType::kBlock:
@@ -96,8 +96,8 @@ Type SemanticPass::visit(ast::Node * node)
             visitBreak(dynamic_cast<ast::NodeBreak *>(node));
             break;
 
-        case ast::NodeType::kFuncCall:
-            return visitFunctionCall(dynamic_cast<ast::NodeFuncCall *>(node));
+        case ast::NodeType::kFunctionCall:
+            return visitFunctionCall(dynamic_cast<ast::NodeFunctionCall *>(node));
             break;
 
         case ast::NodeType::kAssignment:
@@ -162,7 +162,7 @@ void SemanticPass::visitProgram(ast::NodeProgram * node)
 }
 
 
-void SemanticPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
+void SemanticPass::visitVariableDeclaration(ast::NodeVariableDeclaration * node)
 {
     auto childCount = node->childCount();
 
@@ -184,7 +184,7 @@ void SemanticPass::visitVariableDeclaration(ast::NodeVarDeclaration * node)
 }
 
 
-void SemanticPass::visitFunctionDeclaration(ast::NodeFuncDeclaration * node)
+void SemanticPass::visitFunctionDeclaration(ast::NodeFunctionDeclaration * node)
 {
     auto funcReturnType = node->getReturnType();
 
@@ -267,7 +267,7 @@ void SemanticPass::visitReturnStatement(ast::NodeReturnStatement * node)
     assert(node->childCount() < 2);
 
     // Find the belonging function declaration parent node.
-    auto funcDeclNode = dynamic_cast<ast::NodeFuncDeclaration *>(node->findClosestParentNode({ast::NodeType::kFunctionDeclaration}));
+    auto funcDeclNode = dynamic_cast<ast::NodeFunctionDeclaration *>(node->findClosestParentNode({ast::NodeType::kFunctionDeclaration}));
     assert(funcDeclNode != nullptr);
 
     auto scope = funcDeclNode->getScope();
@@ -320,7 +320,7 @@ void SemanticPass::visitBreak(ast::NodeBreak * node)
 }
 
 
-Type SemanticPass::visitFunctionCall(ast::NodeFuncCall * node)
+Type SemanticPass::visitFunctionCall(ast::NodeFunctionCall * node)
 {
     auto scope = node->getScope();
     auto symbol = static_cast<FunctionSymbol *>(scope->resolveSymbol(node->getFuncName()));

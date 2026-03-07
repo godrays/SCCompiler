@@ -98,8 +98,8 @@ void ASTVisualizer::visit(ast::Node * node)
             outputConfig(node, "[label = \"Break\"];");
             break;
 
-        case ast::NodeType::kFuncCall:
-            outputConfig(node, "[label = \"Func Call: " + dynamic_cast<ast::NodeFuncCall*>(node)->getFuncName() + "\"];");
+        case ast::NodeType::kFunctionCall:
+            outputConfig(node, "[label = \"Function Call: " + dynamic_cast<ast::NodeFunctionCall*>(node)->getFuncName() + "\"];");
             break;
 
         case ast::NodeType::kAssignment:
@@ -223,7 +223,7 @@ void ASTVisualizer::outputConfig(ast::Node * node, const std::string & nodeConfi
 
 void ASTVisualizer::outputConfigVariableDecl(ast::Node *  node)
 {
-    auto varDecNode = dynamic_cast<ast::NodeVarDeclaration *>(node);
+    auto varDecNode = dynamic_cast<ast::NodeVariableDeclaration *>(node);
     assert(varDecNode != nullptr);
     
     // Generate config string.
@@ -237,13 +237,13 @@ void ASTVisualizer::outputConfigVariableDecl(ast::Node *  node)
 
 void ASTVisualizer::outputConfigFuncDecl(ast::Node * node)
 {
-    auto funcDecNode = dynamic_cast<ast::NodeFuncDeclaration *>(node);
+    auto funcDecNode = dynamic_cast<ast::NodeFunctionDeclaration *>(node);
     assert(funcDecNode != nullptr);
     auto arguments = funcDecNode->getArguments();
     
     // Generate config string.
     std::ostringstream  strStream;
-    strStream   << "[label = \"{Func Decl |" << funcDecNode->getFuncName() << "| Return Type: " << ast::TypeToString(funcDecNode->getReturnType());
+    strStream   << "[label = \"{Function Decl |" << funcDecNode->getFuncName() << "| Return Type: " << ast::TypeToString(funcDecNode->getReturnType());
     
     // Write arguments.
     for (auto & argument : arguments)

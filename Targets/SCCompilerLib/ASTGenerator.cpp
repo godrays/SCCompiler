@@ -57,7 +57,7 @@ antlrcpp::Any ASTGenerator::visitVarDecl(SCCompilerParser::VarDeclContext *ctx)
         std::string varName = child->ID()->getText();
 
         // Create new AST Node.
-        auto newNode = std::make_unique<ast::NodeVarDeclaration>(type, varName);
+        auto newNode = std::make_unique<ast::NodeVariableDeclaration>(type, varName);
         newNode->setSourceCodeLine(child->getStart()->getLine());
         pushNodeToStack(std::move(newNode));
 
@@ -80,7 +80,7 @@ antlrcpp::Any ASTGenerator::visitFuncDeclaration(SCCompilerParser::FuncDeclarati
     std::string funcName = ctx->ID()->getText();
 
     // Create new AST Node.
-    auto newNode = std::make_unique<ast::NodeFuncDeclaration>(funcReturnType, funcName);
+    auto newNode = std::make_unique<ast::NodeFunctionDeclaration>(funcReturnType, funcName);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
     pushNodeToStack(std::move(newNode));
 
@@ -99,8 +99,8 @@ antlrcpp::Any ASTGenerator::visitFuncArgDeclaration(SCCompilerParser::FuncArgDec
     Type   argType = ASTGenerator::toASTType(ctx->type()->getText());
     std::string argName = ctx->ID()->getText();
 
-    // The parent node has to be a function declaration node. The top of the Node stack is definitely a FuncDeclarationNode.
-    auto parentNode = dynamic_cast<ast::NodeFuncDeclaration*>(m_currentNodeStack.top());
+    // The parent node has to be a function declaration node. The top of the node stack is definitely a NodeFunctionDeclaration.
+    auto parentNode = dynamic_cast<ast::NodeFunctionDeclaration*>(m_currentNodeStack.top());
     assert(parentNode != nullptr);
 
     parentNode->addArgument({argType, argName});
@@ -491,7 +491,7 @@ antlrcpp::Any ASTGenerator::visitFuncCallExpr(SCCompilerParser::FuncCallExprCont
     std::string funcName = ctx->ID()->getText();
 
     // Create new AST Node.
-    auto newNode = std::make_unique<ast::NodeFuncCall>(funcName);
+    auto newNode = std::make_unique<ast::NodeFunctionCall>(funcName);
     newNode->setSourceCodeLine(ctx->getStart()->getLine());
     pushNodeToStack(std::move(newNode));
 
