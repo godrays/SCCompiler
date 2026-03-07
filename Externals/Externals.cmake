@@ -151,6 +151,7 @@ add_external_git_project(
         # TODO: Temporarily set to dev branch until recent fixes are released for Windows.
         GIT_TAG             dev     # ${EXTERNAL_ANTLR4_VERSION} # Temporarily set to dev branch to get recent fixes for MSVC.
         CMAKE_ARGS          ${EXTERNAL_COMMON_CMAKE_ARGS}
+                            -DCMAKE_INSTALL_INCLUDEDIR=include
                             -DBUILD_SHARED_LIBS=OFF
                             -DCMAKE_SHARED_LIBRARY_SUFFIX_CXX=.xxx
                             -DWITH_STATIC_CRT=${ANTLR4_WITH_STATIC_CRT}
